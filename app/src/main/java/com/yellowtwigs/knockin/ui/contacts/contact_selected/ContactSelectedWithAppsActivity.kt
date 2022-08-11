@@ -3,17 +3,16 @@ package com.yellowtwigs.knockin.ui.contacts.contact_selected
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactSelectedWithAppsBinding
 import com.yellowtwigs.knockin.model.ContactManager
@@ -26,10 +25,8 @@ import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.Converter
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
-import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -60,8 +57,69 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
         currentContact?.contactDB?.let { initUserData(binding, it) }
 
         binding.backIcon.setOnClickListener {
+//            openWhatsappGroup()
             onBackPressed()
             finish()
+        }
+    }
+
+//    private val URL = "https://my.signal.server.com"
+//    private val TRUST_STORE: TrustStore = MyTrustStoreImpl()
+//    private val USERNAME = "+14151231234"
+//    private val PASSWORD: String = generateRandomPassword()
+//    private val USER_AGENT = "[FILL_IN]"
+//
+//    private fun setSignalMessage(){
+//        val accountManager = SignalServiceAccountManager(
+//            URL, TRUST_STORE,
+//            USERNAME, PASSWORD, USER_AGENT
+//        )
+//
+//        accountManager.requestSmsVerificationCode()
+//        accountManager.verifyAccountWithCode(
+//            receivedSmsVerificationCode, generateRandomSignalingKey(),
+//            generateRandomInstallId(), false
+//        )
+//        accountManager.setGcmId(
+//            Optional.of(
+//                GoogleCloudMessaging.getInstance(this).register(REGISTRATION_ID)
+//            )
+//        )
+//        accountManager.setPreKeys(
+//            identityKey.getPublicKey(),
+//            lastResortKey,
+//            signedPreKeyRecord,
+//            oneTimePreKeys
+//        )
+//
+//        val messageSender = SignalServiceMessageSender(
+//            URL, TRUST_STORE, USERNAME, PASSWORD,
+//            MySignalProtocolStore(),
+//            USER_AGENT, Optional.absent()
+//        )
+//
+//        messageSender.sendMessage(
+//            SignalServiceAddress("+14159998888"),
+//            SignalServiceDataMessage.newBuilder()
+//                .withBody("Hello, world!")
+//                .build()
+//        )
+//    }
+
+    private fun openWhatsappGroup() {
+//        val url = "https://chat.whatsapp.com/HkVePIAkCLu60NUR5R6IPG&text=test"
+        val url = "https://api.whatsapp.com/send?phone=&text=test"
+
+        try {
+            val pm = packageManager
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            startActivity(i)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(this, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT)
+                .show()
+            e.printStackTrace()
         }
     }
 
@@ -182,10 +240,16 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
             val buttonListener = View.OnClickListener { v: View ->
                 when (v.id) {
                     whatsappIcon.id -> {
-                        ContactGesture.openWhatsapp(
-                            Converter.converter06To33(currentContact.getFirstPhoneNumber()),
-                            this@ContactSelectedWithAppsActivity
-                        )
+                        val sendIntent = Intent()
+                        sendIntent.action = Intent.ACTION_SEND
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+                        sendIntent.setType("text/plain")
+                        sendIntent.setPackage("com.whatsapp");
+                        startActivity(sendIntent)
+//                        ContactGesture.openWhatsapp(
+//                            Converter.converter06To33(currentContact.getFirstPhoneNumber()),
+//                            this@ContactSelectedWithAppsActivity
+//                        )
                     }
                     editIcon.id -> {
                         val intent = Intent(

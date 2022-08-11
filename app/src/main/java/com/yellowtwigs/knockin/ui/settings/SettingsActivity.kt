@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -105,12 +106,18 @@ class SettingsActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            drawerLayout!!.closeDrawers()
+            drawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     startActivity(Intent(this@SettingsActivity, MainActivity::class.java))
                 }
+                R.id.navigation_teleworking -> startActivity(
+                    Intent(
+                        this@SettingsActivity,
+                        TeleworkingActivity::class.java
+                    )
+                )
                 R.id.nav_notif_config -> startActivity(Intent(this@SettingsActivity, ManageNotificationActivity::class.java))
                 R.id.nav_manage_screen -> startActivity(Intent(this@SettingsActivity, ManageMyScreenActivity::class.java))
                 R.id.nav_in_app -> startActivity(Intent(this@SettingsActivity, PremiumActivity::class.java))

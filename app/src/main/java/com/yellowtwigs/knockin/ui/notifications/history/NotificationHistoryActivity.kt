@@ -337,6 +337,12 @@ class NotificationHistoryActivity : AppCompatActivity() {
                             ManageNotificationActivity::class.java
                         )
                     )
+                    R.id.navigation_teleworking -> startActivity(
+                        Intent(
+                            this@NotificationHistoryActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
                     R.id.nav_settings -> startActivity(
                         Intent(
                             this@NotificationHistoryActivity,
@@ -370,7 +376,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigationView() {
-        binding.navigation.menu.getItem(3).isChecked = true
+        binding.navigation.menu.getItem(2).isChecked = true
         binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
@@ -807,7 +813,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
         return 0
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu_filter_notif_history, menu)
         val sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
@@ -815,15 +821,15 @@ class NotificationHistoryActivity : AppCompatActivity() {
             sharedPreferences.getString(
                 "tri",
                 "date"
-            ) == "date" -> menu?.findItem(R.id.sort_by_date)?.isChecked = true
+            ) == "date" -> menu.findItem(R.id.sort_by_date)?.isChecked = true
             sharedPreferences.getString(
                 "tri",
                 "date"
-            ) == "priority" -> menu?.findItem(R.id.sort_by_priority)?.isChecked = true
-            else -> menu?.findItem(R.id.sort_by_contact)?.isChecked = true
+            ) == "priority" -> menu.findItem(R.id.sort_by_priority)?.isChecked = true
+            else -> menu.findItem(R.id.sort_by_contact)?.isChecked = true
         }
         if (!sharedPreferences.getBoolean("filter_by_msg_apps", true)) {
-            menu?.findItem(R.id.messagefilter)?.isChecked = false
+            menu.findItem(R.id.messagefilter)?.isChecked = false
         }
         return super.onCreateOptionsMenu(menu)
     }

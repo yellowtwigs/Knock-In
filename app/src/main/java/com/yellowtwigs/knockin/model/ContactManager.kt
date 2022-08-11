@@ -396,20 +396,11 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                     } catch (e: NumberFormatException) {
                         false
                     }
-
-
-
                     if (!isNumeric) {
                         if (firstName != null) {
                             if (!firstName.contains("Telegram") && !firstName.contains("WhatsApp") &&
                                 !firstName.contains("com.google") && !firstName.contains("Signal")
                             ) {
-                                if (firstName.contains("Minvielle")) {
-                                    Log.i("phoneContact", "appsInPhone : $appsInPhone")
-                                }
-//                                Log.i("phoneContact", "firstName : $firstName")
-//                                Log.i("phoneContact", "lastName : $lastName")
-//                                Log.i("phoneContact", "appsInPhone : $appsInPhone")
 
                                 if (lastName != null) {
                                     if (appsInPhone != "com.google") {
@@ -459,9 +450,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
             }
         }
         phoneContact?.close()
-        for (item in listOfTriple) {
-            Log.i("phoneContact", "$item")
-        }
         return phoneContactsList
     }
 
@@ -909,14 +897,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                                         if (fullName.second.third.contains(triple.first) &&
                                             fullName.second.third.contains(triple.second)
                                         ) {
-                                            Log.i(
-                                                "phoneContact",
-                                                "fullName.second.first  : ${fullName.second.first}"
-                                            )
-                                            Log.i(
-                                                "phoneContact",
-                                                "fullName.second.third  : ${fullName.second.third}"
-                                            )
                                             listOfApps.add(triple.third)
                                         }
                                     }
@@ -944,19 +924,6 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
                             }
 
                             if (fullName.second.second == "") {
-                                if (fullName.second.third == "D Minvielle") {
-//                                    Log.i(
-//                                        "phoneContact",
-//                                        "fullName.second.first  : ${fullName.second.first}"
-//                                    )
-//                                    Log.i(
-//                                        "phoneContact",
-//                                        "fullName.second.third  : ${fullName.second.third}"
-//                                    )
-//                                    Log.i("phoneContact", "hasTelegram  : ${hasTelegram}")
-//                                    Log.i("phoneContact", "hasWhatsapp  : ${hasWhatsapp}")
-//                                    Log.i("phoneContact", "hasSignal  : ${hasSignal}")
-                                }
                                 val contacts = ContactDB(
                                     null,
                                     fullName.second.first,

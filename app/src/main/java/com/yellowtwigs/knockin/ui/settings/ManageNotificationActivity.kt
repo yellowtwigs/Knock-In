@@ -32,6 +32,7 @@ import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import java.util.*
@@ -164,6 +165,12 @@ class ManageNotificationActivity : AppCompatActivity() {
                         )
                     )
                 }
+                R.id.navigation_teleworking -> startActivity(
+                    Intent(
+                        this@ManageNotificationActivity,
+                        TeleworkingActivity::class.java
+                    )
+                )
                 R.id.nav_settings -> {
 
                     if (settings_NotificationMessagesAlarmSound != null) {
@@ -378,7 +385,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
     //region ========================================== Functions =========================================
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu_help, menu)
         return super.onCreateOptionsMenu(menu)

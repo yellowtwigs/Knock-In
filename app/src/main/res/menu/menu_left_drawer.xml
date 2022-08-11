@@ -23,6 +23,10 @@
             android:icon="@drawable/ic_notification"
             android:title="@string/left_drawer_notif_config" />
         <item
+            android:id="@+id/navigation_teleworking"
+            android:icon="@drawable/ic_teleworking"
+            android:title="@string/teleworking" />
+        <item
             android:id="@+id/nav_manage_screen"
             android:icon="@drawable/ic_grid"
             android:title="@string/left_drawer_my_screen" />

@@ -19,6 +19,7 @@ import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkSwitchFromLeftDrawer
 import kotlinx.coroutines.*
 
@@ -112,6 +113,12 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         Intent(
                             this@PremiumActivity,
                             ManageNotificationActivity::class.java
+                        )
+                    )
+                    R.id.navigation_teleworking -> startActivity(
+                        Intent(
+                            this@PremiumActivity,
+                            TeleworkingActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> {

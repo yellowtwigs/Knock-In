@@ -9,11 +9,6 @@
         android:icon="@drawable/ic_multiple_users_silhouette_test"
         android:title="@string/bottom_navigation_view_groups" />
     <item
-        android:id="@+id/navigation_teleworking"
-        android:icon="@drawable/ic_teleworking"
-        android:title="@string/teleworking"
-        android:visible="false" />
-    <item
         android:id="@+id/navigation_notifcations"
         android:icon="@drawable/ic_notification"
         android:title="@string/bottom_navigation_view_notify_history" />

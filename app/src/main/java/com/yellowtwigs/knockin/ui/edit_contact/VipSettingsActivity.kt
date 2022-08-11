@@ -431,9 +431,7 @@ class VipSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun onClickFirstCheckbox(
-        checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean
-    ) {
+    private fun onClickFirstCheckbox(checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean) {
         uncheckBoxAll()
         checkBox.isChecked = true
         notificationSound = sound
@@ -485,9 +483,6 @@ class VipSettingsActivity : AppCompatActivity() {
                 putExtra("hasChanged", intent.getBooleanExtra("hasChanged", false))
             }
             putExtra("notificationTone", notificationTone)
-            Log.i("notificationTone", "1 : ${notificationTone}")
-            Log.i("notificationTone", "2 : ${binding.uploadSoundPath.text}")
-            Log.i("notificationTone", "3 : ${isCustomSound}")
             putExtra("notification_Sound", notificationSound)
             if (isCustomSound) {
                 putExtra("isCustomSound", 1)
@@ -495,7 +490,6 @@ class VipSettingsActivity : AppCompatActivity() {
                 putExtra("isCustomSound", 0)
             }
             putExtra("vipScheduleValue", vipScheduleValue)
-            Log.i("testAudioFile", "${binding.uploadSoundPath.text.toString()}")
             putExtra("audioFileName", binding.uploadSoundPath.text.toString())
 
             if (binding.startTimeEditText.text.isNullOrBlank() || binding.endTimeEditText.text.isNullOrBlank()) {
@@ -668,7 +662,7 @@ class VipSettingsActivity : AppCompatActivity() {
         }
     }
 
-//endregion
+    //endregion
 
     //region ======================================= OpenCloseLayout ========================================
 
@@ -732,7 +726,7 @@ class VipSettingsActivity : AppCompatActivity() {
         }
     }
 
-//endregion
+    //endregion
 
     private fun getTones() {
         val intent = Intent()

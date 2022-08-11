@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.BuildConfig
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
@@ -94,14 +96,9 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 monoChannelSmsClick(groupSms)
             }
             sectionViewHolder.menu.setOnClickListener { v: View? ->
-                println("BUTTON CLICK")
                 val popupMenu = PopupMenu(mContext, v)
                 popupMenu.inflate(R.menu.section_menu_group_manager)
                 popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-                    println("VALUES = " + item.itemId)
-                    println("ok = " + R.id.menu_group_add_contacts)
-                    println("ok = " + R.id.menu_group_delete_contacts)
-                    println("ok = " + R.id.menu_group_delete_group)
                     when (item.itemId) {
                         R.id.menu_group_edit_group -> {
                             val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -114,27 +111,41 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                             val edit_group_name_YellowTag: AppCompatImageView = alertView.findViewById(R.id.manager_group_edit_group_color_yellow)
                             val edit_group_name_OrangeTag: AppCompatImageView = alertView.findViewById(R.id.manager_group_edit_group_color_orange)
                             val edit_group_name_PurpleTag: AppCompatImageView = alertView.findViewById(R.id.manager_group_edit_group_color_purple)
+                            val switchPriority: SwitchCompat = alertView.findViewById(R.id.priority_switch)
+
+                            switchPriority.setOnCheckedChangeListener { compoundButton, isChecked ->
+                                if (isChecked) {
+                                } else {
+                                }
+                            }
+
                             if (groupName == "Favorites") {
-                                edit_group_name_AlertDialogTitle.text = (mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "
-                                        + mContext.getString(R.string.group_favorites))
+                                edit_group_name_AlertDialogTitle.text = (mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "                                        + mContext.getString(R.string.group_favorites))
                                 edit_group_name_EditText.setText(mContext.getString(R.string.group_favorites))
                             } else {
                                 edit_group_name_AlertDialogTitle.text = (mContext.getString(R.string.manager_group_edit_group_alert_dialog_title) + " "
                                         + contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).name)
                                 edit_group_name_EditText.setText(contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).name)
                             }
-                            if (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).section_color == R.color.red_tag_group) {
-                                edit_group_name_RedTag.setImageResource(R.drawable.border_selected_yellow)
-                            } else if (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).section_color == R.color.blue_tag_group) {
-                                edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_yellow)
-                            } else if (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).section_color == R.color.green_tag_group) {
-                                edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_yellow)
-                            } else if (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).section_color == R.color.yellow_tag_group) {
-                                edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_yellow)
-                            } else if (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).section_color == R.color.orange_tag_group) {
-                                edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_yellow)
-                            } else if (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).section_color == R.color.purple_tag_group) {
-                                edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_yellow)
+                            when (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).section_color) {
+                                R.color.red_tag_group -> {
+                                    edit_group_name_RedTag.setImageResource(R.drawable.border_selected_yellow)
+                                }
+                                R.color.blue_tag_group -> {
+                                    edit_group_name_BlueTag.setImageResource(R.drawable.border_selected_yellow)
+                                }
+                                R.color.green_tag_group -> {
+                                    edit_group_name_GreenTag.setImageResource(R.drawable.border_selected_yellow)
+                                }
+                                R.color.yellow_tag_group -> {
+                                    edit_group_name_YellowTag.setImageResource(R.drawable.border_selected_yellow)
+                                }
+                                R.color.orange_tag_group -> {
+                                    edit_group_name_OrangeTag.setImageResource(R.drawable.border_selected_yellow)
+                                }
+                                R.color.purple_tag_group -> {
+                                    edit_group_name_PurpleTag.setImageResource(R.drawable.border_selected_yellow)
+                                }
                             }
                             edit_group_name_RedTag.setOnClickListener { v1: View? ->
                                 edit_group_name_RedTag.setImageResource(R.drawable.border_selected_yellow)
@@ -193,9 +204,6 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                             MaterialAlertDialogBuilder(mContext, R.style.AlertDialog)
                                     .setView(alertView)
                                     .setPositiveButton(R.string.alert_dialog_validate) { dialog: DialogInterface?, which: Int ->
-                                        println("Name : " + Objects.requireNonNull(edit_group_name_EditText.text).toString())
-                                        println("Name : " + contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).name)
-                                        println("Color : $color")
                                         if (contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).name == "Favorites") {
                                             Toast.makeText(mContext, "Vous ne pouvez pas modifier le nom du groupe Favorites", Toast.LENGTH_LONG).show()
                                         } else {
@@ -203,7 +211,6 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                                                 edit_group_name_EditText.setText(contactsDatabase.GroupsDao().getGroup(mSections[position]!!.idGroup.toInt()).name)
                                             }
                                             contactsDatabase.GroupsDao().updateGroupNameById(mSections[position]!!.idGroup.toInt(), edit_group_name_EditText.text.toString())
-                                            //Toast.makeText(mContext, "Vous avez modifié le nom de votre groupe", Toast.LENGTH_LONG).show();
                                         }
                                         if (color == 0) {
                                             val r = Random()

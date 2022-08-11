@@ -22,6 +22,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 /**
  * La Classe qui permet de changer le theme de l'application et de changer le nombre de contact par ligne
@@ -291,6 +292,12 @@ class ManageMyScreenActivity : AppCompatActivity() {
                     Intent(
                         this@ManageMyScreenActivity,
                         ManageNotificationActivity::class.java
+                    )
+                )
+                R.id.navigation_teleworking -> startActivity(
+                    Intent(
+                        this@ManageMyScreenActivity,
+                        TeleworkingActivity::class.java
                     )
                 )
                 R.id.nav_settings -> startActivity(
@@ -594,7 +601,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu_help, menu)
         return super.onCreateOptionsMenu(menu)

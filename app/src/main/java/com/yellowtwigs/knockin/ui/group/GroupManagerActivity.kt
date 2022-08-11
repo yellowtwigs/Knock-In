@@ -230,6 +230,12 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         ManageNotificationActivity::class.java
                     )
                 )
+                R.id.navigation_teleworking -> startActivity(
+                    Intent(
+                        this@GroupManagerActivity,
+                        TeleworkingActivity::class.java
+                    )
+                )
                 R.id.nav_manage_screen -> startActivity(
                     Intent(
                         this@GroupManagerActivity,
@@ -408,7 +414,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             monoChannelMailClick(listOfMailContactSelected)
         }
-        group_manager_FloatingButtonAddNewGroup!!.setOnClickListener {
+        group_manager_FloatingButtonAddNewGroup?.setOnClickListener {
             val intent = Intent(this@GroupManagerActivity, AddNewGroupActivity::class.java)
             startActivity(intent)
         }
@@ -422,7 +428,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             ): Boolean {
                 val sourcePosition = p1.adapterPosition
                 val targetPosition = p2.adapterPosition
-                //groupAdapter!!.contactManager.contactList.add(targetPosition,groupAdapter!!.getItem(sourcePosition))
                 println("Start Position$sourcePosition")
                 println("last Position$targetPosition")
                 return true

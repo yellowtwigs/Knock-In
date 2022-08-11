@@ -121,6 +121,14 @@ class NotificationListener : NotificationListenerService() {
                                         val minutes = cal.get(Calendar.MINUTE)
                                         val today = cal.get(Calendar.DAY_OF_WEEK)
 
+                                        val vipScheduleValueSharedPreferences =
+                                            getSharedPreferences(
+                                                "VipScheduleValue",
+                                                Context.MODE_PRIVATE
+                                            )
+
+
+
                                         when (contact.contactDB?.vipSchedule) {
                                             1 -> {
                                                 vipNotificationsDeployment(sbp, sbn, contact)
@@ -228,7 +236,69 @@ class NotificationListener : NotificationListenerService() {
                                                 }
                                             }
                                             else -> {
-                                                vipNotificationsDeployment(sbp, sbn, contact)
+                                                if (vipScheduleValueSharedPreferences.getBoolean(
+                                                        "VipScheduleValue",
+                                                        false
+                                                    )
+                                                ) {
+                                                    if (today == 5 || today == 6) {
+                                                        val notificationsHour =
+                                                            getSharedPreferences(
+                                                                "TeleworkingReminder",
+                                                                Context.MODE_PRIVATE
+                                                            ).getString("TeleworkingReminder", "")
+                                                        val startTime =
+                                                            convertTimeToStartTime(notificationsHour!!)
+                                                        val hourStart = convertTimeToHour(startTime)
+                                                        val minutesStart =
+                                                            convertTimeToMinutes(startTime)
+
+                                                        val endTime =
+                                                            convertTimeToEndTime(notificationsHour)
+                                                        val hourEnd = convertTimeToHour(endTime)
+                                                        val minutesEnd =
+                                                            convertTimeToMinutes(endTime)
+
+
+                                                        if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
+                                                            if (hourStart.toInt() == hours) {
+                                                                if (minutes >= minutesStart.toInt()) {
+                                                                    if (hourEnd.toInt() == hours) {
+                                                                        if (minutes <= minutesEnd.toInt()) {
+                                                                            vipNotificationsDeployment(
+                                                                                sbp,
+                                                                                sbn,
+                                                                                contact
+                                                                            )
+                                                                        }
+                                                                    } else {
+                                                                        vipNotificationsDeployment(
+                                                                            sbp,
+                                                                            sbn,
+                                                                            contact
+                                                                        )
+                                                                    }
+                                                                }
+                                                            } else if (hourEnd.toInt() == hours) {
+                                                                if (minutes <= minutesEnd.toInt()) {
+                                                                    vipNotificationsDeployment(
+                                                                        sbp,
+                                                                        sbn,
+                                                                        contact
+                                                                    )
+                                                                }
+                                                            } else {
+                                                                vipNotificationsDeployment(
+                                                                    sbp,
+                                                                    sbn,
+                                                                    contact
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                } else {
+                                                    vipNotificationsDeployment(sbp, sbn, contact)
+                                                }
                                             }
                                         }
                                     }
@@ -326,10 +396,8 @@ class NotificationListener : NotificationListenerService() {
     }
 
     private fun convertTimeToMinutes(time: String): String {
-        Log.i("minutes", "$time")
         val array = arrayListOf<Char>()
         return if (time.contains("h")) {
-            // 02h53
             val parts = time.split("h").toTypedArray()
             parts[1].forEach {
                 if (!it.isWhitespace()) {

@@ -200,8 +200,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 .show()
         }
 
-        Log.i("Telephony", "${Telephony.Sms.getDefaultSmsPackage(this)}")
-
         //region ======================================== Listeners =========================================
 
         video_skip.setOnClickListener {
@@ -253,7 +251,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 activateNotificationsLoading?.visibility = View.VISIBLE
             }
             runOnUiThread(displayLoading)
-            //Ici nous créons un thread qui vérifie en boucle si nous sommes revenu dans Knockin une fois revenu alors il affiche l'image de validation(Image_validate) ou le bouton demandant d'autoriser
             val verifiedNotification = Thread {
                 activityNotificationVisible = false
                 while (!activityNotificationVisible) {
@@ -375,24 +372,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    val sliderHandler = Handler()
-
-                    val sliderRunnable = Runnable {
-                        if (currentItem == 3) {
-                            currentItem = 0
-                        } else {
-                            currentItem += 1
-                        }
-                        Log.i("viewPager", "position : ${position}")
-                        Log.i("viewPager", "currentItem : ${currentItem}")
-//                        currentItem += 1
-
-//                        if (position == 3) {
-//                            currentItem = currentItem - 2
-//                        } else {
-//                            currentItem += 1
-//                        }
-                    }
 
                     when (position) {
                         0 -> {
@@ -420,9 +399,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             radioButton4.isChecked = true
                         }
                     }
-
-//                    sliderHandler.removeCallbacks(sliderRunnable)
-//                    sliderHandler.postDelayed(sliderRunnable, 10000)
                 }
             })
         }
@@ -659,9 +635,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         allIsCheckedGOEdition()
     }
 
-    /**
-     * Réécriture de la méthode onBackPressed lorsque nous appuyant sur le boutton retour du téléphone rien n'est fait
-     */
     override fun onBackPressed() {
     }
 

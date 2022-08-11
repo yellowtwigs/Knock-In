@@ -1,44 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/space_background">
 
-    <RelativeLayout
-        android:id="@+id/start_activity_video_layout"
-        android:visibility="visible"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
-        <VideoView
-            android:id="@+id/start_activity_video"
-            android:layout_width="match_parent"
-            android:layout_height="650dp"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintEnd_toStartOf="@+id/radio_button_2" />
 
-        <WebView
-            android:id="@+id/start_activity_webview"
-            android:layout_width="match_parent"
-            android:layout_height="600dp"
-            android:layout_centerHorizontal="true"
-            android:scrollbars="none"
-            android:visibility="gone" />
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintEnd_toStartOf="@+id/view2" />
 
-    </RelativeLayout>
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0.5dp"
+        android:layout_height="0.5dp"
+        android:buttonTint="@color/lightColor"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintEnd_toEndOf="@+id/view_pager"
+        app:layout_constraintStart_toStartOf="@+id/view_pager" />
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintStart_toEndOf="@+id/view2" />
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radio_button_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/lightColor"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintStart_toEndOf="@+id/radio_button_3" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/video_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="100dp"
-        android:layout_centerHorizontal="true"
         android:text="@string/start_activity_skip"
         android:textColor="#000000"
         android:textSize="15sp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/start_activity_layout"
@@ -125,9 +154,9 @@
                 android:id="@+id/start_activity_notifications_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:layout_below="@+id/start_activity_import_contacts_layout"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp">
 
                 <ProgressBar
                     android:id="@+id/start_activity_activate_notifications_loading"
@@ -189,9 +218,9 @@
                 android:id="@+id/start_activity_superposition_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:layout_below="@+id/start_activity_notifications_layout"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp">
 
                 <ProgressBar
                     android:id="@+id/superposition_loading"
@@ -254,9 +283,9 @@
                 android:id="@+id/start_activity_permissions_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:layout_below="@+id/start_activity_superposition_layout"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp">
 
                 <ProgressBar
                     android:id="@+id/permissions_loading"
@@ -306,12 +335,12 @@
                     android:id="@+id/permissions_button"
                     android:layout_width="110dp"
                     android:layout_height="40dp"
-                    android:textSize="10sp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:text="@string/button_permission"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="10sp" />
 
             </RelativeLayout>
 
@@ -336,13 +365,13 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="40dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="40dp"
             android:text="@string/start_activity_skip"
             android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_activity_next"
@@ -351,14 +380,14 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="40dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="40dp"
             android:text="@string/start_activity_next"
             android:textColor="#000000"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

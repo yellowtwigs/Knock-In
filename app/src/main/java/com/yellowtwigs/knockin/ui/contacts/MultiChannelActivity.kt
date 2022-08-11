@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
@@ -13,32 +14,35 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
+import java.net.URLEncoder
+
 
 class MultiChannelActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
-    private var multi_channel_Listview: ListView? = null
+    private var appsListView: ListView? = null
 
     private var intent_listOfContactSelected: ArrayList<Int> = ArrayList()
 
-    private var multi_channel_listOfContactSelected: ArrayList<ContactWithAllInformation?> = ArrayList()
+    private var listOfContactSelected = arrayListOf<ContactWithAllInformation?>()
 
-    private var gestionnaireContacts: ContactManager? = null
+    private lateinit var contactManager: ContactManager
+    private lateinit var viewAdapter: ContactListViewAdapter
+    private lateinit var sendMessageEditText: AppCompatEditText
+    private lateinit var sendMessageButton: AppCompatImageView
 
-    private var multi_channel_listViewAdapter: ContactListViewAdapter? = null
-
-    private var multi_channel_SendMessageEditText: AppCompatEditText? = null
-    private var multi_channel_SendMessageButton: AppCompatImageView? = null
-
-    private val SEND_SMS_PERMISSION_REQUEST_CODE = 1
-    private val MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0
+    private var twoChannels = false
+    private var tripleChannels = false
 
     private var sendValidate = false
-    private var multiChannelActivity = false
+    private var sendValidateFromMail = false
+
+    private var openMail = false
+    private var openWhatsapp = false
 
     //endregion
 
@@ -58,79 +62,133 @@ class MultiChannelActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_multi_channel)
 
-//        askForSMSPermissions()
-
         //region ========================================== Toolbar =========================================
 
         val toolbar = findViewById<Toolbar>(R.id.multi_channel_toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-        actionbar.title = "Multi Channel"
+        actionbar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+            it.title = "Multi Channel"
+        }
 
         //endregion
 
         //region ======================================= FindViewById =======================================
 
-        multi_channel_Listview = findViewById(R.id.multi_channel_list_of_contacts_selected)
-        multi_channel_SendMessageEditText = findViewById(R.id.multi_channel_chatbox)
-        multi_channel_SendMessageButton = findViewById(R.id.multi_channel_chatbox_send)
+        appsListView = findViewById(R.id.multi_channel_list_of_contacts_selected)
+        sendMessageEditText = findViewById(R.id.multi_channel_chatbox)
+        sendMessageButton = findViewById(R.id.multi_channel_chatbox_send)
 
         //endregion
 
         //region ================================= GetContactByIdFromIntent =================================
 
-        intent_listOfContactSelected = intent.getIntegerArrayListExtra("ListContactsSelected") as ArrayList<Int>
+        intent_listOfContactSelected =
+            intent.getIntegerArrayListExtra("ListContactsSelected") as ArrayList<Int>
 
-        gestionnaireContacts = ContactManager(this.applicationContext)
-        gestionnaireContacts?.sortContactByFirstNameAZ()
+        contactManager = ContactManager(this.applicationContext)
+        contactManager.sortContactByFirstNameAZ()
 
         val iterator = (0 until intent_listOfContactSelected.size).iterator()
 
         for (i in iterator) {
-            multi_channel_listOfContactSelected.add(gestionnaireContacts?.getContactById(intent_listOfContactSelected[i]))
+            listOfContactSelected.add(contactManager.getContactById(intent_listOfContactSelected[i]))
         }
 
         //endregion
 
         //region ================================== ContactListViewAdapter ==================================
 
-        multi_channel_listViewAdapter = ContactListViewAdapter(this, multi_channel_listOfContactSelected)
-        multi_channel_Listview!!.adapter = multi_channel_listViewAdapter
+        viewAdapter = ContactListViewAdapter(this, listOfContactSelected)
+        appsListView?.adapter = viewAdapter
 
         //endregion
 
         //region ======================================== Listeners =========================================
 
-        multi_channel_SendMessageButton!!.setOnClickListener  {
-            if (multi_channel_SendMessageEditText!!.text.toString() != "") {
-                if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0 && multi_channel_listViewAdapter!!.listOfMailSelected.size != 0) {
-                    multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
+        sendMessageButton.setOnClickListener {
+            val hasSms = viewAdapter.listOfNumberSelected?.size != 0
+            val hasWhatsapp = viewAdapter.listOfWhatsappSelected?.size != 0
+            val hasEmail = viewAdapter.listOfMailSelected?.size != 0
 
-                    multiChannelActivity = true
-
-                } else if (multi_channel_listViewAdapter!!.listOfNumberSelected.size != 0 && multi_channel_listViewAdapter!!.listOfMailSelected.size == 0) {
-                    multiChannelSendMessage(multi_channel_listViewAdapter!!.listOfNumberSelected, multi_channel_SendMessageEditText!!.text.toString())
-
-                    sendValidate = true
-
-                } else if (multi_channel_listViewAdapter!!.listOfMailSelected.size != 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
-                    multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
-                }
-
-                if (multi_channel_listViewAdapter!!.listOfMailSelected.size == 0 && multi_channel_listViewAdapter!!.listOfNumberSelected.size == 0) {
-                    Toast.makeText(this, getString(R.string.multi_channel_list_of_channel_selected_empty), Toast.LENGTH_LONG).show()
+            if (sendMessageEditText.text.toString() != "") {
+                if (!hasSms && !hasWhatsapp && !hasEmail) {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.multi_channel_list_of_channel_selected_empty),
+                        Toast.LENGTH_LONG
+                    ).show()
                     sendValidate = false
+                } else {
+                    // Mono Channel
+                    if (hasSms && !hasWhatsapp && !hasEmail) {
+                        multiChannelSendMessage(
+                            viewAdapter.listOfNumberSelected,
+                            sendMessageEditText.text.toString()
+                        )
+                        sendValidate = true
+                    } // Validate
+                    if (hasWhatsapp && !hasSms && !hasEmail) {
+                        multiChannelSendMessageWhatsapp(sendMessageEditText.text.toString())
+                        sendValidate = true
+                    } // Validate
+                    if (hasEmail && !hasSms && !hasWhatsapp) {
+                        multiChannelMailClick(
+                            viewAdapter.listOfMailSelected,
+                            sendMessageEditText.text.toString()
+                        )
+                        sendValidate = true
+                    } // Validate
+
+                    // Two Channels
+                    if (hasSms && hasWhatsapp && !hasEmail) {
+                        multiChannelSendMessage(
+                            viewAdapter.listOfNumberSelected,
+                            sendMessageEditText.text.toString()
+                        )
+                        openWhatsapp = true
+                        twoChannels = true
+                    } // Validate
+                    if (hasSms && hasEmail && !hasWhatsapp) {
+                        multiChannelSendMessage(
+                            viewAdapter.listOfNumberSelected,
+                            sendMessageEditText.text.toString()
+                        )
+                        openMail = true
+                        twoChannels = true
+                    } // Validate
+                    if (hasWhatsapp && hasEmail && !hasSms) {
+                        multiChannelSendMessageWhatsapp(sendMessageEditText.text.toString())
+                        openMail = true
+                        twoChannels = true
+                    } // Validate
+
+                    if (hasSms && hasWhatsapp && hasEmail) {
+                        multiChannelSendMessage(
+                            viewAdapter.listOfNumberSelected,
+                            sendMessageEditText.text.toString()
+                        )
+
+                        openWhatsapp = true
+                        openMail = false
+                        tripleChannels = true
+                    }
                 }
 
                 hideKeyboard()
 
             } else {
-                Toast.makeText(this, getString(R.string.multi_channel_empty_field), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.multi_channel_empty_field),
+                    Toast.LENGTH_SHORT
+                ).show()
                 hideKeyboard()
             }
         }
+
         //endregion
     }
 
@@ -138,11 +196,20 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private fun refreshActivity() {
         if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
-            startActivity(Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            startActivity(
+                Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_NO_ANIMATION
+                )
+            )
             hideKeyboard()
             finish()
         } else {
-            startActivity(Intent(this@MultiChannelActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            startActivity(
+                Intent(
+                    this@MultiChannelActivity,
+                    GroupManagerActivity::class.java
+                ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            )
             hideKeyboard()
             finish()
         }
@@ -188,27 +255,35 @@ class MultiChannelActivity : AppCompatActivity() {
 //        }
 //    }
 
-    /**
-     * On ouvre l'application de SMS avec tous les contacts saisis lors du multiselect
-     * @param listOfPhoneNumber [ArrayList<String>]
-     */
     private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
-
         var message = "smsto:" + listOfPhoneNumber[0]
         for (i in 0 until listOfPhoneNumber.size) {
             message += ";" + listOfPhoneNumber[i]
         }
+
+        sendValidate = twoChannels
+
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)).putExtra("sms_body", msg))
     }
 
-//    private fun multiChannelSendMessage(listOfPhoneNumber: ArrayList<String>, msg: String) {
-//        for (i in 0 until listOfPhoneNumber.size) {
-//            val smsManager = SmsManager.getDefault()
-//            smsManager.sendTextMessage(listOfPhoneNumber[i], null, msg, null, null)
-//        }
-//        Toast.makeText(applicationContext, getString(R.string.multi_channel_message_sent),
-//                Toast.LENGTH_LONG).show()
-//    }
+    private fun multiChannelSendMessageWhatsapp(msg: String) {
+        val i = Intent(Intent.ACTION_VIEW)
+
+        openWhatsapp = false
+        openMail = tripleChannels
+        sendValidate = twoChannels
+
+        try {
+            val url = "https://api.whatsapp.com/send?text=" + URLEncoder.encode(msg, "UTF-8")
+            i.setPackage("com.whatsapp")
+            i.data = Uri.parse(url)
+            if (i.resolveActivity(packageManager) != null) {
+                startActivity(i)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     private fun multiChannelMailClick(listOfMail: ArrayList<String>, msg: String) {
         val intent = Intent(Intent.ACTION_SEND)
@@ -218,8 +293,14 @@ class MultiChannelActivity : AppCompatActivity() {
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, msg)
 
-        sendValidate = true
-        multiChannelActivity = false
+        openMail = false
+        sendValidate = false
+
+        if (twoChannels) {
+            sendValidateFromMail = twoChannels
+        } else if (tripleChannels) {
+            sendValidateFromMail = tripleChannels
+        }
 
         startActivity(intent)
     }
@@ -240,8 +321,21 @@ class MultiChannelActivity : AppCompatActivity() {
             refreshActivity()
         }
 
-        if (multiChannelActivity) {
-            multiChannelMailClick(multi_channel_listViewAdapter!!.listOfMailSelected, multi_channel_SendMessageEditText!!.text.toString())
+        if (sendValidateFromMail) {
+            sendValidate = true
+        }
+
+        if (openWhatsapp) {
+            multiChannelSendMessageWhatsapp(sendMessageEditText.text.toString())
+        }
+
+        if (openMail) {
+            viewAdapter.listOfMailSelected?.let {
+                multiChannelMailClick(
+                    it,
+                    sendMessageEditText.text.toString()
+                )
+            }
         }
     }
 

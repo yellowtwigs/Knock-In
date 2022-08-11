@@ -171,6 +171,7 @@ object ContactGesture {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
         try {
             appIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            appIntent.putExtra("", "")
             appIntent.setPackage("org.telegram.messenger")
             context.startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {

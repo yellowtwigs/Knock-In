@@ -240,7 +240,7 @@ class CockpitActivity : AppCompatActivity() {
 
         //endregion
 
-        bottomNavigationView?.menu?.getItem(4)?.isChecked = true
+        bottomNavigationView?.menu?.getItem(3)?.isChecked = true
         bottomNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         if (cockpit_PhoneNumberEditText?.text?.isEmpty() == true) {
@@ -274,6 +274,12 @@ class CockpitActivity : AppCompatActivity() {
                     Intent(
                         this@CockpitActivity,
                         ManageNotificationActivity::class.java
+                    )
+                )
+                R.id.navigation_teleworking -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        TeleworkingActivity::class.java
                     )
                 )
                 R.id.nav_settings -> startActivity(
@@ -651,7 +657,6 @@ class CockpitActivity : AppCompatActivity() {
 
     //region ========================================== Functions ===========================================
 
-    // slide the view from below itself to the current position
     private fun slideUp(view: View) {
         val height = view.height.toFloat()
         val animate = TranslateAnimation(

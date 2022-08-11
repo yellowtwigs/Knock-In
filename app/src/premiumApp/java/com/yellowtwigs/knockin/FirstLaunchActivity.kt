@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
-import com.yellowtwigs.knockin.ui.first_launch.StartActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.StartActivity
 
 class FirstLaunchActivity : AppCompatActivity() {
 
@@ -32,7 +32,6 @@ class FirstLaunchActivity : AppCompatActivity() {
 
         //region ======================================= First Launch =======================================
 
-        //Si c'est la premiere fois que nous ouvrons l'application, nous sommes redirigés vers les écrans d'installations
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         val edit = sharedFirstLaunch.edit()
 
