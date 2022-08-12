@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 
-data class ContactListViewState(
+data class ContactsListViewState(
     val id: Int,
     val firstName: String,
     var lastName: String,
@@ -9,7 +9,7 @@ data class ContactListViewState(
     val profilePicture64: String,
     val listOfPhoneNumbers: List<String>,
     val listOfMails: List<String>,
-    val contactPriority: Int,
+    val priority: Int,
     val isFavorite: Boolean,
     val messengerId: String,
     val hasWhatsapp: Boolean,

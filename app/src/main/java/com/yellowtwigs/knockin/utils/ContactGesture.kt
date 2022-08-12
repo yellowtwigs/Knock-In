@@ -23,17 +23,6 @@ import com.yellowtwigs.knockin.utils.Converter.converter06To33
  */
 object ContactGesture {
 
-    /*fun putContactIntent(contact: ContactWithAllInformation, context: Context, classToSend: Class<*>): Intent {
-        *//*
-        intent.putExtra("ContactFirstName", contact.firstName)
-        intent.putExtra("ContactLastName", contact.lastName)
-        intent.putExtra("ContactPhoneNumber",phoneNumber)
-        intent.putExtra("ContactMail",mail)
-        intent.putExtra("ContactImage", contact.profilePicture)
-        intent.putExtra("ContactId", contact.id)
-        intent.putExtra("ContactPriority", contact.contactPriority)
-      *//*  return Intent(context, classToSend)
-    }*/
     fun isWhatsappInstalled(context: Context): Boolean {
         val pm = context.packageManager
         return try {

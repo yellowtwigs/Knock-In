@@ -13,6 +13,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 
 object InitContactsForListAdapter {
 
@@ -118,22 +119,38 @@ object InitContactsForListAdapter {
             contactLastName.text = spanLastName
         }
 
-        fun contactPriorityBorder(contact: ContactDB, civ: CircularImageView, cxt: Context) {
-            when (contact.contactPriority) {
+        fun contactPriorityBorder(priority: Int, civ: CircularImageView, cxt: Context) {
+            when (priority) {
                 0 -> {
-                    setBorderContactImage(R.color.priorityZeroColor, civ, cxt)
+                    civ.setBorderColor(
+                        ResourcesCompat.getColor(cxt.resources, R.color.priorityZeroColor, null)
+                    )
                 }
                 1 -> {
-                    setBorderContactImage(R.color.transparentColor, civ, cxt)
+                    civ.setBorderColor(
+                        ResourcesCompat.getColor(cxt.resources, R.color.transparentColor, null)
+                    )
                 }
                 2 -> {
-                    setBorderContactImage(R.color.priorityTwoColor, civ, cxt)
+                    civ.setBorderColor(
+                        ResourcesCompat.getColor(cxt.resources, R.color.priorityTwoColor, null)
+                    )
                 }
             }
         }
 
-        private fun setBorderContactImage(id: Int, civ: CircularImageView, cxt: Context) {
-            civ.setBorderColor(ResourcesCompat.getColor(cxt.resources, id, null))
+        fun contactProfilePicture(
+            picture64: String,
+            picture: Int,
+            civ: CircularImageView,
+            cxt: Context
+        ) {
+            if (picture64 != "") {
+                val bitmap = Converter.base64ToBitmap(picture64)
+                civ.setImageBitmap(bitmap)
+            } else {
+                civ.setImageResource(randomDefaultImage(picture, cxt))
+            }
         }
     }
 }

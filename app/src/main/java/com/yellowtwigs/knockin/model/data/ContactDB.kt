@@ -3,10 +3,6 @@ package com.yellowtwigs.knockin.model.data
 import androidx.room.*
 import com.yellowtwigs.knockin.R
 
-/**
- * Data class qui représente un contact
- * @author Ryan Granet
- */
 @Entity(tableName = "contacts_table")
 data class ContactDB(
 
@@ -21,13 +17,10 @@ data class ContactDB(
 
     // Knock In Fields
     @ColumnInfo(name = "mail_name") var mail_name: String,
-    @ColumnInfo(name = "contact_priority") val contactPriority: Int,
-    @ColumnInfo(name = "is_favorite") val favorite: Int,
+    @ColumnInfo(name = "priority") val priority: Int,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Int,
     @ColumnInfo(name = "messenger_id") val messengerId: String,
-    @ColumnInfo(name = "has_whatsapp") val hasWhatsapp: Int,
-    @ColumnInfo(name = "has_telegram") val hasTelegram: Int,
-    @ColumnInfo(name = "has_signal") val hasSignal: Int,
-
+    @ColumnInfo(name = "listOfMessagingApps") val listOfMessagingApps: List<String>,
 
 
     @ColumnInfo(name = "notification_tone") var notificationTone: String,

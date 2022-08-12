@@ -2,7 +2,6 @@ package com.yellowtwigs.knockin.ui.contacts.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.yellowtwigs.knockin.model.data.ContactDB
@@ -11,11 +10,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactsListViewModel @Inject constructor(
-    private val contactsRepository: ContactsRepository
-) : ViewModel() {
+class ContactsListViewModel @Inject constructor(contactsRepository: ContactsRepository) :
+    ViewModel() {
 
-    private val viewStateLiveData: MediatorLiveData<List<ContactListViewState>> = MediatorLiveData()
+    private val viewStateLiveData: MediatorLiveData<List<ContactsListViewState>> =
+        MediatorLiveData()
 
     init {
         viewStateLiveData.addSource(
@@ -26,12 +25,12 @@ class ContactsListViewModel @Inject constructor(
     }
 
     private fun combine(allContacts: List<ContactDB>) {
-        val listOfContacts = arrayListOf<ContactListViewState>()
+        val listOfContacts = arrayListOf<ContactsListViewState>()
 
         if (allContacts.isNotEmpty()) {
             for (contact in allContacts) {
                 listOfContacts.add(
-                    ContactListViewState(
+                    ContactsListViewState(
                         contact.id,
                         contact.firstName,
                         contact.lastName,
@@ -39,12 +38,12 @@ class ContactsListViewModel @Inject constructor(
                         contact.profilePicture64,
                         contact.listOfPhoneNumbers,
                         contact.listOfMails,
-                        contact.contactPriority,
-                        contact.favorite == 1,
+                        contact.priority,
+                        contact.isFavorite == 1,
                         contact.messengerId,
-                        contact.hasWhatsapp == 1,
-                        contact.hasTelegram == 1,
-                        contact.hasSignal == 1
+                        contact.listOfMessagingApps.contains("whatsapp"),
+                        contact.listOfMessagingApps.contains("telegram"),
+                        contact.listOfMessagingApps.contains("signal")
                     )
                 )
             }
@@ -53,7 +52,7 @@ class ContactsListViewModel @Inject constructor(
         viewStateLiveData.value = listOfContacts
     }
 
-    public fun getAllContacts(): LiveData<List<ContactListViewState>> {
+    public fun getAllContacts(): LiveData<List<ContactsListViewState>> {
         return viewStateLiveData
     }
 }
