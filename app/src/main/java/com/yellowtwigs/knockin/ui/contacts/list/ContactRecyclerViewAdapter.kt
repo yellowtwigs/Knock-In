@@ -65,7 +65,7 @@ class ContactRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
-        listApp = getAppOnPhone(context as MainActivity)
+        listApp = getAppOnPhone(context as Main2Activity)
         view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_contact_list, parent, false)
         return ContactViewHolder(view!!)
@@ -111,8 +111,12 @@ class ContactRecyclerViewAdapter(
             )
         }
         val contactName = contact.firstName + " " + contact.lastName
+
         holder.contactFirstNameView.text = contactName
+
+
         val firstGroup = getItem(position).getFirstGroup(context)
+
         if (context is GroupManagerActivity) {
             if (len == 0) {
                 holder.contactRoundedImageView.visibility = View.INVISIBLE
@@ -142,6 +146,8 @@ class ContactRecyclerViewAdapter(
             val roundedLayout = context.getDrawable(R.drawable.rounded_rectangle_group)!!
             roundedLayout.setColorFilter(firstGroup.section_color, PorterDuff.Mode.MULTIPLY)
         }
+
+
         if (modeMultiSelect) {
             if (listOfItemSelected.contains(contactManager.contactList[position])) {
                 if (context is GroupManagerActivity && len == 0) {
@@ -150,6 +156,9 @@ class ContactRecyclerViewAdapter(
                 }
             }
         }
+
+
+
         val listener = View.OnClickListener { v: View ->
             when (v.id) {
                 holder.smsCl.id -> {
@@ -230,7 +239,7 @@ class ContactRecyclerViewAdapter(
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
                 }
             }
-            if (context is MainActivity) {
+            if (context is Main2Activity) {
                 context.recyclerMultiSelectItemClick(position)
             }
             if (listOfItemSelected.size > 0) {
@@ -269,7 +278,7 @@ class ContactRecyclerViewAdapter(
                         holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
                     }
                 }
-                if (context is MainActivity) {
+                if (context is Main2Activity) {
                     context.recyclerMultiSelectItemClick(position)
                 }
                 if (listOfItemSelected.size > 0) {
@@ -298,6 +307,9 @@ class ContactRecyclerViewAdapter(
                 }
             }
         }
+
+
+
         var cpt = 1
 
         val appsSupportPref =
@@ -376,6 +388,7 @@ class ContactRecyclerViewAdapter(
             }
             true
         }
+
         if (holder.editCl != null) {
             holder.editCl?.setOnClickListener(listener)
         }
@@ -390,6 +403,7 @@ class ContactRecyclerViewAdapter(
         holder.constraintLayoutMenu.scrollBarFadeDuration = 20000
         holder.constraintLayoutMenu.scrollBarSize = 25
         holder.constraintLayoutMenu.scrollBarStyle = View.SCROLLBARS_OUTSIDE_OVERLAY
+
         when (cpt) {
             3 -> {
                 param.setMargins(230, 0, 0, 0)

@@ -33,7 +33,7 @@ import com.yellowtwigs.knockin.model.data.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import java.io.ByteArrayOutputStream
 
@@ -176,7 +176,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     add_new_contact_PhoneNumber
                 ) && isEmptyField(add_new_contact_fixNumber) && isEmptyField(add_new_contact_Email)
             ) {
-                val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                val intent = Intent(this@AddNewContactActivity, Main2Activity::class.java)
                 startActivity(intent)
                 finish()
             } else {
@@ -186,7 +186,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
                 alertDialog.setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
 
-                    startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
+                    startActivity(Intent(this@AddNewContactActivity, Main2Activity::class.java))
                     finish()
                 }
 
@@ -722,7 +722,7 @@ class AddNewContactActivity : AppCompatActivity() {
             .setMessage(R.string.add_new_contact_alert_dialog_message)
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-                val intent = Intent(this@AddNewContactActivity, MainActivity::class.java)
+                val intent = Intent(this@AddNewContactActivity, Main2Activity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -963,7 +963,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         if (isRetroFit) {
-            startActivity(Intent(this@AddNewContactActivity, MainActivity::class.java))
+            startActivity(Intent(this@AddNewContactActivity, Main2Activity::class.java))
             finish()
         }
     }

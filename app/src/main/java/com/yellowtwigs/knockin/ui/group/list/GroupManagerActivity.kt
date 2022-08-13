@@ -36,7 +36,7 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.group.GroupAdapter
 import com.yellowtwigs.knockin.ui.group.create.AddNewGroupActivity
@@ -94,7 +94,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     startActivity(
                         Intent(
                             this@GroupManagerActivity,
-                            MainActivity::class.java
+                            Main2Activity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -224,7 +224,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@GroupManagerActivity, MainActivity::class.java))
+                    startActivity(Intent(this@GroupManagerActivity, Main2Activity::class.java))
                 }
                 R.id.nav_notif_config -> startActivity(
                     Intent(

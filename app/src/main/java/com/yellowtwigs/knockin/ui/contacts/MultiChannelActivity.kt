@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import java.net.URLEncoder
 
@@ -197,7 +197,7 @@ class MultiChannelActivity : AppCompatActivity() {
     private fun refreshActivity() {
         if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
             startActivity(
-                Intent(this@MultiChannelActivity, MainActivity::class.java).addFlags(
+                Intent(this@MultiChannelActivity, Main2Activity::class.java).addFlags(
                     Intent.FLAG_ACTIVITY_NO_ANIMATION
                 )
             )

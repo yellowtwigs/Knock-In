@@ -42,7 +42,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.group.GroupEditAdapter
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
@@ -619,7 +619,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                     edit_contact_ContactsDatabase!!.contactsDao()
                         .deleteContactById(edit_contact_id!!)
                     val mainIntent =
-                        Intent(this@EditContactDetailsActivity, MainActivity::class.java)
+                        Intent(this@EditContactDetailsActivity, Main2Activity::class.java)
                     mainIntent.putExtra("isDelete", true)
 
                     if (edit_contact_priority == 2) {
@@ -772,7 +772,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                                 startActivity(
                                     Intent(
                                         this@EditContactDetailsActivity,
-                                        MainActivity::class.java
+                                        Main2Activity::class.java
                                     ).putExtra("position", position!!)
                                 )
                                 finish()
@@ -822,7 +822,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 this@EditContactDetailsActivity,
-                                MainActivity::class.java
+                                Main2Activity::class.java
                             ).putExtra("position", position!!)
                         )
                         finish()
@@ -848,7 +848,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                     startActivity(
                         Intent(
                             this@EditContactDetailsActivity,
-                            MainActivity::class.java
+                            Main2Activity::class.java
                         ).putExtra("position", position!!)
                     )
                     finish()
@@ -866,7 +866,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                     startActivity(
                         Intent(
                             this@EditContactDetailsActivity,
-                            MainActivity::class.java
+                            Main2Activity::class.java
                         ).putExtra("position", position!!)
                     )
                     finish()
@@ -1169,7 +1169,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@EditContactDetailsActivity,
-                        MainActivity::class.java
+                        Main2Activity::class.java
                     ).putExtra("ContactId", edit_contact_id!!).putExtra("position", position)
                 )
                 finish()
@@ -1192,7 +1192,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@EditContactDetailsActivity,
-                        MainActivity::class.java
+                        Main2Activity::class.java
                     ).putExtra("ContactId", edit_contact_id!!).putExtra("position", position)
                 )
                 finish()
@@ -1218,7 +1218,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 this@EditContactDetailsActivity,
-                                MainActivity::class.java
+                                Main2Activity::class.java
                             ).putExtra("position", position)
                         )
                     }
@@ -1239,7 +1239,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@EditContactDetailsActivity,
-                        MainActivity::class.java
+                        Main2Activity::class.java
                     ).putExtra("position", position)
                 )
             }

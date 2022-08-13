@@ -21,7 +21,7 @@ import com.yellowtwigs.knockin.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
@@ -110,7 +110,7 @@ class SettingsActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@SettingsActivity, MainActivity::class.java))
+                    startActivity(Intent(this@SettingsActivity, Main2Activity::class.java))
                 }
                 R.id.navigation_teleworking -> startActivity(
                     Intent(

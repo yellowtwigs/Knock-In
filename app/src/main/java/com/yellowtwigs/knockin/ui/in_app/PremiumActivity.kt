@@ -13,7 +13,7 @@ import com.android.billingclient.api.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
@@ -107,7 +107,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                 when (menuItem.itemId) {
                     R.id.nav_home -> {
-                        startActivity(Intent(this@PremiumActivity, MainActivity::class.java))
+                        startActivity(Intent(this@PremiumActivity, Main2Activity::class.java))
                     }
                     R.id.nav_notif_config -> startActivity(
                         Intent(

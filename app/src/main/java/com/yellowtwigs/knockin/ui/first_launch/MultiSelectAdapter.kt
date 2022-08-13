@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.databinding.MultiSelectItemBinding
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
@@ -69,7 +69,7 @@ class MultiSelectAdapter(
                 root.setOnClickListener {
                     onClicked(position)
 
-                    if (cxt is MainActivity || cxt is GroupManagerActivity) {
+                    if (cxt is Main2Activity || cxt is GroupManagerActivity) {
                         if (listContactSelect.contains(contactWithAllInformation)) {
                             contactImage.setImageResource(R.drawable.ic_item_selected)
                         } else {

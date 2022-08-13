@@ -17,7 +17,7 @@ import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.dao.NotificationsDao
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
@@ -123,7 +123,7 @@ class TeleworkingActivity : AppCompatActivity() {
             navView.setNavigationItemSelectedListener { menuItem ->
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
-                    R.id.nav_home -> startActivity(Intent(this@TeleworkingActivity, MainActivity::class.java))
+                    R.id.nav_home -> startActivity(Intent(this@TeleworkingActivity, Main2Activity::class.java))
                     R.id.nav_notif_config -> startActivity(
                         Intent(
                             this@TeleworkingActivity,

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.contacts.list.Main2Activity">
 
-    <include layout="@layout/content_main_smaller_screen" />
+    <include layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_group_button"

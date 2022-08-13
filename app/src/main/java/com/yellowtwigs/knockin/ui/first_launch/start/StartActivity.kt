@@ -33,7 +33,7 @@ import com.android.billingclient.api.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.yellowtwigs.knockin.model.data.ContactDB
@@ -313,7 +313,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             if (!checkIfGoEdition()) {
                 buildMultiSelectAlertDialog()
             } else {
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, Main2Activity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -328,7 +328,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     buildLeaveAlertDialog()
                 }
             } else {
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, Main2Activity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -672,7 +672,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .setNegativeButton(R.string.alert_dialog_later)
             { _, _ ->
                 closeContextMenu()
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, Main2Activity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -695,7 +695,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
             .setMessage(message)
             .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                val intent = Intent(this@StartActivity, MainActivity::class.java)
+                val intent = Intent(this@StartActivity, Main2Activity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 val sharedPreferences: SharedPreferences =

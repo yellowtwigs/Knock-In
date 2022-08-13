@@ -840,7 +840,7 @@
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_color"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_navigation_view" />
+            app:menu="@menu/tab_layout_menu" />
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView

@@ -23,7 +23,7 @@ import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
@@ -192,7 +192,7 @@ class ContactGridViewAdapter(
                 modeMultiSelect = true
                 listOfItemSelected.add(contactManager.contactList[position])
                 firstPosVis = 0
-                if (context is MainActivity) {
+                if (context is Main2Activity) {
                     context.gridMultiSelectItemClick(position)
                 } else {
                     (context as GroupManagerActivity).gridMultiSelectItemClick(
@@ -228,9 +228,9 @@ class ContactGridViewAdapter(
                     listOfItemSelected.add(contactManager.contactList[position])
                     holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected)
                 }
-                (context as MainActivity).gridMultiSelectItemClick(position)
+                (context as Main2Activity).gridMultiSelectItemClick(position)
             } else {
-                (context as MainActivity).startActivity(
+                (context as Main2Activity).startActivity(
                     Intent(
                         context,
                         ContactSelectedWithAppsActivity::class.java

@@ -38,7 +38,7 @@ import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
@@ -78,7 +78,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     startActivity(
                         Intent(
                             this@NotificationHistoryActivity,
-                            MainActivity::class.java
+                            Main2Activity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -328,7 +328,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                     R.id.nav_home -> startActivity(
                         Intent(
                             this@NotificationHistoryActivity,
-                            MainActivity::class.java
+                            Main2Activity::class.java
                         )
                     )
                     R.id.nav_notif_config -> startActivity(

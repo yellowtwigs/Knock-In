@@ -15,7 +15,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
 import kotlinx.coroutines.*
@@ -187,7 +187,7 @@ class MultiSelectActivity : AppCompatActivity() {
                 setPriorityList()
                 startActivity(
                     Intent(
-                        this@MultiSelectActivity, MainActivity::class.java
+                        this@MultiSelectActivity, Main2Activity::class.java
                     ).putExtra("fromStartActivity", true)
                 )
                 finish()
@@ -238,7 +238,7 @@ class MultiSelectActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                val intent = Intent(this@MultiSelectActivity, MainActivity::class.java)
+                val intent = Intent(this@MultiSelectActivity, Main2Activity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()

@@ -154,7 +154,7 @@
                 app:itemTextColor="@color/bottom_navigation_color"
                 app:labelVisibilityMode="labeled"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:menu="@menu/bottom_navigation_view" />
+                app:menu="@menu/tab_layout_menu" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

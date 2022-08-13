@@ -28,7 +28,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.list.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
@@ -150,7 +150,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                     if (settings_NotificationMessagesAlarmSound != null) {
                         settings_NotificationMessagesAlarmSound!!.stop()
                     }
-                    startActivity(Intent(this@ManageNotificationActivity, MainActivity::class.java))
+                    startActivity(Intent(this@ManageNotificationActivity, Main2Activity::class.java))
                 }
                 R.id.nav_manage_screen -> {
 
