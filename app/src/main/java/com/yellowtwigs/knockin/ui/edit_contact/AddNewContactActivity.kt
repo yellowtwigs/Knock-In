@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
-import android.util.Base64
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -33,9 +32,8 @@ import com.yellowtwigs.knockin.model.data.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
+import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import java.io.ByteArrayOutputStream
 
 /**
  * La Classe qui permet la création d'un nouveau contact
@@ -70,7 +68,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private val IMAGE_CAPTURE_CODE = 1001
 
     // Database && Thread
-    private var add_new_contact_ContactsDatabase: ContactsRoomDatabase? = null
+    private var add_new_contact_ContactsDatabase: ContactsDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
     //private var REQUEST_CAMERA: Int? = 1
@@ -119,7 +117,7 @@ class AddNewContactActivity : AppCompatActivity() {
             sharedAlarmNotifInAppPreferences.getBoolean("Contacts_Unlimited_Bought", false)
 
         //on get la base de données
-        add_new_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        add_new_contact_ContactsDatabase = ContactsDatabase.getDatabase(this)
         gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ========================================== Toolbar =========================================
@@ -909,19 +907,6 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     /**
-     * convertie l'image passé en parametre en base64
-     * @param bitmap [Bitmap]
-     * @return [String]
-     */
-    private fun bitmapToBase64(bitmap: Bitmap): String {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val imageBytes = baos.toByteArray()
-
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
-    }
-
-    /**
      * Méthode appelée par le système lorsque l'utilisateur accepte ou refuse une permission
      * Lorsque l'utilisateur autorise l'accès a ces fichiers nous ouvrons le dossier "Galerie"
      * Lorsque l'utilisateur autorise à l'appareil photo nous l'ouvrons
@@ -934,7 +919,7 @@ class AddNewContactActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE

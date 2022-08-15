@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.dao.NotificationsDao
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
+import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
@@ -29,7 +28,7 @@ import java.util.*
 
 class TeleworkingActivity : AppCompatActivity() {
 
-    private lateinit var database: ContactsRoomDatabase
+    private lateinit var database: ContactsDatabase
     private lateinit var dao: NotificationsDao
     private lateinit var binding: ActivityTeleworkingBinding
 
@@ -64,7 +63,7 @@ class TeleworkingActivity : AppCompatActivity() {
                 val contactManager = ContactManager(this.applicationContext)
                 for (contact in contactManager.contactList) {
                     if (contact.contactDB?.contactPriority == 1) {
-                        contact.setPriority(ContactsRoomDatabase.getDatabase(this), 0)
+                        contact.setPriority(ContactsDatabase.getDatabase(this), 0)
                     }
                 }
                 val edit = vipScheduleValueSharedPreferences.edit()
@@ -74,7 +73,7 @@ class TeleworkingActivity : AppCompatActivity() {
                 val contactManager = ContactManager(this.applicationContext)
                 for (contact in contactManager.contactList) {
                     if (contact.contactDB?.contactPriority == 0) {
-                        contact.setPriority(ContactsRoomDatabase.getDatabase(this), 1)
+                        contact.setPriority(ContactsDatabase.getDatabase(this), 1)
                     }
                 }
                 val edit = vipScheduleValueSharedPreferences.edit()
@@ -158,7 +157,7 @@ class TeleworkingActivity : AppCompatActivity() {
 
     private fun setupDatabase() {
         DbWorkerThread("dbWorkerThread").start()
-        ContactsRoomDatabase.getDatabase(this)?.let {
+        ContactsDatabase.getDatabase(this)?.let {
             database = it
             dao = it.notificationsDao()
         }

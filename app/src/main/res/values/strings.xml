@@ -55,13 +55,13 @@
     <string name="main_filter_mail">Email</string>
     <string name="main_search_hint">Search your contacts</string>
     <string name="main_change_format_phone_book">Help</string>
-    <string name="main_tri_title">Filter by:</string>
-    <string name="main_tri_par_nom">Firstname</string>
-    <string name="main_tri_par_lastname">Lastname</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="sort_by_first_name">Firstname</string>
+    <string name="sort_by_last_name">Lastname</string>
     <string name="sort_by_priority">Priority</string>
-    <string name="main_tri_par_favoris">Favorite</string>
+    <string name="sort_by_favorite">Favorite</string>
     <string name="main_tri_par_groupe">Group</string>
-    <string name="main_filtre_title">Notification filter:</string>
+    <string name="filter_by">Notification filter:</string>
     <string name="notif_filtre_app">Application</string>
     <string name="notif_filter_by_msg_apps">Message</string>
     <string name="notif_filtre_systeme">System</string>
@@ -498,6 +498,4 @@
     <string name="modify">Modify</string>
     <string name="work_schedule_title">Work schedule (Monday - Friday)</string>
     <string name="edit_reminder_hour_title">Daily reminder time for non-VIP notifications :</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

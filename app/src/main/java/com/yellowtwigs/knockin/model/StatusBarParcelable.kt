@@ -5,7 +5,7 @@ import android.os.Parcelable
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import android.util.Log
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactDB
 
 import java.util.ArrayList
 import java.util.HashMap
@@ -113,8 +113,8 @@ class StatusBarParcelable : Parcelable {
     /**
      * Change le numéro de téléphone par le nom et pr"énom du contact
      */
-    fun changeToContactName(contact: ContactWithAllInformation) {
-        statusBarNotificationInfo.put("android.title", contact.contactDB!!.firstName + " " + contact.contactDB!!.lastName)
+    fun changeToContactName(contact: ContactDB) {
+        statusBarNotificationInfo["android.title"] = contact.firstName + " " + contact.lastName
     }
 
     /**

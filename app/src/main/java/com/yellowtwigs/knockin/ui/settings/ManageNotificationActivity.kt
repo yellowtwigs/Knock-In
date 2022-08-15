@@ -26,9 +26,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
+import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
@@ -353,7 +353,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 val contactManager = ContactManager(this.applicationContext)
                 for (contact in contactManager.contactList) {
                     if (contact.contactDB?.contactPriority == 1) {
-                        contact.setPriority(ContactsRoomDatabase.getDatabase(this), 0)
+                        contact.setPriority(ContactsDatabase.getDatabase(this), 0)
                     }
                 }
                 val edit = switch1To0Checked.edit()
@@ -363,7 +363,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                 val contactManager = ContactManager(this.applicationContext)
                 for (contact in contactManager.contactList) {
                     if (contact.contactDB?.contactPriority == 0) {
-                        contact.setPriority(ContactsRoomDatabase.getDatabase(this), 1)
+                        contact.setPriority(ContactsDatabase.getDatabase(this), 1)
                     }
                 }
                 val edit = switch1To0Checked.edit()

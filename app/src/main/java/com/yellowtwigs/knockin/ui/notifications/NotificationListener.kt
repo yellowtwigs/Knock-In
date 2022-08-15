@@ -3,18 +3,13 @@ package com.yellowtwigs.knockin.ui.notifications
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
-import android.database.Cursor
 import android.graphics.PixelFormat
-import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.provider.MediaStore
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
@@ -24,13 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.utils.Converter.convertPackageToString
-import java.io.File
-import java.io.FileInputStream
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,7 +33,7 @@ import kotlin.collections.ArrayList
  */
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
-    private var database: ContactsRoomDatabase? = null
+    private var database: ContactsDatabase? = null
     private lateinit var mDbWorkerThread: DbWorkerThread
     private var oldPosX: Float = 0.0f
     private var oldPosY: Float = 0.0f
@@ -60,7 +52,7 @@ class NotificationListener : NotificationListenerService() {
         super.onCreate()
         mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
-        database = ContactsRoomDatabase.getDatabase(this)
+        database = ContactsDatabase.getDatabase(this)
     }
 
     /**

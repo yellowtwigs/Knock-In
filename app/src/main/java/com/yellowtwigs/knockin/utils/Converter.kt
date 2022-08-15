@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.provider.Telephony
 import android.util.Base64
 import android.util.Log
+import java.io.ByteArrayOutputStream
 
 object Converter {
     fun convertPackageToString(packageName: String, context: Context): String {
@@ -15,7 +16,7 @@ object Converter {
             return "Messenger"
         } else if (packageName == "com.whatsapp") {
             return "WhatsApp"
-        }else if (packageName == "org.telegram.messenger") {
+        } else if (packageName == "org.telegram.messenger") {
             return "Telegram"
         } else if (packageName == "com.google.android.gm") {
             return "Gmail"
@@ -35,6 +36,14 @@ object Converter {
         val decodedString = Base64.decode(base64, Base64.DEFAULT)
         val options = BitmapFactory.Options()
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size, options)
+    }
+
+    fun bitmapToBase64(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val imageBytes = byteArrayOutputStream.toByteArray()
+
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
     fun converter06To33(phoneNumber: String): String {

@@ -24,8 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,7 +35,7 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
+import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.group.GroupAdapter
 import com.yellowtwigs.knockin.ui.group.create.AddNewGroupActivity
@@ -55,7 +54,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     //region ========================================= Val or Var ===========================================
 
     private var group_manager_DrawerLayout: DrawerLayout? = null
-    private var group_manager_ContactsDatabase: ContactsRoomDatabase? = null
+    private var group_manager_ContactsDatabase: ContactsDatabase? = null
     private lateinit var group_mDbWorkerThread: DbWorkerThread
 
     private var group_manager_MainLayout: ConstraintLayout? = null
@@ -272,7 +271,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ===================================== WorkerThread =========================================
 
-        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        group_manager_ContactsDatabase = ContactsDatabase.getDatabase(this)
 
         group_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
         group_mDbWorkerThread.start()
@@ -617,7 +616,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     fun refreshList() {
-        group_manager_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        group_manager_ContactsDatabase = ContactsDatabase.getDatabase(this)
         val group: ArrayList<GroupWithContact> = ArrayList()
         group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
         val sharedPreferences = getSharedPreferences("group", MODE_PRIVATE)

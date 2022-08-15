@@ -30,8 +30,7 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuSta
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase.Companion.getDatabase
-import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.model.ContactsDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity

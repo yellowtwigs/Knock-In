@@ -9,6 +9,61 @@
             android:icon="@drawable/ic_search"
             android:title="@string/main_search_hint"
             app:actionViewClass="androidx.appcompat.widget.SearchView"
-            app:showAsAction="always|collapseActionView" />
+            app:showAsAction="ifRoom|collapseActionView" />
+    </group>
+
+    <item
+        android:enabled="false"
+        android:title="@string/sort_by" />
+    <group
+        android:checkableBehavior="single"
+        app:srcCompat="@drawable/ic_toolbar_menu">
+        <item
+            android:id="@+id/sort_by_first_name"
+            android:title="@string/sort_by_first_name"
+            app:showAsAction="collapseActionView" />
+        <item
+            android:id="@+id/sort_by_last_name"
+            android:title="@string/sort_by_last_name"
+            app:showAsAction="collapseActionView" />
+        <item
+            android:id="@+id/sort_by_priority"
+            android:checked="true"
+            android:title="@string/sort_by_priority"
+            app:showAsAction="collapseActionView" />
+        <item
+            android:id="@+id/sort_by_favorite"
+            android:title="@string/sort_by_favorite"
+            app:showAsAction="collapseActionView" />
+    </group>
+    <item
+        android:enabled="false"
+        android:title="@string/filter_by" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/sms_filter"
+            android:checkable="true"
+            android:title="@string/main_filter_sms"
+            app:showAsAction="collapseActionView" />
+        <item
+            android:id="@+id/mail_filter"
+            android:checkable="true"
+            android:title="@string/main_filter_mail" />
+        <item
+            android:id="@+id/whatsapp_filter"
+            android:checkable="true"
+            android:title="@string/main_filter_mail" />
+        <item
+            android:id="@+id/messenger_filter"
+            android:checkable="true"
+            android:title="@string/main_filter_mail" />
+        <item
+            android:id="@+id/signal_filter"
+            android:checkable="true"
+            android:title="@string/main_filter_mail" />
+        <item
+            android:id="@+id/telegram_filter"
+            android:checkable="true"
+            android:title="@string/main_filter_mail" />
     </group>
 </menu>

@@ -72,288 +72,169 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/start_activity_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/start_activity_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:visibility="visible">-->
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="@string/start_activity_title"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/title"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:text="@string/start_activity_title"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/colorPrimary"-->
+<!--            android:textSize="30sp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TextView
-            android:id="@+id/import_contacts_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="50dp"
-            android:text="@string/start_activity_import_title"
-            android:textColor="@color/lightColor"
-            android:textSize="21sp"
-            app:layout_constraintEnd_toStartOf="@+id/import_contacts_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+<!--        <TextView-->
+<!--            android:id="@+id/activate_notifications_title"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:text="@string/start_activity_notification_title"-->
+<!--            android:textColor="@color/lightColor"-->
+<!--            android:textSize="21sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/import_contacts_subtitle"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/import_contacts_subtitle" />-->
 
-        <TextView
-            android:id="@+id/import_contacts_subtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/start_activity_import_subtitle"
-            android:textColor="@color/darkGreyColorDark"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@+id/import_contacts_button"
-            app:layout_constraintStart_toStartOf="@+id/import_contacts_title"
-            app:layout_constraintTop_toBottomOf="@+id/import_contacts_title" />
+<!--        <TextView-->
+<!--            android:id="@+id/activate_notifications_subtitle"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="@string/start_activity_notification_subtitle"-->
+<!--            android:textColor="@color/darkGreyColorDark"-->
+<!--            android:textSize="13sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/activate_notifications_title"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_title" />-->
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/import_contacts_check"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/import_contacts_button"
-            app:layout_constraintEnd_toEndOf="@+id/import_contacts_button"
-            app:layout_constraintStart_toStartOf="@+id/import_contacts_button"
-            app:layout_constraintTop_toTopOf="@+id/import_contacts_button"
-            app:srcCompat="@drawable/ic_check" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/activate_notifications_button"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:text="@string/start_activity_button_notification"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/activate_notifications_subtitle"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_title" />-->
 
-        <ProgressBar
-            android:id="@+id/import_contacts_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/import_contacts_button"
-            app:layout_constraintEnd_toEndOf="@+id/import_contacts_button"
-            app:layout_constraintStart_toStartOf="@+id/import_contacts_button"
-            app:layout_constraintTop_toTopOf="@+id/import_contacts_button" />
+<!--        <ProgressBar-->
+<!--            android:id="@+id/start_activity_activate_notifications_loading"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:indeterminate="true"-->
+<!--            android:visibility="invisible"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/activate_notifications_button" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/import_contacts_button"
-            android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/import_contacts_button_yes"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/import_contacts_subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/import_contacts_subtitle"
-            app:layout_constraintTop_toBottomOf="@+id/import_contacts_title" />
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/activate_notifications_check"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:visibility="invisible"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/activate_notifications_button"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/activate_notifications_button"-->
+<!--            app:srcCompat="@drawable/ic_check" />-->
 
-        <TextView
-            android:id="@+id/activate_notifications_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/start_activity_notification_title"
-            android:textColor="@color/lightColor"
-            android:textSize="21sp"
-            app:layout_constraintEnd_toStartOf="@+id/activate_notifications_button"
-            app:layout_constraintStart_toStartOf="@+id/import_contacts_subtitle"
-            app:layout_constraintTop_toBottomOf="@+id/import_contacts_subtitle" />
+<!--        <TextView-->
+<!--            android:id="@+id/superposition_title"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="32dp"-->
+<!--            android:text="@string/superposition_title"-->
+<!--            android:textColor="@color/lightColor"-->
+<!--            android:textSize="21sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/superposition_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/activate_notifications_subtitle"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_subtitle" />-->
 
-        <TextView
-            android:id="@+id/activate_notifications_subtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/start_activity_notification_subtitle"
-            android:textColor="@color/darkGreyColorDark"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@+id/activate_notifications_button"
-            app:layout_constraintStart_toStartOf="@+id/activate_notifications_title"
-            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_title" />
+<!--        <TextView-->
+<!--            android:id="@+id/superposition_subtitle"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="@string/superposition_subtitle"-->
+<!--            android:textColor="@color/darkGreyColorDark"-->
+<!--            android:textSize="13sp"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/superposition_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/superposition_title"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/superposition_title" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/activate_notifications_button"
-            android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/start_activity_button_notification"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/activate_notifications_subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_title" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/superposition_button"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:text="@string/button_superposition"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/superposition_subtitle"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/superposition_title" />-->
 
-        <ProgressBar
-            android:id="@+id/start_activity_activate_notifications_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/activate_notifications_button"
-            app:layout_constraintEnd_toEndOf="@+id/activate_notifications_button"
-            app:layout_constraintStart_toStartOf="@+id/activate_notifications_button"
-            app:layout_constraintTop_toTopOf="@+id/activate_notifications_button" />
+<!--        <ProgressBar-->
+<!--            android:id="@+id/superposition_loading"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:indeterminate="true"-->
+<!--            android:visibility="invisible"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/superposition_button"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/superposition_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/superposition_button"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/superposition_button" />-->
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/activate_notifications_check"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/activate_notifications_button"
-            app:layout_constraintEnd_toEndOf="@+id/activate_notifications_button"
-            app:layout_constraintStart_toStartOf="@+id/activate_notifications_button"
-            app:layout_constraintTop_toTopOf="@+id/activate_notifications_button"
-            app:srcCompat="@drawable/ic_check" />
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/superposition_check"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:visibility="invisible"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/superposition_button"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/superposition_button"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/superposition_button"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/superposition_button"-->
+<!--            app:srcCompat="@drawable/ic_check" />-->
 
-        <TextView
-            android:id="@+id/superposition_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/superposition_title"
-            android:textColor="@color/lightColor"
-            android:textSize="21sp"
-            app:layout_constraintEnd_toStartOf="@+id/superposition_button"
-            app:layout_constraintStart_toStartOf="@+id/activate_notifications_subtitle"
-            app:layout_constraintTop_toBottomOf="@+id/activate_notifications_subtitle" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/start_activity_skip"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginStart="100dp"-->
+<!--            android:layout_marginEnd="100dp"-->
+<!--            android:text="@string/start_activity_skip"-->
+<!--            android:textColor="#000000"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/permissions_subtitle" />-->
 
-        <TextView
-            android:id="@+id/superposition_subtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/superposition_subtitle"
-            android:textColor="@color/darkGreyColorDark"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@+id/superposition_button"
-            app:layout_constraintStart_toStartOf="@+id/superposition_title"
-            app:layout_constraintTop_toBottomOf="@+id/superposition_title" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/start_activity_next"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginStart="100dp"-->
+<!--            android:layout_marginEnd="100dp"-->
+<!--            android:text="@string/start_activity_next"-->
+<!--            android:textColor="#000000"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/permissions_subtitle" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/superposition_button"
-            android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/button_superposition"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/superposition_subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/superposition_title" />
-
-        <ProgressBar
-            android:id="@+id/superposition_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/superposition_button"
-            app:layout_constraintEnd_toEndOf="@+id/superposition_button"
-            app:layout_constraintStart_toStartOf="@+id/superposition_button"
-            app:layout_constraintTop_toTopOf="@+id/superposition_button" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/superposition_check"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/superposition_button"
-            app:layout_constraintEnd_toEndOf="@+id/superposition_button"
-            app:layout_constraintStart_toStartOf="@+id/superposition_button"
-            app:layout_constraintTop_toTopOf="@+id/superposition_button"
-            app:srcCompat="@drawable/ic_check" />
-
-        <TextView
-            android:id="@+id/permissions_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/permissions_title"
-            android:textColor="@color/lightColor"
-            android:textSize="21sp"
-            app:layout_constraintStart_toStartOf="@+id/superposition_subtitle"
-            app:layout_constraintTop_toBottomOf="@+id/superposition_subtitle" />
-
-        <TextView
-            android:id="@+id/permissions_subtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/permissions_subtitle"
-            android:textColor="@color/darkGreyColorDark"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@+id/permissions_button"
-            app:layout_constraintStart_toStartOf="@+id/permissions_title"
-            app:layout_constraintTop_toBottomOf="@+id/permissions_title" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/permissions_button"
-            android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/button_permission"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/permissions_subtitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/permissions_title" />
-
-        <ProgressBar
-            android:id="@+id/permissions_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/permissions_button"
-            app:layout_constraintEnd_toEndOf="@+id/permissions_button"
-            app:layout_constraintStart_toStartOf="@+id/permissions_button"
-            app:layout_constraintTop_toTopOf="@+id/permissions_button" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/permissions_check"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/permissions_button"
-            app:layout_constraintEnd_toEndOf="@+id/permissions_button"
-            app:layout_constraintStart_toStartOf="@+id/permissions_button"
-            app:layout_constraintTop_toTopOf="@+id/permissions_button"
-            app:srcCompat="@drawable/ic_check" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/start_activity_skip"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
-            android:text="@string/start_activity_skip"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/permissions_subtitle" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/start_activity_next"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
-            android:text="@string/start_activity_next"
-            android:textColor="#000000"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/permissions_subtitle" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

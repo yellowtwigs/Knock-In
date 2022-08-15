@@ -42,7 +42,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.group.GroupEditAdapter
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
+import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
@@ -51,7 +51,6 @@ import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -123,7 +122,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
     private var edit_contact_GroupConstraintLayout: ConstraintLayout? = null
 
     // Database && Thread
-    private var edit_contact_ContactsDatabase: ContactsRoomDatabase? = null
+    private var edit_contact_ContactsDatabase: ContactsDatabase? = null
     private lateinit var edit_contact_mDbWorkerThread: DbWorkerThread
 
     private var imageUri: Uri? = null
@@ -184,7 +183,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
         edit_contact_mDbWorkerThread.start()
 
         //on get la base de données
-        edit_contact_ContactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        edit_contact_ContactsDatabase = ContactsDatabase.getDatabase(this)
 
         val sharedNumberOfContactsVIPPreferences: SharedPreferences =
             getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
@@ -1554,14 +1553,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
             ExifInterface.ORIENTATION_ROTATE_270 -> 270
             else -> 0
         }
-    }
-
-    private fun Bitmap.bitmapToBase64(): String {
-        val baos = ByteArrayOutputStream()
-        compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val imageBytes = baos.toByteArray()
-
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
     }
 
     private fun base64ToBitmap(base64: String): Bitmap {

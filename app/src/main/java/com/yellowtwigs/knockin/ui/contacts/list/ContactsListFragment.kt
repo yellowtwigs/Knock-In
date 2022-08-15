@@ -10,11 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.FragmentContactsListBinding
+import com.yellowtwigs.knockin.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ContactsListFragment : Fragment() {
-
+class ContactsListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,15 +39,15 @@ class ContactsListFragment : Fragment() {
     ) {
         val contactsListAdapter = context?.let { context ->
             ContactsListAdapter(context) { id ->
-
+//                navController.navigate()
             }
         }
 
         binding.recyclerView.apply {
             contactsListViewModel.getAllContacts()
-                .observe(viewLifecycleOwner, Observer { contacts ->
+                .observe(viewLifecycleOwner) { contacts ->
                     contactsListAdapter?.submitList(contacts)
-                })
+                }
             adapter = contactsListAdapter
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)

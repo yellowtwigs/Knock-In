@@ -1,0 +1,599 @@
+package com.yellowtwigs.knockin.ui.first_launch.start
+
+import android.content.ContentResolver
+import android.content.ContentUris
+import android.content.Context
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.ContactsContract
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.data.GroupDB
+import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import com.yellowtwigs.knockin.repositories.contacts.insert.InsertContactRepository
+import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
+import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import javax.inject.Inject
+
+@HiltViewModel
+class ImportContactsViewModel @Inject constructor(
+    private val repositoryImpl: InsertContactRepository,
+    @ApplicationContext private val context: ApplicationContext
+) :
+    ViewModel() {
+
+    private val listOfTriple = arrayListOf<Triple<String, String, String>>()
+    private val ids = arrayListOf<Int>()
+
+    suspend fun addUser(contact: ContactDB) = repositoryImpl.insertContact(contact)
+
+    suspend fun syncAllContactsInDatabase(contentResolver: ContentResolver) {
+        val structuredNameSync = getStructuredNameSync(contentResolver)
+        val contactNumberAndPic = getPhoneNumberSync(contentResolver)
+        val contactMail = getContactMailSync(contentResolver)
+
+        val contactDetails = contactNumberAndPic.union(contactMail)
+
+        val contactGroup = getContactGroupSync(contentResolver)
+//        contactList.clear()
+        createListContactsSync(structuredNameSync, contactDetails.toList(), contactGroup)
+    }
+
+    private fun getStructuredNameSync(resolver: ContentResolver): List<Pair<Int, Triple<String, String, String>>> {
+        val phoneContactsList = arrayListOf<Pair<Int, Triple<String, String, String>>>()
+        var idAndName: Pair<Int, Triple<String, String, String>>
+        var structName: Triple<String, String, String>
+        val phoneContact = resolver.query(
+            ContactsContract.Data.CONTENT_URI,
+            null,
+            null,
+            null,
+            ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME
+        )
+        phoneContact?.apply {
+            while (moveToNext()) {
+                try {
+                    val phoneId =
+                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID)).toInt()
+                    var firstName =
+                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME))
+                    var middleName =
+                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME))
+                    var lastName =
+                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME))
+                    val mimeType =
+                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.MIMETYPE))
+
+                    if (phoneContactsList.isEmpty() && mimeType == "vnd.android.cursor.item/name") {
+                        if (firstName == null)
+                            firstName = ""
+                        if (middleName == null)
+                            middleName = ""
+                        if (lastName == null)
+                            lastName = ""
+                        structName = Triple(firstName, middleName, lastName)
+                        idAndName = Pair(phoneId, structName)
+                        phoneContactsList.add(idAndName)
+                    } else if (!isDuplicate(
+                            phoneId,
+                            phoneContactsList
+                        ) && mimeType == "vnd.android.cursor.item/name"
+                    ) {
+                        if (firstName == null)
+                            firstName = ""
+                        if (middleName == null)
+                            middleName = ""
+                        if (lastName == null)
+                            lastName = ""
+                        structName = Triple(firstName, middleName, lastName)
+                        idAndName = Pair(phoneId, structName)
+                        phoneContactsList.add(idAndName)
+                    }
+                } catch (e: IndexOutOfBoundsException) {
+                    Log.i("IndexOutOfBoundsException", "$e")
+                }
+            }
+            close()
+        }
+        return phoneContactsList
+    }
+
+    private fun getPhoneNumberSync(resolver: ContentResolver): List<Map<Int, Any>> {
+        val contactPhoneNumber = arrayListOf<Map<Int, Any>>()
+        var idAndPhoneNumber: Map<Int, Any>
+        val phoneContact = resolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
+        )
+        phoneContact?.apply {
+            while (moveToNext()) {
+                val phoneId =
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
+                var phoneNumber =
+                    phoneContact.getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                var phonePic =
+                    phoneContact.getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+                if (phoneNumber == null)
+                    phoneNumber = ""
+                phonePic = if (phonePic == null || phonePic.contains(
+                        "content://com.android.contactList/contactList/",
+                        ignoreCase = true
+                    )
+                ) {
+                    ""
+                } else {
+                    val photo = phoneId?.toLong()?.let { openPhoto(it, resolver) }
+                    if (photo != null) {
+                        bitmapToBase64(BitmapFactory.decodeStream(photo))
+                    } else {
+                        ""
+                    }
+                }
+
+                idAndPhoneNumber = mapOf(
+                    1 to phoneId!!.toInt(),
+                    2 to phoneNumber,
+                    3 to phonePic,
+                    4 to "phone"
+                )
+                if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(
+                        idAndPhoneNumber,
+                        contactPhoneNumber
+                    )
+                ) {
+                    contactPhoneNumber.add(idAndPhoneNumber)
+                }
+            }
+            close()
+        }
+        return contactPhoneNumber
+    }
+
+    private fun getContactMailSync(resolver: ContentResolver): List<Map<Int, Any>> {
+        val contactDetails = arrayListOf<Map<Int, Any>>()
+        var idAndMail: Map<Int, Any>
+        val phoneContact = resolver.query(
+            ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+            null,
+            null,
+            null,
+            ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC"
+        )
+        phoneContact?.apply {
+            while (moveToNext()) {
+                val phoneId =
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+                var phoneEmail =
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.ADDRESS))
+                if (phoneEmail == null)
+                    phoneEmail = ""
+
+                idAndMail = mapOf(
+                    1 to phoneId!!.toInt(),
+                    2 to phoneEmail,
+                    3 to "",
+                    4 to "mail"
+                )
+                if (contactDetails.isEmpty() || !isDuplicateNumber(idAndMail, contactDetails)) {
+                    contactDetails.add(idAndMail)
+                }
+            }
+            close()
+        }
+        return contactDetails
+    }
+
+//    fun getContactWithAndroidId(androidId: Int, lastSync: String): ContactWithAllInformation? {
+//        var contact: ContactWithAllInformation? = null
+//        var id = -1
+//        val allId = sliceLastSync(lastSync)
+//        allId.forEach {
+//            if (androidId == it.first)
+//                id = it.second
+//        }
+//        if (id != -1) {
+//            contact = getContact(id).value
+//        }
+//        return contact
+//    }
+
+    private fun openPhoto(contactId: Long, resolver: ContentResolver): InputStream? {
+        val contactUri =
+            ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId)
+        val photoUri =
+            Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
+        val cursor = resolver.query(
+            photoUri, arrayOf(ContactsContract.Contacts.Photo.PHOTO), null, null, null
+        ) ?: return null
+        cursor.apply {
+            if (moveToFirst()) {
+                val data = getBlob(0)
+                if (data != null) {
+                    return ByteArrayInputStream(data)
+                }
+            }
+        }
+        return null
+    }
+
+    fun sliceLastSync(lastSync: String): List<Pair<Int, Int>> {
+        val lastSyncList = arrayListOf<Pair<Int, Int>>()
+        var allId: Pair<Int, Int>
+        val lastSyncSplit = lastSync.split("|")
+        lastSyncSplit.forEach {
+            if (it != "") {
+                val idSplit = it.split(":")
+                allId = Pair(idSplit[0].toInt(), idSplit[1].toInt())
+                lastSyncList.add(allId)
+            }
+        }
+        return lastSyncList
+    }
+
+    fun deleteContactFromLastSync(lastSync: String, id: Int): String {
+        val list = mutableListOf<Pair<Int, Int>>()
+        val allId = sliceLastSync(lastSync)
+        var newList = ""
+        allId.forEach {
+            if (id != it.first)
+                list.add(Pair(it.first, it.second))
+        }
+        list.forEach {
+            newList += it.first.toString() + ":" + it.second.toString() + "|"
+        }
+        return newList
+    }
+
+    private suspend fun createListContactsSync(
+        phoneStructName: List<Pair<Int, Triple<String, String, String>>>?,
+        contactDetails: List<Map<Int, Any>>,
+        contactGroup: List<Triple<Int, String?, String?>>
+    ) {
+        viewModelScope.launch {
+            var linksGroup: Pair<LinkContactGroup, GroupDB>
+            val listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
+            var lastSyncId = ""
+            var lastSync = ""
+
+//            val allContacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
+
+            var modifiedContact = 0
+            phoneStructName?.forEachIndexed { _, fullName ->
+                val set = mutableSetOf<String>()
+
+                contactDetails.forEach { details ->
+                    val id = details[1].toString().toInt()
+
+                    if (!ids.contains(id)) {
+                        val contactGroups = getGroupsAndLinks(id, contactGroup)
+                        if (fullName.first == details[1]) {
+                            ids.add(id)
+                            val listOfApps = arrayListOf<String>()
+
+                            for (triple in listOfTriple) {
+                                if (fullName.second.third != "") {
+                                    if (triple.first != "" && triple.second != "") {
+                                        if (fullName.second.third.contains(triple.first) &&
+                                            fullName.second.third.contains(triple.second)
+                                        ) {
+                                            listOfApps.add(triple.third)
+                                        }
+                                    }
+                                }
+                                if (fullName.second.first == triple.first && fullName.second.third == triple.second
+                                ) {
+                                    listOfApps.add(triple.third)
+                                } else if (fullName.second.third != "" && triple.first != "") {
+                                    if (fullName.second.third == triple.first) {
+                                        listOfApps.add(triple.third)
+                                    }
+                                } else if (fullName.second.first == "${triple.first} ${triple.second}" ||
+                                    fullName.second.third == "${triple.first} ${triple.second}"
+                                ) {
+                                    listOfApps.add(triple.third)
+                                } else if (fullName.second.third != "") {
+                                    if (triple.first != "" && triple.second != "") {
+                                        if (fullName.second.third.contains(triple.first) &&
+                                            fullName.second.third.contains(triple.second)
+                                        ) {
+                                            listOfApps.add(triple.third)
+                                        }
+                                    }
+                                } else if (fullName.second.third != "D Minvielle" && triple.second == "D Minvielle") {
+                                    listOfApps.add(triple.third)
+                                }
+                            }
+
+                            val hasTelegram = if (listOfApps.contains("org.telegram.messenger")) {
+                                1
+                            } else {
+                                0
+                            }
+                            val hasWhatsapp = if (listOfApps.contains("com.whatsapp")) {
+                                1
+                            } else {
+                                0
+                            }
+                            val hasSignal = if (listOfApps.contains("org.thoughtcrime.securesms")) {
+                                1
+                            } else {
+                                0
+                            }
+
+//                            if (fullName.second.second == "") {
+//                                val contacts = ContactDB(
+//                                    0,
+//                                    fullName.second.first,
+//                                    fullName.second.third,
+//                                    randomDefaultImage(0, context as Context, "Create"),
+//                                    details[4].toString(),
+//                                    details[0].,
+//                                    ,
+//                                    0,
+//                                    "",
+//                                    1,
+//                                    hasWhatsapp,
+//                                    "",
+//                                    defaultTone,
+//                                    0,
+//                                    1,
+//                                    "",
+//                                    "",
+//                                    hasTelegram,
+//                                    hasSignal
+//                                )
+//                                lastSync = sharedPreferences.getString("last_sync_2", "")!!
+//                                if (!isDuplicateContacts(fullName, lastSync)) {
+//                                    contacts.id =
+//                                        contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
+//                                    lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
+//                                    for (details in contactDetails) {
+//                                        details.idContact = contacts.id
+//                                    }
+//                                    for (groups in contactGroups) {
+//                                        val links = LinkContactGroup(0, contacts.id!!.toInt())
+//                                        ContactLinksGroup = Pair(links, groups)
+//                                        listLinkAndGroup.add(ContactLinksGroup)
+//                                    }
+//                                    saveGroupsAndLinks(listLinkAndGroup)
+//                                    listLinkAndGroup.clear()
+//                                    contactsDatabase!!.contactsDao().insertDetails(contactDetails)
+//                                } else {
+//                                    var positionInSet = 3
+//                                    val contact = getContactWithAndroidId(fullName.first, lastSync)
+//                                    if (contact != null) {
+//                                        set.add("0" + contact.contactDB!!.id)
+//                                        set.add("1" + fullName.second.first)
+//                                        if (fullName.second.second == "")
+//                                            set += "2" + fullName.second.third
+//                                        else
+//                                            set += "2" + fullName.second.second + " " + fullName.second.third
+//                                        for (details in contactDetails) {
+//                                            val alldetail =
+//                                                details.type + ":" + details.content + ":" + details.tag
+//                                            set += positionInSet.toString() + alldetail
+//                                            positionInSet++
+//                                        }
+//                                        if (!isSameContact(
+//                                                contact,
+//                                                fullName.second,
+//                                                contactDetails
+//                                            )
+//                                        ) {
+//                                            modifiedContact++
+//                                            edit.putStringSet(modifiedContact.toString(), set)
+//                                            edit.apply()
+//                                        }
+//                                    } else {
+//                                        lastSync =
+//                                            deleteContactFromLastSync(lastSync, fullName.first)
+//                                        edit.putString("last_sync_2", lastSync)
+//                                        edit.apply()
+//                                        contacts.id =
+//                                            contactsDatabase?.contactsDao()?.insert(contacts)!!
+//                                                .toInt()
+//                                        lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
+//                                        for (details in contactDetails) {
+//                                            details.idContact = contacts.id
+//                                        }
+//                                        for (groups in contactGroups) {
+//                                            val links = LinkContactGroup(0, contacts.id!!.toInt())
+//                                            ContactLinksGroup = Pair(links, groups)
+//                                            listLinkAndGroup.add(ContactLinksGroup)
+//                                        }
+//                                        saveGroupsAndLinks(listLinkAndGroup)
+//                                        listLinkAndGroup.clear()
+//                                        contactsDatabase?.contactsDao()
+//                                            ?.insertDetails(contactDetails)
+//                                    }
+//                                }
+//                                phoneContactsList.add(contacts)
+//                            } else if (fullName.second.second != "") {
+//                                val contacts = ContactDB(
+//                                    null,
+//                                    fullName.second.first,
+//                                    fullName.second.second + " " + fullName.second.third,
+//                                    "",
+//                                    randomDefaultImage(0, context),
+//                                    1,
+//                                    numberPic[4].toString(),
+//                                    0,
+//                                    "",
+//                                    hasWhatsapp,
+//                                    "",
+//                                    defaultTone,
+//                                    0,
+//                                    1,
+//                                    "",
+//                                    "",
+//                                    hasTelegram,
+//                                    hasSignal
+//                                )
+//                                phoneContactsList.add(contacts)
+//                                if (!isDuplicate(allContacts, contacts)) {
+//                                    contacts.id =
+//                                        contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
+//                                    for (details in contactDetails) {
+//                                        details.idContact = contacts.id
+//                                    }
+//                                    contactsDatabase!!.contactsDao().insertDetails(contactDetails)
+//                                }
+//                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //region ============================================ GROUP =============================================
+
+    private fun getContactGroupSync(resolver: ContentResolver): List<Triple<Int, String?, String?>> {
+        val phoneContact = resolver.query(
+            ContactsContract.Groups.CONTENT_URI,
+            null,
+            null,
+            null,
+            ContactsContract.Groups.TITLE + " ASC"
+        )
+        var allGroupMembers = listOf<Triple<Int, String?, String?>>()
+        while (phoneContact?.moveToNext() == true) {
+            val groupId =
+                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Groups._ID))
+            var groupName =
+                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Groups.TITLE))
+            if (groupName == "Starred in Android") {
+                groupName = "Favorites"
+            }
+
+            if (groupName != "My Contacts") {
+                val groupMembers = getMemberOfGroup(resolver, groupId.toString(), groupName)
+                if (groupMembers.isNotEmpty() && allGroupMembers.isNotEmpty() && !isDuplicateGroup(
+                        allGroupMembers,
+                        groupMembers
+                    )
+                ) {
+                    allGroupMembers = allGroupMembers.union(groupMembers).toList()
+                } else if (allGroupMembers.isEmpty())
+                    allGroupMembers = groupMembers
+            }
+        }
+        phoneContact?.close()
+        return allGroupMembers
+    }
+
+    private fun getMemberOfGroup(
+        resolver: ContentResolver,
+        groupId: String,
+        groupName: String?
+    ): List<Triple<Int, String?, String?>> {
+        val where = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupId
+        val phoneContact = resolver.query(
+            ContactsContract.Data.CONTENT_URI,
+            null,
+            where,
+            null,
+            ContactsContract.Data.DISPLAY_NAME + " ASC"
+        )
+        var member: Triple<Int, String?, String?>
+        val groupMembers = arrayListOf<Triple<Int, String?, String?>>()
+        while (phoneContact?.moveToNext() == true) {
+            val contactId =
+                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Data.CONTACT_ID))
+            val contactName =
+                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Data.DISPLAY_NAME))
+
+            member = Triple(contactId!!.toInt(), contactName, groupName)
+            if (!groupMembers.contains(member)) {
+                groupMembers.add(member)
+            }
+        }
+        phoneContact?.close()
+        return groupMembers
+    }
+
+    private fun getGroupsAndLinks(
+        id: Int,
+        contactGroup: List<Triple<Int, String?, String?>>
+    ): List<GroupDB> {
+        val contactGroups = arrayListOf<GroupDB>()
+        var linkAndGroup: GroupDB
+        contactGroup.forEach {
+            if (it.first == id) {
+                linkAndGroup = GroupDB(null, it.third!!, "", -500138)
+                contactGroups.add(linkAndGroup)
+            }
+        }
+        return contactGroups
+    }
+
+    //endregion
+
+    //region ========================================= IS DUPLICATE =========================================
+
+    private fun isDuplicate(
+        id: Int,
+        phoneNumber: List<Pair<Int, Triple<String, String, String?>>>
+    ): Boolean {
+        phoneNumber.forEach {
+            if (it.first == id)
+                return true
+        }
+        return false
+    }
+
+    private fun isDuplicateContacts(
+        allContacts: Pair<Int, Triple<String, String, String>>?,
+        lastSync: String?
+    ): Boolean {
+        if (lastSync != null) {
+            val allId = sliceLastSync(lastSync)
+            allId.forEach { Id ->
+                if (allContacts?.first == Id.first) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private fun isDuplicateNumber(
+        idAndPhoneNumber: Map<Int, Any>,
+        contactPhoneNumber: List<Map<Int, Any>>
+    ): Boolean {
+        contactPhoneNumber.forEach {
+            if (it[1] == idAndPhoneNumber[1] && it[2].toString()
+                    .replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString()
+                    .replace("\\s".toRegex(), "")
+            ) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun isDuplicateGroup(
+        member: List<Triple<Int, String?, String?>>,
+        groupMembers: List<Triple<Int, String?, String?>>
+    ): Boolean {
+        groupMembers.forEach { _ ->
+            groupMembers.forEachIndexed { index, it ->
+                if (it.third == member[0].third)
+                    return true
+            }
+        }
+        return false
+    }
+
+    //endregion
+}

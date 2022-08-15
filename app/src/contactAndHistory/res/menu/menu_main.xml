@@ -13,32 +13,32 @@
     <item
         android:id="@+id/tri"
         android:enabled="false"
-        android:title="@string/main_tri_title" />
+        android:title="@string/sort_by" />
 
     <group
         android:id="@+id/group_tri"
         android:checkableBehavior="single"
         app:srcCompat="@drawable/ic_more_vert_black_24dp">
         <item
-            android:id="@+id/tri_par_nom"
+            android:id="@+id/sort_by_first_name"
             android:checked="true"
-            android:title="@string/main_tri_par_nom"
+            android:title="@string/sort_by_first_name"
             app:showAsAction="collapseActionView" />
         <item
-            android:id="@+id/tri_par_priorite"
+            android:id="@+id/sort_by_priority"
             android:title="@string/sort_by_priority"
             app:showAsAction="collapseActionView"
             android:visible="false"
             />
         <item
-            android:id="@+id/tri_par_favoris"
-            android:title="@string/main_tri_par_favoris"
+            android:id="@+id/sort_by_favorite"
+            android:title="@string/sort_by_favorite"
             app:showAsAction="collapseActionView" />
     </group>
     <item
-        android:id="@+id/filtre"
+        android:id="@+id/filter"
         android:enabled="false"
-        android:title="@string/main_filtre_title"/>
+        android:title="@string/filter_by"/>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/sms_filter"

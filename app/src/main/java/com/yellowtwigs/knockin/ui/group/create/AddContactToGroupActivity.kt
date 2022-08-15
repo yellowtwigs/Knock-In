@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
@@ -28,7 +28,7 @@ import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
  */
 class AddContactToGroupActivity : AppCompatActivity() {
 
-    private var contactsDatabase: ContactsRoomDatabase? = null
+    private var contactsDatabase: ContactsDatabase? = null
     private var addContactToGroupListView: ListView? = null
     private var addContactToGroupAdapter: AddContactToGroupAdapter? = null
 
@@ -65,7 +65,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
         main_GridView = findViewById(R.id.add_contact_to_group_grid_view_id)
         main_RecyclerView = findViewById(R.id.add_contact_to_group_recycler_view_id)
 
-        contactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        contactsDatabase = ContactsDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 

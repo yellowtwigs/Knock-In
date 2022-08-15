@@ -15,7 +15,6 @@ import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import java.net.URLEncoder
 

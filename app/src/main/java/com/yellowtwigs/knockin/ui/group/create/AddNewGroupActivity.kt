@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.GroupDB
@@ -32,7 +32,7 @@ class AddNewGroupActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
-    private var contactsDatabase: ContactsRoomDatabase? = null
+    private var contactsDatabase: ContactsDatabase? = null
     private var addNewGroupListView: ListView? = null
     private var createGroupAdapter: AddContactToGroupAdapter? = null
     private var addNewGroupName: TextView? = null
@@ -68,7 +68,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_new_group)
         addNewGroupListView = findViewById(R.id.add_new_group_list_view)
         addNewGroupName = findViewById(R.id.add_new_group_name)
-        contactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        contactsDatabase = ContactsDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 

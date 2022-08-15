@@ -15,9 +15,8 @@ import androidx.core.app.ActivityCompat
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.DbWorkerThread
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
+import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.model.data.ContactDB
 
 /**
@@ -107,10 +106,7 @@ class ImportContactsActivity : AppCompatActivity() {
             finish()
         }
 
-        //lors du click affichage d'un message de prévention
         import_contacts_activity_Skip!!.setOnClickListener {
-            //            start_activity_ImportContacts!!.visibility = View.INVISIBLE
-//            buildMultiSelectAlertDialog()
             buildLeaveAlertDialog()
         }
 

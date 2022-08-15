@@ -6,38 +6,35 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
-import androidx.room.ColumnInfo
+import androidx.room.TypeConverters
 import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.model.dao.*
 
-/**
- * La Classe qui permet de créer la base de données et de la garder à jour
- * @author Ryan Granet
- */
+
 @Database(
-    entities = [ContactDB::class, NotificationDB::class, GroupDB::class, ContactDetailDB::class, LinkContactGroup::class, VipNotificationsDB::class, VipSbnDB::class],
+    entities = [ContactDB::class, NotificationDB::class, GroupDB::class, LinkContactGroup::class, VipNotificationsDB::class, VipSbnDB::class],
     version = 20
 )
-abstract class ContactsRoomDatabase : RoomDatabase() {
+@TypeConverters(Converters::class)
+abstract class ContactsDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
-    abstract fun contactDetailsDao(): ContactDetailsDao
     abstract fun GroupsDao(): GroupsDao
     abstract fun LinkContactGroupDao(): LinkContactGroupDao
     abstract fun VipNotificationsDao(): VipNotificationsDao
     abstract fun VipSbnDao(): VipSbnDao
 
     companion object {
-        private var INSTANCE: ContactsRoomDatabase? = null
+        private var INSTANCE: ContactsDatabase? = null
 
-        fun getDatabase(context: Context): ContactsRoomDatabase? {
+        fun getDatabase(context: Context): ContactsDatabase? {
             if (INSTANCE != null) {
                 return INSTANCE
             }
             synchronized(this) {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
-                    ContactsRoomDatabase::class.java,
+                    ContactsDatabase::class.java,
                     "Contact_database"
                 )
                     .addMigrations(MIGRATION_1_2)

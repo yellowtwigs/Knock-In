@@ -10,8 +10,7 @@ import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.list.Main2Activity
-import com.yellowtwigs.knockin.model.DbWorkerThread
+import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 
 class NotificationMessageSender : BroadcastReceiver() {
     @SuppressLint("ObsoleteSdkInt")

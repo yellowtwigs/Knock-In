@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsRoomDatabase
+import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -31,7 +31,7 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
 
     //region ========================================= Var or Val ===========================================
 
-    private var contactsDatabase: ContactsRoomDatabase? = null
+    private var contactsDatabase: ContactsDatabase? = null
     private var main_GridView: RecyclerView? = null
     private var gridViewAdapter: CreateGroupGridViewAdapter? = null
     private var main_RecyclerView: RecyclerView? = null
@@ -66,7 +66,7 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
         main_GridView = findViewById(R.id.delete_contact_to_group_grid_view_id)
         main_RecyclerView = findViewById(R.id.delete_contact_to_group_recycler_view_id)
         deleteContactFromGroupListView = findViewById(R.id.delete_contact_from_group_listview)
-        contactsDatabase = ContactsRoomDatabase.getDatabase(this)
+        contactsDatabase = ContactsDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 

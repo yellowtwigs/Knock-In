@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
 
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.yellowtwigs.knockin.ui.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_contactsListFragment"
+            app:destination="@id/contactsListFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_contactsListFragment2"
+            app:destination="@id/contactsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactsListFragment"
+        android:name="com.yellowtwigs.knockin.ui.contacts.list.ContactsListFragment"
+        android:label="fragment_contacts_list"
+        tools:layout="@layout/fragment_contacts_list" />
 </navigation>
