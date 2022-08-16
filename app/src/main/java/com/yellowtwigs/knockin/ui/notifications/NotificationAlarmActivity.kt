@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
@@ -88,23 +87,23 @@ class NotificationAlarmActivity : AppCompatActivity() {
                     notification_alarm_ReceiveMessageContent?.text?.substring(0, 19) + ".."
         }
 
-        val contactManager = ContactManager(this.applicationContext)
+//        val contactManager = ContactManager(this.applicationContext)
 
-        val contact = if (sbp?.appNotifier == "com.google.android.gm") {
-            contactManager.getContactFromMail(sbp?.statusBarNotificationInfo?.get("android.title") as String)
-        } else {
-            contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
-        }
+//        val contact = if (sbp?.appNotifier == "com.google.android.gm") {
+//            contactManager.getContactFromMail(sbp?.statusBarNotificationInfo?.get("android.title") as String)
+//        } else {
+//            contactManager.getContact(sbp?.statusBarNotificationInfo?.get("android.title") as String)
+//        }
 
-        if (contact != null) {
-            contact.contactDB?.apply {
-                currentNotificationSound = notificationSound
-                currentNotificationTone = notificationTone
-                currentIsCustomSound = isCustomSound == 1
-
-                soundRingtone()
-            }
-        }
+//        if (contact != null) {
+//            contact.contactDB?.apply {
+//                currentNotificationSound = notificationSound
+//                currentNotificationTone = notificationTone
+//                currentIsCustomSound = isCustomSound == 1
+//
+//                soundRingtone()
+//            }
+//        }
 
         Log.i("appNotifier", "${sbp?.appNotifier}")
 
@@ -168,86 +167,86 @@ class NotificationAlarmActivity : AppCompatActivity() {
         }
         //endregion
 
-        sbp?.apply {
-            notification_alarm_ReceiveMessageLayout?.setOnClickListener {
-                if (isSMS) {
-                    if (contact != null) {
-                        openSms(contact.getFirstPhoneNumber(), this@NotificationAlarmActivity)
-                    } else {
-                        openSms(
-                            statusBarNotificationInfo["android.title"] as String,
-                            this@NotificationAlarmActivity
-                        )
-                    }
-                } else {
-                    when (appNotifier) {
-                        "com.whatsapp" -> {
-                            if (contact != null) {
-                                openWhatsapp(
-                                    contact.getFirstPhoneNumber(),
-                                    this@NotificationAlarmActivity
-                                )
-                            } else {
-                                openWhatsapp(
-                                    statusBarNotificationInfo["android.title"] as String,
-                                    this@NotificationAlarmActivity
-                                )
-                            }
-                        }
-                        "com.google.android.gm" -> {
-                            val appIntent = Intent(Intent.ACTION_VIEW)
-                            appIntent.setClassName(
-                                "com.google.android.gm",
-                                "com.google.android.gm.ConversationListActivityGmail"
-                            )
-                            try {
-                                startActivity(appIntent)
-                            } catch (e: ActivityNotFoundException) {
-                                startActivity(
-                                    Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse("https://gmail.com/")
-                                    )
-                                )
-                            }
-                        }
-                        "com.microsoft.office.outlook" -> {
-                            goToOutlook(this@NotificationAlarmActivity)
-                        }
-                        "org.thoughtcrime.securesms" -> {
-                            goToSignal(this@NotificationAlarmActivity)
-                        }
-                        "org.telegram.messenger" -> {
-                            if (contact != null) {
-                                Log.i("openuTeleguramu", "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}")
-//                                goToTelegram(
-//                                    this@NotificationAlarmActivity,
-//                                    "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}"
+//        sbp?.apply {
+//            notification_alarm_ReceiveMessageLayout?.setOnClickListener {
+//                if (isSMS) {
+//                    if (contact != null) {
+//                        openSms(contact.getFirstPhoneNumber(), this@NotificationAlarmActivity)
+//                    } else {
+//                        openSms(
+//                            statusBarNotificationInfo["android.title"] as String,
+//                            this@NotificationAlarmActivity
+//                        )
+//                    }
+//                } else {
+//                    when (appNotifier) {
+//                        "com.whatsapp" -> {
+//                            if (contact != null) {
+//                                openWhatsapp(
+//                                    contact.getFirstPhoneNumber(),
+//                                    this@NotificationAlarmActivity
 //                                )
-                            } else {
-                                goToTelegram(this@NotificationAlarmActivity, "")
-                            }
-                        }
-                        "com.facebook.katana" -> {
-                            if (contact != null) {
-                                openMessenger(
-                                    contact.getMessengerID(),
-                                    this@NotificationAlarmActivity
-                                )
-                            } else {
-                                openMessenger("", this@NotificationAlarmActivity)
-                            }
-                        }
-                    }
-                }
-
-                if (alarmSound != null) {
-                    alarmSound?.stop()
-                }
-
-                finish()
-            }
-        }
+//                            } else {
+//                                openWhatsapp(
+//                                    statusBarNotificationInfo["android.title"] as String,
+//                                    this@NotificationAlarmActivity
+//                                )
+//                            }
+//                        }
+//                        "com.google.android.gm" -> {
+//                            val appIntent = Intent(Intent.ACTION_VIEW)
+//                            appIntent.setClassName(
+//                                "com.google.android.gm",
+//                                "com.google.android.gm.ConversationListActivityGmail"
+//                            )
+//                            try {
+//                                startActivity(appIntent)
+//                            } catch (e: ActivityNotFoundException) {
+//                                startActivity(
+//                                    Intent(
+//                                        Intent.ACTION_VIEW,
+//                                        Uri.parse("https://gmail.com/")
+//                                    )
+//                                )
+//                            }
+//                        }
+//                        "com.microsoft.office.outlook" -> {
+//                            goToOutlook(this@NotificationAlarmActivity)
+//                        }
+//                        "org.thoughtcrime.securesms" -> {
+//                            goToSignal(this@NotificationAlarmActivity)
+//                        }
+//                        "org.telegram.messenger" -> {
+//                            if (contact != null) {
+//                                Log.i("openuTeleguramu", "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}")
+////                                goToTelegram(
+////                                    this@NotificationAlarmActivity,
+////                                    "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}"
+////                                )
+//                            } else {
+//                                goToTelegram(this@NotificationAlarmActivity, "")
+//                            }
+//                        }
+//                        "com.facebook.katana" -> {
+//                            if (contact != null) {
+//                                openMessenger(
+//                                    contact.getMessengerID(),
+//                                    this@NotificationAlarmActivity
+//                                )
+//                            } else {
+//                                openMessenger("", this@NotificationAlarmActivity)
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                if (alarmSound != null) {
+//                    alarmSound?.stop()
+//                }
+//
+//                finish()
+//            }
+//        }
 
         notification_Alarm_Button_ShutDown?.setOnClickListener {
             if (alarmSound != null) {

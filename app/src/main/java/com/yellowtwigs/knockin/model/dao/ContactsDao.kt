@@ -29,6 +29,9 @@ interface ContactsDao {
     @Update
     suspend fun updateContact(contact: ContactDB)
 
+    @Query("UPDATE contacts_table SET priority = :priority WHERE id = :id")
+    suspend fun updateContactPriorityById(id: Int, priority: Int)
+
     //endregion
 
     //region ============================================ DELETE ============================================

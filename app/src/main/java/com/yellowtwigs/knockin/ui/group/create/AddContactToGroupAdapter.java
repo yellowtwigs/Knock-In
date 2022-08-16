@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
 import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.List;
  */
 public class AddContactToGroupAdapter extends BaseAdapter {
 
-    private List<ContactWithAllInformation> listContacts;
+    private List<ContactDB> listContacts;
     private LayoutInflater layoutInflater;
     private ArrayList<ContactDB> selectContact;
     private Context context;
@@ -40,7 +39,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
      * @param context //Activité qui lance l'adapter
      * @param listContacts //List des contact qui ne font pas encore partie du groupe
      */
-    public AddContactToGroupAdapter(Context context, List<ContactWithAllInformation> listContacts) {
+    public AddContactToGroupAdapter(Context context, List<ContactDB> listContacts) {
         this.listContacts = listContacts;
         layoutInflater = LayoutInflater.from(context);
         selectContact = new ArrayList<>();
@@ -58,7 +57,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
     }
 
     @Override
-    public ContactWithAllInformation getItem(int position) {
+    public ContactDB getItem(int position) {
         return listContacts.get(position);
     }
 
@@ -78,7 +77,7 @@ public class AddContactToGroupAdapter extends BaseAdapter {
         final ViewHolder holder;
         holder = new ViewHolder();
         holder.position = position;
-        final ContactDB contact = getItem(position).getContactDB();
+        final ContactDB contact = getItem(position);
         listview = layoutInflater.inflate(R.layout.list_contact_selected_group, null);
 
         holder.contactRoundedImageView = listview.findViewById(R.id.add_group_contact_list_item_contactRoundedImageView);

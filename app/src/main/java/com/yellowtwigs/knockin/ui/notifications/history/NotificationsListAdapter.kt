@@ -88,9 +88,9 @@ class NotificationsListAdapter(private val context: Context) :
                                 notificationImage.setImageResource(R.drawable.ic_item_selected)
                             }
 
-                            if (context is NotificationHistoryActivity) {
-                                context.recyclerLongClick(position)
-                            }
+//                            if (context is NotificationHistoryActivity) {
+//                                context.recyclerLongClick(position)
+//                            }
 
                             if (listOfItemSelected.size > 0) {
                                 modeMultiSelect = true
@@ -100,9 +100,9 @@ class NotificationsListAdapter(private val context: Context) :
                                 lastClick = true
                             }
                         } else {
-                            if (context is NotificationHistoryActivity) {
-                                context.recyclerSimpleClick(position)
-                            }
+//                            if (context is NotificationHistoryActivity) {
+//                                context.recyclerSimpleClick(position)
+//                            }
                         }
                     }
                     val longClick = View.OnLongClickListener {
@@ -114,9 +114,9 @@ class NotificationsListAdapter(private val context: Context) :
                             notificationImage.setImageResource(R.drawable.ic_item_selected)
                         }
 
-                        if (context is NotificationHistoryActivity) {
-                            context.recyclerLongClick(position)
-                        }
+//                        if (context is NotificationHistoryActivity) {
+//                            context.recyclerLongClick(position)
+//                        }
 
                         if (listOfItemSelected.size > 0) {
                             modeMultiSelect = true

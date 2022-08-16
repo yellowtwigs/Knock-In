@@ -34,6 +34,7 @@
         tools:ignore="QueryAllPackagesPermission" />
 
     <application
+        android:name=".di.App"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_app_image"
@@ -53,8 +54,17 @@
             android:name=".ui.edit_contact.EditContactActivity"
             android:exported="false" />
         <activity android:name=".ui.edit_contact.VipSettingsActivity" />
-        <activity
-            android:name=".ui.SplashScreenActivity"
+        <activity android:name=".ui.SplashScreenActivity">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity android:name=".ui.settings.SettingsActivity" />
+
+        <activity android:name=".ui.first_launch.start.StartActivity" />
+        <activity android:name=".ui.first_launch.first_vip_selection.FirstVipSelectionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,8 +72,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name=".ui.first_launch.start.StartActivity" />
+
         <activity android:name=".FirstLaunchActivity" />
         <activity android:name=".ui.group.create.AddNewGroupActivity" />
         <activity android:name=".ui.group.DeleteContactFromGroupActivity" />
@@ -73,25 +82,24 @@
             android:name=".ui.notifications.NotificationAlarmActivity"
             android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
-        <activity android:name=".ui.first_launch.MultiSelectActivity" />
         <activity android:name=".ui.group.list.GroupManagerActivity" />
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
         <activity android:name=".ui.CockpitActivity" />
         <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
         <activity android:name=".ui.settings.ManageNotificationActivity" />
-<!--        <activity android:name=".ui.notifications.history.NotificationHistoryActivity" />-->
+        <!--        <activity android:name=".ui.notifications.history.NotificationHistoryActivity" />-->
         <activity
             android:name=".ui.edit_contact.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".ui.edit_contact.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
-<!--        <activity-->
-<!--            android:name=".ui.contacts.Main2Activity"-->
-<!--            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
-<!--            android:label="@string/app_name"-->
-<!--            android:windowSoftInputMode="stateHidden" />-->
+        <!--        <activity-->
+        <!--            android:name=".ui.contacts.Main2Activity"-->
+        <!--            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
+        <!--            android:label="@string/app_name"-->
+        <!--            android:windowSoftInputMode="stateHidden" />-->
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

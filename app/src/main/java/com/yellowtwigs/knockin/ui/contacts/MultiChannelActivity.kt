@@ -13,8 +13,6 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import java.net.URLEncoder
 
@@ -27,9 +25,9 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private var intent_listOfContactSelected: ArrayList<Int> = ArrayList()
 
-    private var listOfContactSelected = arrayListOf<ContactWithAllInformation?>()
+//    private var listOfContactSelected = arrayListOf<ContactWithAllInformation?>()
 
-    private lateinit var contactManager: ContactManager
+//    private lateinit var contactManager: ContactManager
     private lateinit var viewAdapter: ContactListViewAdapter
     private lateinit var sendMessageEditText: AppCompatEditText
     private lateinit var sendMessageButton: AppCompatImageView
@@ -87,20 +85,20 @@ class MultiChannelActivity : AppCompatActivity() {
         intent_listOfContactSelected =
             intent.getIntegerArrayListExtra("ListContactsSelected") as ArrayList<Int>
 
-        contactManager = ContactManager(this.applicationContext)
-        contactManager.sortContactByFirstNameAZ()
+//        contactManager = ContactManager(this.applicationContext)
+//        contactManager.sortContactByFirstNameAZ()
 
         val iterator = (0 until intent_listOfContactSelected.size).iterator()
 
         for (i in iterator) {
-            listOfContactSelected.add(contactManager.getContactById(intent_listOfContactSelected[i]))
+//            listOfContactSelected.add(contactManager.getContactById(intent_listOfContactSelected[i]))
         }
 
         //endregion
 
         //region ================================== ContactListViewAdapter ==================================
 
-        viewAdapter = ContactListViewAdapter(this, listOfContactSelected)
+//        viewAdapter = ContactListViewAdapter(this, listOfContactSelected)
         appsListView?.adapter = viewAdapter
 
         //endregion
@@ -195,11 +193,11 @@ class MultiChannelActivity : AppCompatActivity() {
 
     private fun refreshActivity() {
         if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
-            startActivity(
-                Intent(this@MultiChannelActivity, Main2Activity::class.java).addFlags(
-                    Intent.FLAG_ACTIVITY_NO_ANIMATION
-                )
-            )
+//            startActivity(
+//                Intent(this@MultiChannelActivity, Main2Activity::class.java).addFlags(
+//                    Intent.FLAG_ACTIVITY_NO_ANIMATION
+//                )
+//            )
             hideKeyboard()
             finish()
         } else {

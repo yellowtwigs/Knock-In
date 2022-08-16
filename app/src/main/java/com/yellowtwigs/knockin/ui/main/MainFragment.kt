@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.FragmentMainBinding
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -28,10 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.ContactManager;
-
 import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
 import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
 
 import java.util.ArrayList;
@@ -40,42 +37,40 @@ import java.util.List;
 import java.util.Map;
 
 public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroupGridViewAdapter.ViewHolder> {
-    private ContactManager gestionnaireContact;
     private Context context;
     private Integer len;
     private Map<Integer, Integer> contactMap = new HashMap<>();
     private Integer positionOnBindViewHolder;
-    private List<ContactWithAllInformation> listContact;
+    private List<ContactDB> listContact;
     private LayoutInflater layoutInflater;
     private Boolean modeMultiSelect = true;
-    private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
+    private ArrayList<ContactDB> listOfItemSelected = new ArrayList<>();
     private int heightWidthImage;
 
-    public CreateGroupGridViewAdapter(Context context, ContactManager contactManager, Integer len, List<ContactWithAllInformation> listContact) {
+    public CreateGroupGridViewAdapter(Context context, Integer len, List<ContactDB> listContact) {
         this.context = context;
-        this.gestionnaireContact = contactManager;
         this.len = len;
         this.listContact = listContact;
         this.positionOnBindViewHolder = 0;
         layoutInflater = LayoutInflater.from(context);
     }
 
-    public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
+    public ArrayList<ContactDB> getListOfItemSelected() {
         return listOfItemSelected;
     }
 
-    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected) {
+    public void setListOfItemSelected(ArrayList<ContactDB> listOfItemSelected) {
         this.listOfItemSelected.clear();
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
 
-    public void setGestionnaireContact(ContactManager gestionnaireContact) {
-        this.gestionnaireContact = gestionnaireContact;
-    }
-
-    public ContactWithAllInformation getItem(int position) {
-        return gestionnaireContact.getContactList().get(position);
-    }
+//    public void setGestionnaireContact(ContactManager gestionnaireContact) {
+//        this.gestionnaireContact = gestionnaireContact;
+//    }
+//
+//    public ContactWithAllInformation getItem(int position) {
+//        return gestionnaireContact.getContactList().get(position);
+//    }
 
     @NonNull
     @Override
@@ -89,188 +84,188 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
 
     @Override
     public void onBindViewHolder(@NonNull CreateGroupGridViewAdapter.ViewHolder holder, int position) {
-        Boolean addedInMap = false;
-        if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
-            ContactDB actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
-            Boolean isContained = true; // dans le groupe
-            while (isContained) {
-                for (ContactWithAllInformation actualContact : listContact) { // liste des contact pas dans le groupe
-                    if (actualContact.getContactId() == actContact.getId()) {
-                        if (!contactMap.containsValue(actContact.getId())) {
-                            isContained = false;
-                            if (!contactMap.containsKey(position)) {
-                                contactMap.put(position, positionOnBindViewHolder);
-                                addedInMap = true;
-                            }
-                        }
-                    }
-                }
-                if (isContained) {
-                    if (positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
-                        positionOnBindViewHolder = positionOnBindViewHolder + 1;
-                    actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
-                }
-            }
-        }
-        if (context instanceof AddNewGroupActivity) {
-            if (!contactMap.containsKey(position)) {
-                contactMap.put(position, positionOnBindViewHolder);
-                addedInMap = true;
-            }
-        }
-        final ContactDB contact = this.gestionnaireContact.getContactList().get(contactMap.get(position)).getContactDB();
-
-            int height = heightWidthImage;
-            int width = heightWidthImage;
-
-            RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
-            ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
-
-            if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContactList().get(contactMap.get(position)))) {
-                assert contact != null;
-                if (!contact.getProfilePicture64().equals("")) {
-                    Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                    holder.contactRoundedImageView.setImageBitmap(bitmap);
-                } else {
-                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-                }
-            } else {
-                // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
-                holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
-            }
-
-            if (len == 3) {
-                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.05));
-                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.05));
-                layoutParamsTV.topMargin = 30;
-                layoutParamsIV.topMargin = 10;
-            } else if (len == 4) {
-                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.25));
-                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.25));
-                layoutParamsTV.topMargin = 10;
-                layoutParamsIV.topMargin = 10;
-            } else if (len == 5) {
-                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.40));
-                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.40));
-                layoutParamsTV.topMargin = 0;
-                layoutParamsIV.topMargin = 0;
-            } else if (len == 6) {
-                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.50));
-                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.50));
-                layoutParamsTV.topMargin = 0;
-                layoutParamsIV.topMargin = 0;
-            }
-
-            assert contact != null;
-            if (contact.getContactPriority() == 0) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
-            } else if (contact.getContactPriority() == 1) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.transparentColor, null));
-            } else if (contact.getContactPriority() == 2) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
-            }
-
-            String firstname = contact.getFirstName();
-            String lastName = contact.getLastName();
-
-            if (len == 6) {
-                if (contact.getFirstName().length() > 8)
-                    firstname = contact.getFirstName().substring(0, 7).concat("..");
-
-                holder.contactFirstNameView.setText(firstname);
-                Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-                span.setSpan(new RelativeSizeSpan(0.81f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactFirstNameView.setText(span);
-                if (contact.getLastName().length() > 8)
-                    lastName = contact.getLastName().substring(0, 7).concat("..");
-
-                Spannable spanLastName = new SpannableString(lastName);
-                spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactLastNameView.setText(spanLastName);
-
-            } else if (len == 5) {
-                if (contact.getFirstName().length() > 11)
-                    firstname = contact.getFirstName().substring(0, 9).concat("..");
-
-                holder.contactFirstNameView.setText(firstname);
-                Spannable span = new SpannableString(holder.contactFirstNameView.getText());
-                span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactFirstNameView.setText(span);
-                //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
-                if (contact.getLastName().length() > 11)
-                    lastName = contact.getLastName().substring(0, 9).concat("..");
-
-                Spannable spanLastName = new SpannableString(lastName);
-                spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactLastNameView.setText(spanLastName);
-
-            } else if (len == 4) {
-                if (contact.getFirstName().length() > 12)
-                    firstname = contact.getFirstName().substring(0, 10).concat("..");
-
-                Spannable spanFistName = new SpannableString(firstname);
-                spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactFirstNameView.setText(spanFistName);
-                if (contact.getLastName().length() > 12)
-                    lastName = contact.getLastName().substring(0, 10).concat("..");
-
-                Spannable spanLastName = new SpannableString(lastName);
-                spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactLastNameView.setText(spanLastName);
-            } else if (len == 3) {
-                Spannable spanFistName = new SpannableString(firstname);
-                spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactFirstNameView.setText(spanFistName);
-                Spannable spanLastName = new SpannableString(lastName);
-                spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.contactLastNameView.setText(spanLastName);
-                //holder.contactFirstNameView.;
-            }
-
-            if (firstname.isEmpty()) {
-                holder.contactFirstNameView.setVisibility(View.GONE);
-            }
-
-            if (contact.getFavorite() == 1) {
-                holder.gridAdapterFavoriteShine.setVisibility(View.VISIBLE);
-            } else {
-                holder.gridAdapterFavoriteShine.setVisibility(View.GONE);
-            }
-
-            ///((AddNewGroupActivity) context).gridMultiSelectItemClick(position); ////////
-
-            View.OnClickListener gridItemClick = v -> {
-                if (listOfItemSelected.contains(gestionnaireContact.getContactList().get(contactMap.get(position)))) {
-                    listOfItemSelected.remove(gestionnaireContact.getContactList().get(contactMap.get(position)));
-
-                    if (!contact.getProfilePicture64().equals("")) {
-                        Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-                        holder.contactRoundedImageView.setImageBitmap(bitmap);
-                    } else {
-                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-                    }
-                /*if (listOfItemSelected.isEmpty()) {
-                    modeMultiSelect = false;
-                }*/
-                } else {
-                    listOfItemSelected.add(gestionnaireContact.getContactList().get(contactMap.get(position)));
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
-                }
-                if (context instanceof AddNewGroupActivity) {
-                    ((AddNewGroupActivity) context).gridMultiSelectItemClick(contactMap.get(position));
-                }
-                if (context instanceof AddContactToGroupActivity) {
-                    ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
-                }
-                if (context instanceof DeleteContactFromGroupActivity) {
-                    ((DeleteContactFromGroupActivity) context).multiSelectItemClick(contactMap.get(position));
-                }
-            };
-
-            holder.gridContactItemLayout.setOnClickListener(gridItemClick);
-            holder.contactRoundedImageView.setOnClickListener(gridItemClick);
-        if (addedInMap && positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
-            positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
+//        Boolean addedInMap = false;
+//        if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
+//            ContactDB actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
+//            Boolean isContained = true; // dans le groupe
+//            while (isContained) {
+//                for (ContactWithAllInformation actualContact : listContact) { // liste des contact pas dans le groupe
+//                    if (actualContact.getContactId() == actContact.getId()) {
+//                        if (!contactMap.containsValue(actContact.getId())) {
+//                            isContained = false;
+//                            if (!contactMap.containsKey(position)) {
+//                                contactMap.put(position, positionOnBindViewHolder);
+//                                addedInMap = true;
+//                            }
+//                        }
+//                    }
+//                }
+//                if (isContained) {
+//                    if (positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
+//                        positionOnBindViewHolder = positionOnBindViewHolder + 1;
+//                    actContact = this.gestionnaireContact.getContactList().get(positionOnBindViewHolder).getContactDB();
+//                }
+//            }
+//        }
+//        if (context instanceof AddNewGroupActivity) {
+//            if (!contactMap.containsKey(position)) {
+//                contactMap.put(position, positionOnBindViewHolder);
+//                addedInMap = true;
+//            }
+//        }
+//        final ContactDB contact = this.gestionnaireContact.getContactList().get(contactMap.get(position)).getContactDB();
+//
+//            int height = heightWidthImage;
+//            int width = heightWidthImage;
+//
+//            RelativeLayout.LayoutParams layoutParamsTV = (RelativeLayout.LayoutParams) holder.contactFirstNameView.getLayoutParams();
+//            ConstraintLayout.LayoutParams layoutParamsIV = (ConstraintLayout.LayoutParams) holder.contactRoundedImageView.getLayoutParams();
+//
+//            if (!modeMultiSelect || !listOfItemSelected.contains(gestionnaireContact.getContactList().get(contactMap.get(position)))) {
+//                assert contact != null;
+//                if (!contact.getProfilePicture64().equals("")) {
+//                    Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+//                    holder.contactRoundedImageView.setImageBitmap(bitmap);
+//                } else {
+//                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+//                }
+//            } else {
+//                // listOfItemSelected.add(gestionnaireContact.getContactList().get(position));
+//                holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+//            }
+//
+//            if (len == 3) {
+//                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.05));
+//                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.05));
+//                layoutParamsTV.topMargin = 30;
+//                layoutParamsIV.topMargin = 10;
+//            } else if (len == 4) {
+//                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.25));
+//                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.25));
+//                layoutParamsTV.topMargin = 10;
+//                layoutParamsIV.topMargin = 10;
+//            } else if (len == 5) {
+//                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.40));
+//                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.40));
+//                layoutParamsTV.topMargin = 0;
+//                layoutParamsIV.topMargin = 0;
+//            } else if (len == 6) {
+//                holder.contactRoundedImageView.getLayoutParams().height = (int) (heightWidthImage - (heightWidthImage * 0.50));
+//                holder.contactRoundedImageView.getLayoutParams().width = (int) (heightWidthImage - (heightWidthImage * 0.50));
+//                layoutParamsTV.topMargin = 0;
+//                layoutParamsIV.topMargin = 0;
+//            }
+//
+//            assert contact != null;
+//            if (contact.getContactPriority() == 0) {
+//                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
+//            } else if (contact.getContactPriority() == 1) {
+//                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.transparentColor, null));
+//            } else if (contact.getContactPriority() == 2) {
+//                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+//            }
+//
+//            String firstname = contact.getFirstName();
+//            String lastName = contact.getLastName();
+//
+//            if (len == 6) {
+//                if (contact.getFirstName().length() > 8)
+//                    firstname = contact.getFirstName().substring(0, 7).concat("..");
+//
+//                holder.contactFirstNameView.setText(firstname);
+//                Spannable span = new SpannableString(holder.contactFirstNameView.getText());
+//                span.setSpan(new RelativeSizeSpan(0.81f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactFirstNameView.setText(span);
+//                if (contact.getLastName().length() > 8)
+//                    lastName = contact.getLastName().substring(0, 7).concat("..");
+//
+//                Spannable spanLastName = new SpannableString(lastName);
+//                spanLastName.setSpan(new RelativeSizeSpan(0.81f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactLastNameView.setText(spanLastName);
+//
+//            } else if (len == 5) {
+//                if (contact.getFirstName().length() > 11)
+//                    firstname = contact.getFirstName().substring(0, 9).concat("..");
+//
+//                holder.contactFirstNameView.setText(firstname);
+//                Spannable span = new SpannableString(holder.contactFirstNameView.getText());
+//                span.setSpan(new RelativeSizeSpan(0.9f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactFirstNameView.setText(span);
+//                //holder.contactFirstNameView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary, null));
+//                if (contact.getLastName().length() > 11)
+//                    lastName = contact.getLastName().substring(0, 9).concat("..");
+//
+//                Spannable spanLastName = new SpannableString(lastName);
+//                spanLastName.setSpan(new RelativeSizeSpan(0.9f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactLastNameView.setText(spanLastName);
+//
+//            } else if (len == 4) {
+//                if (contact.getFirstName().length() > 12)
+//                    firstname = contact.getFirstName().substring(0, 10).concat("..");
+//
+//                Spannable spanFistName = new SpannableString(firstname);
+//                spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactFirstNameView.setText(spanFistName);
+//                if (contact.getLastName().length() > 12)
+//                    lastName = contact.getLastName().substring(0, 10).concat("..");
+//
+//                Spannable spanLastName = new SpannableString(lastName);
+//                spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactLastNameView.setText(spanLastName);
+//            } else if (len == 3) {
+//                Spannable spanFistName = new SpannableString(firstname);
+//                spanFistName.setSpan(new RelativeSizeSpan(0.95f), 0, firstname.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactFirstNameView.setText(spanFistName);
+//                Spannable spanLastName = new SpannableString(lastName);
+//                spanLastName.setSpan(new RelativeSizeSpan(0.95f), 0, lastName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                holder.contactLastNameView.setText(spanLastName);
+//                //holder.contactFirstNameView.;
+//            }
+//
+//            if (firstname.isEmpty()) {
+//                holder.contactFirstNameView.setVisibility(View.GONE);
+//            }
+//
+//            if (contact.getFavorite() == 1) {
+//                holder.gridAdapterFavoriteShine.setVisibility(View.VISIBLE);
+//            } else {
+//                holder.gridAdapterFavoriteShine.setVisibility(View.GONE);
+//            }
+//
+//            ///((AddNewGroupActivity) context).gridMultiSelectItemClick(position); ////////
+//
+//            View.OnClickListener gridItemClick = v -> {
+//                if (listOfItemSelected.contains(gestionnaireContact.getContactList().get(contactMap.get(position)))) {
+//                    listOfItemSelected.remove(gestionnaireContact.getContactList().get(contactMap.get(position)));
+//
+//                    if (!contact.getProfilePicture64().equals("")) {
+//                        Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+//                        holder.contactRoundedImageView.setImageBitmap(bitmap);
+//                    } else {
+//                        holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+//                    }
+//                /*if (listOfItemSelected.isEmpty()) {
+//                    modeMultiSelect = false;
+//                }*/
+//                } else {
+//                    listOfItemSelected.add(gestionnaireContact.getContactList().get(contactMap.get(position)));
+//                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+//                }
+//                if (context instanceof AddNewGroupActivity) {
+//                    ((AddNewGroupActivity) context).gridMultiSelectItemClick(contactMap.get(position));
+//                }
+//                if (context instanceof AddContactToGroupActivity) {
+//                    ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
+//                }
+//                if (context instanceof DeleteContactFromGroupActivity) {
+//                    ((DeleteContactFromGroupActivity) context).multiSelectItemClick(contactMap.get(position));
+//                }
+//            };
+//
+//            holder.gridContactItemLayout.setOnClickListener(gridItemClick);
+//            holder.contactRoundedImageView.setOnClickListener(gridItemClick);
+//        if (addedInMap && positionOnBindViewHolder != this.gestionnaireContact.getContactList().size()-1)
+//            positionOnBindViewHolder = positionOnBindViewHolder + 1 ;
     }
 
     @Override
@@ -282,7 +277,7 @@ public class CreateGroupGridViewAdapter extends RecyclerView.Adapter<CreateGroup
     public int getItemCount() {
         int itemCount = 0;
         if (context instanceof AddNewGroupActivity) {
-            itemCount = gestionnaireContact.getContactList().size();
+//            itemCount = gestionnaireContact.getContactList().size();
         }
         if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
             itemCount = listContact.size();

@@ -26,7 +26,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
@@ -133,9 +132,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
             help_activity_DrawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    startActivity(Intent(this@HelpActivity, Main2Activity::class.java))
-                }
                 R.id.nav_notif_config -> startActivity(
                     Intent(
                         this@HelpActivity,

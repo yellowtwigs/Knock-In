@@ -25,7 +25,6 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.ContactsDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity
-import com.yellowtwigs.knockin.ui.group.GroupAdapter
 import com.yellowtwigs.knockin.ui.group.create.AddContactToGroupActivity
 import java.util.*
 
@@ -55,19 +54,16 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
             } else {
                 (sectionViewHolder as SectionViewHolder).titleTv.text = mSections[position]!!.title
             }
-            while (!isSectionHeaderPosition(i) && i < itemCount) {
-                val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i))
-                println("contact " + contact.contactDB + " de la section " + position)
-                i++
-                if (contact.getFirstMail().isEmpty()) {
-                    println("contact " + contact.contactDB + "n'as pas de mail " + contact.getFirstMail())
-                    sectionViewHolder.gmailIV.visibility = View.GONE
-                }
-                if (contact.getFirstPhoneNumber().isEmpty()) {
-                    println("contact " + contact.contactDB + "n'as pas de num " + contact.getFirstPhoneNumber())
-                    sectionViewHolder.smsIV.visibility = View.GONE
-                }
-            }
+//            while (!isSectionHeaderPosition(i) && i < itemCount) {
+//                val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i))
+//                i++
+//                if (contact.getFirstMail().isEmpty()) {
+//                    sectionViewHolder.gmailIV.visibility = View.GONE
+//                }
+//                if (contact.getFirstPhoneNumber().isEmpty()) {
+//                    sectionViewHolder.smsIV.visibility = View.GONE
+//                }
+//            }
             val roundedLayout = mContext.getDrawable(R.drawable.rounded_button_color_grey)
             val contactsDatabase = getDatabase(mContext)
             assert(roundedLayout != null)
@@ -80,8 +76,8 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 var i1 = position + 1
                 val groupMail = ArrayList<String>()
                 while (!isSectionHeaderPosition(i1) && i1 < itemCount) {
-                    val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i1))
-                    groupMail.add(contact.getFirstMail())
+//                    val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i1))
+//                    groupMail.add(contact.getFirstMail())
                     i1++
                 }
                 monoChannelMailClick(groupMail)
@@ -90,8 +86,8 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 var i12 = position + 1
                 val groupSms = ArrayList<String>()
                 while (!isSectionHeaderPosition(i12) && i12 < itemCount) {
-                    val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i12))
-                    groupSms.add(contact.getFirstPhoneNumber())
+//                    val contact = (mBaseAdapter as GroupAdapter).getItem(sectionedPositionToPosition(i12))
+//                    groupSms.add(contact.getFirstPhoneNumber())
                     i12++
                 }
                 monoChannelSmsClick(groupSms)
@@ -289,8 +285,8 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                         }
                         R.id.menu_group_delete_group -> {
                             val contactsDatabase1: ContactsDatabase? = getDatabase(mContext)
-                            val mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-                            mDbWorkerThread.start()
+//                            val mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+//                            mDbWorkerThread.start()
                             if (BuildConfig.DEBUG && contactsDatabase1 == null) {
                                 error("Assertion failed")
                             }
@@ -302,7 +298,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 }
                 popupMenu.show()
             }
-            sectionViewHolder.holderName.setOnClickListener { (mBaseAdapter as GroupAdapter).SetGroupClick(getGroupPosition(position)) }
+//            sectionViewHolder.holderName.setOnClickListener { (mBaseAdapter as GroupAdapter).SetGroupClick(getGroupPosition(position)) }
         } else {
             mBaseAdapter.onBindViewHolder(sectionViewHolder, sectionedPositionToPosition(position))
         }
@@ -312,7 +308,7 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                 list.add(sectionedPositionToPosition(i + 1))
             }
         }
-        (mBaseAdapter as GroupAdapter).setSectionPos(list)
+//        (mBaseAdapter as GroupAdapter).setSectionPos(list)
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -425,10 +421,10 @@ class SectionGroupAdapter(private val mContext: Context, private val mSectionRes
                     while (counter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ().size) {
                         if (Objects.requireNonNull(contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].groupDB)?.name == "Favorites") {
                             var secondCounter = 0
-                            while (secondCounter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(mContext).size) {
-                                contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(mContext)[secondCounter].setIsNotFavorite(contactsDatabase)
-                                secondCounter++
-                            }
+//                            while (secondCounter < contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(mContext).size) {
+//                                contactsDatabase.GroupsDao().getAllGroupsByNameAZ()[counter].getListContact(mContext)[secondCounter].setIsNotFavorite(contactsDatabase)
+//                                secondCounter++
+//                            }
                             break
                         }
                         counter++

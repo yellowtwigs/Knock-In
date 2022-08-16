@@ -11,6 +11,9 @@ interface ContactsListRepository {
     fun getContact(id: Int): Flow<ContactDB>
 
     suspend fun updateContact(contact: ContactDB)
+
+    suspend fun updateContactPriorityById(id: Int, priority: Int)
+
     suspend fun deleteContact(contact: ContactDB)
 
     fun getSearchBarText(): LiveData<String>
@@ -20,5 +23,5 @@ interface ContactsListRepository {
     fun setSortedBy(sortBy: Int)
 
     fun getFilterBy(): LiveData<Int>
-    fun setFilterBy(sortBy: Int)
+    fun setFilterBy(filterBy: Int)
 }

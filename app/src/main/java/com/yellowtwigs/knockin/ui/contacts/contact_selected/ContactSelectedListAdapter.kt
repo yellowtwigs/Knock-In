@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactSelectedLayoutBinding
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
+import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.utils.Converter
 
 class ContactSelectedListAdapter(private val context: Context) :
-    ListAdapter<ContactWithAllInformation, ContactSelectedListAdapter.ViewHolder>(
+    ListAdapter<ContactDB, ContactSelectedListAdapter.ViewHolder>(
         ContactComparator()
     ) {
 
@@ -38,12 +38,11 @@ class ContactSelectedListAdapter(private val context: Context) :
     inner class ViewHolder(private val binding: ItemContactSelectedLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(contactInfos: ContactWithAllInformation, context: Context) {
+        fun onBind(contact: ContactDB, context: Context) {
             val sharedPreferences =
                 context.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val nbGrid = sharedPreferences.getInt("gridview", 1)
-            val contact = contactInfos.contactDB
-            contact?.let {
+            contact.let {
                 binding.apply {
                     val layoutParamsTV =
                         gridAdapterContactFirstName.layoutParams as RelativeLayout.LayoutParams
@@ -136,19 +135,19 @@ class ContactSelectedListAdapter(private val context: Context) :
         }
     }
 
-    class ContactComparator : DiffUtil.ItemCallback<ContactWithAllInformation>() {
+    class ContactComparator : DiffUtil.ItemCallback<ContactDB>() {
         override fun areItemsTheSame(
-            oldItem: ContactWithAllInformation,
-            newItem: ContactWithAllInformation
+            oldItem: ContactDB,
+            newItem: ContactDB
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ContactWithAllInformation,
-            newItem: ContactWithAllInformation
+            oldItem: ContactDB,
+            newItem: ContactDB
         ): Boolean {
-            return oldItem.contactDB == newItem.contactDB
+            return oldItem.id == newItem.id
         }
     }
 

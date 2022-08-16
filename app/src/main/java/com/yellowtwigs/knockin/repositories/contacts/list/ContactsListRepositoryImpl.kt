@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.repositories.contacts.list
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yellowtwigs.knockin.model.dao.ContactsDao
 import com.yellowtwigs.knockin.model.data.ContactDB
@@ -10,11 +9,18 @@ class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDa
     ContactsListRepository {
 
     private val searchBarText = MutableLiveData<String>()
+    private val sortByLiveData = MutableLiveData<Int>()
+    private val filterByLiveData = MutableLiveData<Int>()
 
     override fun getAllContacts() = dao.getAllContacts()
     override fun getContact(id: Int) = dao.getContact(id)
 
     override suspend fun updateContact(contact: ContactDB) = dao.updateContact(contact)
+
+    override suspend fun updateContactPriorityById(id: Int, priority: Int) {
+        dao.updateContactPriorityById(id, priority)
+    }
+
     override suspend fun deleteContact(contact: ContactDB) = dao.deleteContact(contact)
 
     override fun getSearchBarText() = searchBarText
@@ -23,19 +29,15 @@ class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDa
         searchBarText.postValue(text)
     }
 
-    override fun getSortedBy(): LiveData<Int> {
-        TODO("Not yet implemented")
-    }
+    override fun getSortedBy() = sortByLiveData
 
     override fun setSortedBy(sortBy: Int) {
-        TODO("Not yet implemented")
+        sortByLiveData.postValue(sortBy)
     }
 
-    override fun getFilterBy(): LiveData<Int> {
-        TODO("Not yet implemented")
-    }
+    override fun getFilterBy() = filterByLiveData
 
-    override fun setFilterBy(sortBy: Int) {
-        TODO("Not yet implemented")
+    override fun setFilterBy(filterBy: Int) {
+        filterByLiveData.postValue(filterBy)
     }
 }

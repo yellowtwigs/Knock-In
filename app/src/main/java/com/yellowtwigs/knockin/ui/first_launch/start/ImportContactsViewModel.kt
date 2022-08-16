@@ -25,9 +25,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ImportContactsViewModel @Inject constructor(
     private val repositoryImpl: InsertContactRepository,
-    @ApplicationContext private val context: ApplicationContext
-) :
-    ViewModel() {
+    @ApplicationContext private val context: Context
+) : ViewModel() {
+
+//    ,
+//    @ApplicationContext private val context: ApplicationContext
 
     private val listOfTriple = arrayListOf<Triple<String, String, String>>()
     private val ids = arrayListOf<Int>()
@@ -36,10 +38,9 @@ class ImportContactsViewModel @Inject constructor(
 
     suspend fun syncAllContactsInDatabase(contentResolver: ContentResolver) {
         val structuredNameSync = getStructuredNameSync(contentResolver)
-        val contactNumberAndPic = getPhoneNumberSync(contentResolver)
-        val contactMail = getContactMailSync(contentResolver)
+        val contactDetails = getContactDetailsSync(contentResolver)
 
-        val contactDetails = contactNumberAndPic.union(contactMail)
+//        Log.i("importContact", "$contactDetails")
 
         val contactGroup = getContactGroupSync(contentResolver)
 //        contactList.clear()
@@ -105,26 +106,45 @@ class ImportContactsViewModel @Inject constructor(
         return phoneContactsList
     }
 
-    private fun getPhoneNumberSync(resolver: ContentResolver): List<Map<Int, Any>> {
-        val contactPhoneNumber = arrayListOf<Map<Int, Any>>()
-        var idAndPhoneNumber: Map<Int, Any>
-        val phoneContact = resolver.query(
+    private fun getContactDetailsSync(resolver: ContentResolver): List<Map<Int, Any>> {
+        val listOfDetails = arrayListOf<MutableMap<Int, Any>>()
+        var contactDetails: MutableMap<Int, Any>
+
+        val phoneNumberContact = resolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null,
             null,
             null,
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
         )
-        phoneContact?.apply {
+
+        val emailContact = resolver.query(
+            ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+            null,
+            null,
+            null,
+            ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC"
+        )
+
+//        Log.i("importContact", "phoneNumberContact : $phoneNumberContact")
+//        Log.i("importContact", "emailContact : $emailContact")
+
+        phoneNumberContact?.apply {
             while (moveToNext()) {
                 val phoneId =
                     getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
-                var phoneNumber =
-                    phoneContact.getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+                val phoneNumber =
+                    if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)) == null) {
+                        ""
+                    } else {
+                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                    }
+
                 var phonePic =
-                    phoneContact.getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
-                if (phoneNumber == null)
-                    phoneNumber = ""
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+
+
                 phonePic = if (phonePic == null || phonePic.contains(
                         "content://com.android.contactList/contactList/",
                         ignoreCase = true
@@ -140,23 +160,41 @@ class ImportContactsViewModel @Inject constructor(
                     }
                 }
 
-                idAndPhoneNumber = mapOf(
+                contactDetails = mutableMapOf(
                     1 to phoneId!!.toInt(),
                     2 to phoneNumber,
-                    3 to phonePic,
-                    4 to "phone"
+                    3 to phonePic
                 )
-                if (contactPhoneNumber.isEmpty() || !isDuplicateNumber(
-                        idAndPhoneNumber,
-                        contactPhoneNumber
-                    )
-                ) {
-                    contactPhoneNumber.add(idAndPhoneNumber)
+
+                if (listOfDetails.isEmpty() || !listOfDetails.contains(contactDetails)) {
+                    listOfDetails.add(contactDetails)
                 }
             }
             close()
         }
-        return contactPhoneNumber
+
+        emailContact?.apply {
+            while (moveToNext()) {
+                val phoneId =
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+
+                val phoneEmail =
+                    if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.ADDRESS)) == null) {
+                        ""
+                    } else {
+                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.ADDRESS))
+                    }
+
+                listOfDetails.forEachIndexed { index, map ->
+                    if (map[1] == phoneId?.toInt()) {
+                        listOfDetails[index][4] = phoneEmail
+                    }
+                }
+            }
+            close()
+        }
+
+        return listOfDetails
     }
 
     private fun getContactMailSync(resolver: ContentResolver): List<Map<Int, Any>> {
@@ -192,6 +230,7 @@ class ImportContactsViewModel @Inject constructor(
         }
         return contactDetails
     }
+
 
 //    fun getContactWithAndroidId(androidId: Int, lastSync: String): ContactWithAllInformation? {
 //        var contact: ContactWithAllInformation? = null
@@ -329,6 +368,64 @@ class ImportContactsViewModel @Inject constructor(
                             } else {
                                 0
                             }
+
+                            if (fullName.second.first == "Kenjo") {
+                                Log.i("importContact", "fullName.first : ${fullName.first}")
+                                Log.i(
+                                    "importContact",
+                                    "fullName.second.first : ${fullName.second.first}"
+                                )
+                                Log.i(
+                                    "importContact",
+                                    "fullName.second.second : ${fullName.second.second}"
+                                )
+                                Log.i(
+                                    "importContact",
+                                    "fullName.second.third : ${fullName.second.third}"
+                                )
+                                Log.i("importContact", "details[1] : ${details[1]}")
+                                Log.i("importContact", "details[2] : ${details[2]}")
+                                Log.i("importContact", "details[3] : ${details[3]}")
+                                Log.i("importContact", "details[4] : ${details[4]}")
+
+                            }
+
+                            val secondName = if (fullName.second.second == "") {
+                                ""
+                            } else {
+                                " ${fullName.second.second}"
+                            }
+
+                            val listOfPhoneNumbers = mutableListOf<String>()
+                            listOfPhoneNumbers.add(details[2].toString())
+
+                            val listOfMails = mutableListOf<String>()
+                            if (details[4] != null) {
+                                listOfMails.add(details[4].toString())
+                            }
+
+                            addUser(
+                                ContactDB(
+                                    0,
+                                    fullName.second.first + secondName,
+                                    fullName.second.third,
+                                    randomDefaultImage(0, context as Context, "Create"),
+                                    details[3].toString(),
+                                    listOfPhoneNumbers,
+                                    listOfMails,
+                                    "",
+                                    1,
+                                    0,
+                                    "",
+                                    listOfApps,
+                                    "",
+                                    0,
+                                    1,
+                                    0,
+                                    "",
+                                    ""
+                                )
+                            )
 
 //                            if (fullName.second.second == "") {
 //                                val contacts = ContactDB(

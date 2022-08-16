@@ -9,15 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.dao.NotificationsDao
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
-import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
+import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
@@ -52,7 +49,7 @@ class TeleworkingActivity : AppCompatActivity() {
         }
 
         binding.vipContactsButton.setOnClickListener {
-            startActivity(Intent(this@TeleworkingActivity, MultiSelectActivity::class.java))
+            startActivity(Intent(this@TeleworkingActivity, FirstVipSelectionActivity::class.java))
         }
 
         binding.teleworkingModeSwitch.isChecked =
@@ -60,25 +57,25 @@ class TeleworkingActivity : AppCompatActivity() {
 
         binding.teleworkingModeSwitch.setOnCheckedChangeListener { compoundButton, isChecked ->
             if (isChecked) {
-                val contactManager = ContactManager(this.applicationContext)
-                for (contact in contactManager.contactList) {
-                    if (contact.contactDB?.contactPriority == 1) {
-                        contact.setPriority(ContactsDatabase.getDatabase(this), 0)
-                    }
-                }
-                val edit = vipScheduleValueSharedPreferences.edit()
-                edit.putBoolean("VipScheduleValue", true)
-                edit.apply()
+//                val contactManager = ContactManager(this.applicationContext)
+//                for (contact in contactManager.contactList) {
+//                    if (contact.contactDB?.contactPriority == 1) {
+//                        contact.setPriority(ContactsDatabase.getDatabase(this), 0)
+//                    }
+//                }
+//                val edit = vipScheduleValueSharedPreferences.edit()
+//                edit.putBoolean("VipScheduleValue", true)
+//                edit.apply()
             } else {
-                val contactManager = ContactManager(this.applicationContext)
-                for (contact in contactManager.contactList) {
-                    if (contact.contactDB?.contactPriority == 0) {
-                        contact.setPriority(ContactsDatabase.getDatabase(this), 1)
-                    }
-                }
-                val edit = vipScheduleValueSharedPreferences.edit()
-                edit.putBoolean("VipScheduleValue", false)
-                edit.apply()
+//                val contactManager = ContactManager(this.applicationContext)
+//                for (contact in contactManager.contactList) {
+//                    if (contact.contactDB?.contactPriority == 0) {
+//                        contact.setPriority(ContactsDatabase.getDatabase(this), 1)
+//                    }
+//                }
+//                val edit = vipScheduleValueSharedPreferences.edit()
+//                edit.putBoolean("VipScheduleValue", false)
+//                edit.apply()
             }
         }
 
@@ -122,7 +119,7 @@ class TeleworkingActivity : AppCompatActivity() {
             navView.setNavigationItemSelectedListener { menuItem ->
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
-                    R.id.nav_home -> startActivity(Intent(this@TeleworkingActivity, Main2Activity::class.java))
+//                    R.id.nav_home -> startActivity(Intent(this@TeleworkingActivity, Main2Activity::class.java))
                     R.id.nav_notif_config -> startActivity(
                         Intent(
                             this@TeleworkingActivity,
@@ -156,7 +153,7 @@ class TeleworkingActivity : AppCompatActivity() {
     }
 
     private fun setupDatabase() {
-        DbWorkerThread("dbWorkerThread").start()
+//        DbWorkerThread("dbWorkerThread").start()
         ContactsDatabase.getDatabase(this)?.let {
             database = it
             dao = it.notificationsDao()
@@ -166,20 +163,20 @@ class TeleworkingActivity : AppCompatActivity() {
     private fun setupContactList(binding: ActivityTeleworkingBinding) {
         val teleworkingContactsListAdapter = TeleworkingContactsListAdapter(this)
 
-        binding.vipContacts.apply {
-            val contactList =
-                ContactManager(this@TeleworkingActivity).contactList.filter { contact ->
-                    contact.contactDB?.contactPriority == 2
-                }.sortedBy {
-                    it.contactDB?.firstName + it.contactDB?.lastName
-                }
-
-            this.adapter = teleworkingContactsListAdapter
-            teleworkingContactsListAdapter.submitList(contactList)
-            setHasFixedSize(true)
-            layoutManager = GridLayoutManager(this@TeleworkingActivity, 4)
-            recycledViewPool.setMaxRecycledViews(0, 0)
-        }
+//        binding.vipContacts.apply {
+//            val contactList =
+//                ContactManager(this@TeleworkingActivity).contactList.filter { contact ->
+//                    contact.contactDB?.contactPriority == 2
+//                }.sortedBy {
+//                    it.contactDB?.firstName + it.contactDB?.lastName
+//                }
+//
+//            this.adapter = teleworkingContactsListAdapter
+//            teleworkingContactsListAdapter.submitList(contactList)
+//            setHasFixedSize(true)
+//            layoutManager = GridLayoutManager(this@TeleworkingActivity, 4)
+//            recycledViewPool.setMaxRecycledViews(0, 0)
+//        }
     }
 
     //region ============================================= Date =============================================

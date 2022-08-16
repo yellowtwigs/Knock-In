@@ -15,9 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactSelectedWithAppsBinding
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.ContactGesture
@@ -47,14 +45,14 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
         appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
         val id = intent.getIntExtra("id", 0)
-        val currentContact = ContactManager(this).getContactById(id)
+//        val currentContact = ContactManager(this).getContactById(id)
 
-        if (currentContact != null) {
-            initCircularMenu(binding, id, currentContact)
-        }
+//        if (currentContact != null) {
+//            initCircularMenu(binding, id, currentContact)
+//        }
 
         initContactsList(binding)
-        currentContact?.contactDB?.let { initUserData(binding, it) }
+//        currentContact?.contactDB?.let { initUserData(binding, it) }
 
         binding.backIcon.setOnClickListener {
 //            openWhatsappGroup()
@@ -129,14 +127,14 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 1)
 
-        val contactManager = ContactManager(this)
+//        val contactManager = ContactManager(this)
 
         binding.recyclerView.apply {
-            contactManager.contactList.sortBy {
-                it.contactDB?.firstName + it.contactDB?.lastName
-            }
+//            contactManager.contactList.sortBy {
+//                it.contactDB?.firstName + it.contactDB?.lastName
+//            }
             this.adapter = adapter
-            adapter.submitList(contactManager.contactList)
+//            adapter.submitList(contactManager.contactList)
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(this@ContactSelectedWithAppsActivity, len)
             recycledViewPool.setMaxRecycledViews(0, 0)
@@ -156,170 +154,169 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 )
             }
 
-            when (contact.contactPriority) {
-                0 -> {
-                    image.setBorderColor(
-                        resources.getColor(
-                            R.color.priorityZeroColor,
-                            null
-                        )
-                    )
-                }
-                1 -> {
-                    image.setBorderColor(
-                        resources.getColor(
-                            R.color.transparentColor,
-                            null
-                        )
-                    )
-                }
-                2 -> {
-                    image.setBorderColor(
-                        resources.getColor(
-                            R.color.priorityTwoColor,
-                            null
-                        )
-                    )
-                }
-            }
+//            when (contact.contactPriority) {
+//                0 -> {
+//                    image.setBorderColor(
+//                        resources.getColor(
+//                            R.color.priorityZeroColor,
+//                            null
+//                        )
+//                    )
+//                }
+//                1 -> {
+//                    image.setBorderColor(
+//                        resources.getColor(
+//                            R.color.transparentColor,
+//                            null
+//                        )
+//                    )
+//                }
+//                2 -> {
+//                    image.setBorderColor(
+//                        resources.getColor(
+//                            R.color.priorityTwoColor,
+//                            null
+//                        )
+//                    )
+//                }
+//            }
         }
     }
 
     private fun initCircularMenu(
         binding: ActivityContactSelectedWithAppsBinding,
-        id: Int,
-        currentContact: ContactWithAllInformation
+        id: Int
     ) {
         val listApp = getAppOnPhone(this)
 
-        binding.apply {
-            currentContact.apply {
-                val reapparrition = AnimationUtils.loadAnimation(
-                    this@ContactSelectedWithAppsActivity,
-                    R.anim.reapparrition
-                )
-                CoroutineScope(Dispatchers.Main).launch {
-                    smsIcon.visibility = View.GONE
-                    callIcon.visibility = View.GONE
-                    mailIcon.visibility = View.GONE
-                    messengerIcon.visibility = View.GONE
-                    signalIcon.visibility = View.GONE
-                    editIcon.visibility = View.GONE
-                    telegramIcon.visibility = View.GONE
-                    whatsappIcon.visibility = View.GONE
-                    delay(500)
-                    binding.smsIcon.startAnimation(reapparrition)
-                    binding.callIcon.startAnimation(reapparrition)
-                    binding.mailIcon.startAnimation(reapparrition)
-                    binding.messengerIcon.startAnimation(reapparrition)
-                    binding.signalIcon.startAnimation(reapparrition)
-                    binding.editIcon.startAnimation(reapparrition)
-                    binding.telegramIcon.startAnimation(reapparrition)
-                    binding.whatsappIcon.startAnimation(reapparrition)
-                    smsIcon.isVisible = getFirstPhoneNumber() != ""
-                    callIcon.isVisible = getFirstPhoneNumber() != ""
-                    mailIcon.isVisible = getFirstMail() != ""
-                    messengerIcon.isVisible =
-                        getMessengerID() != "" && listApp.contains("com.facebook.orca")
-                    signalIcon.isVisible =
-                        listApp.contains("org.thoughtcrime.securesms") && currentContact.contactDB?.hasSignal == 1
-                    editIcon.isVisible = true
-                    telegramIcon.isVisible =
-                        listApp.contains("org.telegram.messenger") && currentContact.contactDB?.hasTelegram == 1
-                    whatsappIcon.isVisible =
-                        isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && currentContact.contactDB?.hasWhatsapp == 1
-                }
-            }
-
-            if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
-                signalIcon.setImageResource(R.drawable.ic_signal_disable)
-                telegramIcon.setImageResource(R.drawable.ic_telegram_disable)
-                messengerIcon.setImageResource(R.drawable.ic_messenger_disable)
-            }
-
-            val buttonListener = View.OnClickListener { v: View ->
-                when (v.id) {
-                    whatsappIcon.id -> {
-                        val sendIntent = Intent()
-                        sendIntent.action = Intent.ACTION_SEND
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
-                        sendIntent.setType("text/plain")
-                        sendIntent.setPackage("com.whatsapp");
-                        startActivity(sendIntent)
-//                        ContactGesture.openWhatsapp(
-//                            Converter.converter06To33(currentContact.getFirstPhoneNumber()),
+//        binding.apply {
+//            currentContact.apply {
+//                val reapparrition = AnimationUtils.loadAnimation(
+//                    this@ContactSelectedWithAppsActivity,
+//                    R.anim.reapparrition
+//                )
+//                CoroutineScope(Dispatchers.Main).launch {
+//                    smsIcon.visibility = View.GONE
+//                    callIcon.visibility = View.GONE
+//                    mailIcon.visibility = View.GONE
+//                    messengerIcon.visibility = View.GONE
+//                    signalIcon.visibility = View.GONE
+//                    editIcon.visibility = View.GONE
+//                    telegramIcon.visibility = View.GONE
+//                    whatsappIcon.visibility = View.GONE
+//                    delay(500)
+//                    binding.smsIcon.startAnimation(reapparrition)
+//                    binding.callIcon.startAnimation(reapparrition)
+//                    binding.mailIcon.startAnimation(reapparrition)
+//                    binding.messengerIcon.startAnimation(reapparrition)
+//                    binding.signalIcon.startAnimation(reapparrition)
+//                    binding.editIcon.startAnimation(reapparrition)
+//                    binding.telegramIcon.startAnimation(reapparrition)
+//                    binding.whatsappIcon.startAnimation(reapparrition)
+//                    smsIcon.isVisible = getFirstPhoneNumber() != ""
+//                    callIcon.isVisible = getFirstPhoneNumber() != ""
+//                    mailIcon.isVisible = getFirstMail() != ""
+//                    messengerIcon.isVisible =
+//                        getMessengerID() != "" && listApp.contains("com.facebook.orca")
+//                    signalIcon.isVisible =
+//                        listApp.contains("org.thoughtcrime.securesms") && currentContact.contactDB?.hasSignal == 1
+//                    editIcon.isVisible = true
+//                    telegramIcon.isVisible =
+//                        listApp.contains("org.telegram.messenger") && currentContact.contactDB?.hasTelegram == 1
+//                    whatsappIcon.isVisible =
+//                        isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && currentContact.contactDB?.hasWhatsapp == 1
+//                }
+//            }
+//
+//            if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+//                signalIcon.setImageResource(R.drawable.ic_signal_disable)
+//                telegramIcon.setImageResource(R.drawable.ic_telegram_disable)
+//                messengerIcon.setImageResource(R.drawable.ic_messenger_disable)
+//            }
+//
+//            val buttonListener = View.OnClickListener { v: View ->
+//                when (v.id) {
+//                    whatsappIcon.id -> {
+//                        val sendIntent = Intent()
+//                        sendIntent.action = Intent.ACTION_SEND
+//                        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+//                        sendIntent.setType("text/plain")
+//                        sendIntent.setPackage("com.whatsapp");
+//                        startActivity(sendIntent)
+////                        ContactGesture.openWhatsapp(
+////                            Converter.converter06To33(currentContact.getFirstPhoneNumber()),
+////                            this@ContactSelectedWithAppsActivity
+////                        )
+//                    }
+//                    editIcon.id -> {
+//                        val intent = Intent(
+//                            this@ContactSelectedWithAppsActivity,
+//                            EditContactDetailsActivity::class.java
+//                        )
+//                        intent.putExtra("ContactId", id)
+//                        startActivity(intent)
+//                    }
+//                    callIcon.id -> {
+//                        ContactGesture.callPhone(
+//                            currentContact.getFirstPhoneNumber(),
 //                            this@ContactSelectedWithAppsActivity
 //                        )
-                    }
-                    editIcon.id -> {
-                        val intent = Intent(
-                            this@ContactSelectedWithAppsActivity,
-                            EditContactDetailsActivity::class.java
-                        )
-                        intent.putExtra("ContactId", id)
-                        startActivity(intent)
-                    }
-                    callIcon.id -> {
-                        ContactGesture.callPhone(
-                            currentContact.getFirstPhoneNumber(),
-                            this@ContactSelectedWithAppsActivity
-                        )
-                    }
-                    smsIcon.id -> {
-                        val phone = currentContact.getFirstPhoneNumber()
-                        val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null))
-                        startActivity(i)
-                    }
-                    mailIcon.id -> {
-                        val mail = currentContact.getFirstMail()
-                        val intent = Intent(Intent.ACTION_SENDTO)
-                        intent.data = Uri.parse("mailto:")
-                        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "")
-                        intent.putExtra(Intent.EXTRA_TEXT, "")
-                        startActivity(intent)
-                    }
-                    messengerIcon.id -> {
-                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
-                            showInAppAlertDialog()
-                        } else {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://www.messenger.com/t/" + currentContact.getMessengerID())
-                            )
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
-                    }
-                    signalIcon.id -> {
-                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
-                            showInAppAlertDialog()
-                        } else {
-                            goToSignal(this@ContactSelectedWithAppsActivity)
-                        }
-                    }
-                    telegramIcon.id -> {
-                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
-                            showInAppAlertDialog()
-                        } else {
-                            goToTelegram(
-                                this@ContactSelectedWithAppsActivity,
-                                currentContact.getFirstPhoneNumber()
-                            )
-                        }
-                    }
-                }
-            }
-
-            messengerIcon.setOnClickListener(buttonListener)
-            whatsappIcon.setOnClickListener(buttonListener)
-            callIcon.setOnClickListener(buttonListener)
-            smsIcon.setOnClickListener(buttonListener)
-            editIcon.setOnClickListener(buttonListener)
-            mailIcon.setOnClickListener(buttonListener)
-            signalIcon.setOnClickListener(buttonListener)
-            telegramIcon.setOnClickListener(buttonListener)
-        }
+//                    }
+//                    smsIcon.id -> {
+//                        val phone = currentContact.getFirstPhoneNumber()
+//                        val i = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null))
+//                        startActivity(i)
+//                    }
+//                    mailIcon.id -> {
+//                        val mail = currentContact.getFirstMail()
+//                        val intent = Intent(Intent.ACTION_SENDTO)
+//                        intent.data = Uri.parse("mailto:")
+//                        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+//                        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+//                        intent.putExtra(Intent.EXTRA_TEXT, "")
+//                        startActivity(intent)
+//                    }
+//                    messengerIcon.id -> {
+//                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+//                            showInAppAlertDialog()
+//                        } else {
+//                            val intent = Intent(
+//                                Intent.ACTION_VIEW,
+//                                Uri.parse("https://www.messenger.com/t/" + currentContact.getMessengerID())
+//                            )
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                            startActivity(intent)
+//                        }
+//                    }
+//                    signalIcon.id -> {
+//                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+//                            showInAppAlertDialog()
+//                        } else {
+//                            goToSignal(this@ContactSelectedWithAppsActivity)
+//                        }
+//                    }
+//                    telegramIcon.id -> {
+//                        if (appsSupportPref?.getBoolean("Apps_Support_Bought", false) == false) {
+//                            showInAppAlertDialog()
+//                        } else {
+//                            goToTelegram(
+//                                this@ContactSelectedWithAppsActivity,
+//                                currentContact.getFirstPhoneNumber()
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//
+//            messengerIcon.setOnClickListener(buttonListener)
+//            whatsappIcon.setOnClickListener(buttonListener)
+//            callIcon.setOnClickListener(buttonListener)
+//            smsIcon.setOnClickListener(buttonListener)
+//            editIcon.setOnClickListener(buttonListener)
+//            mailIcon.setOnClickListener(buttonListener)
+//            signalIcon.setOnClickListener(buttonListener)
+//            telegramIcon.setOnClickListener(buttonListener)
+//        }
     }
 
     private fun randomDefaultImage(avatarId: Int): Int {

@@ -16,10 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 
 /**
@@ -36,10 +34,10 @@ class AddContactToGroupActivity : AppCompatActivity() {
     private var gridViewAdapter: CreateGroupGridViewAdapter? = null
     private var main_RecyclerView: RecyclerView? = null
     private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
-    private var gestionnaireContacts: ContactManager? = null
+//    private var gestionnaireContacts: ContactManager? = null
 
     private val selectContact: MutableList<ContactDB>? = mutableListOf()
-    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
+//    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var groupId: Int = 0
 
@@ -61,7 +59,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
 
         addContactToGroupListView = findViewById(R.id.add_contact_to_group_listview)
 
-        gestionnaireContacts = ContactManager(this.applicationContext)
+//        gestionnaireContacts = ContactManager(this.applicationContext)
         main_GridView = findViewById(R.id.add_contact_to_group_grid_view_id)
         main_RecyclerView = findViewById(R.id.add_contact_to_group_recycler_view_id)
 
@@ -86,14 +84,14 @@ class AddContactToGroupActivity : AppCompatActivity() {
 
         groupId = intent.getIntExtra("GroupId", 0)
         val position = intent.getIntExtra("position", 0)
-        var allContactNotInGroup = listOf<ContactWithAllInformation>()
+//        var allContactNotInGroup = listOf<ContactWithAllInformation>()
         if (groupId != 0)
-            allContactNotInGroup = getContactNotInGroup(groupId)
-        addContactToGroupAdapter =
-            AddContactToGroupAdapter(
-                this,
-                allContactNotInGroup
-            )
+//            allContactNotInGroup = getContactNotInGroup(groupId)
+//        addContactToGroupAdapter =
+//            AddContactToGroupAdapter(
+//                this,
+//                allContactNotInGroup
+//            )
         addContactToGroupListView!!.adapter = addContactToGroupAdapter
 
         if (len <= 1) {
@@ -106,13 +104,13 @@ class AddContactToGroupActivity : AppCompatActivity() {
 
         if (main_GridView!!.visibility != View.GONE) {
 
-            gridViewAdapter =
-                CreateGroupGridViewAdapter(
-                    this,
-                    gestionnaireContacts!!,
-                    len,
-                    allContactNotInGroup
-                )
+//            gridViewAdapter =
+//                CreateGroupGridViewAdapter(
+//                    this,
+//                    gestionnaireContacts!!,
+//                    len,
+//                    allContactNotInGroup
+//                )
             main_GridView!!.adapter = gridViewAdapter
             main_GridView!!.layoutManager = GridLayoutManager(this, len)
             main_GridView!!.recycledViewPool.setMaxRecycledViews(0, 0)
@@ -122,13 +120,13 @@ class AddContactToGroupActivity : AppCompatActivity() {
             edit.apply()
         }
         if (main_RecyclerView!!.visibility != View.GONE) {
-            recyclerViewAdapter =
-                CreateGroupListViewAdapter(
-                    this,
-                    gestionnaireContacts,
-                    len,
-                    allContactNotInGroup
-                )
+//            recyclerViewAdapter =
+//                CreateGroupListViewAdapter(
+//                    this,
+//                    gestionnaireContacts,
+//                    len,
+//                    allContactNotInGroup
+//                )
             main_RecyclerView!!.adapter = recyclerViewAdapter
             main_RecyclerView!!.layoutManager = LinearLayoutManager(this)
             main_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
@@ -157,15 +155,15 @@ class AddContactToGroupActivity : AppCompatActivity() {
         return true
     }
 
-    fun multiSelectItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
-        } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
-        }
-    }
+//    fun multiSelectItemClick(position: Int) {
+//        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+//            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+//            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
+//        } else {
+//            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+//            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
+//        }
+//    }
 
     /**
      * lorsqu'un élément du menu à été selectionner cette méthode est appelé par le système
@@ -216,7 +214,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
 
         while (counter < addContactToGroupAdapter!!.allSelectContact.size) {
             val contact = contactsDatabase?.contactsDao()?.getContact(addContactToGroupAdapter!!.allSelectContact[counter].id!!)
-            contact!!.setIsFavorite(contactsDatabase)
+//            contact!!.setIsFavorite(contactsDatabase)
 
             counter++
         }
@@ -229,19 +227,19 @@ class AddContactToGroupActivity : AppCompatActivity() {
      * @param groupId [Int] //id du groupe dont on veut ajouté des contact
      * @return [List<ContactWithAllInformation>]
      */
-    private fun getContactNotInGroup(groupId: Int): List<ContactWithAllInformation> {
-        val allInGroup = mutableListOf<ContactWithAllInformation>()
-        val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
-        val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
-        allContact.forEach { all ->
-            groupMember.forEach {
-                if (all.contactDB!!.id == it.contactDB!!.id) {
-                    allInGroup.add(all)
-                }
-            }
-        }
-        return allContact.minus(allInGroup)
-    }
+//    private fun getContactNotInGroup(groupId: Int): List<ContactWithAllInformation> {
+//        val allInGroup = mutableListOf<ContactWithAllInformation>()
+//        val groupMember = contactsDatabase!!.contactsDao().getContactForGroup(groupId)
+//        val allContact = contactsDatabase!!.contactsDao().sortContactByFirstNameAZ()
+//        allContact.forEach { all ->
+//            groupMember.forEach {
+//                if (all.contactDB!!.id == it.contactDB!!.id) {
+//                    allInGroup.add(all)
+//                }
+//            }
+//        }
+//        return allContact.minus(allInGroup)
+//    }
 
     /**
      * Retour vers l'activité groupManager

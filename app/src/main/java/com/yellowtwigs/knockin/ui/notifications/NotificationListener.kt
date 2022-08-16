@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.model.data.*
@@ -27,14 +26,13 @@ import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 /**
  * Service qui nous permet de traiter les notifications
  */
 @SuppressLint("OverrideAbstract")
 class NotificationListener : NotificationListenerService() {
     private var database: ContactsDatabase? = null
-    private lateinit var mDbWorkerThread: DbWorkerThread
+//    private lateinit var mDbWorkerThread: DbWorkerThread
     private var oldPosX: Float = 0.0f
     private var oldPosY: Float = 0.0f
     private var popupView: View? = null
@@ -50,8 +48,8 @@ class NotificationListener : NotificationListenerService() {
      */
     override fun onCreate() {
         super.onCreate()
-        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        mDbWorkerThread.start()
+//        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+//        mDbWorkerThread.start()
         database = ContactsDatabase.getDatabase(this)
     }
 
@@ -80,300 +78,300 @@ class NotificationListener : NotificationListenerService() {
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
             val app = convertPackageToString(sbp.appNotifier!!, this)
 
-            val contactManager = ContactManager(this)
+//            val contactManager = ContactManager(this)
             if (message.contains("call") || message.contains("Incoming") || message.contains("Incoming call")
                 || message.contains("Incoming Call") || message.contains("Appel entrant") || message == "appel entrant"
             ) {
 
             } else {
-                val addNotification = Runnable {
-                    val contact: ContactWithAllInformation?
-
-                    if (isPhoneNumber(name)) {
-                        contact = contactManager.getContactFromNumber(name)
-                        if (contact != null)
-                            sbp.changeToContactName(contact)
-                    } else {
-                        contact = contactManager.getContactWithName(name, app)
-                    }
-
-                    val notification = saveNotification(sbp, contactManager.getContactId(name))
-                    if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName &&
-                        sbp.appNotifier != "com.samsung.android.incallui"
-                    ) {
-                        notification.insertNotifications(database!!)
-                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                            if (contact != null) {
-                                when (contact.contactDB?.contactPriority) {
-                                    2 -> {
-                                        val date = DateFormat.getTimeInstance().calendar.time
-                                        val cal = Calendar.getInstance()
-                                        cal.time = date
-                                        val hours = cal.get(Calendar.HOUR_OF_DAY)
-                                        val minutes = cal.get(Calendar.MINUTE)
-                                        val today = cal.get(Calendar.DAY_OF_WEEK)
-
-                                        val vipScheduleValueSharedPreferences =
-                                            getSharedPreferences(
-                                                "VipScheduleValue",
-                                                Context.MODE_PRIVATE
-                                            )
-
-
-
-                                        when (contact.contactDB?.vipSchedule) {
-                                            1 -> {
-                                                vipNotificationsDeployment(sbp, sbn, contact)
-                                            }
-                                            2 -> {
-                                                val startTime =
-                                                    convertTimeToStartTime(contact.contactDB?.hourLimitForNotification.toString())
-                                                val hourStart = convertTimeToHour(startTime)
-                                                val minutesStart =
-                                                    convertTimeToMinutes(startTime)
-
-                                                val endTime =
-                                                    convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
-                                                val hourEnd = convertTimeToHour(endTime)
-                                                val minutesEnd = convertTimeToMinutes(endTime)
-
-                                                if (today in 1..4 || today == 7) {
-                                                    if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
-                                                        if (hourStart.toInt() == hours) {
-                                                            if (minutes >= minutesStart.toInt()) {
-                                                                if (hourEnd.toInt() == hours) {
-                                                                    if (minutes <= minutesEnd.toInt()) {
-                                                                        vipNotificationsDeployment(
-                                                                            sbp,
-                                                                            sbn,
-                                                                            contact
-                                                                        )
-                                                                    }
-                                                                } else {
-                                                                    vipNotificationsDeployment(
-                                                                        sbp,
-                                                                        sbn,
-                                                                        contact
-                                                                    )
-                                                                }
-                                                            }
-                                                        } else if (hourEnd.toInt() == hours) {
-                                                            if (minutes <= minutesEnd.toInt()) {
-                                                                vipNotificationsDeployment(
-                                                                    sbp,
-                                                                    sbn,
-                                                                    contact
-                                                                )
-                                                            }
-                                                        } else {
-                                                            vipNotificationsDeployment(
-                                                                sbp,
-                                                                sbn,
-                                                                contact
-                                                            )
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            3 -> {
-                                                if (today == 5 || today == 6) {
-                                                    vipNotificationsDeployment(sbp, sbn, contact)
-                                                }
-                                            }
-                                            4 -> {
-                                                val startTime =
-                                                    convertTimeToStartTime(contact.contactDB?.hourLimitForNotification.toString())
-                                                val hourStart = convertTimeToHour(startTime)
-                                                val minutesStart =
-                                                    convertTimeToMinutes(startTime)
-
-                                                val endTime =
-                                                    convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
-                                                val hourEnd = convertTimeToHour(endTime)
-                                                val minutesEnd = convertTimeToMinutes(endTime)
-                                                if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
-                                                    if (hourStart.toInt() == hours) {
-                                                        if (minutes >= minutesStart.toInt()) {
-                                                            if (hourEnd.toInt() == hours) {
-                                                                if (minutes <= minutesEnd.toInt()) {
-                                                                    vipNotificationsDeployment(
-                                                                        sbp,
-                                                                        sbn,
-                                                                        contact
-                                                                    )
-                                                                }
-                                                            } else {
-                                                                vipNotificationsDeployment(
-                                                                    sbp,
-                                                                    sbn,
-                                                                    contact
-                                                                )
-                                                            }
-                                                        }
-                                                    } else if (hourEnd.toInt() == hours) {
-                                                        if (minutes <= minutesEnd.toInt()) {
-                                                            vipNotificationsDeployment(
-                                                                sbp,
-                                                                sbn,
-                                                                contact
-                                                            )
-                                                        }
-                                                    } else {
-                                                        vipNotificationsDeployment(
-                                                            sbp,
-                                                            sbn,
-                                                            contact
-                                                        )
-                                                    }
-                                                }
-                                            }
-                                            else -> {
-                                                if (vipScheduleValueSharedPreferences.getBoolean(
-                                                        "VipScheduleValue",
-                                                        false
-                                                    )
-                                                ) {
-                                                    if (today == 5 || today == 6) {
-                                                        val notificationsHour =
-                                                            getSharedPreferences(
-                                                                "TeleworkingReminder",
-                                                                Context.MODE_PRIVATE
-                                                            ).getString("TeleworkingReminder", "")
-                                                        val startTime =
-                                                            convertTimeToStartTime(notificationsHour!!)
-                                                        val hourStart = convertTimeToHour(startTime)
-                                                        val minutesStart =
-                                                            convertTimeToMinutes(startTime)
-
-                                                        val endTime =
-                                                            convertTimeToEndTime(notificationsHour)
-                                                        val hourEnd = convertTimeToHour(endTime)
-                                                        val minutesEnd =
-                                                            convertTimeToMinutes(endTime)
-
-
-                                                        if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
-                                                            if (hourStart.toInt() == hours) {
-                                                                if (minutes >= minutesStart.toInt()) {
-                                                                    if (hourEnd.toInt() == hours) {
-                                                                        if (minutes <= minutesEnd.toInt()) {
-                                                                            vipNotificationsDeployment(
-                                                                                sbp,
-                                                                                sbn,
-                                                                                contact
-                                                                            )
-                                                                        }
-                                                                    } else {
-                                                                        vipNotificationsDeployment(
-                                                                            sbp,
-                                                                            sbn,
-                                                                            contact
-                                                                        )
-                                                                    }
-                                                                }
-                                                            } else if (hourEnd.toInt() == hours) {
-                                                                if (minutes <= minutesEnd.toInt()) {
-                                                                    vipNotificationsDeployment(
-                                                                        sbp,
-                                                                        sbn,
-                                                                        contact
-                                                                    )
-                                                                }
-                                                            } else {
-                                                                vipNotificationsDeployment(
-                                                                    sbp,
-                                                                    sbn,
-                                                                    contact
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                } else {
-                                                    vipNotificationsDeployment(sbp, sbn, contact)
-                                                }
-                                            }
-                                        }
-                                    }
-                                    1 -> {
-                                    }
-                                    0 -> {
-                                        this.cancelAllNotifications()
-                                        cancelWhatsappNotif(sbn)
-                                    }
-                                }
-                            } else {
-                                if (sbn.key.contains("whatsapp")) {
-                                    cancelWhatsappNotif(sbn)
-                                } else {
-                                    if (sbn.packageName == OUTLOOK_PACKAGE || sbn.packageName == GMAIL_PACKAGE) {
-
-                                    } else {
-                                        if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE) {
-                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                                var i = 0
-                                                val vipNotif = VipNotificationsDB(
-                                                    null,
-                                                    sbp.id,
-                                                    sbp.appNotifier!!,
-                                                    sbp.tailleList,
-                                                    sbp.tickerText!!
-                                                )
-                                                val notifId =
-                                                    database!!.VipNotificationsDao()
-                                                        .insert(vipNotif)
-                                                while (i < sbp.key.size) {
-                                                    if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
-                                                        val VipSbn = VipSbnDB(
-                                                            null,
-                                                            notifId!!.toInt(),
-                                                            sbp.key[i],
-                                                            sbp.statusBarNotificationInfo[sbp.key[i]].toString()
-                                                        )
-                                                        database!!.VipSbnDao()
-                                                            .insert(VipSbn)
-                                                    }
-                                                    i++
-                                                }
-                                            }
-                                            val screenListener: KeyguardManager =
-                                                this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                                            if (screenListener.isKeyguardLocked) {
-                                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                                    this.cancelNotification(sbn.key)
-                                                    cancelWhatsappNotif(sbn)
-                                                    displayLayoutWithSharedPreferences(
-                                                        sbp,
-                                                        null
-                                                    )
-                                                } else {
-                                                    val i = Intent(
-                                                        this@NotificationListener,
-                                                        NotificationAlarmActivity::class.java
-                                                    )
-                                                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                                    i.putExtra("notification", sbp)
-                                                    this.cancelNotification(sbn.key)
-                                                    cancelWhatsappNotif(sbn)
-                                                    startActivity(i)
-                                                }
-                                            } else {
-                                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                                    this.cancelNotification(sbn.key)
-                                                    cancelWhatsappNotif(sbn)
-                                                }
-                                                displayLayoutWithSharedPreferences(
-                                                    sbp,
-                                                    null
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                mDbWorkerThread.postTask(addNotification)
+//                val addNotification = Runnable {
+////                    val contact: ContactWithAllInformation?
+//
+////                    if (isPhoneNumber(name)) {
+////                        contact = contactManager.getContactFromNumber(name)
+////                        if (contact != null)
+////                            sbp.changeToContactName(contact)
+////                    } else {
+////                        contact = contactManager.getContactWithName(name, app)
+////                    }
+//
+//                    val notification = saveNotification(sbp, contactManager.getContactId(name))
+//                    if (notification != null && notificationNotDouble(notification) && sbp.appNotifier != this.packageName &&
+//                        sbp.appNotifier != "com.samsung.android.incallui"
+//                    ) {
+////                        notification.insertNotifications(database!!)
+//                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+//                            if (contact != null) {
+//                                when (contact.contactDB?.contactPriority) {
+//                                    2 -> {
+//                                        val date = DateFormat.getTimeInstance().calendar.time
+//                                        val cal = Calendar.getInstance()
+//                                        cal.time = date
+//                                        val hours = cal.get(Calendar.HOUR_OF_DAY)
+//                                        val minutes = cal.get(Calendar.MINUTE)
+//                                        val today = cal.get(Calendar.DAY_OF_WEEK)
+//
+//                                        val vipScheduleValueSharedPreferences =
+//                                            getSharedPreferences(
+//                                                "VipScheduleValue",
+//                                                Context.MODE_PRIVATE
+//                                            )
+//
+//
+//
+//                                        when (contact.contactDB?.vipSchedule) {
+//                                            1 -> {
+//                                                vipNotificationsDeployment(sbp, sbn, contact)
+//                                            }
+//                                            2 -> {
+//                                                val startTime =
+//                                                    convertTimeToStartTime(contact.contactDB?.hourLimitForNotification.toString())
+//                                                val hourStart = convertTimeToHour(startTime)
+//                                                val minutesStart =
+//                                                    convertTimeToMinutes(startTime)
+//
+//                                                val endTime =
+//                                                    convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
+//                                                val hourEnd = convertTimeToHour(endTime)
+//                                                val minutesEnd = convertTimeToMinutes(endTime)
+//
+//                                                if (today in 1..4 || today == 7) {
+//                                                    if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
+//                                                        if (hourStart.toInt() == hours) {
+//                                                            if (minutes >= minutesStart.toInt()) {
+//                                                                if (hourEnd.toInt() == hours) {
+//                                                                    if (minutes <= minutesEnd.toInt()) {
+//                                                                        vipNotificationsDeployment(
+//                                                                            sbp,
+//                                                                            sbn,
+//                                                                            contact
+//                                                                        )
+//                                                                    }
+//                                                                } else {
+//                                                                    vipNotificationsDeployment(
+//                                                                        sbp,
+//                                                                        sbn,
+//                                                                        contact
+//                                                                    )
+//                                                                }
+//                                                            }
+//                                                        } else if (hourEnd.toInt() == hours) {
+//                                                            if (minutes <= minutesEnd.toInt()) {
+//                                                                vipNotificationsDeployment(
+//                                                                    sbp,
+//                                                                    sbn,
+//                                                                    contact
+//                                                                )
+//                                                            }
+//                                                        } else {
+//                                                            vipNotificationsDeployment(
+//                                                                sbp,
+//                                                                sbn,
+//                                                                contact
+//                                                            )
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                            3 -> {
+//                                                if (today == 5 || today == 6) {
+//                                                    vipNotificationsDeployment(sbp, sbn, contact)
+//                                                }
+//                                            }
+//                                            4 -> {
+//                                                val startTime =
+//                                                    convertTimeToStartTime(contact.contactDB?.hourLimitForNotification.toString())
+//                                                val hourStart = convertTimeToHour(startTime)
+//                                                val minutesStart =
+//                                                    convertTimeToMinutes(startTime)
+//
+//                                                val endTime =
+//                                                    convertTimeToEndTime(contact.contactDB?.hourLimitForNotification.toString())
+//                                                val hourEnd = convertTimeToHour(endTime)
+//                                                val minutesEnd = convertTimeToMinutes(endTime)
+//                                                if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
+//                                                    if (hourStart.toInt() == hours) {
+//                                                        if (minutes >= minutesStart.toInt()) {
+//                                                            if (hourEnd.toInt() == hours) {
+//                                                                if (minutes <= minutesEnd.toInt()) {
+//                                                                    vipNotificationsDeployment(
+//                                                                        sbp,
+//                                                                        sbn,
+//                                                                        contact
+//                                                                    )
+//                                                                }
+//                                                            } else {
+//                                                                vipNotificationsDeployment(
+//                                                                    sbp,
+//                                                                    sbn,
+//                                                                    contact
+//                                                                )
+//                                                            }
+//                                                        }
+//                                                    } else if (hourEnd.toInt() == hours) {
+//                                                        if (minutes <= minutesEnd.toInt()) {
+//                                                            vipNotificationsDeployment(
+//                                                                sbp,
+//                                                                sbn,
+//                                                                contact
+//                                                            )
+//                                                        }
+//                                                    } else {
+//                                                        vipNotificationsDeployment(
+//                                                            sbp,
+//                                                            sbn,
+//                                                            contact
+//                                                        )
+//                                                    }
+//                                                }
+//                                            }
+//                                            else -> {
+//                                                if (vipScheduleValueSharedPreferences.getBoolean(
+//                                                        "VipScheduleValue",
+//                                                        false
+//                                                    )
+//                                                ) {
+//                                                    if (today == 5 || today == 6) {
+//                                                        val notificationsHour =
+//                                                            getSharedPreferences(
+//                                                                "TeleworkingReminder",
+//                                                                Context.MODE_PRIVATE
+//                                                            ).getString("TeleworkingReminder", "")
+//                                                        val startTime =
+//                                                            convertTimeToStartTime(notificationsHour!!)
+//                                                        val hourStart = convertTimeToHour(startTime)
+//                                                        val minutesStart =
+//                                                            convertTimeToMinutes(startTime)
+//
+//                                                        val endTime =
+//                                                            convertTimeToEndTime(notificationsHour)
+//                                                        val hourEnd = convertTimeToHour(endTime)
+//                                                        val minutesEnd =
+//                                                            convertTimeToMinutes(endTime)
+//
+//
+//                                                        if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
+//                                                            if (hourStart.toInt() == hours) {
+//                                                                if (minutes >= minutesStart.toInt()) {
+//                                                                    if (hourEnd.toInt() == hours) {
+//                                                                        if (minutes <= minutesEnd.toInt()) {
+//                                                                            vipNotificationsDeployment(
+//                                                                                sbp,
+//                                                                                sbn,
+//                                                                                contact
+//                                                                            )
+//                                                                        }
+//                                                                    } else {
+//                                                                        vipNotificationsDeployment(
+//                                                                            sbp,
+//                                                                            sbn,
+//                                                                            contact
+//                                                                        )
+//                                                                    }
+//                                                                }
+//                                                            } else if (hourEnd.toInt() == hours) {
+//                                                                if (minutes <= minutesEnd.toInt()) {
+//                                                                    vipNotificationsDeployment(
+//                                                                        sbp,
+//                                                                        sbn,
+//                                                                        contact
+//                                                                    )
+//                                                                }
+//                                                            } else {
+//                                                                vipNotificationsDeployment(
+//                                                                    sbp,
+//                                                                    sbn,
+//                                                                    contact
+//                                                                )
+//                                                            }
+//                                                        }
+//                                                    }
+//                                                } else {
+//                                                    vipNotificationsDeployment(sbp, sbn, contact)
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                    1 -> {
+//                                    }
+//                                    0 -> {
+//                                        this.cancelAllNotifications()
+//                                        cancelWhatsappNotif(sbn)
+//                                    }
+//                                }
+//                            } else {
+//                                if (sbn.key.contains("whatsapp")) {
+//                                    cancelWhatsappNotif(sbn)
+//                                } else {
+//                                    if (sbn.packageName == OUTLOOK_PACKAGE || sbn.packageName == GMAIL_PACKAGE) {
+//
+//                                    } else {
+//                                        if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE) {
+//                                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+//                                                var i = 0
+//                                                val vipNotif = VipNotificationsDB(
+//                                                    null,
+//                                                    sbp.id,
+//                                                    sbp.appNotifier!!,
+//                                                    sbp.tailleList,
+//                                                    sbp.tickerText!!
+//                                                )
+//                                                val notifId =
+//                                                    database!!.VipNotificationsDao()
+//                                                        .insert(vipNotif)
+//                                                while (i < sbp.key.size) {
+//                                                    if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
+//                                                        val VipSbn = VipSbnDB(
+//                                                            null,
+//                                                            notifId!!.toInt(),
+//                                                            sbp.key[i],
+//                                                            sbp.statusBarNotificationInfo[sbp.key[i]].toString()
+//                                                        )
+//                                                        database!!.VipSbnDao()
+//                                                            .insert(VipSbn)
+//                                                    }
+//                                                    i++
+//                                                }
+//                                            }
+//                                            val screenListener: KeyguardManager =
+//                                                this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+//                                            if (screenListener.isKeyguardLocked) {
+//                                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+//                                                    this.cancelNotification(sbn.key)
+//                                                    cancelWhatsappNotif(sbn)
+//                                                    displayLayoutWithSharedPreferences(
+//                                                        sbp,
+//                                                        null
+//                                                    )
+//                                                } else {
+//                                                    val i = Intent(
+//                                                        this@NotificationListener,
+//                                                        NotificationAlarmActivity::class.java
+//                                                    )
+//                                                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                                                    i.putExtra("notification", sbp)
+//                                                    this.cancelNotification(sbn.key)
+//                                                    cancelWhatsappNotif(sbn)
+//                                                    startActivity(i)
+//                                                }
+//                                            } else {
+//                                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+//                                                    this.cancelNotification(sbn.key)
+//                                                    cancelWhatsappNotif(sbn)
+//                                                }
+//                                                displayLayoutWithSharedPreferences(
+//                                                    sbp,
+//                                                    null
+//                                                )
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                mDbWorkerThread.postTask(addNotification)
             }
         }
     }
@@ -489,7 +487,7 @@ class NotificationListener : NotificationListenerService() {
     private fun vipNotificationsDeployment(
         sbp: StatusBarParcelable,
         sbn: StatusBarNotification,
-        contact: ContactWithAllInformation
+        contact: ContactDB
     ) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             var i = 0
@@ -543,10 +541,10 @@ class NotificationListener : NotificationListenerService() {
         } else {
             this.cancelNotification(sbn.key)
             cancelWhatsappNotif(sbn)
-            displayLayoutWithSharedPreferences(
-                sbp,
-                contact.contactDB!!
-            )
+//            displayLayoutWithSharedPreferences(
+//                sbp,
+//                contact.contactDB!!
+//            )
         }
     }
 
@@ -563,11 +561,11 @@ class NotificationListener : NotificationListenerService() {
         }
 
         if (appNotifiable(sbp) && sharedPreferences.getBoolean("popupNotif", false)) {
-            if (adapterNotification == null) {
-                val edit = sharedPreferences.edit()
-                edit.putBoolean("view", false)
-                edit.apply()
-            }
+//            if (adapterNotification == null) {
+//                val edit = sharedPreferences.edit()
+//                edit.putBoolean("view", false)
+//                edit.apply()
+//            }
             if (!sharedPreferences.getBoolean("view", false)) {
                 popupView = null
                 val edit = sharedPreferences.edit()
@@ -575,7 +573,7 @@ class NotificationListener : NotificationListenerService() {
                 edit.apply()
                 displayLayout(sbp, contactDB)
             } else {
-                adapterNotification?.addNotification(sbp)
+//                adapterNotification?.addNotification(sbp)
             }
         }
     }
@@ -652,12 +650,12 @@ class NotificationListener : NotificationListenerService() {
                 val view = inflater.inflate(R.layout.layout_notification_pop_up, null)
                 val notifications: ArrayList<StatusBarParcelable> = ArrayList()
                 notifications.add(sbp)
-                adapterNotification = NotifPopupRecyclerViewAdapter(
-                    applicationContext,
-                    notifications,
-                    windowManager!!,
-                    view
-                )
+//                adapterNotification = NotifPopupRecyclerViewAdapter(
+//                    applicationContext,
+//                    notifications,
+//                    windowManager!!,
+//                    view
+//                )
                 val edit = sharedPreferences.edit()
                 edit.putBoolean("first_notif", false)
                 edit.apply()
@@ -701,16 +699,16 @@ class NotificationListener : NotificationListenerService() {
         notifications.add(sbp)
         notificationPopupRecyclerView = view?.findViewById(R.id.notification_popup_recycler_view)
         notificationPopupRecyclerView?.layoutManager = LinearLayoutManager(applicationContext)
-        adapterNotification = NotifPopupRecyclerViewAdapter(
-            applicationContext,
-            notifications,
-            windowManager!!,
-            view!!
-        )
-        notificationPopupRecyclerView?.adapter = adapterNotification
+//        adapterNotification = NotifPopupRecyclerViewAdapter(
+//            applicationContext,
+//            notifications,
+//            windowManager!!,
+//            view!!
+//        )
+//        notificationPopupRecyclerView?.adapter = adapterNotification
 
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
-        itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
+//        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotification))
+//        itemTouchHelper.attachToRecyclerView(notificationPopupRecyclerView)
 
         if (contactDB != null) {
             if (contactDB.isCustomSound == 1) {
@@ -724,11 +722,11 @@ class NotificationListener : NotificationListenerService() {
             alarmSound?.stop()
         }
 
-        if (adapterNotification?.isClose == true) {
-            alarmSound?.stop()
-        }
+//        if (adapterNotification?.isClose == true) {
+//            alarmSound?.stop()
+//        }
 
-        val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
+        val imgClose = view?.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE
         imgClose.setOnClickListener {
             windowManager?.removeView(view)
@@ -794,7 +792,6 @@ class NotificationListener : NotificationListenerService() {
 
         var alarmSound: MediaPlayer? = null
 
-        @SuppressLint("StaticFieldLeak")
-        var adapterNotification: NotifPopupRecyclerViewAdapter? = null
+//        var adapterNotification: NotifPopupRecyclerViewAdapter? = null
     }
 }

@@ -32,11 +32,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
@@ -105,11 +103,7 @@ class CockpitActivity : AppCompatActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_contacts -> {
-                    startActivity(
-                        Intent(this@CockpitActivity, Main2Activity::class.java).addFlags(
-                            Intent.FLAG_ACTIVITY_NO_ANIMATION
-                        )
-                    )
+
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_groups -> {
@@ -131,12 +125,7 @@ class CockpitActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_notifcations -> {
-                    startActivity(
-                        Intent(
-                            this@CockpitActivity,
-                            NotificationHistoryActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
+
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_cockpit -> {
@@ -261,12 +250,7 @@ class CockpitActivity : AppCompatActivity() {
             cockpit_DrawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_home -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        Main2Activity::class.java
-                    )
-                )
+
                 R.id.nav_notif_config -> startActivity(
                     Intent(
                         this@CockpitActivity,

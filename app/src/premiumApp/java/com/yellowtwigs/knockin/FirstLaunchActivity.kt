@@ -33,30 +33,30 @@ class FirstLaunchActivity : AppCompatActivity() {
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
         val edit = sharedFirstLaunch.edit()
 
-        if (sharedFirstLaunch.getBoolean("first_launch", false)) {
-            startActivity(Intent(this@FirstLaunchActivity, MainActivity::class.java))
-            finish()
-        }
+//        if (sharedFirstLaunch.getBoolean("first_launch", false)) {
+//            startActivity(Intent(this@FirstLaunchActivity, MainActivity::class.java))
+//            finish()
+//        }
 
         //endregion
 
         val buttonAccept: Button = findViewById(R.id.first_launch_accept_politique)
         val textView = findViewById<TextView>(R.id.first_launch_welcome)
-        textView.setText(
-            String.format(
-                getString(
-                    R.string.first_launch_welcome,
-                    getString(R.string.app_name)
-                )
-            )
-        )
+//        textView.setText(
+//            String.format(
+//                getString(
+//                    R.string.first_launch_welcome,
+//                    getString(R.string.app_name)
+//                )
+//            )
+//        )
         val textViewCLUF = findViewById<TextView>(R.id.first_launch_politique)
         textViewCLUF.movementMethod = LinkMovementMethod.getInstance()
 
         buttonAccept.setOnClickListener {
             edit.putBoolean("first_launch", true)
             edit.apply()
-            startActivity(Intent(this@FirstLaunchActivity, StartActivity::class.java))
+//            startActivity(Intent(this@FirstLaunchActivity, StartActivity::class.java))
             finish()
         }
     }

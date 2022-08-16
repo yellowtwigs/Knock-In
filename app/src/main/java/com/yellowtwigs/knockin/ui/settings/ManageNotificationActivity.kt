@@ -25,11 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
-import com.yellowtwigs.knockin.model.ContactsDatabase
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
-import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
+import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
@@ -150,7 +147,7 @@ class ManageNotificationActivity : AppCompatActivity() {
                     if (settings_NotificationMessagesAlarmSound != null) {
                         settings_NotificationMessagesAlarmSound!!.stop()
                     }
-                    startActivity(Intent(this@ManageNotificationActivity, Main2Activity::class.java))
+//                    startActivity(Intent(this@ManageNotificationActivity, Main2Activity::class.java))
                 }
                 R.id.nav_manage_screen -> {
 
@@ -350,31 +347,31 @@ class ManageNotificationActivity : AppCompatActivity() {
         switch1To0.isChecked = switch1To0Checked.getBoolean("switch1To0Checked", false)
         switch1To0.setOnCheckedChangeListener { button, isChecked ->
             if (isChecked) {
-                val contactManager = ContactManager(this.applicationContext)
-                for (contact in contactManager.contactList) {
-                    if (contact.contactDB?.contactPriority == 1) {
-                        contact.setPriority(ContactsDatabase.getDatabase(this), 0)
-                    }
-                }
-                val edit = switch1To0Checked.edit()
-                edit.putBoolean("switch1To0Checked", true)
-                edit.apply()
+//                val contactManager = ContactManager(this.applicationContext)
+//                for (contact in contactManager.contactList) {
+//                    if (contact.contactDB?.contactPriority == 1) {
+//                        contact.setPriority(ContactsDatabase.getDatabase(this), 0)
+//                    }
+//                }
+//                val edit = switch1To0Checked.edit()
+//                edit.putBoolean("switch1To0Checked", true)
+//                edit.apply()
             } else {
-                val contactManager = ContactManager(this.applicationContext)
-                for (contact in contactManager.contactList) {
-                    if (contact.contactDB?.contactPriority == 0) {
-                        contact.setPriority(ContactsDatabase.getDatabase(this), 1)
-                    }
-                }
-                val edit = switch1To0Checked.edit()
-                edit.putBoolean("switch1To0Checked", false)
-                edit.apply()
+//                val contactManager = ContactManager(this.applicationContext)
+//                for (contact in contactManager.contactList) {
+//                    if (contact.contactDB?.contactPriority == 0) {
+//                        contact.setPriority(ContactsDatabase.getDatabase(this), 1)
+//                    }
+//                }
+//                val edit = switch1To0Checked.edit()
+//                edit.putBoolean("switch1To0Checked", false)
+//                edit.apply()
             }
         }
 
         val multiSelectVipButton = findViewById<AppCompatImageView>(R.id.vip_multi_select_button)
         multiSelectVipButton.setOnClickListener {
-            startActivity(Intent(this@ManageNotificationActivity, MultiSelectActivity::class.java))
+            startActivity(Intent(this@ManageNotificationActivity, FirstVipSelectionActivity::class.java))
         }
     }
 

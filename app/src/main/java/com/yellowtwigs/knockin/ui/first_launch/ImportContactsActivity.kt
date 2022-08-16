@@ -14,9 +14,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.model.data.ContactDB
 
 /**
@@ -26,8 +24,6 @@ import com.yellowtwigs.knockin.model.data.ContactDB
 class ImportContactsActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
-
-    private lateinit var main_mDbWorkerThread: DbWorkerThread
 
     private var import_contacts_activity_ImportContacts: MaterialButton? = null
     private var import_contacts_activity_Permissions: MaterialButton? = null
@@ -66,10 +62,6 @@ class ImportContactsActivity : AppCompatActivity() {
 
         //endregion
 
-        main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        main_mDbWorkerThread.start()
-
-
         //region Listener
 
         import_contacts_activity_ImportContacts!!.setOnClickListener {
@@ -100,7 +92,7 @@ class ImportContactsActivity : AppCompatActivity() {
 
         //Bouton qui apparait lorsque tout les autorisation ont un check. Lors du click affichage d'un alertDialog d'information
         import_contacts_activity_Next!!.setOnClickListener {
-            val intent = Intent(this@ImportContactsActivity, Main2Activity::class.java)
+//            val intent = Intent(this@ImportContactsActivity, Main2Activity::class.java)
             intent.putExtra("fromStartActivity", true)
             startActivity(intent)
             finish()
@@ -113,58 +105,8 @@ class ImportContactsActivity : AppCompatActivity() {
         //endregion
     }
 
-    /**
-     *Méthode appellé par le système lorsque l'utilisateur a accepté ou refuser une demande de permission
-     */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == REQUEST_CODE_READ_CONTACT) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
-                val sync = Runnable {
-                    ContactManager(this).getAllContactsInfoSync(contentResolver)
-
-                    val sharedPreferencesSync = getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
-                    var index = 1
-                    var stringSet = listOf<String>()
-                    if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
-                    arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
-                    while (sharedPreferencesSync.getStringSet(index.toString(), null) != null && stringSet.isNotEmpty()) {
-                        stringSet = sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
-                        index++
-                    }
-
-                    val runnable = Runnable {
-                        import_contacts_activity_ImportContactsLoading!!.visibility = View.INVISIBLE
-                        import_contacts_activity_import_contacts_check!!.visibility = View.VISIBLE
-                        allIsChecked()
-                    }
-                    runOnUiThread(runnable)
-                }
-                main_mDbWorkerThread.postTask(sync)
-            } else {
-                import_contacts_activity_ImportContactsLoading!!.visibility = View.INVISIBLE
-                import_contacts_activity_ImportContacts!!.visibility = View.VISIBLE
-            }
-        }
-
-        if (REQUEST_CODE_SMS_AND_CALL == requestCode) {
-
-            import_contacts_activity_PermissionsLoading!!.visibility = View.INVISIBLE
-            import_contacts_activity_import_contacts_check!!.visibility = View.VISIBLE
-        }
-        allIsChecked()
-    }
-
-    /**
-     *méthode qui lance  l'activity Tutorial
-     */
     fun intentToTutorial() {
-        val intent = Intent(this@ImportContactsActivity, Main2Activity::class.java)
-        intent.putExtra("fromImportContact", true)
-        startActivity(intent)
         finish()
     }
 
@@ -218,9 +160,6 @@ class ImportContactsActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.alert_dialog_later)
                 { _, _ ->
                     closeContextMenu()
-                    val intent = Intent(this@ImportContactsActivity, Main2Activity::class.java)
-                    intent.putExtra("fromStartActivity", true)
-                    startActivity(intent)
                     finish()
                 }
                 .show()
@@ -241,9 +180,6 @@ class ImportContactsActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.start_activity_skip_alert_dialog_title))
                 .setMessage(message)
                 .setPositiveButton(R.string.start_activity_skip_alert_dialog_positive_button) { _, _ ->
-                    val intent = Intent(this@ImportContactsActivity, Main2Activity::class.java)
-                    intent.putExtra("fromStartActivity", true)
-                    startActivity(intent)
                     val sharedPreferences: SharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
                     val edit: SharedPreferences.Editor = sharedPreferences.edit()
                     edit.putBoolean("view", true)

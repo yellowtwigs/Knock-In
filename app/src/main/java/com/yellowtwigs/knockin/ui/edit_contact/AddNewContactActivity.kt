@@ -32,7 +32,6 @@ import com.yellowtwigs.knockin.model.data.LinkContactGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 
 /**
@@ -56,7 +55,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var add_new_contact_PhoneProperty: Spinner? = null
     private var add_new_contact_MailProperty: Spinner? = null
     private var add_new_contact_PriorityExplain: TextView? = null
-    private var gestionnaireContacts: ContactManager? = null
+//    private var gestionnaireContacts: ContactManager? = null
     private var avatar: Int = 0
 
     private var add_new_contact_Return: AppCompatImageView? = null
@@ -69,7 +68,6 @@ class AddNewContactActivity : AppCompatActivity() {
 
     // Database && Thread
     private var add_new_contact_ContactsDatabase: ContactsDatabase? = null
-    private lateinit var main_mDbWorkerThread: DbWorkerThread
 
     //private var REQUEST_CAMERA: Int? = 1
     private var SELECT_FILE: Int? = 0
@@ -104,8 +102,6 @@ class AddNewContactActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         // on init WorkerThread
-        main_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        main_mDbWorkerThread.start()
 
         val sharedNumberOfContactsVIPPreferences: SharedPreferences =
             getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
@@ -118,7 +114,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
         //on get la base de données
         add_new_contact_ContactsDatabase = ContactsDatabase.getDatabase(this)
-        gestionnaireContacts = ContactManager(this.applicationContext)
+//        gestionnaireContacts = ContactManager(this.applicationContext)
 
         //region ========================================== Toolbar =========================================
 
@@ -158,13 +154,13 @@ class AddNewContactActivity : AppCompatActivity() {
             add_new_contact_PhoneNumber!!.editText!!.setText(add_new_contact_phone_number)
         }
 
-        avatar = gestionnaireContacts!!.randomDefaultImage(0, "Create")
-        add_new_contact_RoundedImageView!!.setImageResource(
-            gestionnaireContacts!!.randomDefaultImage(
-                avatar,
-                "Get"
-            )
-        )
+//        avatar = gestionnaireContacts!!.randomDefaultImage(0, "Create")
+//        add_new_contact_RoundedImageView!!.setImageResource(
+//            gestionnaireContacts!!.randomDefaultImage(
+//                avatar,
+//                "Get"
+//            )
+//        )
 
         //region ==================================== SetOnClickListener ====================================
 
@@ -174,8 +170,8 @@ class AddNewContactActivity : AppCompatActivity() {
                     add_new_contact_PhoneNumber
                 ) && isEmptyField(add_new_contact_fixNumber) && isEmptyField(add_new_contact_Email)
             ) {
-                val intent = Intent(this@AddNewContactActivity, Main2Activity::class.java)
-                startActivity(intent)
+//                val intent = Intent(this@AddNewContactActivity, Main2Activity::class.java)
+//                startActivity(intent)
                 finish()
             } else {
                 val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
@@ -184,7 +180,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
                 alertDialog.setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
 
-                    startActivity(Intent(this@AddNewContactActivity, Main2Activity::class.java))
+//                    startActivity(Intent(this@AddNewContactActivity, Main2Activity::class.java))
                     finish()
                 }
 
@@ -202,309 +198,309 @@ class AddNewContactActivity : AppCompatActivity() {
                 .show()
         }
 
-        add_new_contact_Validate!!.setOnClickListener {
-            var defaultTone = R.raw.sms_ring
-            //            add_new_contact_Mail_Identifier!!.editText!!.text.toString()
-
-            if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.add_new_contact_first_name_empty_field),
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                if (add_new_contact_Priority!!.selectedItemPosition == 2) {
-                    if (nb_Contacts_VIP > 4 && contactsUnlimitedIsBought == false) {
-                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                            .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
-                            .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
-                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(
-                                    Intent(
-                                        this@AddNewContactActivity,
-                                        PremiumActivity::class.java
-                                    )
-                                )
-                                finish()
-                            }
-                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                            }
-                            .show()
-                    } else {
-                        val edit: SharedPreferences.Editor =
-                            sharedNumberOfContactsVIPPreferences.edit()
-                        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
-                        edit.apply()
-                        var notificatio_tone = R.raw.sms_ring
-                        val printContacts = Runnable {
-                            //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                            val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(
-                                add_new_contact_PhoneProperty!!.selectedItem.toString(),
-                                this
-                            )
-                            val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(
-                                add_new_contact_MailProperty!!.selectedItem.toString(),
-                                add_new_contact_Email!!.editText!!.text.toString(),
-                                this
-                            )
-
-                            val contactData = ContactDB(
-                                null,
-                                add_new_contact_FirstName!!.editText!!.text.toString(),
-                                add_new_contact_LastName!!.editText!!.text.toString(),
-                                add_new_contact_Mail_Identifier!!.editText!!.text.toString(),
-                                avatar,
-                                add_new_contact_Priority!!.selectedItemPosition,
-                                add_new_contact_ImgString!!,
-                                0,
-                                "",
-                                0,
-                                "",
-                                defaultTone,
-                                0,
-                                1,
-                                "",
-                                "",
-                                0,
-                                0
-                            )
-
-
-                            println(contactData)
-                            var isDuplicate = false
-                            val allcontacts =
-                                add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
-                            allcontacts?.forEach { contactsDB ->
-                                if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
-                                    isDuplicate = true
-                            }
-
-                            if (!isDuplicate) {
-
-                                val contactId = add_new_contact_ContactsDatabase?.contactsDao()
-                                    ?.insert(contactData)
-
-                                var contactDetailDB: ContactDetailDB
-                                if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                                    contactDetailDB = ContactDetailDB(
-                                        null,
-                                        contactId!!.toInt(),
-                                        "" +
-                                                add_new_contact_PhoneNumber!!.editText!!.text.toString(),
-                                        "phone",
-                                        spinnerChar,
-                                        0
-                                    )
-                                    add_new_contact_ContactsDatabase?.contactDetailsDao()
-                                        ?.insert(contactDetailDB)
-                                }
-                                if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
-                                    contactDetailDB = ContactDetailDB(
-                                        null,
-                                        contactId!!.toInt(),
-                                        "" +
-                                                add_new_contact_fixNumber!!.editText!!.text.toString(),
-                                        "phone",
-                                        spinnerChar,
-                                        1
-                                    )
-                                    add_new_contact_ContactsDatabase?.contactDetailsDao()
-                                        ?.insert(contactDetailDB)
-                                }
-                                if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                                    contactDetailDB = ContactDetailDB(
-                                        null,
-                                        contactId!!.toInt(),
-                                        "" +
-                                                add_new_contact_Email!!.editText!!.text.toString(),
-                                        "mail",
-                                        mailSpinnerChar,
-                                        2
-                                    )
-                                    add_new_contact_ContactsDatabase?.contactDetailsDao()
-                                        ?.insert(contactDetailDB)
-                                }
-
-                                if (isFavorite) {
-                                    addToFavorite(contactId!!.toInt())
-                                }
-
-                                val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-                                    type = ContactsContract.RawContacts.CONTENT_TYPE
-                                }
-                                intent.apply {
-                                    putExtra(
-                                        ContactsContract.Intents.Insert.NAME,
-                                        add_new_contact_FirstName?.editText!!.text.toString()
-                                                + " " + add_new_contact_LastName?.editText!!.text.toString()
-                                    )
-
-                                    putExtra(
-                                        ContactsContract.Intents.Insert.EMAIL,
-                                        add_new_contact_Email?.editText!!.text.toString()
-                                    )
-                                    putExtra(
-                                        ContactsContract.Intents.Insert.EMAIL_TYPE,
-                                        ContactsContract.CommonDataKinds.Email.TYPE_WORK
-                                    )
-                                    putExtra(
-                                        ContactsContract.Contacts.Photo.PHOTO,
-                                        add_new_contact_ImgString!!
-                                    )
-                                    putExtra(
-                                        ContactsContract.Intents.Insert.PHONE,
-                                        add_new_contact_PhoneNumber?.editText!!.text.toString()
-                                    )
-                                    putExtra(
-                                        ContactsContract.Intents.Insert.PHONE_TYPE,
-                                        ContactsContract.CommonDataKinds.Phone.TYPE_WORK
-                                    )
-                                }
-                                isRetroFit = true
-                                startActivity(intent)
-                            } else {
-                                confirmationDuplicate(contactData)
-                            }
-                        }
-                        main_mDbWorkerThread.postTask(printContacts)
-                    }
-                } else {
-                    val printContacts = Runnable {
-                        //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
-                        val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(
-                            add_new_contact_PhoneProperty!!.selectedItem.toString(),
-                            this
-                        )
-                        val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(
-                            add_new_contact_MailProperty!!.selectedItem.toString(),
-                            add_new_contact_Email!!.editText!!.text.toString(),
-                            this
-                        )
-
-                        val contactData = ContactDB(
-                            null,
-                            add_new_contact_FirstName!!.editText!!.text.toString(),
-                            add_new_contact_LastName!!.editText!!.text.toString(),
-                            add_new_contact_Mail_Identifier!!.editText!!.text.toString(),
-                            avatar,
-                            add_new_contact_Priority!!.selectedItemPosition,
-                            add_new_contact_ImgString!!,
-                            0,
-                            "",
-                            0,
-                            "",
-                            defaultTone,
-                            0,
-                            1,
-                            "",
-                            "",
-                            0,
-                            0
-                        )
-
-                        println(contactData)
-                        var isDuplicate = false
-                        val allcontacts =
-                            add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
-                        allcontacts?.forEach { contactsDB ->
-                            if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
-                                isDuplicate = true
-                        }
-
-                        if (!isDuplicate) {
-
-                            val contactId =
-                                add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-
-                            var contactDetailDB: ContactDetailDB
-                            if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
-                                contactDetailDB = ContactDetailDB(
-                                    null,
-                                    contactId!!.toInt(),
-                                    "" +
-                                            add_new_contact_PhoneNumber!!.editText!!.text.toString(),
-                                    "phone",
-                                    spinnerChar,
-                                    0
-                                )
-                                add_new_contact_ContactsDatabase?.contactDetailsDao()
-                                    ?.insert(contactDetailDB)
-                            }
-                            if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
-                                contactDetailDB = ContactDetailDB(
-                                    null,
-                                    contactId!!.toInt(),
-                                    "" +
-                                            add_new_contact_fixNumber!!.editText!!.text.toString(),
-                                    "phone",
-                                    spinnerChar,
-                                    1
-                                )
-                                add_new_contact_ContactsDatabase?.contactDetailsDao()
-                                    ?.insert(contactDetailDB)
-                            }
-                            if (add_new_contact_Email!!.editText!!.text.toString() != "") {
-                                contactDetailDB = ContactDetailDB(
-                                    null,
-                                    contactId!!.toInt(),
-                                    "" +
-                                            add_new_contact_Email!!.editText!!.text.toString(),
-                                    "mail",
-                                    mailSpinnerChar,
-                                    2
-                                )
-                                add_new_contact_ContactsDatabase?.contactDetailsDao()
-                                    ?.insert(contactDetailDB)
-                            }
-
-                            if (isFavorite) {
-                                addToFavorite(contactId!!.toInt())
-                            }
-
-                            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
-                                type = ContactsContract.RawContacts.CONTENT_TYPE
-                            }
-                            intent.apply {
-                                putExtra(
-                                    ContactsContract.Intents.Insert.NAME,
-                                    add_new_contact_FirstName?.editText!!.text.toString()
-                                            + " " + add_new_contact_LastName?.editText!!.text.toString()
-                                )
-
-                                putExtra(
-                                    ContactsContract.Intents.Insert.EMAIL,
-                                    add_new_contact_Email?.editText!!.text.toString()
-                                )
-                                putExtra(
-                                    ContactsContract.Intents.Insert.EMAIL_TYPE,
-                                    ContactsContract.CommonDataKinds.Email.TYPE_WORK
-                                )
-                                putExtra(
-                                    ContactsContract.Contacts.Photo.PHOTO,
-                                    add_new_contact_ImgString!!
-                                )
-                                putExtra(
-                                    ContactsContract.Intents.Insert.PHONE,
-                                    add_new_contact_PhoneNumber?.editText!!.text.toString()
-                                )
-                                putExtra(
-                                    ContactsContract.Intents.Insert.PHONE_TYPE,
-                                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK
-                                )
-                            }
-                            isRetroFit = true
-                            startActivity(intent)
-                        } else {
-                            confirmationDuplicate(contactData)
-                        }
-                    }
-                    main_mDbWorkerThread.postTask(printContacts)
-                }
-            }
-        }
+//        add_new_contact_Validate!!.setOnClickListener {
+//            var defaultTone = R.raw.sms_ring
+//            //            add_new_contact_Mail_Identifier!!.editText!!.text.toString()
+//
+//            if (add_new_contact_FirstName!!.editText!!.text.toString().isEmpty()) {
+//                Toast.makeText(
+//                    this,
+//                    getString(R.string.add_new_contact_first_name_empty_field),
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            } else {
+//                if (add_new_contact_Priority!!.selectedItemPosition == 2) {
+//                    if (nb_Contacts_VIP > 4 && contactsUnlimitedIsBought == false) {
+//                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                            .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
+//                            .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
+//                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+//                                startActivity(
+//                                    Intent(
+//                                        this@AddNewContactActivity,
+//                                        PremiumActivity::class.java
+//                                    )
+//                                )
+//                                finish()
+//                            }
+//                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+//                            }
+//                            .show()
+//                    } else {
+//                        val edit: SharedPreferences.Editor =
+//                            sharedNumberOfContactsVIPPreferences.edit()
+//                        edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP + 1)
+//                        edit.apply()
+//                        var notificatio_tone = R.raw.sms_ring
+//                        val printContacts = Runnable {
+//                            //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
+//                            val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(
+//                                add_new_contact_PhoneProperty!!.selectedItem.toString(),
+//                                this
+//                            )
+//                            val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(
+//                                add_new_contact_MailProperty!!.selectedItem.toString(),
+//                                add_new_contact_Email!!.editText!!.text.toString(),
+//                                this
+//                            )
+//
+//                            val contactData = ContactDB(
+//                                null,
+//                                add_new_contact_FirstName!!.editText!!.text.toString(),
+//                                add_new_contact_LastName!!.editText!!.text.toString(),
+//                                add_new_contact_Mail_Identifier!!.editText!!.text.toString(),
+//                                avatar,
+//                                add_new_contact_Priority!!.selectedItemPosition,
+//                                add_new_contact_ImgString!!,
+//                                0,
+//                                "",
+//                                0,
+//                                "",
+//                                defaultTone,
+//                                0,
+//                                1,
+//                                "",
+//                                "",
+//                                0,
+//                                0
+//                            )
+//
+//
+//                            println(contactData)
+//                            var isDuplicate = false
+//                            val allcontacts =
+//                                add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
+//                            allcontacts?.forEach { contactsDB ->
+//                                if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
+//                                    isDuplicate = true
+//                            }
+//
+//                            if (!isDuplicate) {
+//
+//                                val contactId = add_new_contact_ContactsDatabase?.contactsDao()
+//                                    ?.insert(contactData)
+//
+//                                var contactDetailDB: ContactDetailDB
+//                                if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+//                                    contactDetailDB = ContactDetailDB(
+//                                        null,
+//                                        contactId!!.toInt(),
+//                                        "" +
+//                                                add_new_contact_PhoneNumber!!.editText!!.text.toString(),
+//                                        "phone",
+//                                        spinnerChar,
+//                                        0
+//                                    )
+//                                    add_new_contact_ContactsDatabase?.contactDetailsDao()
+//                                        ?.insert(contactDetailDB)
+//                                }
+//                                if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
+//                                    contactDetailDB = ContactDetailDB(
+//                                        null,
+//                                        contactId!!.toInt(),
+//                                        "" +
+//                                                add_new_contact_fixNumber!!.editText!!.text.toString(),
+//                                        "phone",
+//                                        spinnerChar,
+//                                        1
+//                                    )
+//                                    add_new_contact_ContactsDatabase?.contactDetailsDao()
+//                                        ?.insert(contactDetailDB)
+//                                }
+//                                if (add_new_contact_Email!!.editText!!.text.toString() != "") {
+//                                    contactDetailDB = ContactDetailDB(
+//                                        null,
+//                                        contactId!!.toInt(),
+//                                        "" +
+//                                                add_new_contact_Email!!.editText!!.text.toString(),
+//                                        "mail",
+//                                        mailSpinnerChar,
+//                                        2
+//                                    )
+//                                    add_new_contact_ContactsDatabase?.contactDetailsDao()
+//                                        ?.insert(contactDetailDB)
+//                                }
+//
+//                                if (isFavorite) {
+//                                    addToFavorite(contactId!!.toInt())
+//                                }
+//
+//                                val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+//                                    type = ContactsContract.RawContacts.CONTENT_TYPE
+//                                }
+//                                intent.apply {
+//                                    putExtra(
+//                                        ContactsContract.Intents.Insert.NAME,
+//                                        add_new_contact_FirstName?.editText!!.text.toString()
+//                                                + " " + add_new_contact_LastName?.editText!!.text.toString()
+//                                    )
+//
+//                                    putExtra(
+//                                        ContactsContract.Intents.Insert.EMAIL,
+//                                        add_new_contact_Email?.editText!!.text.toString()
+//                                    )
+//                                    putExtra(
+//                                        ContactsContract.Intents.Insert.EMAIL_TYPE,
+//                                        ContactsContract.CommonDataKinds.Email.TYPE_WORK
+//                                    )
+//                                    putExtra(
+//                                        ContactsContract.Contacts.Photo.PHOTO,
+//                                        add_new_contact_ImgString!!
+//                                    )
+//                                    putExtra(
+//                                        ContactsContract.Intents.Insert.PHONE,
+//                                        add_new_contact_PhoneNumber?.editText!!.text.toString()
+//                                    )
+//                                    putExtra(
+//                                        ContactsContract.Intents.Insert.PHONE_TYPE,
+//                                        ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+//                                    )
+//                                }
+//                                isRetroFit = true
+//                                startActivity(intent)
+//                            } else {
+//                                confirmationDuplicate(contactData)
+//                            }
+//                        }
+//                        main_mDbWorkerThread.postTask(printContacts)
+//                    }
+//                } else {
+//                    val printContacts = Runnable {
+//                        //check si un contact porte deja ce prénom et nom puis l'ajoute si il y a aucun doublon
+//                        val spinnerChar = NumberAndMailDB.convertSpinnerStringToChar(
+//                            add_new_contact_PhoneProperty!!.selectedItem.toString(),
+//                            this
+//                        )
+//                        val mailSpinnerChar = NumberAndMailDB.convertSpinnerMailStringToChar(
+//                            add_new_contact_MailProperty!!.selectedItem.toString(),
+//                            add_new_contact_Email!!.editText!!.text.toString(),
+//                            this
+//                        )
+//
+//                        val contactData = ContactDB(
+//                            null,
+//                            add_new_contact_FirstName!!.editText!!.text.toString(),
+//                            add_new_contact_LastName!!.editText!!.text.toString(),
+//                            add_new_contact_Mail_Identifier!!.editText!!.text.toString(),
+//                            avatar,
+//                            add_new_contact_Priority!!.selectedItemPosition,
+//                            add_new_contact_ImgString!!,
+//                            0,
+//                            "",
+//                            0,
+//                            "",
+//                            defaultTone,
+//                            0,
+//                            1,
+//                            "",
+//                            "",
+//                            0,
+//                            0
+//                        )
+//
+//                        println(contactData)
+//                        var isDuplicate = false
+//                        val allcontacts =
+//                            add_new_contact_ContactsDatabase?.contactsDao()?.getAllContacts()
+//                        allcontacts?.forEach { contactsDB ->
+//                            if (contactsDB.firstName == contactData.firstName && contactsDB.lastName == contactData.lastName)
+//                                isDuplicate = true
+//                        }
+//
+//                        if (!isDuplicate) {
+//
+//                            val contactId =
+//                                add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
+//
+//                            var contactDetailDB: ContactDetailDB
+//                            if (add_new_contact_PhoneNumber!!.editText!!.text.toString() != "") {
+//                                contactDetailDB = ContactDetailDB(
+//                                    null,
+//                                    contactId!!.toInt(),
+//                                    "" +
+//                                            add_new_contact_PhoneNumber!!.editText!!.text.toString(),
+//                                    "phone",
+//                                    spinnerChar,
+//                                    0
+//                                )
+//                                add_new_contact_ContactsDatabase?.contactDetailsDao()
+//                                    ?.insert(contactDetailDB)
+//                            }
+//                            if (add_new_contact_fixNumber!!.editText!!.text.toString() != "") {
+//                                contactDetailDB = ContactDetailDB(
+//                                    null,
+//                                    contactId!!.toInt(),
+//                                    "" +
+//                                            add_new_contact_fixNumber!!.editText!!.text.toString(),
+//                                    "phone",
+//                                    spinnerChar,
+//                                    1
+//                                )
+//                                add_new_contact_ContactsDatabase?.contactDetailsDao()
+//                                    ?.insert(contactDetailDB)
+//                            }
+//                            if (add_new_contact_Email!!.editText!!.text.toString() != "") {
+//                                contactDetailDB = ContactDetailDB(
+//                                    null,
+//                                    contactId!!.toInt(),
+//                                    "" +
+//                                            add_new_contact_Email!!.editText!!.text.toString(),
+//                                    "mail",
+//                                    mailSpinnerChar,
+//                                    2
+//                                )
+//                                add_new_contact_ContactsDatabase?.contactDetailsDao()
+//                                    ?.insert(contactDetailDB)
+//                            }
+//
+//                            if (isFavorite) {
+//                                addToFavorite(contactId!!.toInt())
+//                            }
+//
+//                            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+//                                type = ContactsContract.RawContacts.CONTENT_TYPE
+//                            }
+//                            intent.apply {
+//                                putExtra(
+//                                    ContactsContract.Intents.Insert.NAME,
+//                                    add_new_contact_FirstName?.editText!!.text.toString()
+//                                            + " " + add_new_contact_LastName?.editText!!.text.toString()
+//                                )
+//
+//                                putExtra(
+//                                    ContactsContract.Intents.Insert.EMAIL,
+//                                    add_new_contact_Email?.editText!!.text.toString()
+//                                )
+//                                putExtra(
+//                                    ContactsContract.Intents.Insert.EMAIL_TYPE,
+//                                    ContactsContract.CommonDataKinds.Email.TYPE_WORK
+//                                )
+//                                putExtra(
+//                                    ContactsContract.Contacts.Photo.PHOTO,
+//                                    add_new_contact_ImgString!!
+//                                )
+//                                putExtra(
+//                                    ContactsContract.Intents.Insert.PHONE,
+//                                    add_new_contact_PhoneNumber?.editText!!.text.toString()
+//                                )
+//                                putExtra(
+//                                    ContactsContract.Intents.Insert.PHONE_TYPE,
+//                                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+//                                )
+//                            }
+//                            isRetroFit = true
+//                            startActivity(intent)
+//                        } else {
+//                            confirmationDuplicate(contactData)
+//                        }
+//                    }
+//                    main_mDbWorkerThread.postTask(printContacts)
+//                }
+//            }
+//        }
 
         add_new_contact_RoundedImageView!!.setOnClickListener {
-            selectImage()
+//            selectImage()
         }
 
         add_new_contact_AddContactToFavorite!!.setOnClickListener {
@@ -648,7 +644,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private fun addToFavorite(idContact: Int) {
         val contact = add_new_contact_ContactsDatabase?.contactsDao()?.getContact(idContact)
 
-        contact!!.setIsFavorite(add_new_contact_ContactsDatabase)
+//        contact!!.setIsFavorite(add_new_contact_ContactsDatabase)
 
         var counter = 0
         var alreadyExist = false
@@ -667,7 +663,7 @@ class AddNewContactActivity : AppCompatActivity() {
             counter++
         }
 
-        listContact.add(contact.contactDB)
+//        listContact.add(contact.contactDB)
 
         if (alreadyExist) {
             addContactToGroup(listContact, groupId)
@@ -710,25 +706,22 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     //endregion
-    /**
-     *demande de confirmation de la création d'un contact en double
-     * @param contactData [contactDB]
-     */
-    private fun confirmationDuplicate(contactData: ContactDB) {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle(R.string.add_new_contact_alert_dialog_title)
-            .setMessage(R.string.add_new_contact_alert_dialog_message)
-            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
-                val intent = Intent(this@AddNewContactActivity, Main2Activity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .setBackground(getDrawable(R.color.backgroundColor))
-            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-            }
-            .show()
-    }
+
+//    private fun confirmationDuplicate(contactData: ContactDB) {
+//        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//            .setTitle(R.string.add_new_contact_alert_dialog_title)
+//            .setMessage(R.string.add_new_contact_alert_dialog_message)
+//            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+//                add_new_contact_ContactsDatabase?.contactsDao()?.insert(contactData)
+//                val intent = Intent(this@AddNewContactActivity, Main2Activity::class.java)
+//                startActivity(intent)
+//                finish()
+//            }
+//            .setBackground(getDrawable(R.color.backgroundColor))
+//            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+//            }
+//            .show()
+//    }
 
     /**
      *Retourne si le [TextInputLayout] passé en parametre n'a pas de texte
@@ -739,71 +732,68 @@ class AddNewContactActivity : AppCompatActivity() {
         return field!!.editText!!.text.toString().isEmpty()
     }
 
-    /**
-     * Lors du click sur l'image du contact  affichage du BottomSheetDialog contenant les option choix icone appareil photo ou gallerie
-     */
-    private fun selectImage() {
-
-        val builderBottom = BottomSheetDialog(this)
-        builderBottom.setContentView(R.layout.alert_dialog_select_contact_picture_layout)
-        val gallery =
-            builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_gallery_layout)
-        val camera =
-            builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_camera_layout)
-        val recyclerView =
-            builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
-        val layoutMananger =
-            LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-
-        recyclerView!!.layoutManager = layoutMananger
-
-        val adapter =
-            ContactIconeAdapter(this)
-        recyclerView.adapter = adapter
-        gallery!!.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    1
-                )
-                builderBottom.dismiss()
-            } else {
-                val intent =
-                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                intent.type = "image/*"
-                startActivityForResult(
-                    Intent.createChooser(
-                        intent,
-                        this.getString(R.string.add_new_contact_intent_title)
-                    ), SELECT_FILE!!
-                )
-                builderBottom.dismiss()
-            }
-        }
-        camera!!.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    2
-                )
-                builderBottom.dismiss()
-            } else {
-                openCamera()
-                builderBottom.dismiss()
-            }
-        }
-        builderBottom.show()
-    }
+//    private fun selectImage() {
+//
+//        val builderBottom = BottomSheetDialog(this)
+//        builderBottom.setContentView(R.layout.alert_dialog_select_contact_picture_layout)
+//        val gallery =
+//            builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_gallery_layout)
+//        val camera =
+//            builderBottom.findViewById<ConstraintLayout>(R.id.select_contact_picture_camera_layout)
+//        val recyclerView =
+//            builderBottom.findViewById<RecyclerView>(R.id.select_contact_picture_recycler_view)
+//        val layoutMananger =
+//            LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+//
+//        recyclerView!!.layoutManager = layoutMananger
+//
+//        val adapter =
+//            ContactIconeAdapter(this)
+//        recyclerView.adapter = adapter
+//        gallery!!.setOnClickListener {
+//            if (ActivityCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+//                    1
+//                )
+//                builderBottom.dismiss()
+//            } else {
+//                val intent =
+//                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//                intent.type = "image/*"
+//                startActivityForResult(
+//                    Intent.createChooser(
+//                        intent,
+//                        this.getString(R.string.add_new_contact_intent_title)
+//                    ), SELECT_FILE!!
+//                )
+//                builderBottom.dismiss()
+//            }
+//        }
+//        camera!!.setOnClickListener {
+//            if (ActivityCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.CAMERA
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+//                    2
+//                )
+//                builderBottom.dismiss()
+//            } else {
+//                openCamera()
+//                builderBottom.dismiss()
+//            }
+//        }
+//        builderBottom.show()
+//    }
 
     /**
      * Ouvre l'appreil photo du téléphone
@@ -869,7 +859,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 bitmap =
                     Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
-                add_new_contact_ImgString = bitmapToBase64(bitmap)
+//                add_new_contact_ImgString = bitmapToBase64(bitmap)
 
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
@@ -887,7 +877,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 bitmap =
                     Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
-                add_new_contact_ImgString = bitmapToBase64(bitmap)
+//                add_new_contact_ImgString = bitmapToBase64(bitmap)
             }
         }
     }
@@ -906,14 +896,6 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Méthode appelée par le système lorsque l'utilisateur accepte ou refuse une permission
-     * Lorsque l'utilisateur autorise l'accès a ces fichiers nous ouvrons le dossier "Galerie"
-     * Lorsque l'utilisateur autorise à l'appareil photo nous l'ouvrons
-     * @param requestCode [Int]
-     * @param permissions [Array<String>]
-     * @param grantResults [IntArray]
-     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -948,7 +930,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         if (isRetroFit) {
-            startActivity(Intent(this@AddNewContactActivity, Main2Activity::class.java))
+//            startActivity(Intent(this@AddNewContactActivity, Main2Activity::class.java))
             finish()
         }
     }
@@ -959,7 +941,7 @@ class AddNewContactActivity : AppCompatActivity() {
      */
     fun addContactIcone(bitmap: Bitmap) {
         add_new_contact_RoundedImageView!!.setImageBitmap(bitmap)
-        add_new_contact_ImgString = bitmapToBase64(bitmap)
+//        add_new_contact_ImgString = bitmapToBase64(bitmap)
     }
 
     //endregion

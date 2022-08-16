@@ -7,11 +7,8 @@ import android.content.res.Resources
 import android.graphics.Point
 import android.os.Bundle
 import android.net.Uri
-import android.util.DisplayMetrics
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SwitchCompat
@@ -23,9 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsDatabase
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation
 import com.yellowtwigs.knockin.model.data.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,14 +29,11 @@ import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.SettingsActivity
-import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
+import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionAdapter
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
-import com.yellowtwigs.knockin.ui.group.GroupAdapter
 import com.yellowtwigs.knockin.ui.group.create.AddNewGroupActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 /**
@@ -55,7 +47,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var group_manager_DrawerLayout: DrawerLayout? = null
     private var group_manager_ContactsDatabase: ContactsDatabase? = null
-    private lateinit var group_mDbWorkerThread: DbWorkerThread
+//    private lateinit var group_mDbWorkerThread: DbWorkerThread
 
     private var group_manager_MainLayout: ConstraintLayout? = null
 
@@ -72,14 +64,14 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var group_manager_RecyclerView: RecyclerView? = null
 
-    private var gestionnaireContacts: ContactManager? = null
-    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
+//    private var gestionnaireContacts: ContactManager? = null
+//    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var firstClick: Boolean = true
 
-    private var groupAdapter: GroupAdapter? = null
+//    private var groupAdapter: GroupAdapter? = null
     private var sectionAdapter: SectionGroupAdapter? = null
-    private lateinit var multiSelectAdapter: MultiSelectAdapter
+    private lateinit var firstVipSelectionAdapter: FirstVipSelectionAdapter
 
     private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
     private var recyclerLen: Int = 1
@@ -90,21 +82,21 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_contacts -> {
-                    startActivity(
-                        Intent(
-                            this@GroupManagerActivity,
-                            Main2Activity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
+//                    startActivity(
+//                        Intent(
+//                            this@GroupManagerActivity,
+//                            Main2Activity::class.java
+//                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+//                    )
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_notifcations -> {
-                    startActivity(
-                        Intent(
-                            this@GroupManagerActivity,
-                            NotificationHistoryActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
+//                    startActivity(
+//                        Intent(
+//                            this@GroupManagerActivity,
+//                            NotificationHistoryActivity::class.java
+//                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+//                    )
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_teleworking -> {
@@ -223,7 +215,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@GroupManagerActivity, Main2Activity::class.java))
+//                    startActivity(Intent(this@GroupManagerActivity, Main2Activity::class.java))
                 }
                 R.id.nav_notif_config -> startActivity(
                     Intent(
@@ -273,8 +265,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         group_manager_ContactsDatabase = ContactsDatabase.getDatabase(this)
 
-        group_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        group_mDbWorkerThread.start()
+//        group_mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+//        group_mDbWorkerThread.start()
         val group: ArrayList<GroupWithContact> = ArrayList()
         group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
         println("group size" + group.size)
@@ -284,13 +276,13 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val sharedPreferences = getSharedPreferences("Gridview_column", MODE_PRIVATE)
         val len = sharedPreferences.getInt("gridview", 1)
 
-        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
+//        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
 
         val sections = ArrayList<SectionGroupAdapter.Section>()
         var position = 0
         for (i in group) {
             val list = i.getListContact(this)
-            listContactGroup.addAll(list)
+//            listContactGroup.addAll(list)
             sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id!!))
             position += list.size
         }
@@ -299,25 +291,25 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================== Adapter ===========================================
 
-        gestionnaireContacts = ContactManager(this)
-        gestionnaireContacts!!.contactList = listContactGroup
+//        gestionnaireContacts = ContactManager(this)
+//        gestionnaireContacts!!.contactList = listContactGroup
 
         if (len >= 4) {
-            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, len)
+//            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
         } else {
-            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, len)
+//            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, len)
             group_manager_RecyclerView!!.layoutManager = LinearLayoutManager(this)
             group_manager_RecyclerView!!.recycledViewPool.setMaxRecycledViews(0, 0)
         }
 
         val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        sectionAdapter = SectionGroupAdapter(
-            this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView!!,
-            groupAdapter!! as RecyclerView.Adapter<RecyclerView.ViewHolder>, len
-        )
+//        sectionAdapter = SectionGroupAdapter(
+//            this, R.layout.group_manager_recycler_adapter_section, group_manager_RecyclerView!!,
+//            groupAdapter!! as RecyclerView.Adapter<RecyclerView.ViewHolder>, len
+//        )
         sectionAdapter!!.setSections(sections.toArray(sectionList))
-        println("taille list group " + listContactGroup.size)
+//        println("taille list group " + listContactGroup.size)
         group_manager_RecyclerView!!.adapter = sectionAdapter
 
         //endregion
@@ -381,11 +373,11 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val iterator: IntIterator?
             val listOfIdContactSelected: ArrayList<Int> = ArrayList()
 
-            iterator = (0 until listOfItemSelected.size).iterator()
+//            iterator = (0 until listOfItemSelected.size).iterator()
 
-            for (i in iterator) {
-                listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
-            }
+//            for (i in iterator) {
+//                listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
+//            }
             intent.putIntegerArrayListExtra("ListContactsSelected", listOfIdContactSelected)
 
             startActivity(intent)
@@ -396,11 +388,11 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val iterator: IntIterator?
             val listOfPhoneNumberContactSelected: ArrayList<String> = ArrayList()
 
-            iterator = (0 until listOfItemSelected.size).iterator()
+//            iterator = (0 until listOfItemSelected.size).iterator()
 
-            for (i in iterator) {
-                listOfPhoneNumberContactSelected.add(listOfItemSelected[i].getFirstPhoneNumber())
-            }
+//            for (i in iterator) {
+//                listOfPhoneNumberContactSelected.add(listOfItemSelected[i].getFirstPhoneNumber())
+//            }
             monoChannelSmsClick(listOfPhoneNumberContactSelected)
         }
 
@@ -408,11 +400,11 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             val iterator: IntIterator?
             val listOfMailContactSelected: ArrayList<String> = ArrayList()
 
-            iterator = (0 until listOfItemSelected.size).iterator()
+//            iterator = (0 until listOfItemSelected.size).iterator()
 
-            for (i in iterator) {
-                listOfMailContactSelected.add(listOfItemSelected[i].getFirstMail())
-            }
+//            for (i in iterator) {
+//                listOfMailContactSelected.add(listOfItemSelected[i].getFirstMail())
+//            }
             monoChannelMailClick(listOfMailContactSelected)
         }
         group_manager_FloatingButtonAddNewGroup?.setOnClickListener {
@@ -429,8 +421,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             ): Boolean {
                 val sourcePosition = p1.adapterPosition
                 val targetPosition = p2.adapterPosition
-                println("Start Position$sourcePosition")
-                println("last Position$targetPosition")
                 return true
             }
 
@@ -460,196 +450,196 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 
-    fun recyclerMultiSelectItemClick(position: Int) {
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-            verifiedContactsChannel(listOfItemSelected)
-        } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-
-            group_manager_FloatingButtonSMS!!.visibility = View.GONE
-            group_manager_FloatingButtonMail!!.visibility = View.GONE
-            group_manager_FloatingButtonSend!!.visibility = View.GONE
-
-            verifiedContactsChannel(listOfItemSelected)
-        }
-
-        val i = listOfItemSelected.size
-
-        if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT)
-                .show()
-            firstClick = false
-
-        } else if (listOfItemSelected.size == 0) {
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
-                .show()
-
-            group_manager_FloatingButtonSMS!!.visibility = View.GONE
-            group_manager_FloatingButtonMail!!.visibility = View.GONE
-
-            firstClick = true
-        }
-
-//        if (listOfItemSelected.size == 1) {
-//            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
-//        } else if (listOfItemSelected.size > 1) {
+//    fun recyclerMultiSelectItemClick(position: Int) {
+//        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+//            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+//            verifiedContactsChannel(listOfItemSelected)
+//        } else {
+//            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
 //
-//            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG).show()
-//            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+//            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+//            group_manager_FloatingButtonMail!!.visibility = View.GONE
+//            group_manager_FloatingButtonSend!!.visibility = View.GONE
+//
+//            verifiedContactsChannel(listOfItemSelected)
 //        }
-    }
+//
+//        val i = listOfItemSelected.size
+//
+//        if (listOfItemSelected.size == 1 && firstClick) {
+//            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT)
+//                .show()
+//            firstClick = false
+//
+//        } else if (listOfItemSelected.size == 0) {
+//            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
+//                .show()
+//
+//            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+//            group_manager_FloatingButtonMail!!.visibility = View.GONE
+//
+//            firstClick = true
+//        }
+//
+////        if (listOfItemSelected.size == 1) {
+////            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
+////        } else if (listOfItemSelected.size > 1) {
+////
+////            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG).show()
+////            main_ToolbarMultiSelectModeTitle!!.text = i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+////        }
+//    }
 
-    fun recyclerMultiSelectItemClick(
-        position: Int,
-        secondClickLibelle: Boolean,
-        fromLibelleClick: Boolean
-    ) {
-        if (!secondClickLibelle) {
-            if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-                listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+//    fun recyclerMultiSelectItemClick(
+//        position: Int,
+//        secondClickLibelle: Boolean,
+//        fromLibelleClick: Boolean
+//    ) {
+//        if (!secondClickLibelle) {
+//            if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+//                listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+//
+//                if (listOfItemSelected.size == 0) {
+//                    group_manager_FloatingButtonSMS!!.visibility = View.GONE
+//                    group_manager_FloatingButtonMail!!.visibility = View.GONE
+//                    group_manager_FloatingButtonSend!!.visibility = View.GONE
+//                }
+//
+//            } else {
+//                listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+//                verifiedContactsChannel(listOfItemSelected)
+//            }
+//
+//            if (fromLibelleClick) {
+//                firstClick = true
+//            }
+//        } else {
+//            if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+//                listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+//            }
+//        }
+//
+//
+//        if (listOfItemSelected.size == 1 && firstClick) {
+//            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_LONG).show()
+//            firstClick = false
+//        } else if (listOfItemSelected.size == 0) {
+//            listOfItemSelected.clear()
+//            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+//            group_manager_FloatingButtonMail!!.visibility = View.GONE
+//            group_manager_FloatingButtonSend!!.visibility = View.GONE
+//            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG)
+//                .show()
+//            firstClick = true
+//        }
+//    }
 
-                if (listOfItemSelected.size == 0) {
-                    group_manager_FloatingButtonSMS!!.visibility = View.GONE
-                    group_manager_FloatingButtonMail!!.visibility = View.GONE
-                    group_manager_FloatingButtonSend!!.visibility = View.GONE
-                }
+//    fun gridLongItemClick(position: Int) {
+//        if (listOfItemSelected.contains(
+//                gestionnaireContacts!!.contactList.get(position)
+//            )
+//        ) {
+//            listOfItemSelected.remove(
+//                gestionnaireContacts!!.contactList.get(position)
+//            )
+//        } else {
+//            listOfItemSelected.add(
+//                gestionnaireContacts!!.contactList.get(position)
+//            )
+//            verifiedContactsChannel(listOfItemSelected)
+//        }
+//
+//        if (listOfItemSelected.size == 1 && firstClick) {
+//            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_LONG).show()
+//            firstClick = false
+//        } else if (listOfItemSelected.size == 0) {
+//            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG)
+//                .show()
+//            group_manager_FloatingButtonSend!!.visibility = View.GONE
+//            group_manager_FloatingButtonMail!!.visibility = View.GONE
+//            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+//            group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
+//            firstClick = true
+//        }
+//    }
 
-            } else {
-                listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-                verifiedContactsChannel(listOfItemSelected)
-            }
+//    private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
+//        val iterator = (0 until listOfItemSelected.size).iterator()
+//        var allContactsHaveMail = true
+//        var allContactsHavePhoneNumber = true
+//
+//        for (i in iterator) {
+//            if (listOfItemSelected[i].getFirstMail() == "") {
+//                allContactsHaveMail = false
+//            }
+//
+//            if (listOfItemSelected[i].getFirstPhoneNumber() == "") {
+//                allContactsHavePhoneNumber = false
+//            }
+//        }
+//        group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
+//        group_manager_FloatingButtonSend!!.visibility = View.VISIBLE
+//        //var i = 2
+//        val metrics = DisplayMetrics()
+//        this.windowManager.defaultDisplay.getMetrics(metrics)
+//        val margin = (0.2
+//                * metrics.densityDpi).toInt()
+//        println("metric smartphone" + metrics.densityDpi)
+//        if (allContactsHavePhoneNumber) {
+//            group_manager_FloatingButtonSMS!!.visibility = View.VISIBLE
+//            //    i++
+//        } else {
+//            println("false phoneNumber")
+//            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+//        }
+//        if (allContactsHaveMail) {
+//            group_manager_FloatingButtonMail!!.visibility = View.VISIBLE
+//            val params: ViewGroup.MarginLayoutParams =
+//                group_manager_FloatingButtonMail!!.layoutParams as ViewGroup.MarginLayoutParams
+//            params.bottomMargin = margin
+//            group_manager_FloatingButtonMail!!.layoutParams = params
+//            println("height of floating mail" + group_manager_FloatingButtonMail!!.height)
+//        } else {
+//            println("false mail")
+//            group_manager_FloatingButtonMail!!.visibility = View.GONE
+//        }
+//    }
 
-            if (fromLibelleClick) {
-                firstClick = true
-            }
-        } else {
-            if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-                listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-            }
-        }
-
-
-        if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_LONG).show()
-            firstClick = false
-        } else if (listOfItemSelected.size == 0) {
-            listOfItemSelected.clear()
-            group_manager_FloatingButtonSMS!!.visibility = View.GONE
-            group_manager_FloatingButtonMail!!.visibility = View.GONE
-            group_manager_FloatingButtonSend!!.visibility = View.GONE
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG)
-                .show()
-            firstClick = true
-        }
-    }
-
-    fun gridLongItemClick(position: Int) {
-        if (listOfItemSelected.contains(
-                gestionnaireContacts!!.contactList.get(position)
-            )
-        ) {
-            listOfItemSelected.remove(
-                gestionnaireContacts!!.contactList.get(position)
-            )
-        } else {
-            listOfItemSelected.add(
-                gestionnaireContacts!!.contactList.get(position)
-            )
-            verifiedContactsChannel(listOfItemSelected)
-        }
-
-        if (listOfItemSelected.size == 1 && firstClick) {
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_LONG).show()
-            firstClick = false
-        } else if (listOfItemSelected.size == 0) {
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_LONG)
-                .show()
-            group_manager_FloatingButtonSend!!.visibility = View.GONE
-            group_manager_FloatingButtonMail!!.visibility = View.GONE
-            group_manager_FloatingButtonSMS!!.visibility = View.GONE
-            group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
-            firstClick = true
-        }
-    }
-
-    private fun verifiedContactsChannel(listOfItemSelected: ArrayList<ContactWithAllInformation>) {
-        val iterator = (0 until listOfItemSelected.size).iterator()
-        var allContactsHaveMail = true
-        var allContactsHavePhoneNumber = true
-
-        for (i in iterator) {
-            if (listOfItemSelected[i].getFirstMail() == "") {
-                allContactsHaveMail = false
-            }
-
-            if (listOfItemSelected[i].getFirstPhoneNumber() == "") {
-                allContactsHavePhoneNumber = false
-            }
-        }
-        group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
-        group_manager_FloatingButtonSend!!.visibility = View.VISIBLE
-        //var i = 2
-        val metrics = DisplayMetrics()
-        this.windowManager.defaultDisplay.getMetrics(metrics)
-        val margin = (0.2
-                * metrics.densityDpi).toInt()
-        println("metric smartphone" + metrics.densityDpi)
-        if (allContactsHavePhoneNumber) {
-            group_manager_FloatingButtonSMS!!.visibility = View.VISIBLE
-            //    i++
-        } else {
-            println("false phoneNumber")
-            group_manager_FloatingButtonSMS!!.visibility = View.GONE
-        }
-        if (allContactsHaveMail) {
-            group_manager_FloatingButtonMail!!.visibility = View.VISIBLE
-            val params: ViewGroup.MarginLayoutParams =
-                group_manager_FloatingButtonMail!!.layoutParams as ViewGroup.MarginLayoutParams
-            params.bottomMargin = margin
-            group_manager_FloatingButtonMail!!.layoutParams = params
-            println("height of floating mail" + group_manager_FloatingButtonMail!!.height)
-        } else {
-            println("false mail")
-            group_manager_FloatingButtonMail!!.visibility = View.GONE
-        }
-    }
-
-    fun refreshList() {
-        group_manager_ContactsDatabase = ContactsDatabase.getDatabase(this)
-        val group: ArrayList<GroupWithContact> = ArrayList()
-        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
-        val sharedPreferences = getSharedPreferences("group", MODE_PRIVATE)
-        val len = sharedPreferences.getInt("gridview", recyclerLen)
-        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
-        val sections = ArrayList<SectionGroupAdapter.Section>()
-        var position = 0
-        for (i in group) {
-            val list = i.getListContact(this)
-            listContactGroup.addAll(list)
-            sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id!!))
-            position += list.size
-        }
-        gestionnaireContacts = ContactManager(this)
-        gestionnaireContacts!!.contactList = listContactGroup
-        if (len >= 3) {
-            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, len)
-            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
-        } else {
-            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, 4)
-            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
-        }
-        val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
-        val sectionAdapter = SectionGroupAdapter(
-            this,
-            R.layout.group_manager_recycler_adapter_section,
-            group_manager_RecyclerView!!,
-            groupAdapter!! as RecyclerView.Adapter<RecyclerView.ViewHolder>,
-            len
-        )
-        sectionAdapter.setSections(sections.toArray(sectionList))
-        group_manager_RecyclerView!!.adapter = sectionAdapter
-    }
+//    fun refreshList() {
+//        group_manager_ContactsDatabase = ContactsDatabase.getDatabase(this)
+//        val group: ArrayList<GroupWithContact> = ArrayList()
+//        group.addAll(group_manager_ContactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
+//        val sharedPreferences = getSharedPreferences("group", MODE_PRIVATE)
+//        val len = sharedPreferences.getInt("gridview", recyclerLen)
+//        val listContactGroup: ArrayList<ContactWithAllInformation> = arrayListOf()
+//        val sections = ArrayList<SectionGroupAdapter.Section>()
+//        var position = 0
+//        for (i in group) {
+//            val list = i.getListContact(this)
+//            listContactGroup.addAll(list)
+//            sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id!!))
+//            position += list.size
+//        }
+//        gestionnaireContacts = ContactManager(this)
+//        gestionnaireContacts!!.contactList = listContactGroup
+//        if (len >= 3) {
+//            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, len)
+//            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, len)
+//        } else {
+//            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, 4)
+//            group_manager_RecyclerView!!.layoutManager = GridLayoutManager(this, 4)
+//        }
+//        val sectionList = arrayOfNulls<SectionGroupAdapter.Section>(sections.size)
+//        val sectionAdapter = SectionGroupAdapter(
+//            this,
+//            R.layout.group_manager_recycler_adapter_section,
+//            group_manager_RecyclerView!!,
+//            groupAdapter!! as RecyclerView.Adapter<RecyclerView.ViewHolder>,
+//            len
+//        )
+//        sectionAdapter.setSections(sections.toArray(sectionList))
+//        group_manager_RecyclerView!!.adapter = sectionAdapter
+//    }
 
     fun refreshActivity() {
         startActivity(Intent(this@GroupManagerActivity, GroupManagerActivity::class.java))
@@ -677,90 +667,89 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         startActivity(intent)
     }
 
-    fun gridMultiSelectItemClick(len: Int, position: Int, firstPosVis: Int) {
-        val multiSelectAdapter = MultiSelectAdapter(this, false) { position ->
-            multiSelectAdapter.itemSelected(position)
-        }
-        multiSelectAdapter.submitList(null)
-        multiSelectAdapter.submitList(gestionnaireContacts?.contactList)
+//    fun gridMultiSelectItemClick(len: Int, position: Int, firstPosVis: Int) {
+//        val multiSelectAdapter = MultiSelectAdapter(this, false) { position ->
+//            multiSelectAdapter.itemSelected(position)
+//        }
+//        multiSelectAdapter.submitList(null)
+//        multiSelectAdapter.submitList(gestionnaireContacts?.contactList)
+//
+//        group_manager_RecyclerView?.adapter = multiSelectAdapter
+//        group_manager_RecyclerView?.setHasFixedSize(true)
+//        group_manager_RecyclerView?.layoutManager =
+//            GridLayoutManager(this, 4, RecyclerView.VERTICAL, false)
+//        multiSelectAdapter.itemSelected(position)
+//        firstClick = true
+//
+//        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
+//            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
+//        } else {
+//            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
+//        }
+//
+//        verifiedContactsChannel(listOfItemSelected)
+//        Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
+//    }
 
-        group_manager_RecyclerView?.adapter = multiSelectAdapter
-        group_manager_RecyclerView?.setHasFixedSize(true)
-        group_manager_RecyclerView?.layoutManager =
-            GridLayoutManager(this, 4, RecyclerView.VERTICAL, false)
-        multiSelectAdapter.itemSelected(position)
-        firstClick = true
-
-        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-        } else {
-            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-        }
-
-        verifiedContactsChannel(listOfItemSelected)
-        Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT).show()
-    }
-
-
-    fun clickGroupGrid(
-        len: Int,
-        positions: List<Int>,
-        firstPosVis: Int,
-        secondClickLibelle: Boolean,
-        fromLibelleClick: Boolean
-    ) {
-        val multiSelectAdapter = MultiSelectAdapter(this, false) { position ->
-            multiSelectAdapter.itemSelected(position)
-        }
-        multiSelectAdapter.submitList(null)
-        multiSelectAdapter.submitList(gestionnaireContacts?.contactList)
-
-        group_manager_RecyclerView?.adapter = multiSelectAdapter
-        group_manager_RecyclerView?.setHasFixedSize(true)
-        group_manager_RecyclerView?.layoutManager =
-            GridLayoutManager(this, 4, RecyclerView.VERTICAL, false)
-        if (!secondClickLibelle) {
-            firstClick = true
-
-            for (position in positions) {
-                multiSelectAdapter.itemSelected(position)
-            }
-
-            verifiedContactsChannel(listOfItemSelected)
-
-            if (fromLibelleClick && firstClick) {
-                group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
-            }
-
-            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            group_manager_FloatingButtonSend!!.visibility = View.GONE
-            group_manager_FloatingButtonSMS!!.visibility = View.GONE
-            group_manager_FloatingButtonMail!!.visibility = View.GONE
-            group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
-
-//            adapter.itemDeselected()
-//            gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
-//            group_GridView!!.adapter = gridViewAdapter
-
-            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
+//    fun clickGroupGrid(
+//        len: Int,
+//        positions: List<Int>,
+//        firstPosVis: Int,
+//        secondClickLibelle: Boolean,
+//        fromLibelleClick: Boolean
+//    ) {
+//        val multiSelectAdapter = MultiSelectAdapter(this, false) { position ->
+//            multiSelectAdapter.itemSelected(position)
+//        }
+//        multiSelectAdapter.submitList(null)
+//        multiSelectAdapter.submitList(gestionnaireContacts?.contactList)
+//
+//        group_manager_RecyclerView?.adapter = multiSelectAdapter
+//        group_manager_RecyclerView?.setHasFixedSize(true)
+//        group_manager_RecyclerView?.layoutManager =
+//            GridLayoutManager(this, 4, RecyclerView.VERTICAL, false)
+//        if (!secondClickLibelle) {
+//            firstClick = true
+//
+//            for (position in positions) {
+//                multiSelectAdapter.itemSelected(position)
+//            }
+//
+//            verifiedContactsChannel(listOfItemSelected)
+//
+//            if (fromLibelleClick && firstClick) {
+//                group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
+//            }
+//
+//            Toast.makeText(this, R.string.main_toast_multi_select_actived, Toast.LENGTH_SHORT)
+//                .show()
+//        } else {
+//            group_manager_FloatingButtonSend!!.visibility = View.GONE
+//            group_manager_FloatingButtonSMS!!.visibility = View.GONE
+//            group_manager_FloatingButtonMail!!.visibility = View.GONE
+//            group_manager_FloatingButtonAddNewGroup!!.visibility = View.GONE
+//
+////            adapter.itemDeselected()
+////            gridViewAdapter = ContactGridViewAdapter(this, gestionnaireContacts, len)
+////            group_GridView!!.adapter = gridViewAdapter
+//
+//            Toast.makeText(this, R.string.main_toast_multi_select_deactived, Toast.LENGTH_SHORT)
+//                .show()
+//        }
+//    }
 
     override fun onDrawerStateChanged(newState: Int) {
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        groupAdapter!!.closeMenu()
+//        groupAdapter!!.closeMenu()
     }
 
     override fun onDrawerClosed(drawerView: View) {
     }
 
     override fun onDrawerOpened(drawerView: View) {
-        groupAdapter!!.closeMenu()
+//        groupAdapter!!.closeMenu()
     }
 
     //endregion

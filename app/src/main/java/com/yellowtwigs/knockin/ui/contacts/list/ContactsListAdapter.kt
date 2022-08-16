@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactListBinding
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
+import com.yellowtwigs.knockin.ui.main.MainActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -105,7 +105,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 val listener = View.OnClickListener { v: View ->
                     when (v.id) {
                         smsLayout.id -> {
-                            openSms(contact.listOfPhoneNumbers[0], cxt as Main2Activity)
+                            openSms(contact.listOfPhoneNumbers[0], cxt as MainActivity)
                         }
                         callLayout.id -> {
                             callPhone(contact.listOfPhoneNumbers[0], cxt)

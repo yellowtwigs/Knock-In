@@ -20,14 +20,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
-/**
- * La Classe qui permet de changer le theme de l'application et de changer le nombre de contact par ligne
- * @author Florian Striebel, Kenzy Suon, Ryan Granet
- */
 class ManageMyScreenActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
@@ -286,7 +281,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this@ManageMyScreenActivity, Main2Activity::class.java))
+//                    startActivity(Intent(this@ManageMyScreenActivity, Main2Activity::class.java))
                 }
                 R.id.nav_notif_config -> startActivity(
                     Intent(
@@ -634,7 +629,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title)) // getString(R.string.main_alert_dialog_delete_contact_title)
             .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                startActivity(Intent(this@ManageMyScreenActivity, Main2Activity::class.java))
+//                startActivity(Intent(this@ManageMyScreenActivity, Main2Activity::class.java))
             }
             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
             }

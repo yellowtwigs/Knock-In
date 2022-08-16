@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.ContactManager;
 import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
 import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity;
 
@@ -31,44 +29,37 @@ import java.util.Map;
 
 public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroupListViewAdapter.ContactViewHolder> {
 
-    private List<ContactWithAllInformation> listContacts;
+    private List<ContactDB> listContacts;
     private View view;
     private Integer len;
     private Map<Integer, Integer> contactMap = new HashMap<>();
-    private List<ContactWithAllInformation> listContact;
+    private List<ContactDB> listContact;
     private Integer positionOnBindViewHolder;
-    private ContactManager gestionnaireContacts;
     private Context context;
     private Boolean isCreated;
 
     private ConstraintLayout lastSelectMenuLen1;
 
-    public ArrayList<ContactWithAllInformation> getListOfItemSelected() {
+    public ArrayList<ContactDB> getListOfItemSelected() {
         return listOfItemSelected;
     }
 
-    public void setListOfItemSelected(ArrayList<ContactWithAllInformation> listOfItemSelected) {
+    public void setListOfItemSelected(ArrayList<ContactDB> listOfItemSelected) {
         this.listOfItemSelected.clear();
         this.listOfItemSelected.addAll(listOfItemSelected);
     }
 
-    private ArrayList<ContactWithAllInformation> listOfItemSelected = new ArrayList<>();
+    private ArrayList<ContactDB> listOfItemSelected = new ArrayList<>();
 
-    public CreateGroupListViewAdapter(Context context, ContactManager gestionnaireContacts, Integer len, List<ContactWithAllInformation> listContact) {
+    public CreateGroupListViewAdapter(Context context, Integer len, List<ContactDB> listContact) {
         this.context = context;
         this.len = len;
-        this.gestionnaireContacts = gestionnaireContacts;
         this.listContact = listContact;
         this.positionOnBindViewHolder = 0;
-        this.listContacts = gestionnaireContacts.getContactList();
         lastSelectMenuLen1 = null;
     }
 
-    public void setGestionnaireContact(ContactManager gestionnaireContact) {
-        this.gestionnaireContacts = gestionnaireContact;
-    }
-
-    public ContactWithAllInformation getItem(int position) {
+    public ContactDB getItem(int position) {
         return listContacts.get(position);
     }
 
@@ -82,120 +73,120 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        Boolean addedInMap = false;
-        if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
-            Boolean isContained = true;
-            ContactDB actContact = getItem(positionOnBindViewHolder).getContactDB();
-            while (isContained) {
-                for (ContactWithAllInformation actualContact : listContact) {
-                    if (actualContact.getContactId() == actContact.getId()) {
-                        isContained = false;
-                        if (!contactMap.containsKey(position)) {
-                            contactMap.put(position, positionOnBindViewHolder);
-                            addedInMap = true;
-                        }
-                    }
-                }
-                if (isContained) {
-                    if (positionOnBindViewHolder != listContacts.size() - 1)
-                        positionOnBindViewHolder = positionOnBindViewHolder + 1;
-                    actContact = getItem(positionOnBindViewHolder).getContactDB();
-                }
-            }
-        }
-        if (context instanceof AddNewGroupActivity) {
-            if (!contactMap.containsKey(position)) {
-                contactMap.put(position, positionOnBindViewHolder);
-                addedInMap = true;
-            }
-        }
-        final ContactDB contact = getItem(contactMap.get(position)).getContactDB();
-        assert contact != null;
-
-        if (len == 0) {
-            if (contact.getContactPriority() == 0) {
-            } else if (contact.getContactPriority() == 1) {
-                SharedPreferences sharedPreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE);
-                if (sharedPreferences.getBoolean("darkTheme", false)) {
-//                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight, null));
-                } else {
-                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorDark, null));
-                }
-
-            } else if (contact.getContactPriority() == 2) {
-                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark, null));
-            }
-        } else {
-            if (contact.getContactPriority() == 0) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
-            } else if (contact.getContactPriority() == 1) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.transparentColor, null));
-            } else if (contact.getContactPriority() == 2) {
-                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
-            }
-        }
-        if (!contact.getProfilePicture64().equals("")) {
-            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
-            holder.contactRoundedImageView.setImageBitmap(bitmap);
-        } else {
-            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
-        }
-        String contactName = contact.getFirstName() + " " + contact.getLastName();
-
-        holder.contactFirstNameView.setText(contactName);
-
-        if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(contactMap.get(position)))) {
-            holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
-        }
-
-        View.OnClickListener listItemClick = v -> {
-            if (listOfItemSelected.size() == 0 && len == 1 && holder.constraintLayoutMenu != null) {
-                holder.constraintLayoutMenu.setVisibility(View.GONE);
-            }
-
-            view.setTag(holder);
-            ContactDB contactDB = gestionnaireContacts.getContactList().get(contactMap.get(position)).getContactDB();
-            assert contactDB != null;
-
-            if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(contactMap.get(position)))) {
-                listOfItemSelected.remove(gestionnaireContacts.getContactList().get(contactMap.get(position)));
-
-                if (!contactDB.getProfilePicture64().equals("")) {
-                    Bitmap bitmap = base64ToBitmap(contactDB.getProfilePicture64());
-                    holder.contactRoundedImageView.setImageBitmap(bitmap);
-                } else {
-                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.getProfilePicture()));
-                }
-            } else {
-                listOfItemSelected.add(gestionnaireContacts.getContactList().get(contactMap.get(position)));
-                if (context instanceof GroupManagerActivity && len == 0) {
-                } else {
-                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
-                }
-            }
-
-            if (context instanceof AddNewGroupActivity) {
-                ((AddNewGroupActivity) context).listMultiSelectItemClick(contactMap.get(position));
-            }
-            if (context instanceof AddContactToGroupActivity) {
-                ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
-            }
-            if (context instanceof DeleteContactFromGroupActivity) {
-                ((DeleteContactFromGroupActivity) context).multiSelectItemClick(contactMap.get(position));
-            }
-        };
-
-        if (holder.constraintLayout != null) {
-            holder.constraintLayout.setOnClickListener(listItemClick);
-        }
-
-        if (contact.getFavorite() == 1) {
-            holder.listContactItemFavoriteShine.setVisibility(View.VISIBLE);
-        } else {
-            holder.listContactItemFavoriteShine.setVisibility(View.GONE);
-        }
-        if (addedInMap && positionOnBindViewHolder != listContacts.size() - 1)
-            positionOnBindViewHolder = positionOnBindViewHolder + 1;
+//        Boolean addedInMap = false;
+//        if (context instanceof AddContactToGroupActivity || context instanceof DeleteContactFromGroupActivity) {
+//            Boolean isContained = true;
+//            ContactDB actContact = getItem(positionOnBindViewHolder).getContactDB();
+//            while (isContained) {
+//                for (ContactWithAllInformation actualContact : listContact) {
+//                    if (actualContact.getContactId() == actContact.getId()) {
+//                        isContained = false;
+//                        if (!contactMap.containsKey(position)) {
+//                            contactMap.put(position, positionOnBindViewHolder);
+//                            addedInMap = true;
+//                        }
+//                    }
+//                }
+//                if (isContained) {
+//                    if (positionOnBindViewHolder != listContacts.size() - 1)
+//                        positionOnBindViewHolder = positionOnBindViewHolder + 1;
+//                    actContact = getItem(positionOnBindViewHolder).getContactDB();
+//                }
+//            }
+//        }
+//        if (context instanceof AddNewGroupActivity) {
+//            if (!contactMap.containsKey(position)) {
+//                contactMap.put(position, positionOnBindViewHolder);
+//                addedInMap = true;
+//            }
+//        }
+//        final ContactDB contact = getItem(contactMap.get(position)).getContactDB();
+//        assert contact != null;
+//
+//        if (len == 0) {
+//            if (contact.getContactPriority() == 0) {
+//            } else if (contact.getContactPriority() == 1) {
+//                SharedPreferences sharedPreferences = context.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE);
+//                if (sharedPreferences.getBoolean("darkTheme", false)) {
+////                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorLight, null));
+//                } else {
+//                    holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.textColorDark, null));
+//                }
+//
+//            } else if (contact.getContactPriority() == 2) {
+//                holder.contactFirstNameView.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark, null));
+//            }
+//        } else {
+//            if (contact.getContactPriority() == 0) {
+//                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityZeroColor, null));
+//            } else if (contact.getContactPriority() == 1) {
+//                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.transparentColor, null));
+//            } else if (contact.getContactPriority() == 2) {
+//                holder.contactRoundedImageView.setBorderColor(context.getResources().getColor(R.color.priorityTwoColor, null));
+//            }
+//        }
+//        if (!contact.getProfilePicture64().equals("")) {
+//            Bitmap bitmap = base64ToBitmap(contact.getProfilePicture64());
+//            holder.contactRoundedImageView.setImageBitmap(bitmap);
+//        } else {
+//            holder.contactRoundedImageView.setImageResource(randomDefaultImage(contact.getProfilePicture()));
+//        }
+//        String contactName = contact.getFirstName() + " " + contact.getLastName();
+//
+//        holder.contactFirstNameView.setText(contactName);
+//
+//        if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(contactMap.get(position)))) {
+//            holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+//        }
+//
+//        View.OnClickListener listItemClick = v -> {
+//            if (listOfItemSelected.size() == 0 && len == 1 && holder.constraintLayoutMenu != null) {
+//                holder.constraintLayoutMenu.setVisibility(View.GONE);
+//            }
+//
+//            view.setTag(holder);
+//            ContactDB contactDB = gestionnaireContacts.getContactList().get(contactMap.get(position)).getContactDB();
+//            assert contactDB != null;
+//
+//            if (listOfItemSelected.contains(gestionnaireContacts.getContactList().get(contactMap.get(position)))) {
+//                listOfItemSelected.remove(gestionnaireContacts.getContactList().get(contactMap.get(position)));
+//
+//                if (!contactDB.getProfilePicture64().equals("")) {
+//                    Bitmap bitmap = base64ToBitmap(contactDB.getProfilePicture64());
+//                    holder.contactRoundedImageView.setImageBitmap(bitmap);
+//                } else {
+//                    holder.contactRoundedImageView.setImageResource(randomDefaultImage(contactDB.getProfilePicture()));
+//                }
+//            } else {
+//                listOfItemSelected.add(gestionnaireContacts.getContactList().get(contactMap.get(position)));
+//                if (context instanceof GroupManagerActivity && len == 0) {
+//                } else {
+//                    holder.contactRoundedImageView.setImageResource(R.drawable.ic_item_selected);
+//                }
+//            }
+//
+//            if (context instanceof AddNewGroupActivity) {
+//                ((AddNewGroupActivity) context).listMultiSelectItemClick(contactMap.get(position));
+//            }
+//            if (context instanceof AddContactToGroupActivity) {
+//                ((AddContactToGroupActivity) context).multiSelectItemClick(contactMap.get(position));
+//            }
+//            if (context instanceof DeleteContactFromGroupActivity) {
+//                ((DeleteContactFromGroupActivity) context).multiSelectItemClick(contactMap.get(position));
+//            }
+//        };
+//
+//        if (holder.constraintLayout != null) {
+//            holder.constraintLayout.setOnClickListener(listItemClick);
+//        }
+//
+//        if (contact.getFavorite() == 1) {
+//            holder.listContactItemFavoriteShine.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.listContactItemFavoriteShine.setVisibility(View.GONE);
+//        }
+//        if (addedInMap && positionOnBindViewHolder != listContacts.size() - 1)
+//            positionOnBindViewHolder = positionOnBindViewHolder + 1;
     }
 
     @Override
@@ -401,11 +392,11 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
         ContactViewHolder(@NonNull View view) {
             super(view);
 
-            contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
-            contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
-            constraintLayout = view.findViewById(R.id.list_contact_item_layout);
-            constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
-            listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
+//            contactRoundedImageView = view.findViewById(R.id.list_contact_item_contactRoundedImageView);
+//            contactFirstNameView = view.findViewById(R.id.list_contact_item_contactFirstName);
+//            constraintLayout = view.findViewById(R.id.list_contact_item_layout);
+//            constraintLayoutMenu = view.findViewById(R.id.list_contact_item_menu);
+//            listContactItemFavoriteShine = view.findViewById(R.id.list_contact_item_favorite_shine);
             open = false;
         }
     }

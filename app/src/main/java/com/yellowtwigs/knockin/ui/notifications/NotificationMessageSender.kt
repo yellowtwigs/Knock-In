@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.contacts.Main2Activity
 
 class NotificationMessageSender : BroadcastReceiver() {
     @SuppressLint("ObsoleteSdkInt")
@@ -29,8 +28,8 @@ class NotificationMessageSender : BroadcastReceiver() {
             manager.createNotificationChannel(channel)
         }
 
-        var main_mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
-        main_mDbWorkerThread.start()
+//        var main_mDbWorkerThread: DbWorkerThread = DbWorkerThread("dbWorkerThread")
+//        main_mDbWorkerThread.start()
         val runnableSendNotif = Runnable {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
@@ -50,20 +49,20 @@ class NotificationMessageSender : BroadcastReceiver() {
             if (intent.action == "NOTIFICATION_TIME")
                 manager.notify(0, notification.build())
         }
-        main_mDbWorkerThread.postTask(runnableSendNotif)
+//        main_mDbWorkerThread.postTask(runnableSendNotif)
     }
 
     private fun isNotificationServiceEnabled(context: Context): Boolean {
-        val pkgName = Main2Activity::class.java.`package`!!.name
+//        val pkgName = Main2Activity::class.java.`package`!!.name
         val str = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
         if (!TextUtils.isEmpty(str)) {
             val names = str.split(":")
             for (i in names.indices) {
                 val cn = ComponentName.unflattenFromString(names[i])
                 if (cn != null) {
-                    if (TextUtils.equals(pkgName, cn.packageName)) {
-                        return true
-                    }
+//                    if (TextUtils.equals(pkgName, cn.packageName)) {
+//                        return true
+//                    }
                 }
             }
         }

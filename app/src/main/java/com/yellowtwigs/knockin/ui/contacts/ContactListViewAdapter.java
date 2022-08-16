@@ -18,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
 import com.yellowtwigs.knockin.model.data.ContactDB;
-import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.List;
  * @author Florian Striebel, Kenzy Suon, Ryan Granet
  */
 public class ContactListViewAdapter extends BaseAdapter {
-    private List<ContactWithAllInformation> listContacts;
+    private List<ContactDB> listContacts;
     private LayoutInflater layoutInflater;
     private ArrayList<AppCompatImageView> listItemChannelSelected = new ArrayList<>();
     private final ArrayList<String> listOfNumberSelected = new ArrayList<>();
@@ -37,7 +36,7 @@ public class ContactListViewAdapter extends BaseAdapter {
     private final ArrayList<String> listOfWhatsappSelected = new ArrayList<>();
     private Context context;
 
-    public ContactListViewAdapter(Context context, List<ContactWithAllInformation> listContacts) {
+    public ContactListViewAdapter(Context context, List<ContactDB> listContacts) {
         this.listContacts = listContacts;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -49,7 +48,7 @@ public class ContactListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public ContactWithAllInformation getItem(int position) {
+    public ContactDB getItem(int position) {
         return listContacts.get(position);
     }
 
@@ -65,7 +64,7 @@ public class ContactListViewAdapter extends BaseAdapter {
         final ViewHolder holder;
         holder = new ViewHolder();
         holder.position = position;
-        final ContactDB contact = getItem(position).getContactDB();
+        final ContactDB contact = getItem(position);
 
         listview = layoutInflater.inflate(R.layout.list_contact_selected_with_channel, null);
 
@@ -88,63 +87,63 @@ public class ContactListViewAdapter extends BaseAdapter {
 
         holder.contactFirstNameView.setText(contactName);
 
-        View.OnClickListener listener = v -> {
-            if (v.getId() == holder.smsCl.getId()) {
-                if (listItemChannelSelected.contains(holder.smsCl)) {
-                    listItemChannelSelected.remove(holder.smsCl);
-                    holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
-                    listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
-                } else {
-                    listItemChannelSelected.add(holder.smsCl);
-                    holder.smsCl.setImageResource(R.drawable.ic_item_selected);
-                    listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
-                }
-            }
-            if (v.getId() == holder.mailCl.getId()) {
-                if (listItemChannelSelected.contains(holder.mailCl)) {
-                    listItemChannelSelected.remove(holder.mailCl);
-                    holder.mailCl.setImageResource(R.drawable.ic_circular_gmail);
-                    listOfMailSelected.remove(listContacts.get(position).getFirstMail());
-                } else {
-                    listItemChannelSelected.add(holder.mailCl);
-                    holder.mailCl.setImageResource(R.drawable.ic_item_selected);
-                    listOfMailSelected.add(listContacts.get(position).getFirstMail());
-                }
-            }
-            if (v.getId() == holder.whatsappCl.getId()) {
-                if (listItemChannelSelected.contains(holder.whatsappCl)) {
-                    listItemChannelSelected.remove(holder.whatsappCl);
-                    holder.whatsappCl.setImageResource(R.drawable.ic_circular_whatsapp);
-                    listOfWhatsappSelected.remove(listContacts.get(position).getFirstMail());
-                } else {
-                    listItemChannelSelected.add(holder.whatsappCl);
-                    holder.whatsappCl.setImageResource(R.drawable.ic_item_selected);
-                    listOfWhatsappSelected.add(listContacts.get(position).getFirstMail());
-                }
-            }
-        };
+//        View.OnClickListener listener = v -> {
+//            if (v.getId() == holder.smsCl.getId()) {
+//                if (listItemChannelSelected.contains(holder.smsCl)) {
+//                    listItemChannelSelected.remove(holder.smsCl);
+//                    holder.smsCl.setImageResource(R.drawable.ic_sms_selector);
+//                    listOfNumberSelected.remove(listContacts.get(position).getFirstPhoneNumber());
+//                } else {
+//                    listItemChannelSelected.add(holder.smsCl);
+//                    holder.smsCl.setImageResource(R.drawable.ic_item_selected);
+//                    listOfNumberSelected.add(listContacts.get(position).getFirstPhoneNumber());
+//                }
+//            }
+//            if (v.getId() == holder.mailCl.getId()) {
+//                if (listItemChannelSelected.contains(holder.mailCl)) {
+//                    listItemChannelSelected.remove(holder.mailCl);
+//                    holder.mailCl.setImageResource(R.drawable.ic_circular_gmail);
+//                    listOfMailSelected.remove(listContacts.get(position).getFirstMail());
+//                } else {
+//                    listItemChannelSelected.add(holder.mailCl);
+//                    holder.mailCl.setImageResource(R.drawable.ic_item_selected);
+//                    listOfMailSelected.add(listContacts.get(position).getFirstMail());
+//                }
+//            }
+//            if (v.getId() == holder.whatsappCl.getId()) {
+//                if (listItemChannelSelected.contains(holder.whatsappCl)) {
+//                    listItemChannelSelected.remove(holder.whatsappCl);
+//                    holder.whatsappCl.setImageResource(R.drawable.ic_circular_whatsapp);
+//                    listOfWhatsappSelected.remove(listContacts.get(position).getFirstMail());
+//                } else {
+//                    listItemChannelSelected.add(holder.whatsappCl);
+//                    holder.whatsappCl.setImageResource(R.drawable.ic_item_selected);
+//                    listOfWhatsappSelected.add(listContacts.get(position).getFirstMail());
+//                }
+//            }
+//        };
+//
+//        if (getItem(position).getFirstMail().isEmpty()) {
+//            holder.mailCl.setVisibility(View.GONE);
+//        } else {
+//            holder.mailCl.setVisibility(View.VISIBLE);
+//        }
+//
+//        if (getItem(position).getFirstPhoneNumber().isEmpty()) {
+//            holder.smsCl.setVisibility(View.GONE);
+//        } else {
+//            holder.smsCl.setVisibility(View.VISIBLE);
+//        }
+//
+//        if (getItem(position).getFirstPhoneNumber().isEmpty() && getItem(position).getContactDB().getHasWhatsapp() != 1) {
+//            holder.whatsappCl.setVisibility(View.GONE);
+//        } else {
+//            holder.whatsappCl.setVisibility(View.VISIBLE);
+//        }
 
-        if (getItem(position).getFirstMail().isEmpty()) {
-            holder.mailCl.setVisibility(View.GONE);
-        } else {
-            holder.mailCl.setVisibility(View.VISIBLE);
-        }
-
-        if (getItem(position).getFirstPhoneNumber().isEmpty()) {
-            holder.smsCl.setVisibility(View.GONE);
-        } else {
-            holder.smsCl.setVisibility(View.VISIBLE);
-        }
-
-        if (getItem(position).getFirstPhoneNumber().isEmpty() && getItem(position).getContactDB().getHasWhatsapp() != 1) {
-            holder.whatsappCl.setVisibility(View.GONE);
-        } else {
-            holder.whatsappCl.setVisibility(View.VISIBLE);
-        }
-
-        holder.mailCl.setOnClickListener(listener);
-        holder.smsCl.setOnClickListener(listener);
-        holder.whatsappCl.setOnClickListener(listener);
+//        holder.mailCl.setOnClickListener(listener);
+//        holder.smsCl.setOnClickListener(listener);
+//        holder.whatsappCl.setOnClickListener(listener);
 
         return listview;
     }
