@@ -215,7 +215,7 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
                     .setMessage(message)
                     .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
                         listContact.forEach {
-                            contactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it.id!!, groupId)
+//                            contactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it.id!!, groupId)
                         }
                         var counter = 0
 

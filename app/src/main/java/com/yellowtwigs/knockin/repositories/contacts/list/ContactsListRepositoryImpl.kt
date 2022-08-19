@@ -1,6 +1,8 @@
 package com.yellowtwigs.knockin.repositories.contacts.list
 
+import android.telephony.PhoneNumberUtils
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import com.yellowtwigs.knockin.model.dao.ContactsDao
 import com.yellowtwigs.knockin.model.data.ContactDB
 import javax.inject.Inject
@@ -12,7 +14,7 @@ class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDa
     private val sortByLiveData = MutableLiveData<Int>()
     private val filterByLiveData = MutableLiveData<Int>()
 
-    override fun getAllContacts() = dao.getAllContacts()
+    override fun getAllContacts() = dao.getAllContacts().asLiveData()
     override fun getContact(id: Int) = dao.getContact(id)
 
     override suspend fun updateContact(contact: ContactDB) = dao.updateContact(contact)

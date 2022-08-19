@@ -685,11 +685,11 @@ class AddNewContactActivity : AppCompatActivity() {
 
         val groupId = add_new_contact_ContactsDatabase!!.GroupsDao().insert(group)
         listContact.forEach {
-            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
-            println(
-                "contact db id" + add_new_contact_ContactsDatabase!!.LinkContactGroupDao()
-                    .insert(link)
-            )
+//            val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
+//            println(
+//                "contact db id" + add_new_contact_ContactsDatabase!!.LinkContactGroupDao()
+//                    .insert(link)
+//            )
         }
     }
 
@@ -701,7 +701,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private fun addContactToGroup(listContact: ArrayList<ContactDB?>, groupId: Long?) {
         listContact.forEach {
             val link = LinkContactGroup(groupId!!.toInt(), it!!.id!!)
-            add_new_contact_ContactsDatabase!!.LinkContactGroupDao().insert(link)
+//            add_new_contact_ContactsDatabase!!.LinkContactGroupDao().insert(link)
         }
     }
 

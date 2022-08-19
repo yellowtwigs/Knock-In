@@ -1,20 +1,12 @@
 package com.yellowtwigs.knockin.ui.main
 
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityMainBinding
-import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
-import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

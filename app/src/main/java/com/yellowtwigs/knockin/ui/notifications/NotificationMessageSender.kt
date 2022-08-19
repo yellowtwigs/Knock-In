@@ -10,6 +10,7 @@ import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.notifications.listener.NotificationsListener
 
 class NotificationMessageSender : BroadcastReceiver() {
     @SuppressLint("ObsoleteSdkInt")
@@ -70,17 +71,17 @@ class NotificationMessageSender : BroadcastReceiver() {
     }//TODO: enlever code duplicate
 
     private fun isMessagingApp(packageName: String): Boolean {
-        if (packageName == NotificationListener.FACEBOOK_PACKAGE) {
+        if (packageName == NotificationsListener.FACEBOOK_PACKAGE) {
             return true
-        } else if (packageName == NotificationListener.MESSENGER_PACKAGE) {
+        } else if (packageName == NotificationsListener.MESSENGER_PACKAGE) {
             return true
-        } else if (packageName == NotificationListener.WHATSAPP_SERVICE) {
+        } else if (packageName == NotificationsListener.WHATSAPP_SERVICE) {
             return true
-        } else if (packageName == NotificationListener.GMAIL_PACKAGE) {
+        } else if (packageName == NotificationsListener.GMAIL_PACKAGE) {
             return true
-        } else if (packageName == NotificationListener.MESSAGE_PACKAGE || packageName == NotificationListener.MESSAGE_SAMSUNG_PACKAGE) {
+        } else if (packageName == NotificationsListener.MESSAGE_PACKAGE || packageName == NotificationsListener.MESSAGE_SAMSUNG_PACKAGE) {
             return true
-        } else if (packageName == NotificationListener.TELEGRAM_PACKAGE)
+        } else if (packageName == NotificationsListener.TELEGRAM_PACKAGE)
             return true
         return false
     }

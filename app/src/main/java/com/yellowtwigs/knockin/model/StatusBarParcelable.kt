@@ -111,7 +111,7 @@ class StatusBarParcelable : Parcelable {
     }
 
     /**
-     * Change le numéro de téléphone par le nom et pr"énom du contact
+     * Change le numéro de téléphone par le nom et prénom du contact
      */
     fun changeToContactName(contact: ContactDB) {
         statusBarNotificationInfo["android.title"] = contact.firstName + " " + contact.lastName

@@ -19,21 +19,12 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Date
 
-/**
- * La Classe qui permet de remplir l'historique des notifications
- *
- * @author Florian Striebel
- */
 class NotificationsListAdapter(private val context: Context) :
-    ListAdapter<NotificationDB, NotificationsListAdapter.ViewHolder>(ContactComparator()) {
+    ListAdapter<NotificationsListViewState, NotificationsListAdapter.ViewHolder>(ContactComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemNotificationBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+            ItemNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -44,7 +35,7 @@ class NotificationsListAdapter(private val context: Context) :
     class ViewHolder(private val binding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(notificationDB: NotificationDB, context: Context) {
+        fun onBind(notificationDB: NotificationsListViewState, context: Context) {
             val text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notificationDB.timestamp))
 
             val pckManager = context.packageManager
@@ -77,7 +68,6 @@ class NotificationsListAdapter(private val context: Context) :
                     notificationDate.text = text
 
                     val click = View.OnClickListener {
-                        Log.i("notifications", "${modeMultiSelect}")
                         if (modeMultiSelect) {
                             if (listOfItemSelected.contains(notificationDB)
                             ) {
@@ -136,17 +126,17 @@ class NotificationsListAdapter(private val context: Context) :
         }
     }
 
-    class ContactComparator : DiffUtil.ItemCallback<NotificationDB>() {
+    class ContactComparator : DiffUtil.ItemCallback<NotificationsListViewState>() {
         override fun areItemsTheSame(
-            oldItem: NotificationDB,
-            newItem: NotificationDB
+            oldItem: NotificationsListViewState,
+            newItem: NotificationsListViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: NotificationDB,
-            newItem: NotificationDB
+            oldItem: NotificationsListViewState,
+            newItem: NotificationsListViewState
         ): Boolean {
             return oldItem.id == newItem.id &&
                     oldItem.contactName == newItem.contactName &&
@@ -158,7 +148,7 @@ class NotificationsListAdapter(private val context: Context) :
         }
     }
 
-    fun clearAll(){
+    fun clearAll() {
         modeMultiSelect = false
         secondClick = false
         lastClick = false
@@ -170,7 +160,7 @@ class NotificationsListAdapter(private val context: Context) :
         var secondClick = false
         var lastClick = false
 
-        private var listOfItemSelected = ArrayList<NotificationDB>()
+        private var listOfItemSelected = ArrayList<NotificationsListViewState>()
             set(listOfItemSelected) {
                 this.listOfItemSelected.clear()
                 this.listOfItemSelected.addAll(listOfItemSelected)

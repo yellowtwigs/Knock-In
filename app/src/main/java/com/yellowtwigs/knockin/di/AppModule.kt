@@ -29,4 +29,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideContactsDao(database: ContactsDatabase) = database.contactsDao()
+
+    @Provides
+    @Singleton
+    fun provideNotificationsDao(database: ContactsDatabase) = database.notificationsDao()
 }

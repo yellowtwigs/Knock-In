@@ -498,4 +498,6 @@
     <string name="modify">Modify</string>
     <string name="work_schedule_title">Work schedule (Monday - Friday)</string>
     <string name="edit_reminder_hour_title">Daily reminder time for non-VIP notifications :</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

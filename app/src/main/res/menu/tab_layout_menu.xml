@@ -6,7 +6,7 @@
         android:title="@string/bottom_navigation_view_phone_book" />
     <item
         android:id="@+id/navigation_groups"
-        android:icon="@drawable/ic_multiple_users_silhouette_test"
+        android:icon="@drawable/ic_groups"
         android:title="@string/bottom_navigation_view_groups" />
     <item
         android:id="@+id/navigation_notifcations"

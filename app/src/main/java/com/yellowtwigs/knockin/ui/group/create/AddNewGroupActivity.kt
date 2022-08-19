@@ -44,7 +44,7 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var listtest: Int = 0
     private var recyclerViewAdapter: CreateGroupListViewAdapter? = null
 
-//    private var gestionnaireContacts: ContactManager? = null
+    //    private var gestionnaireContacts: ContactManager? = null
     private val selectContact: MutableList<ContactDB>? = mutableListOf()
 
     //endregion
@@ -156,6 +156,7 @@ class AddNewGroupActivity : AppCompatActivity() {
         inflater.inflate(R.menu.toolbar_menu_validation, menu)
         return true
     }
+
     /**
      * lorsqu'un élément du menu à été selectionner cette méthode est appelé par le système
      * @return [Boolean]
@@ -170,10 +171,18 @@ class AddNewGroupActivity : AppCompatActivity() {
                     if (selectContact!!.isNotEmpty()) {//Et qu'il y a des contact dans le groupe
                         addToGroup(selectContact, addNewGroupName!!.text.toString())
                     } else {
-                        Toast.makeText(this, getString(R.string.add_new_group_toast_no_contact_selected), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            getString(R.string.add_new_group_toast_no_contact_selected),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 } else {
-                    Toast.makeText(this, getString(R.string.add_new_group_toast_empty_field), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.add_new_group_toast_empty_field),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -217,8 +226,12 @@ class AddNewGroupActivity : AppCompatActivity() {
         var counter = 0
         var alreadyExist = false
 
-        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
-            if (name == contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name) {
+        while (counter < contactsDatabase?.GroupsDao()!!
+                .getAllGroupsByNameAZ().size
+        ) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
+            if (name == contactsDatabase?.GroupsDao()!!
+                    .getAllGroupsByNameAZ()[counter].groupDB!!.name
+            ) {
                 alreadyExist = true
                 break
             }
@@ -230,8 +243,8 @@ class AddNewGroupActivity : AppCompatActivity() {
         } else {
             val groupId = contactsDatabase!!.GroupsDao().insert(group)
             listContact!!.forEach {
-                val link = LinkContactGroup(groupId!!.toInt(), it.id!!)
-                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
+                val link = LinkContactGroup(groupId!!.toInt(), it.id)
+//                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
             }
             println(contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
             refreshActivity()
@@ -239,7 +252,11 @@ class AddNewGroupActivity : AppCompatActivity() {
     }
 
     private fun refreshActivity() {
-        startActivity(Intent(this@AddNewGroupActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        startActivity(
+            Intent(this@AddNewGroupActivity, GroupManagerActivity::class.java).addFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION
+            )
+        )
         finish()
     }
 

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ContactsListRepository {
 
-    fun getAllContacts(): Flow<List<ContactDB>>
+    fun getAllContacts(): LiveData<List<ContactDB>>
 
     fun getContact(id: Int): Flow<ContactDB>
 

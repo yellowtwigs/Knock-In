@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
-
 data class ContactsListViewState(
     val id: Int,
     val firstName: String,

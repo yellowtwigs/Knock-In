@@ -1192,25 +1192,6 @@
 //        return null
 //    }
 //
-//    fun getContactId(name: String): Int {
-//        if (name.contains(" ")) {
-//            this.contactList.forEach { dbContact ->
-//                val contactInfo = dbContact.contactDB!!
-//                if (contactInfo.firstName + " " + contactInfo.lastName == name) {
-//                    return contactInfo.id!!
-//                }
-//            }
-//        } else {
-//            this.contactList.forEach { dbContact ->
-//                val contactInfo = dbContact.contactDB!!
-//
-//                if (contactInfo.firstName == name && contactInfo.lastName == "" || contactInfo.firstName == "" && contactInfo.lastName == name) {
-//                    return contactInfo.id!!
-//                }
-//            }
-//        }
-//        return -1
-//    }
 //
 //    fun getContactFromNumber(phoneNumber: String): ContactWithAllInformation? {
 //        for (contact in this.contactList) {

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 20,
-    "identityHash": "98d91ce52e929f8df5712fafcfd8c0bf",
+    "identityHash": "b90e6429e0585a58cd2812a31ef5baf9",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -128,13 +128,13 @@
       },
       {
         "tableName": "notifications_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `is_blacklist` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL, `is_cancellable` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `is_cancellable` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL, `priority` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "title",
@@ -161,12 +161,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "isBlacklist",
-            "columnName": "is_blacklist",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "timestamp",
             "columnName": "timestamp",
             "affinity": "INTEGER",
@@ -181,6 +175,12 @@
           {
             "fieldPath": "idContact",
             "columnName": "id_contact",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -294,50 +294,6 @@
         ]
       },
       {
-        "tableName": "vip_notifications_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `notification_id` INTEGER NOT NULL, `app_notifier` TEXT NOT NULL, `list_size` INTEGER NOT NULL, `notification_text` TEXT NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "notificationId",
-            "columnName": "notification_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "appNotifier",
-            "columnName": "app_notifier",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "listSize",
-            "columnName": "list_size",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "notificationText",
-            "columnName": "notification_text",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "vip_sbn_table",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `vip_notification_id` INTEGER NOT NULL, `sbn_key` TEXT NOT NULL, `sbn_value` TEXT NOT NULL)",
         "fields": [
@@ -379,7 +335,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '98d91ce52e929f8df5712fafcfd8c0bf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b90e6429e0585a58cd2812a31ef5baf9')"
     ]
   }
 }

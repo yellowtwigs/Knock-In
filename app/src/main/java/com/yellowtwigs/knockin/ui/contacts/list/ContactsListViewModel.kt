@@ -3,10 +3,10 @@ package com.yellowtwigs.knockin.ui.contacts.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
+import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,11 +14,10 @@ import javax.inject.Inject
 class ContactsListViewModel @Inject constructor(contactsListRepository: ContactsListRepository) :
     ViewModel() {
 
-    private val viewStateLiveData: MediatorLiveData<List<ContactsListViewState>> =
-        MediatorLiveData()
+    private val viewStateLiveData = MediatorLiveData<List<ContactsListViewState>>()
 
     init {
-        val allContacts = contactsListRepository.getAllContacts().asLiveData()
+        val allContacts = contactsListRepository.getAllContacts()
         val searchBarText = contactsListRepository.getSearchBarText()
         val sortedBy = contactsListRepository.getSortedBy()
         val filterBy = contactsListRepository.getFilterBy()
@@ -116,7 +115,7 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
         }
 
         viewStateLiveData.value = listOfContacts.sortedBy {
-            it.firstName + it.lastName
+            it.firstName.uppercase().unAccent() + it.lastName.uppercase().unAccent()
         }
     }
 

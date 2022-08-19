@@ -79,16 +79,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //endregion
 
-//        if (checkIfGoEdition()) {
-//
-//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                .setBackground(getDrawable(R.color.backgroundColor))
-//                .setMessage(getString(R.string.start_activity_go_edition_message))
-//                .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-//                }
-//                .show()
-//        }
-
         val arraylistPermission = ArrayList<String>()
         arraylistPermission.add(Manifest.permission.READ_CONTACTS)
         arraylistPermission.add(Manifest.permission.SEND_SMS)
@@ -146,6 +136,16 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region ========================================== Functions ===========================================
 
     private fun setSliderContainer() {
+//        if (checkIfGoEdition()) {
+//
+//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                .setBackground(getDrawable(R.color.backgroundColor))
+//                .setMessage(getString(R.string.start_activity_go_edition_message))
+//                .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+//                }
+//                .show()
+//        }
+
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
         sliderItems.add(SliderItem(R.drawable.carrousel_4))

@@ -1,70 +1,52 @@
 package com.yellowtwigs.knockin.model.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.NotificationDB
+import kotlinx.coroutines.flow.Flow
 
-/**
- * Interface réunissent les différentes requêtes d'interaction avec la table notification
- * @author Florian Striebel, Ryan Granet
- */
+
 @Dao
 interface NotificationsDao {
-    /**
-     * Récupère toutes les [notifications][NotificationDB] de la database
-     * @return List&lt[NotificationDB]&gt trié par date
-     */
-    @Query("SELECT * FROM notifications_table ORDER BY timestamp DESC")
-    fun getAllNotifications(): List<NotificationDB>
 
-    /**
-     * Récupère toutes les [notifications][NotificationDB] lié à une plateforme
-     * @param platform String   La plateforme sélectionnée
-     * @return List&lt[NotificationDB]&gt
-     */
-    @Query("SELECT * FROM notifications_table WHERE platform = :platform")
-    fun getNotificationByPlatform(platform: String): List<NotificationDB>
+//    @Query("SELECT * FROM notifications_table WHERE platform = :platform")
+//    fun getNotificationByPlatform(platform: String): List<NotificationDB>
+//
+//    @Query("SELECT COUNT(*) FROM notifications_table WHERE datetime('now')- datetime(timestamp)<1")
+//    fun getNotificationSinceYesterday(): Int
+//
+//    @Query("SELECT * FROM notifications_table WHERE id = :id")
+//    fun getNotification(id: Int): NotificationDB
 
-    @Query("SELECT COUNT(*) FROM notifications_table WHERE datetime('now')- datetime(timestamp)<1")
-    fun getNotificationSinceYesterday(): Int
+    //region ============================================= GET ==============================================
 
-    @Query("SELECT datetime(timestamp) FROM notifications_table")
-    fun getIntTime(): List<String>
+    @Query("SELECT * FROM notifications_table ORDER BY id DESC")
+    fun getAllNotifications(): Flow<List<NotificationDB>>
 
-    /**
-     * Récupère une [notification][NotificationDB] grâce à son id
-     * @param id Int   L'id de la [notification][NotificationDB] voulu
-     * @return List&lt[NotificationDB]&gt
-     */
-    @Query("SELECT * FROM notifications_table WHERE id = :id")
-    fun getNotification(id: Int): NotificationDB
+    //endregion
 
-    /**
-     * Sauvegarde une [notification][NotificationDB] dans la Base de données
-     * @param notifications NotificationDB  Objet [notification][NotificationDB]
-     * @return Int  L'id de la [notification][NotificationDB] sauvegardée
-     */
-    @Insert
-    fun insertNotifications(notifications: NotificationDB)
+    //region ============================================ INSERT ============================================
 
-    /**
-     * Supprime une [notification][NotificationDB] de la Base de donnée grâce à son id
-     * @param id Int    Id de la [notification][NotificationDB] qui doit être supprimé
-     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNotification(notification: NotificationDB)
+
+    //endregion
+
+    //region ============================================ DELETE ============================================
+
+    @Delete
+    suspend fun deleteNotification(notification: NotificationDB)
+
     @Query("DELETE FROM notifications_table WHERE id = :id")
-    fun deleteNotificationById(id: Int)
+    suspend fun deleteNotificationById(id: Int)
 
-    /**
-     * Supprime les [notifications][NotificationDB] de la Base de donnée lié à une plateforme
-     * @param platform String    Plateforme choisie
-     */
     @Query("DELETE FROM notifications_table WHERE platform = :platform")
-    fun deleteNotificationByPlatform(platform: String)
+    suspend fun deleteNotificationsByPlatform(platform: String)
 
+    @Query("DELETE FROM notifications_table")
+    suspend fun deleteAllNotifications()
 
-    @Query("DELETE FROM notifications_table WHERE 1=1")
-    fun deleteAllNotification()
+    //endregion
 
 
     @Query("SELECT max(id) from notifications_table ")

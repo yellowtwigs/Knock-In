@@ -1,16 +1,15 @@
 package com.yellowtwigs.knockin.ui.main
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.*
-import android.widget.SearchView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.FragmentMainBinding
 import com.yellowtwigs.knockin.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
@@ -36,15 +35,30 @@ class MainFragment : BaseFragment() {
         binding = null
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupToolbar()
+        setupViewPager()
+    }
+
     //region =========================================== TOOLBAR ============================================
 
+    private fun setupToolbar() {
+        contextActivity.setSupportActionBar(binding?.toolbar)
+        val actionbar = contextActivity.supportActionBar
+        actionbar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.toolbar_menu, menu)
 
         val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
+        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
@@ -60,6 +74,7 @@ class MainFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sort_by_first_name -> {
@@ -120,29 +135,45 @@ class MainFragment : BaseFragment() {
 
     //endregion
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setupViewPager()
-    }
-
     private fun setupViewPager() {
-        binding?.viewPager?.adapter = ViewPagerAdapter(contextActivity)
+        binding?.viewPager?.apply {
+            adapter = ViewPagerAdapter(contextActivity)
 
-        TabLayoutMediator(
-            binding?.tabLayout!!,
-            binding?.viewPager!!
-        ) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = "Characters"
-                }
-                1 -> {
-                    tab.text = "Episodes"
-                }
+            binding?.tabLayout?.let { tabLayout ->
+                TabLayoutMediator(tabLayout, this) { tab, position ->
+                    when (position) {
+                        0 -> {
+                            tab.icon =
+                                AppCompatResources.getDrawable(contextActivity, R.drawable.ic_home)
+                            tab.setText(R.string.bottom_navigation_view_phone_book)
+                        }
+                        1 -> {
+                            tab.icon =
+                                AppCompatResources.getDrawable(contextActivity, R.drawable.ic_groups)
+                            tab.setText(R.string.bottom_navigation_view_groups)
+                        }
+                        2 -> {
+                            tab.icon = AppCompatResources.getDrawable(
+                                contextActivity,
+                                R.drawable.ic_notification
+                            )
+                            tab.setText(R.string.bottom_navigation_view_notify_history)
+                        }
+                        3 -> {
+                            tab.icon = AppCompatResources.getDrawable(
+                                contextActivity,
+                                R.drawable.ic_phone_call
+                            )
+                            tab.setText(R.string.bottom_navigation_view_cockpit)
+                        }
+                        else -> {
+                            tab.icon =
+                                AppCompatResources.getDrawable(contextActivity, R.drawable.ic_home)
+                            tab.setText(R.string.bottom_navigation_view_phone_book)
+                        }
+                    }
+                }.attach()
             }
-        }.attach()
+        }
     }
-
-
 }

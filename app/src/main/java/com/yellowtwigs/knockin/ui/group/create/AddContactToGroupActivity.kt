@@ -201,7 +201,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
 
         listContact.forEach {
             val link = LinkContactGroup(groupId, it.id!!)
-            contactsDatabase!!.LinkContactGroupDao().insert(link)
+//            contactsDatabase!!.LinkContactGroupDao().insert(link)
         }
     }
 

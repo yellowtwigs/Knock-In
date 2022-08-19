@@ -436,17 +436,7 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     //region ========================================= Functions ============================================
 
     private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_group_manager)
-            height in 1800..2499 -> setContentView(R.layout.activity_group_manager)
-            height in 1100..1799 -> setContentView(R.layout.activity_group_manager_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_group_manager_mini_screen)
-        }
+        setContentView(R.layout.activity_group_manager)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 

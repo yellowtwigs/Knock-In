@@ -75,7 +75,8 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         //endregion
 
-        setContentView()
+        setContentView(R.layout.activity_help)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         //region ========================================== Toolbar =========================================
 
@@ -280,21 +281,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     //endregion
 
     //region ========================================== Functions ===========================================
-
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_help)
-            height in 1800..2499 -> setContentView(R.layout.activity_help)
-            height in 1100..1799 -> setContentView(R.layout.activity_help_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_help_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-    }
 
     override fun onResume() {
         super.onResume()
