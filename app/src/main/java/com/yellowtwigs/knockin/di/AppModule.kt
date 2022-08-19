@@ -3,6 +3,10 @@ package com.yellowtwigs.knockin.di
 import android.content.Context
 import androidx.room.Room
 import com.yellowtwigs.knockin.model.ContactsDatabase
+import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
+import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
+import com.yellowtwigs.knockin.ui.notifications.listener.NotificationsListenerViewModel
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

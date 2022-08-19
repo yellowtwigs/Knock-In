@@ -16,9 +16,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.domain.notifications.NotificationsListenerUseCase
 import com.yellowtwigs.knockin.model.StatusBarParcelable
 import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
@@ -33,7 +35,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class NotificationsListener : NotificationListenerService(){
+class NotificationsListener : NotificationListenerService() {
 //    , LifecycleService()
 
     private var oldPosX: Float = 0.0f
@@ -47,19 +49,20 @@ class NotificationsListener : NotificationListenerService(){
 
     private lateinit var durationPreferences: SharedPreferences
 
-//    @Inject
-//    private lateinit var notificationsListenerViewModel: NotificationsListenerViewModel
+//    private var notificationsListener : NotificationsListenerUseCase
+
+    private var notificationsListenerViewModel: NotificationsListenerViewModel by viewModelFactory()
 
     override fun onCreate() {
-        super<NotificationListenerService>.onCreate()
+        super.onCreate()
     }
 
     override fun onDestroy() {
-        super<NotificationListenerService>.onDestroy()
+        super.onDestroy()
     }
 
     override fun onBind(intent: Intent): IBinder? {
-        return null
+        return super.onBind(intent)
     }
 
     override fun onListenerDisconnected() {

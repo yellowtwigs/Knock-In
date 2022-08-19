@@ -9,10 +9,11 @@ import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
 import com.yellowtwigs.knockin.model.data.ContactDB
 import com.yellowtwigs.knockin.model.data.GroupDB
 import com.yellowtwigs.knockin.model.data.LinkContactGroup
-import com.yellowtwigs.knockin.repositories.contacts.insert.InsertContactRepository
+import com.yellowtwigs.knockin.repositories.contacts.create.CreateContactRepository
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,26 +25,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ImportContactsViewModel @Inject constructor(
-    private val repositoryImpl: InsertContactRepository,
+    private val createContactUseCase: CreateContactUseCase,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-//    ,
-//    @ApplicationContext private val context: ApplicationContext
-
     private val listOfTriple = arrayListOf<Triple<String, String, String>>()
     private val ids = arrayListOf<Int>()
-
-    suspend fun addUser(contact: ContactDB) = repositoryImpl.insertContact(contact)
 
     suspend fun syncAllContactsInDatabase(contentResolver: ContentResolver) {
         val structuredNameSync = getStructuredNameSync(contentResolver)
         val contactDetails = getContactDetailsSync(contentResolver)
 
-//        Log.i("importContact", "$contactDetails")
-
         val contactGroup = getContactGroupSync(contentResolver)
-//        contactList.clear()
         createListContactsSync(structuredNameSync, contactDetails.toList(), contactGroup)
     }
 
@@ -304,8 +297,6 @@ class ImportContactsViewModel @Inject constructor(
             var lastSyncId = ""
             var lastSync = ""
 
-//            val allContacts = contactsDatabase?.contactsDao()?.sortContactByFirstNameAZ()
-
             var modifiedContact = 0
             phoneStructName?.forEachIndexed { _, fullName ->
                 val set = mutableSetOf<String>()
@@ -353,43 +344,6 @@ class ImportContactsViewModel @Inject constructor(
                                 }
                             }
 
-                            val hasTelegram = if (listOfApps.contains("org.telegram.messenger")) {
-                                1
-                            } else {
-                                0
-                            }
-                            val hasWhatsapp = if (listOfApps.contains("com.whatsapp")) {
-                                1
-                            } else {
-                                0
-                            }
-                            val hasSignal = if (listOfApps.contains("org.thoughtcrime.securesms")) {
-                                1
-                            } else {
-                                0
-                            }
-
-                            if (fullName.second.first == "Kenjo") {
-                                Log.i("importContact", "fullName.first : ${fullName.first}")
-                                Log.i(
-                                    "importContact",
-                                    "fullName.second.first : ${fullName.second.first}"
-                                )
-                                Log.i(
-                                    "importContact",
-                                    "fullName.second.second : ${fullName.second.second}"
-                                )
-                                Log.i(
-                                    "importContact",
-                                    "fullName.second.third : ${fullName.second.third}"
-                                )
-                                Log.i("importContact", "details[1] : ${details[1]}")
-                                Log.i("importContact", "details[2] : ${details[2]}")
-                                Log.i("importContact", "details[3] : ${details[3]}")
-                                Log.i("importContact", "details[4] : ${details[4]}")
-
-                            }
-
                             val secondName = if (fullName.second.second == "") {
                                 ""
                             } else {
@@ -404,7 +358,7 @@ class ImportContactsViewModel @Inject constructor(
                                 listOfMails.add(details[4].toString())
                             }
 
-                            addUser(
+                            createContactUseCase.invoke(
                                 ContactDB(
                                     0,
                                     fullName.second.first + secondName,

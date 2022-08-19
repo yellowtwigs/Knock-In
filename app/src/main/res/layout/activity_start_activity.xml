@@ -76,7 +76,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
-    <!--    android:text="@string/superposition_title"-->
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/subtitle"
@@ -92,7 +91,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
-    <!--    android:text="@string/superposition_subtitle"-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activate_button"
