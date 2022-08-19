@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationsViewModel @Inject constructor(repository: NotificationsRepository) :
+class NotificationsListViewModel @Inject constructor(repository: NotificationsRepository) :
     ViewModel() {
 
     private val viewStateLiveData = MediatorLiveData<List<NotificationsListViewState>>()
