@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
-import android.graphics.Point
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -29,8 +28,7 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 
 /**
  * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de Knockin
@@ -133,16 +131,10 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
             help_activity_DrawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
-                R.id.nav_notif_config -> startActivity(
+                R.id.nav_notifications -> startActivity(
                     Intent(
                         this@HelpActivity,
-                        ManageNotificationActivity::class.java
-                    )
-                )
-                R.id.nav_settings -> startActivity(
-                    Intent(
-                        this@HelpActivity,
-                        SettingsActivity::class.java
+                        NotificationsSettingsActivity::class.java
                     )
                 )
                 R.id.nav_manage_screen -> startActivity(

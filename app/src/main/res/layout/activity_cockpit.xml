@@ -40,7 +40,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="@string/cockpit_toolbar_title"
+                android:text="@string/cockpit_title"
                 android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"

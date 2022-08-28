@@ -1,11 +1,11 @@
-package com.yellowtwigs.knockin.model
+package com.yellowtwigs.knockin.model.database
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import android.util.Log
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 
 import java.util.ArrayList
 import java.util.HashMap

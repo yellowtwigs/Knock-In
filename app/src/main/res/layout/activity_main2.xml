@@ -73,4 +73,5 @@
         android:src="@drawable/ic_exchange_arrows"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,8 +1,8 @@
 package com.yellowtwigs.knockin.repositories.notifications
 
 import androidx.lifecycle.asLiveData
-import com.yellowtwigs.knockin.model.dao.NotificationsDao
-import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
+import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import javax.inject.Inject
 
 class NotificationsRepositoryImpl @Inject constructor(private val dao: NotificationsDao) :

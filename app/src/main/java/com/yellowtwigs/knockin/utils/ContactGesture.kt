@@ -8,7 +8,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,10 +20,6 @@ import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import java.sql.DriverManager
 import java.util.*
 
-/**
- * L'objet qui permet d'ouvrir messenger, whatsapp et gmail
- * @author Florian Striebel, Kenzy Suon
- */
 object ContactGesture {
 
     //region =========================================== WHATSAPP ===========================================
@@ -209,6 +207,16 @@ object ContactGesture {
         }
     }
 
+    fun isPhoneNumber(phoneNumber: String): Boolean {
+        val regex =
+            "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))"
+        return phoneNumber.matches(regex.toRegex())
+    }
+
+    fun isValidEmail(mail: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(mail).matches()
+    }
+
     //endregion
 
     //region ========================================== MESSENGER ===========================================
@@ -255,7 +263,7 @@ object ContactGesture {
         }
     }
 
-    fun openMailApp(mail: String, context: Context){
+    fun openMailApp(mail: String, context: Context) {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:")
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))

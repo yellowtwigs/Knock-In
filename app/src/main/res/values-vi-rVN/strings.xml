@@ -49,8 +49,8 @@
     <string name="invite_friend_text">Sử dụng Knock In để có trải nghiệm giao tiếp mới</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">Số điện thoại</string>
-    <string name="main_filter_mail">Email</string>
+    <string name="filter_sms">Số điện thoại</string>
+    <string name="filter_mail">Email</string>
     <string name="main_search_hint">Tìm kiếm liên hệ của bạn</string>
     <string name="main_change_format_phone_book">Trợ giúp</string>
     <string name="sort_by">Lọc theo:</string>
@@ -60,8 +60,8 @@
     <string name="sort_by_favorite">Yêu thích</string>
     <string name="main_tri_par_groupe">Nhóm</string>
     <string name="filter_by">Bộ lọc thông báo:</string>
-    <string name="notif_filtre_app">Ứng dụng</string>
-    <string name="notif_filter_by_msg_apps">Tin nhắn</string>
+    <string name="filter_by_all">Ứng dụng</string>
+    <string name="filter_by_msg_apps">Tin nhắn</string>
     <string name="notif_filtre_systeme">Hệ thống</string>
     <string name="sort_by_date">Ngày và giờ</string>
     <string name="sort_by_contact">Liên hệ </string>
@@ -85,9 +85,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">Chọn tất cả</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">Liên hệ</string>
-    <string name="bottom_navigation_view_groups">Nhóm</string>
-    <string name="bottom_navigation_view_notify_history">Thông báo</string>
+    <string name="contacts_list_title">Liên hệ</string>
+    <string name="groups_list_title">Nhóm</string>
+    <string name="history_title">Thông báo</string>
     <string name="bottom_navigation_view_cockpit">Cockpit</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -219,7 +219,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Thông số thông báo</string>
-    <string name="notification_manager_stop_service">Bật quản lý thông báo theo mức độ ưu tiên</string>
+    <string name="notifications_activate_title">Bật quản lý thông báo theo mức độ ưu tiên</string>
     <string name="notification_manager_stop_popup">Hiển thị thông báo VIP</string>
     <string name="notification_reminder">Gửi lời nhắc để xem tất cả các tin nhắn không phải VIP</string>
     <string name="notification_manager_horaire">Đặt thời gian nhắc nhở hàng ngày</string>
@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Những ứng dụng của tôi</string>
+    <string name="cockpit_title">Những ứng dụng của tôi</string>
     <string name="cockpit_toast_phone_number_empty">Nhập số điện thoại</string>
     <string name="cockpit_toast_number_valid">Xin vui lòng nhập một số điện thoại hợp lệ</string>
     <string name="cockpit_toast_facebook_not_install">Facebook chưa được cài đặt</string>

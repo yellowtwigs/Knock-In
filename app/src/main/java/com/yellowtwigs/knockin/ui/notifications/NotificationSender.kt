@@ -4,7 +4,7 @@ import android.app.*
 import android.content.*
 
 import android.os.Build
-import com.yellowtwigs.knockin.ui.notifications.listener.NotificationsListener
+import com.yellowtwigs.knockin.model.service.NotificationsListenerService
 
 class NotificationSender : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -93,21 +93,4 @@ class NotificationSender : BroadcastReceiver() {
 //        }
 //        return false
 //    }
-
-    private fun isMessagingApp(packageName: String): Boolean {
-        if (packageName == NotificationsListener.FACEBOOK_PACKAGE) {
-            return true
-        } else if (packageName == NotificationsListener.MESSENGER_PACKAGE) {
-            return true
-        } else if (packageName == NotificationsListener.WHATSAPP_SERVICE) {
-            return true
-        } else if (packageName == NotificationsListener.GMAIL_PACKAGE) {
-            return true
-        } else if (packageName == NotificationsListener.MESSAGE_PACKAGE || packageName == NotificationsListener.MESSAGE_SAMSUNG_PACKAGE) {
-            return true
-        } else if (packageName == NotificationsListener.TELEGRAM_PACKAGE)
-            return true
-        return false
-    }
-
 }

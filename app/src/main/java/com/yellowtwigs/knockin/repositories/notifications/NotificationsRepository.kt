@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.repositories.notifications
 
 import androidx.lifecycle.LiveData
-import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.model.database.data.NotificationDB
 
 interface NotificationsRepository {
 

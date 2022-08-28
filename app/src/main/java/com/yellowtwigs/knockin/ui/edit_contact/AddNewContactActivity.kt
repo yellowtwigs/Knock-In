@@ -13,7 +13,6 @@ import android.media.ExifInterface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import android.view.*
@@ -21,18 +20,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.*
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.GroupDB
-import com.yellowtwigs.knockin.model.data.LinkContactGroup
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.yellowtwigs.knockin.model.database.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.GroupDB
+import com.yellowtwigs.knockin.model.database.data.LinkContactGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
 
 /**
  * La Classe qui permet la création d'un nouveau contact

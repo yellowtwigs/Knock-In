@@ -49,8 +49,8 @@
     <string name="invite_friend_text">Usa Knock In per una nuova esperienza di comunicazione</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">Numero Tel</string>
-    <string name="main_filter_mail">Email</string>
+    <string name="filter_sms">Numero Tel</string>
+    <string name="filter_mail">Email</string>
     <string name="main_search_hint">Cerca nei contatti</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="sort_by">Filtra per:</string>
@@ -60,8 +60,8 @@
     <string name="sort_by_favorite">Preferiti</string>
     <string name="main_tri_par_groupe">Gruppo</string>
     <string name="filter_by">Filtro notifiche:</string>
-    <string name="notif_filtre_app">Applicazione</string>
-    <string name="notif_filter_by_msg_apps">Messaggio</string>
+    <string name="filter_by_all">Applicazione</string>
+    <string name="filter_by_msg_apps">Messaggio</string>
     <string name="notif_filtre_systeme">Sistema</string>
     <string name="sort_by_date">Data e ora</string>
     <string name="sort_by_contact">Contatto</string>
@@ -85,9 +85,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">Seleziona tutti</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">Contatti</string>
-    <string name="bottom_navigation_view_groups">Gruppi</string>
-    <string name="bottom_navigation_view_notify_history">Notifiche</string>
+    <string name="contacts_list_title">Contatti</string>
+    <string name="groups_list_title">Gruppi</string>
+    <string name="history_title">Notifiche</string>
     <string name="bottom_navigation_view_cockpit">Cockpit</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -219,7 +219,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Parametri di notifica</string>
-    <string name="notification_manager_stop_service"> Abilita la gestione di notifiche per priorita\’ </string>
+    <string name="notifications_activate_title"> Abilita la gestione di notifiche</string>
     <string name="notification_manager_stop_popup"> Visualizza le notifiche VIP</string>
     <string name="notification_reminder">Invia un reminder per visualizzare i messaggi non-VIP </string>
     <string name="notification_manager_horaire"> Seleziona l\’orario giornaliero per richiamare: </string>
@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Le mie applicazione</string>
+    <string name="cockpit_title">Le mie applicazione</string>
     <string name="cockpit_toast_phone_number_empty">Inserisci un numero di telefono </string>
     <string name="cockpit_toast_number_valid">Introdurre un numero di telefono valido</string>
     <string name="cockpit_toast_facebook_not_install">Facebook non e\’ installato</string>

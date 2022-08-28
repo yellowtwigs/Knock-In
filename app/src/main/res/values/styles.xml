@@ -90,7 +90,12 @@
     </style>
 
     <style name="TabLayoutItemStyle">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigationView.Active
+        </item>
+        <item name="itemTextAppearanceInactive">
+            @style/TextAppearance.BottomNavigationView.Inactive
+        </item>
     </style>
 
     <!-- blank styles for better code readability-->

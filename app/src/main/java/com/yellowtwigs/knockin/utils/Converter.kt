@@ -10,28 +10,6 @@ import java.io.ByteArrayOutputStream
 import java.text.Normalizer
 
 object Converter {
-    fun convertPackageToString(packageName: String, context: Context): String {
-        if (packageName == "com.facebook.katana") {
-            return "Facebook"
-        } else if (packageName == "com.facebook.orca") {
-            return "Messenger"
-        } else if (packageName == "com.whatsapp") {
-            return "WhatsApp"
-        } else if (packageName == "org.telegram.messenger") {
-            return "Telegram"
-        } else if (packageName == "com.google.android.gm") {
-            return "Gmail"
-        } else if (packageName == "org.thoughtcrime.securesms") {
-            return "Signal"
-        } else if (packageName == "com.microsoft.office.outlook") {
-            return "Outlook"
-        } else if (packageName == "com.google.android.apps.messaging" || packageName == "com.samsung.android.messaging" ||
-            packageName == Telephony.Sms.getDefaultSmsPackage(context)
-        ) {
-            return "Message"
-        }
-        return ""
-    }
 
     fun converter06To33(phoneNumber: String): String {
         return if (phoneNumber[0] == '0') {

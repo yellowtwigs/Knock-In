@@ -29,9 +29,9 @@
 //import androidx.recyclerview.widget.RecyclerView
 //import com.yellowtwigs.knockin.R
 //import com.yellowtwigs.knockin.model.ContactManager
-//import com.yellowtwigs.knockin.model.ContactsDatabase
+//import com.yellowtwigs.knockin.model.database.ContactsDatabase
 //import com.yellowtwigs.knockin.model.DbWorkerThread
-//import com.yellowtwigs.knockin.model.StatusBarParcelable
+//import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 //import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 //import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 //import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger

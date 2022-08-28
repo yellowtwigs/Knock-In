@@ -396,31 +396,7 @@
 //            holder.listContactItemFavoriteShine.visibility = View.GONE
 //        }
 //
-//        val param = holder.constraintLayoutMenu.layoutParams as ViewGroup.MarginLayoutParams
-//
-//        holder.constraintLayoutMenu.scrollBarFadeDuration = 20000
-//        holder.constraintLayoutMenu.scrollBarSize = 25
-//        holder.constraintLayoutMenu.scrollBarStyle = View.SCROLLBARS_OUTSIDE_OVERLAY
-//
-//        when (cpt) {
-//            3 -> {
-//                param.setMargins(230, 0, 0, 0)
-//                holder.constraintLayoutMenu.layoutParams = param
-//            }
-//            4 -> {
-//                param.setMargins(150, 0, 0, 0)
-//                holder.constraintLayoutMenu.layoutParams = param
-//            }
-//            5 -> {
-//                param.setMargins(50, 0, 0, 0)
-//                holder.constraintLayoutMenu.layoutParams = param
-//            }
-//            6 -> {
-//                param.setMargins(0, 0, 0, 0)
-//                holder.constraintLayoutMenu.layoutParams = param
-//            }
-//        }
-//    }
+
 //
 //    override fun getItemId(position: Int): Long {
 //        return listContacts.size.toLong()

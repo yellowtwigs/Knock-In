@@ -54,17 +54,18 @@
             android:name=".ui.edit_contact.EditContactActivity"
             android:exported="false" />
         <activity android:name=".ui.edit_contact.VipSettingsActivity" />
-        <activity android:name=".ui.SplashScreenActivity">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
+        <activity
+            android:name=".ui.SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".ui.settings.SettingsActivity" />
 
         <activity android:name=".ui.first_launch.start.StartActivity" />
-        <activity android:name=".ui.first_launch.first_vip_selection.FirstVipSelectionActivity"/>
+        <activity android:name=".ui.first_launch.first_vip_selection.FirstVipSelectionActivity" />
 
         <activity android:name=".FirstLaunchActivity" />
         <activity android:name=".ui.group.create.AddNewGroupActivity" />
@@ -79,22 +80,14 @@
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
 
 
+        <activity android:name=".ui.contacts.list.ContactsListActivity" />
 
-        <activity android:name=".ui.main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+        <activity android:name=".ui.notifications.history.NotificationsHistoryActivity" />
 
         <activity android:name=".ui.CockpitActivity" />
         <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
-        <activity android:name=".ui.settings.ManageNotificationActivity" />
-        <!--        <activity android:name=".ui.notifications.history.NotificationHistoryActivity" />-->
+        <activity android:name=".ui.notifications.settings.NotificationsSettingsActivity" />
         <activity
             android:name=".ui.edit_contact.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
@@ -134,7 +127,7 @@
         <receiver android:name=".ui.notifications.NotificationMessageSender" />
 
         <service
-            android:name=".ui.notifications.listener.NotificationsListener"
+            android:name=".model.service.NotificationsListenerService"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">

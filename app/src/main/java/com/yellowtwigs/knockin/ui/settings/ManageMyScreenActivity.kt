@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
-import android.graphics.Point
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -21,6 +20,7 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 class ManageMyScreenActivity : AppCompatActivity() {
@@ -283,22 +283,16 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_home -> {
 //                    startActivity(Intent(this@ManageMyScreenActivity, Main2Activity::class.java))
                 }
-                R.id.nav_notif_config -> startActivity(
+                R.id.nav_notifications -> startActivity(
                     Intent(
                         this@ManageMyScreenActivity,
-                        ManageNotificationActivity::class.java
+                        NotificationsSettingsActivity::class.java
                     )
                 )
                 R.id.navigation_teleworking -> startActivity(
                     Intent(
                         this@ManageMyScreenActivity,
                         TeleworkingActivity::class.java
-                    )
-                )
-                R.id.nav_settings -> startActivity(
-                    Intent(
-                        this@ManageMyScreenActivity,
-                        SettingsActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(

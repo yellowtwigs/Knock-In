@@ -3,15 +3,15 @@
     <item
         android:id="@+id/navigation_contacts"
         android:icon="@drawable/ic_home"
-        android:title="@string/bottom_navigation_view_phone_book" />
+        android:title="@string/contacts_list_title" />
     <item
         android:id="@+id/navigation_groups"
         android:icon="@drawable/ic_groups"
-        android:title="@string/bottom_navigation_view_groups" />
+        android:title="@string/groups_list_title" />
     <item
         android:id="@+id/navigation_notifcations"
         android:icon="@drawable/ic_notification"
-        android:title="@string/bottom_navigation_view_notify_history"
+        android:title="@string/history_title"
         android:visible="false"/>
     <item
         android:id="@+id/navigation_cockpit"

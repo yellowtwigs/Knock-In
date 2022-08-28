@@ -3,7 +3,6 @@ package com.yellowtwigs.knockin.ui.notifications.history
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemNotificationBinding
-import com.yellowtwigs.knockin.model.data.NotificationDB
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -35,13 +33,13 @@ class NotificationsListAdapter(private val context: Context) :
     class ViewHolder(private val binding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(notificationDB: NotificationsListViewState, context: Context) {
-            val text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notificationDB.timestamp))
+        fun onBind(notification: NotificationsListViewState, context: Context) {
+            val text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notification.timestamp))
 
             val pckManager = context.packageManager
             var icon: Drawable? = null
             try {
-                icon = pckManager.getApplicationIcon(notificationDB.platform)
+                icon = pckManager.getApplicationIcon(notification.platform)
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
@@ -51,7 +49,7 @@ class NotificationsListAdapter(private val context: Context) :
             binding.apply {
                 notificationImage.setImageDrawable(icon)
 
-                notificationDB.apply {
+                notification.apply {
                     if (description.length > 151) {
                         notificationContent.text =
                             description.substring(0, 150) + ".."
@@ -69,12 +67,12 @@ class NotificationsListAdapter(private val context: Context) :
 
                     val click = View.OnClickListener {
                         if (modeMultiSelect) {
-                            if (listOfItemSelected.contains(notificationDB)
+                            if (listOfItemSelected.contains(notification)
                             ) {
-                                listOfItemSelected.remove(notificationDB)
+                                listOfItemSelected.remove(notification)
                                 notificationImage.setImageDrawable(icon2)
                             } else {
-                                listOfItemSelected.add(notificationDB)
+                                listOfItemSelected.add(notification)
                                 notificationImage.setImageResource(R.drawable.ic_item_selected)
                             }
 
@@ -96,11 +94,11 @@ class NotificationsListAdapter(private val context: Context) :
                         }
                     }
                     val longClick = View.OnLongClickListener {
-                        if (listOfItemSelected.contains(notificationDB)) {
-                            listOfItemSelected.remove(notificationDB)
+                        if (listOfItemSelected.contains(notification)) {
+                            listOfItemSelected.remove(notification)
                             notificationImage.setImageDrawable(icon2)
                         } else {
-                            listOfItemSelected.add(notificationDB)
+                            listOfItemSelected.add(notification)
                             notificationImage.setImageResource(R.drawable.ic_item_selected)
                         }
 
@@ -138,8 +136,7 @@ class NotificationsListAdapter(private val context: Context) :
             oldItem: NotificationsListViewState,
             newItem: NotificationsListViewState
         ): Boolean {
-            return oldItem.id == newItem.id &&
-                    oldItem.contactName == newItem.contactName &&
+            return oldItem.contactName == newItem.contactName &&
                     oldItem.description == newItem.description &&
                     oldItem.idContact == newItem.idContact &&
                     oldItem.title == newItem.title &&

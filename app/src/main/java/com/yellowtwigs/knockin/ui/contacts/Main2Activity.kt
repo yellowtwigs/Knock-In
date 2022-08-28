@@ -43,7 +43,7 @@
 //import com.google.android.material.navigation.NavigationView
 //import com.yellowtwigs.knockin.R
 //import com.yellowtwigs.knockin.model.ContactManager
-//import com.yellowtwigs.knockin.model.ContactsDatabase
+//import com.yellowtwigs.knockin.model.database.ContactsDatabase
 //import com.yellowtwigs.knockin.model.DbWorkerThread
 //import com.yellowtwigs.knockin.model.data.*
 //import com.yellowtwigs.knockin.ui.CockpitActivity
@@ -55,7 +55,7 @@
 //import com.yellowtwigs.knockin.ui.notifications.NotificationListener
 //import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
 //import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-//import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+//import com.yellowtwigs.knockin.ui.notifications.settings.ManageNotificationActivity
 //import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 //import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 //import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
@@ -349,7 +349,7 @@
 //            mainDrawerLayout?.closeDrawers()
 //            when (menuItem.itemId) {
 //                R.id.nav_home -> startActivity(Intent(this@Main2Activity, Main2Activity::class.java))
-//                R.id.nav_notif_config -> startActivity(
+//                R.id.nav_notifications -> startActivity(
 //                    Intent(
 //                        this@Main2Activity,
 //                        ManageNotificationActivity::class.java

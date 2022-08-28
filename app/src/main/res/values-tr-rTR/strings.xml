@@ -49,8 +49,8 @@
     <string name="invite_friend_text">Yeni bir iletişim deneyimi için Knock In\'i kullanın</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">Telefon Numarası</string>
-    <string name="main_filter_mail">Eposta</string>
+    <string name="filter_sms">Telefon Numarası</string>
+    <string name="filter_mail">Eposta</string>
     <string name="main_search_hint">Kişilerinizi arayın</string>
     <string name="main_change_format_phone_book">Yardım</string>
     <string name="sort_by">Filtrele</string>
@@ -60,8 +60,8 @@
     <string name="sort_by_favorite">Favori</string>
     <string name="main_tri_par_groupe">Grup</string>
     <string name="filter_by">Bildirim filtresi:</string>
-    <string name="notif_filtre_app">Uygulama</string>
-    <string name="notif_filter_by_msg_apps">Mesaj</string>
+    <string name="filter_by_all">Uygulama</string>
+    <string name="filter_by_msg_apps">Mesaj</string>
     <string name="notif_filtre_systeme">Sistem</string>
     <string name="sort_by_date">Tarih ve saat</string>
     <string name="sort_by_contact">İletişim</string>
@@ -85,9 +85,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">Tümü seçili</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">Kişiler</string>
-    <string name="bottom_navigation_view_groups">Gruplar</string>
-    <string name="bottom_navigation_view_notify_history">Bildirimler</string>
+    <string name="contacts_list_title">Kişiler</string>
+    <string name="groups_list_title">Gruplar</string>
+    <string name="history_title">Bildirimler</string>
     <string name="bottom_navigation_view_cockpit">Kokpit</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -219,7 +219,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Bildirim parametreleri</string>
-    <string name="notification_manager_stop_service">Bildirimlerin önceliğe göre yönetimini etkinleştir</string>
+    <string name="notifications_activate_title">Bildirimlerin önceliğe göre yönetimini etkinleştir</string>
     <string name="notification_manager_stop_popup">VIP bildirimleri görüntüle</string>
     <string name="notification_reminder">VIP olmayan tüm mesajları görüntülemek için bir hatırlatma gönderin</string>
     <string name="notification_manager_horaire">Günlük zamanı hatırlatmayı seçin</string>
@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Benim uygulamalarım</string>
+    <string name="cockpit_title">Benim uygulamalarım</string>
     <string name="cockpit_toast_phone_number_empty">Bir telefon numarası girin</string>
     <string name="cockpit_toast_number_valid">Lütfen geçerli bir telefon numarası girin</string>
     <string name="cockpit_toast_facebook_not_install">Facebook kurulu değil</string>

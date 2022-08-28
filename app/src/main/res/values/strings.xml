@@ -51,8 +51,8 @@
     <string name="invite_friend_text">Use Knock In for a new communication experience</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">Phone Number</string>
-    <string name="main_filter_mail">Email</string>
+    <string name="filter_sms">Phone Number</string>
+    <string name="filter_mail">Email</string>
     <string name="main_search_hint">Search your contacts</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="sort_by">Sort by:</string>
@@ -62,8 +62,8 @@
     <string name="sort_by_favorite">Favorite</string>
     <string name="main_tri_par_groupe">Group</string>
     <string name="filter_by">Notification filter:</string>
-    <string name="notif_filtre_app">Application</string>
-    <string name="notif_filter_by_msg_apps">Message</string>
+    <string name="filter_by_all">Application</string>
+    <string name="filter_by_msg_apps">Message</string>
     <string name="notif_filtre_systeme">System</string>
     <string name="sort_by_date">Date and time</string>
     <string name="sort_by_contact">Contact</string>
@@ -87,9 +87,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">All Select</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">Contacts</string>
-    <string name="bottom_navigation_view_groups">Groups</string>
-    <string name="bottom_navigation_view_notify_history">Notifications</string>
+    <string name="contacts_list_title">Contacts</string>
+    <string name="groups_list_title">Groups</string>
+    <string name="history_title">Notifications</string>
     <string name="bottom_navigation_view_cockpit">Cockpit</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -228,7 +228,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Notification parameters</string>
-    <string name="notification_manager_stop_service">Enable the management of notifications by priority</string>
+    <string name="notifications_activate_title">Enable the management of notifications</string>
     <string name="notification_manager_stop_popup">Display VIP notifications</string>
     <string name="notification_reminder">Send a reminder to view all the non-VIP messages </string>
     <string name="notification_manager_horaire">Select recall daily time: </string>
@@ -267,7 +267,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">My Applications</string>
+    <string name="cockpit_title">My Applications</string>
     <string name="cockpit_toast_phone_number_empty">Enter a phone number</string>
     <string name="cockpit_toast_number_valid">Please enter a valid phone number</string>
     <string name="cockpit_toast_facebook_not_install">Facebook is not installed</string>

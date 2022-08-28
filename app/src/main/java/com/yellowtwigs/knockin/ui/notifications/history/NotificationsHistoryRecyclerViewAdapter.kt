@@ -1,22 +1,15 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.model.database.data.NotificationDB
 
-import java.text.SimpleDateFormat
 import java.util.ArrayList
-import java.util.Date
 
 /**
  * La Classe qui permet de remplir l'historique des notifications

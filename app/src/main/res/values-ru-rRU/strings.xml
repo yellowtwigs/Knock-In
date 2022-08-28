@@ -49,8 +49,8 @@
     <string name="invite_friend_text">Используйте Knock In для нового общения</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">Номер телефона</string>
-    <string name="main_filter_mail">Электронная почта</string>
+    <string name="filter_sms">Номер телефона</string>
+    <string name="filter_mail">Электронная почта</string>
     <string name="main_search_hint">Искать мои контакты</string>
     <string name="main_change_format_phone_book">Помощь</string>
     <string name="sort_by">Отсортировать по:</string>
@@ -60,8 +60,8 @@
     <string name="sort_by_favorite">Избранный</string>
     <string name="main_tri_par_groupe">Группа</string>
     <string name="filter_by">Фильтр уведомлений:</string>
-    <string name="notif_filtre_app">Применение</string>
-    <string name="notif_filter_by_msg_apps">Сообщение</string>
+    <string name="filter_by_all">Применение</string>
+    <string name="filter_by_msg_apps">Сообщение</string>
     <string name="notif_filtre_systeme">Система</string>
     <string name="sort_by_date">Дата и время</string>
     <string name="sort_by_contact">Контакт</string>
@@ -85,9 +85,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">Выбрать все</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">Контакты</string>
-    <string name="bottom_navigation_view_groups">Группы</string>
-    <string name="bottom_navigation_view_notify_history">Уведомления</string>
+    <string name="contacts_list_title">Контакты</string>
+    <string name="groups_list_title">Группы</string>
+    <string name="history_title">Уведомления</string>
     <string name="bottom_navigation_view_cockpit">Панель</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -219,7 +219,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Параметры уведомлений</string>
-    <string name="notification_manager_stop_service">Включить управление уведомлениями по приоритету</string>
+    <string name="notifications_activate_title">Включить управление уведомлениями</string>
     <string name="notification_manager_stop_popup">Показать VIP-уведомления </string>
     <string name="notification_reminder">Отправить напоминание для просмотра всех сообщений не VIP</string>
     <string name="notification_manager_horaire">Выберите ежедневное время напоминания:</string>
@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Мои приложения</string>
+    <string name="cockpit_title">Мои приложения</string>
     <string name="cockpit_toast_phone_number_empty">Введите номер телефона</string>
     <string name="cockpit_toast_number_valid">Пожалуйста, введите действительный номер телефона</string>
     <string name="cockpit_toast_facebook_not_install">Facebook не установлен</string>

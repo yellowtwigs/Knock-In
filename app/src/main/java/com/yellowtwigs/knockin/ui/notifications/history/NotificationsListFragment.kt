@@ -23,18 +23,15 @@ class NotificationsListFragment : BaseFragment() {
     ): View {
         val binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
-        val notificationsListViewModel: NotificationsListViewModel by activityViewModels()
-
-        setupRecyclerView(binding, notificationsListViewModel)
+        setupRecyclerView(binding)
 
         return binding.root
     }
 
     //region =========================================== SETUP UI ===========================================
 
-    private fun setupRecyclerView(
-        binding: FragmentNotificationsBinding, notificationsListViewModel: NotificationsListViewModel
-    ) {
+    private fun setupRecyclerView(binding: FragmentNotificationsBinding) {
+        val notificationsListViewModel: NotificationsListViewModel by activityViewModels()
         val notificationsListAdapter = NotificationsListAdapter(contextActivity)
 
         binding.recyclerView.apply {

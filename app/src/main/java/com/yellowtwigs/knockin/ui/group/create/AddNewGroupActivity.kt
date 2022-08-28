@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsDatabase
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.GroupDB
-import com.yellowtwigs.knockin.model.data.LinkContactGroup
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
+import com.yellowtwigs.knockin.model.database.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.GroupDB
+import com.yellowtwigs.knockin.model.database.data.LinkContactGroup
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 
 /**

@@ -36,8 +36,7 @@ import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
@@ -250,23 +249,16 @@ class CockpitActivity : AppCompatActivity() {
             cockpit_DrawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
-
-                R.id.nav_notif_config -> startActivity(
+                R.id.nav_notifications -> startActivity(
                     Intent(
                         this@CockpitActivity,
-                        ManageNotificationActivity::class.java
+                        NotificationsSettingsActivity::class.java
                     )
                 )
                 R.id.navigation_teleworking -> startActivity(
                     Intent(
                         this@CockpitActivity,
                         TeleworkingActivity::class.java
-                    )
-                )
-                R.id.nav_settings -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        SettingsActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(

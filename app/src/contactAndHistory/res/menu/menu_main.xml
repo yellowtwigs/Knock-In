@@ -43,13 +43,13 @@
         <item
             android:id="@+id/sms_filter"
             android:checkable="true"
-            android:title="@string/main_filter_sms"
+            android:title="@string/filter_sms"
             app:showAsAction="collapseActionView" />
     </group>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/mail_filter"
             android:checkable="true"
-            android:title="@string/main_filter_mail" />
+            android:title="@string/filter_mail" />
     </group>
 </menu>

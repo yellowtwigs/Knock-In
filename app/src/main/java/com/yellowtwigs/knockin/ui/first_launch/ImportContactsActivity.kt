@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,7 +14,6 @@ import androidx.core.app.ActivityCompat
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.model.data.ContactDB
 
 /**
  * Activité Qui Nous permet d'importer nos contact pour les buildVariant Contacter et Converser

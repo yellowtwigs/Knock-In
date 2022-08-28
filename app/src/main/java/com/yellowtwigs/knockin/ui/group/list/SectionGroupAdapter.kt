@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.BuildConfig
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsDatabase
-import com.yellowtwigs.knockin.model.ContactsDatabase.Companion.getDatabase
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
+import com.yellowtwigs.knockin.model.database.ContactsDatabase.Companion.getDatabase
 import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity
 import com.yellowtwigs.knockin.ui.group.create.AddContactToGroupActivity
 import java.util.*

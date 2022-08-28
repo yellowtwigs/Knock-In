@@ -18,9 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yellowtwigs.knockin.R;
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.data.ContactDB;
+import com.yellowtwigs.knockin.model.database.data.ContactDB;
 import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

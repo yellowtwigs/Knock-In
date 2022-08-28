@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.res.Resources
-import android.graphics.Point
 import android.os.Bundle
 import android.net.Uri
 import android.view.View
@@ -20,20 +19,19 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsDatabase
-import com.yellowtwigs.knockin.model.data.GroupWithContact
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
+import com.yellowtwigs.knockin.model.database.data.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionAdapter
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.group.create.AddNewGroupActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 /**
@@ -217,10 +215,10 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_home -> {
 //                    startActivity(Intent(this@GroupManagerActivity, Main2Activity::class.java))
                 }
-                R.id.nav_notif_config -> startActivity(
+                R.id.nav_notifications -> startActivity(
                     Intent(
                         this@GroupManagerActivity,
-                        ManageNotificationActivity::class.java
+                        NotificationsSettingsActivity::class.java
                     )
                 )
                 R.id.navigation_teleworking -> startActivity(
@@ -233,12 +231,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     Intent(
                         this@GroupManagerActivity,
                         ManageMyScreenActivity::class.java
-                    )
-                )
-                R.id.nav_settings -> startActivity(
-                    Intent(
-                        this@GroupManagerActivity,
-                        SettingsActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(

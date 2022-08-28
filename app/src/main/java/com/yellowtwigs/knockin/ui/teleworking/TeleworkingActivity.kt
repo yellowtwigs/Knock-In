@@ -11,15 +11,15 @@ import android.widget.TimePicker
 import androidx.core.view.GravityCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
-import com.yellowtwigs.knockin.model.ContactsDatabase
-import com.yellowtwigs.knockin.model.dao.NotificationsDao
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
+import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import java.util.*
 
@@ -119,17 +119,16 @@ class TeleworkingActivity : AppCompatActivity() {
             navView.setNavigationItemSelectedListener { menuItem ->
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
-//                    R.id.nav_home -> startActivity(Intent(this@TeleworkingActivity, Main2Activity::class.java))
-                    R.id.nav_notif_config -> startActivity(
+                    R.id.nav_home -> startActivity(
                         Intent(
                             this@TeleworkingActivity,
-                            ManageNotificationActivity::class.java
+                            ContactsListActivity::class.java
                         )
                     )
-                    R.id.nav_settings -> startActivity(
+                    R.id.nav_notifications -> startActivity(
                         Intent(
                             this@TeleworkingActivity,
-                            SettingsActivity::class.java
+                            NotificationsSettingsActivity::class.java
                         )
                     )
                     R.id.nav_in_app -> startActivity(
@@ -144,7 +143,12 @@ class TeleworkingActivity : AppCompatActivity() {
                             ManageMyScreenActivity::class.java
                         )
                     )
-                    R.id.nav_help -> startActivity(Intent(this@TeleworkingActivity, HelpActivity::class.java))
+                    R.id.nav_help -> startActivity(
+                        Intent(
+                            this@TeleworkingActivity,
+                            HelpActivity::class.java
+                        )
+                    )
                 }
 
                 true

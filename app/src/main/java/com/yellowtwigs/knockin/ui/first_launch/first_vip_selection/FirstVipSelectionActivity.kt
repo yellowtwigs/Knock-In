@@ -6,18 +6,16 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.databinding.ActivityFirstVipSelectionBinding
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.main.MainActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -100,7 +98,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                val intent = Intent(this@FirstVipSelectionActivity, MainActivity::class.java)
+                val intent = Intent(this@FirstVipSelectionActivity, ContactsListActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -109,7 +107,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                 setPriorityList()
                 startActivity(
                     Intent(
-                        this@FirstVipSelectionActivity, MainActivity::class.java
+                        this@FirstVipSelectionActivity, ContactsListActivity::class.java
                     ).putExtra("fromStartActivity", true)
                 )
                 finish()

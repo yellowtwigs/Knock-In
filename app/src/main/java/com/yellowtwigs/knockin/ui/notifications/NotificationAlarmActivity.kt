@@ -1,10 +1,7 @@
 package com.yellowtwigs.knockin.ui.notifications
 
 import android.app.KeyguardManager
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
@@ -12,19 +9,11 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.button.MaterialButton
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.StatusBarParcelable
-import com.yellowtwigs.knockin.utils.ContactGesture
-import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
-import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
-import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
-import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
-import com.yellowtwigs.knockin.utils.ContactGesture.openSms
-import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

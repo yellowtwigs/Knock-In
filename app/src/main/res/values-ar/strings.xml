@@ -50,8 +50,8 @@
     <string name="invite_friend_text">لتجربة اتصال جديدة استخدم  Knock In</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">رقم الهاتف</string>
-    <string name="main_filter_mail">البريد الإلكتروني</string>
+    <string name="filter_sms">رقم الهاتف</string>
+    <string name="filter_mail">البريد الإلكتروني</string>
     <string name="main_search_hint">بحث</string>
     <string name="main_change_format_phone_book">مساعدة</string>
     <string name="sort_by">الترتيب حسب :</string>
@@ -61,8 +61,8 @@
     <string name="sort_by_favorite">المفضلة</string>
     <string name="main_tri_par_groupe">المجموعة</string>
     <string name="filter_by">مصنف بواسطة :</string>
-    <string name="notif_filtre_app">اشعارات التطبيق</string>
-    <string name="notif_filter_by_msg_apps">اشعارات الرسائل</string>
+    <string name="filter_by_all">اشعارات التطبيق</string>
+    <string name="filter_by_msg_apps">اشعارات الرسائل</string>
     <string name="notif_filtre_systeme">اشعارات النظام</string>
     <string name="sort_by_date">التاريخ و الساعة</string>
     <string name="sort_by_contact">جهات الاتصال</string>
@@ -86,9 +86,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">اختر الكل</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">جهات الاتصال</string>
-    <string name="bottom_navigation_view_groups">المجموعات</string>
-    <string name="bottom_navigation_view_notify_history">الإشعارات</string>
+    <string name="contacts_list_title">جهات الاتصال</string>
+    <string name="groups_list_title">المجموعات</string>
+    <string name="history_title">الإشعارات</string>
     <string name="bottom_navigation_view_cockpit">مركز التحكم</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -220,7 +220,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">إعدادات الإشعارات</string>
-    <string name="notification_manager_stop_service">تفعيل إدارة الإشعارات</string>
+    <string name="notifications_activate_title">تفعيل إدارة الإخطار</string>
     <string name="notification_manager_stop_popup">إظهار إشعارات VIP</string>
     <string name="notification_reminder">إرسال تذكير للتحقق من رسائلي الجديدة غير ذات الأولوية</string>
     <string name="notification_manager_horaire">اختر وقت التذكير:</string>
@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">تطبيقات المراسلة</string>
+    <string name="cockpit_title">تطبيقات المراسلة</string>
     <string name="cockpit_toast_phone_number_empty">أدخل رقم هاتف</string>
     <string name="cockpit_toast_number_valid">يرجى إدخال رقم هاتف صالح</string>
     <string name="cockpit_toast_facebook_not_install">Facebook غير مثبت</string>

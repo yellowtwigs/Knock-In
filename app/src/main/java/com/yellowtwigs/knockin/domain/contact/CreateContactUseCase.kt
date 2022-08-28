@@ -1,6 +1,6 @@
 package com.yellowtwigs.knockin.domain.contact
 
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.create.CreateContactRepository
 import javax.inject.Inject
 

@@ -2,7 +2,6 @@ package com.yellowtwigs.knockin.ui.group
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,12 +9,10 @@ import android.view.View
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.ContactsDatabase
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.ui.group.create.AddContactToGroupAdapter
 import com.yellowtwigs.knockin.ui.group.create.CreateGroupGridViewAdapter

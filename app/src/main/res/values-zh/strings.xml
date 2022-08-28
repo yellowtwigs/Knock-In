@@ -49,8 +49,8 @@
     <string name="invite_friend_text">使用Knock In获得新的交流体验</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">电话号码</string>
-    <string name="main_filter_mail">电子邮箱</string>
+    <string name="filter_sms">电话号码</string>
+    <string name="filter_mail">电子邮箱</string>
     <string name="main_search_hint">搜索联系人</string>
     <string name="main_change_format_phone_book">帮助</string>
     <string name="sort_by">筛选条件:</string>
@@ -60,8 +60,8 @@
     <string name="sort_by_favorite">收藏</string>
     <string name="main_tri_par_groupe">组别</string>
     <string name="filter_by">通知过滤器</string>
-    <string name="notif_filtre_app">应用</string>
-    <string name="notif_filter_by_msg_apps">信息</string>
+    <string name="filter_by_all">应用</string>
+    <string name="filter_by_msg_apps">信息</string>
     <string name="notif_filtre_systeme">系统</string>
     <string name="sort_by_date">日期与时间</string>
     <string name="sort_by_contact">联系人</string>
@@ -85,9 +85,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">全选</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">联系人</string>
-    <string name="bottom_navigation_view_groups">小组</string>
-    <string name="bottom_navigation_view_notify_history">通知</string>
+    <string name="contacts_list_title">联系人</string>
+    <string name="groups_list_title">小组</string>
+    <string name="history_title">通知</string>
     <string name="bottom_navigation_view_cockpit">控制台</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -219,7 +219,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">通知参数</string>
-    <string name="notification_manager_stop_service">启用按优先级管理通知</string>
+    <string name="notifications_activate_title">启用按优先级管理通知</string>
     <string name="notification_manager_stop_popup">展示VIP通知</string>
     <string name="notification_reminder">发送提醒以查看所有非VIP信息</string>
     <string name="notification_manager_horaire">设定每日提醒时间</string>
@@ -255,7 +255,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">我的应用</string>
+    <string name="cockpit_title">我的应用</string>
     <string name="cockpit_toast_phone_number_empty">输入电话号码</string>
     <string name="cockpit_toast_number_valid">请输入有效电话号码</string>
     <string name="cockpit_toast_facebook_not_install">未安装Facebook</string>

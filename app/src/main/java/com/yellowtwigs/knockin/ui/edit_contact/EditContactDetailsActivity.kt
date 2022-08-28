@@ -44,7 +44,6 @@ import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.model.data.*
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -1576,7 +1575,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 //                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
 //                val edit: SharedPreferences.Editor = sharedPreferences.edit()
 //                edit.putBoolean(
-//                    "popupNotif",
+//                    "Overlay_Preferences",
 //                    true
 //                )//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
 //                edit.putBoolean("serviceNotif", false)
@@ -1588,7 +1587,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
 //                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
 //                val edit: SharedPreferences.Editor = sharedPreferences.edit()
 //                edit.putBoolean(
-//                    "popupNotif",
+//                    "Overlay_Preferences",
 //                    false
 //                )//quand la personne autorise l'affichage par dessus d'autre application nous l'enregistrons
 //                edit.putBoolean("serviceNotif", true)

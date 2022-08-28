@@ -1,16 +1,16 @@
 package com.yellowtwigs.knockin.repositories.contacts.list
 
-import android.telephony.PhoneNumberUtils
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
-import com.yellowtwigs.knockin.model.dao.ContactsDao
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.dao.ContactsDao
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import javax.inject.Inject
 
 class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDao) :
     ContactsListRepository {
 
-    private val searchBarText = MutableLiveData<String>()
+    private val searchTextChanged = MutableLiveData<String>()
     private val sortByLiveData = MutableLiveData<Int>()
     private val filterByLiveData = MutableLiveData<Int>()
 
@@ -25,10 +25,10 @@ class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDa
 
     override suspend fun deleteContact(contact: ContactDB) = dao.deleteContact(contact)
 
-    override fun getSearchBarText() = searchBarText
+    override fun getSearchBarText() = searchTextChanged
 
-    override fun setSearchBarText(text: String) {
-        searchBarText.postValue(text)
+    override fun setSearchTextChanged(text: String) {
+        searchTextChanged.postValue(text)
     }
 
     override fun getSortedBy() = sortByLiveData

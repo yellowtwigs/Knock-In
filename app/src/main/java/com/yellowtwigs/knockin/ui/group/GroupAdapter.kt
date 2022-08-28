@@ -29,8 +29,8 @@
 //import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
 //import com.yellowtwigs.knockin.R
 //import com.yellowtwigs.knockin.ui.CircularImageView
-//import com.yellowtwigs.knockin.model.ContactsDatabase.Companion.getDatabase
-//import com.yellowtwigs.knockin.model.data.ContactDB
+//import com.yellowtwigs.knockin.model.database.ContactsDatabase.Companion.getDatabase
+//import com.yellowtwigs.knockin.model.database.ContactDB
 //import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 //import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 //import java.util.*

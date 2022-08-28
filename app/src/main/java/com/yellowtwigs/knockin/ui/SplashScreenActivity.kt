@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
@@ -94,10 +94,15 @@ class SplashScreenActivity : AppCompatActivity() {
             splashScreenActivitySubtitle?.visibility = View.VISIBLE
         }, SPLASH_DISPLAY_LENGHT.toLong())
 
-
         Handler().postDelayed({
-            startActivity(Intent(this@SplashScreenActivity, FirstLaunchActivity::class.java))
-            finish()
+            val sharedFirstLaunch = getSharedPreferences("First_Launch", Context.MODE_PRIVATE)
+            if (sharedFirstLaunch.getBoolean("First_Launch", false)) {
+                startActivity(Intent(this@SplashScreenActivity, ContactsListActivity::class.java))
+                finish()
+            } else {
+                startActivity(Intent(this@SplashScreenActivity, FirstLaunchActivity::class.java))
+                finish()
+            }
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 
         //endregion

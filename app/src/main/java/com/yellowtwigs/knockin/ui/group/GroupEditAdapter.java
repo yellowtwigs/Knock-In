@@ -15,10 +15,10 @@
 //import androidx.recyclerview.widget.RecyclerView;
 //
 //import com.yellowtwigs.knockin.R;
-//import com.yellowtwigs.knockin.model.ContactsDatabase;
+//import com.yellowtwigs.knockin.model.database.ContactsDatabase;
 //import com.yellowtwigs.knockin.model.DbWorkerThread;
 //import com.yellowtwigs.knockin.model.data.ContactWithAllInformation;
-//import com.yellowtwigs.knockin.model.data.GroupDB;
+//import com.yellowtwigs.knockin.model.database.GroupDB;
 //import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 //
 //import java.util.ArrayList;

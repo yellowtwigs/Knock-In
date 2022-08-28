@@ -1,6 +1,6 @@
 package com.yellowtwigs.knockin.repositories.contacts.create
 
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 
 interface CreateContactRepository {
 

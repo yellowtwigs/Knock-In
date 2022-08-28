@@ -1,13 +1,11 @@
 package com.yellowtwigs.knockin.ui.first_launch.first_vip_selection
 
 import androidx.lifecycle.*
-import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.text.Normalizer
 import javax.inject.Inject
 
 @HiltViewModel

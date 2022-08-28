@@ -1,32 +1,10 @@
 package com.yellowtwigs.knockin.ui.edit_contact
 
-import android.Manifest
-import android.app.TimePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.database.SQLException
 import android.media.MediaPlayer
-import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import android.widget.TimePicker
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
-import kotlinx.coroutines.*
 
 class VipSettingsActivity : AppCompatActivity() {
 

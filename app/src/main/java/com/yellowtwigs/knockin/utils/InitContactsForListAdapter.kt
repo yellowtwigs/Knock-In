@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 
 object InitContactsForListAdapter {

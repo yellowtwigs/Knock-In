@@ -1,9 +1,7 @@
 package com.yellowtwigs.knockin
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Point
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.widget.Button
@@ -17,18 +15,6 @@ class FirstLaunchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_first_launch)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-
-        //region ======================================= First Launch =======================================
-
-        val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
-        val edit = sharedFirstLaunch.edit()
-
-//        if (sharedFirstLaunch.getBoolean("first_launch", false)) {
-//            startActivity(Intent(this@FirstLaunchActivity, MainActivity::class.java))
-//            finish()
-//        }
-
-        //endregion
 
         val buttonAccept: Button = findViewById(R.id.first_launch_accept_politique)
         val textView = findViewById<TextView>(R.id.first_launch_welcome)
@@ -44,8 +30,6 @@ class FirstLaunchActivity : AppCompatActivity() {
         textViewCLUF.movementMethod = LinkMovementMethod.getInstance()
 
         buttonAccept.setOnClickListener {
-            edit.putBoolean("first_launch", true)
-            edit.apply()
             startActivity(Intent(this@FirstLaunchActivity, StartActivity::class.java))
             finish()
         }

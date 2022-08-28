@@ -1,15 +1,16 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactListBinding
-import com.yellowtwigs.knockin.ui.main.MainActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -31,6 +32,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
     ) {
 
     private var modeMultiSelect = false
+    private var isScrolling = false
     var listOfItemSelected = ArrayList<ContactsListViewState>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -60,12 +62,16 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
 
                 name.text = contact.firstName + " " + contact.lastName
 
-                if (contact.listOfMails.isNotEmpty()) {
+                var cpt = 1
+
+                if (contact.listOfMails.isNotEmpty() && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
+                    cpt += 1
                     mailLayout.visibility = View.VISIBLE
                 } else {
                     mailLayout.visibility = View.GONE
                 }
                 if (contact.listOfPhoneNumbers.isNotEmpty()) {
+                    cpt += 2
                     callLayout.visibility = View.VISIBLE
                     smsLayout.visibility = View.VISIBLE
                 } else {
@@ -73,11 +79,13 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                     smsLayout.visibility = View.GONE
                 }
                 if (isWhatsappInstalled(cxt) && contact.hasWhatsapp) {
+                    cpt += 1
                     whatsappLayout.visibility = View.VISIBLE
                 } else {
                     whatsappLayout.visibility = View.GONE
                 }
                 if (isMessengerInstalled(cxt) && contact.messengerId != "") {
+                    cpt += 1
                     if (!appsSupportBought) {
                         messengerIcon.setImageResource(R.drawable.ic_messenger_disable)
                     }
@@ -86,6 +94,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                     messengerLayout.visibility = View.GONE
                 }
                 if (isTelegramInstalled(cxt) && contact.hasTelegram) {
+                    cpt += 1
                     if (!appsSupportBought) {
                         telegramIcon.setImageResource(R.drawable.ic_telegram_disable)
                     }
@@ -94,6 +103,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                     telegramLayout.visibility = View.GONE
                 }
                 if (isSignalInstalled(cxt) && contact.hasSignal) {
+                    cpt += 1
                     if (!appsSupportBought) {
                         signalIcon.setImageResource(R.drawable.ic_signal_disable)
                     }
@@ -105,7 +115,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 val listener = View.OnClickListener { v: View ->
                     when (v.id) {
                         smsLayout.id -> {
-                            openSms(contact.listOfPhoneNumbers[0], cxt as MainActivity)
+                            openSms(contact.listOfPhoneNumbers[0], cxt as ContactsListActivity)
                         }
                         callLayout.id -> {
                             callPhone(contact.listOfPhoneNumbers[0], cxt)
@@ -125,16 +135,9 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                         signalLayout.id -> {
                             goToSignal(cxt)
                         }
-//                        itemLayout.id -> {
-//                            if(modeMultiSelect){
-//
-//                            }else{
-//                                val intent = Intent(cxt, EditContactDetailsActivity::class.java)
-//                                intent.putExtra("ContactId", contact.id)
-//                                intent.putExtra("position", position)
-//                                cxt.startActivity(intent)
-//                            }
-//                        }
+                        editLayout.id -> {
+                            onClickedCallback(contact.id)
+                        }
                     }
                 }
 
@@ -147,12 +150,49 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 signalLayout.setOnClickListener(listener)
 
                 itemLayout.setOnClickListener {
-                    onClickedCallback(contact.id)
+                    Log.i("onScrollStateChanged", "onScrollStateChanged")
+                    if (listContactItemMenu.visibility == View.GONE) {
+                        val slideUp = AnimationUtils.loadAnimation(cxt, R.anim.slide_up)
+                        listContactItemMenu.startAnimation(slideUp)
+                        listContactItemMenu.visibility = View.VISIBLE
+                    } else {
+                        listContactItemMenu.visibility = View.GONE
+                    }
                 }
 
+                if (isScrolling) {
+                    listContactItemMenu.visibility = View.GONE
+                }
 
+                val param = listContactItemMenu.layoutParams as ViewGroup.MarginLayoutParams
+                listContactItemMenu.scrollBarFadeDuration = 20000
+                listContactItemMenu.scrollBarSize = 25
+                listContactItemMenu.scrollBarStyle = View.SCROLLBARS_OUTSIDE_OVERLAY
+
+                when (cpt) {
+                    3 -> {
+                        param.setMargins(230, 0, 0, 0)
+                        listContactItemMenu.layoutParams = param
+                    }
+                    4 -> {
+                        param.setMargins(150, 0, 0, 0)
+                        listContactItemMenu.layoutParams = param
+                    }
+                    5 -> {
+                        param.setMargins(50, 0, 0, 0)
+                        listContactItemMenu.layoutParams = param
+                    }
+                    6 -> {
+                        param.setMargins(0, 0, 0, 0)
+                        listContactItemMenu.layoutParams = param
+                    }
+                }
             }
         }
+    }
+
+    fun setIsScrolling(scroll: Boolean) {
+        isScrolling = scroll
     }
 
     class ContactsListViewStateComparator : DiffUtil.ItemCallback<ContactsListViewState>() {
@@ -167,8 +207,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
             oldItem: ContactsListViewState,
             newItem: ContactsListViewState
         ): Boolean {
-            return oldItem.id == newItem.id &&
-                    oldItem.firstName == newItem.firstName &&
+            return oldItem.firstName == newItem.firstName &&
                     oldItem.lastName == newItem.lastName &&
                     oldItem.profilePicture == newItem.profilePicture &&
                     oldItem.profilePicture64 == newItem.profilePicture64 &&

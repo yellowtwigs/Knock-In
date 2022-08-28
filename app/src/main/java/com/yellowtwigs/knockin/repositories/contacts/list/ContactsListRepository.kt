@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.repositories.contacts.list
 
 import androidx.lifecycle.LiveData
-import com.yellowtwigs.knockin.model.data.ContactDB
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import kotlinx.coroutines.flow.Flow
 
 interface ContactsListRepository {
@@ -17,7 +17,7 @@ interface ContactsListRepository {
     suspend fun deleteContact(contact: ContactDB)
 
     fun getSearchBarText(): LiveData<String>
-    fun setSearchBarText(text: String)
+    fun setSearchTextChanged(text: String)
 
     fun getSortedBy(): LiveData<Int>
     fun setSortedBy(sortBy: Int)

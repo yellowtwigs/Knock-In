@@ -6,29 +6,17 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactSelectedWithAppsBinding
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.utils.ContactGesture
-import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
-import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
-import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class ContactSelectedWithAppsActivity : AppCompatActivity() {
 

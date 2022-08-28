@@ -2,11 +2,12 @@ package com.yellowtwigs.knockin.di
 
 import android.content.Context
 import androidx.room.Room
-import com.yellowtwigs.knockin.model.ContactsDatabase
+import com.yellowtwigs.knockin.domain.notifications.*
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
+import com.yellowtwigs.knockin.model.database.dao.ContactsDao
+import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
-import com.yellowtwigs.knockin.ui.notifications.listener.NotificationsListenerViewModel
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,4 +38,18 @@ class AppModule {
     @Provides
     @Singleton
     fun provideNotificationsDao(database: ContactsDatabase) = database.notificationsDao()
+
+    @Singleton
+    @Provides
+    fun provideNotificationsListenerUseCases(
+        contactsDao: ContactsDao,
+        notificationsRepository: NotificationsRepository
+    ): NotificationsListenerUseCases {
+        return NotificationsListenerUseCases(
+            getContactByName = GetContactByName(contactsDao),
+            getContactByMail = GetContactByMail(contactsDao),
+            getContactByPhoneNumber = GetContactByPhoneNumber(contactsDao),
+            saveNotification = SaveNotification(notificationsRepository)
+        )
+    }
 }

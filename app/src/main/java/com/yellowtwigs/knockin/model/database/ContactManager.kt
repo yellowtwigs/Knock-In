@@ -1,4 +1,4 @@
-//package com.yellowtwigs.knockin.model
+package com.yellowtwigs.knockin.model.database//package com.yellowtwigs.knockin.model
 //
 //import android.content.ContentResolver
 //import android.content.ContentUris

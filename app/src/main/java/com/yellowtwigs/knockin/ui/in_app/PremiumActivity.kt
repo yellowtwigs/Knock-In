@@ -14,10 +14,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkSwitchFromLeftDrawer
 import kotlinx.coroutines.*
@@ -108,10 +107,10 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     R.id.nav_home -> {
 //                        startActivity(Intent(this@PremiumActivity, Main2Activity::class.java))
                     }
-                    R.id.nav_notif_config -> startActivity(
+                    R.id.nav_notifications -> startActivity(
                         Intent(
                             this@PremiumActivity,
-                            ManageNotificationActivity::class.java
+                            NotificationsSettingsActivity::class.java
                         )
                     )
                     R.id.navigation_teleworking -> startActivity(
@@ -127,9 +126,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 ManageMyScreenActivity::class.java
                             )
                         )
-                    }
-                    R.id.nav_settings -> {
-                        startActivity(Intent(this@PremiumActivity, SettingsActivity::class.java))
                     }
                     R.id.nav_help -> {
                         startActivity(Intent(this@PremiumActivity, HelpActivity::class.java))
@@ -363,7 +359,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     startActivity(
                         Intent(
                             this@PremiumActivity,
-                            ManageNotificationActivity::class.java
+                            NotificationsSettingsActivity::class.java
                         ).putExtra("fromMultiSelectActivity", true)
                     )
                 }

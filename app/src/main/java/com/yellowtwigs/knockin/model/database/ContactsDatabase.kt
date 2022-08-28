@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model
+package com.yellowtwigs.knockin.model.database
 
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.Database
@@ -7,8 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import android.content.Context
 import androidx.room.TypeConverters
-import com.yellowtwigs.knockin.model.data.*
-import com.yellowtwigs.knockin.model.dao.*
+import com.yellowtwigs.knockin.model.database.dao.ContactsDao
+import com.yellowtwigs.knockin.model.database.dao.GroupsDao
+import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
+import com.yellowtwigs.knockin.model.database.dao.VipSbnDao
+import com.yellowtwigs.knockin.model.database.data.*
 
 
 @Database(

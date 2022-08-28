@@ -36,7 +36,7 @@ class FirstLaunchActivity : AppCompatActivity() {
         textViewCLUF.movementMethod = LinkMovementMethod.getInstance()
 
         buttonAccept.setOnClickListener {
-            edit.putBoolean("first_launch", true)
+            edit.putBoolean("First_Launch", true)
             edit.apply()
             startActivity(Intent(this@FirstLaunchActivity, ImportContactsActivity::class.java))
             finish()

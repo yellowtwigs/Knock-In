@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="visible"
-        tools:context=".ui.settings.ManageNotificationActivity">
+        tools:context=".ui.notifications.settings.NotificationsSettingsActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -46,7 +46,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="left"
-                android:text="@string/notification_manager_stop_service"
+                android:text="@string/notifications_activate_title"
                 android:textColor="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

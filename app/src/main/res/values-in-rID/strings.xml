@@ -49,8 +49,8 @@
     <string name="invite_friend_text">Gunakan Knock In untuk pengalaman komunikasi baru</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
-    <string name="main_filter_sms">Nomor telepon</string>
-    <string name="main_filter_mail">Email</string>
+    <string name="filter_sms">Nomor telepon</string>
+    <string name="filter_mail">Email</string>
     <string name="main_search_hint">Cari kontak anda</string>
     <string name="main_change_format_phone_book">Menbantu</string>
     <string name="sort_by">Filter oleh:</string>
@@ -60,8 +60,8 @@
     <string name="sort_by_favorite">Kecintaan</string>
     <string name="main_tri_par_groupe">Kelompok</string>
     <string name="filter_by">Filter notifikasi:</string>
-    <string name="notif_filtre_app">Lamaran</string>
-    <string name="notif_filter_by_msg_apps">Pesan</string>
+    <string name="filter_by_all">Lamaran</string>
+    <string name="filter_by_msg_apps">Pesan</string>
     <string name="notif_filtre_systeme">Sistem</string>
     <string name="sort_by_date">Tanggal dan waktucomment</string>
     <string name="sort_by_contact">Hubungan</string>
@@ -85,9 +85,9 @@
     <string name="menu_main_toolbar_multiselect_all_select">Semua pilih</string>
     <!-- endregion -->
     <!--region Bottom Navigation View !-->
-    <string name="bottom_navigation_view_phone_book">Kontak</string>
-    <string name="bottom_navigation_view_groups">Kelompok</string>
-    <string name="bottom_navigation_view_notify_history">Notifikasi</string>
+    <string name="contacts_list_title">Kontak</string>
+    <string name="groups_list_title">Kelompok</string>
+    <string name="history_title">Notifikasi</string>
     <string name="bottom_navigation_view_cockpit">Kokpit</string>
     <!-- endregion !-->
     <!-- region Add New Contact !-->
@@ -220,7 +220,7 @@
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Parameter notifikasi</string>
-    <string name="notification_manager_stop_service">Aktifkan manajemen notifikasi oleh prioritas</string>
+    <string name="notifications_activate_title">Aktifkan manajemen notifikasi</string>
     <string name="notification_manager_stop_popup">Tampilkan notifikasi VIP</string>
     <string name="notification_reminder">Kirim pengingat untuk melihat semua pesan non-VIP</string>
     <string name="notification_manager_horaire">Pilih waktu ingat harian:</string>
@@ -256,7 +256,7 @@
     <!-- endregion -->
 
     <!-- region Cockpit -->
-    <string name="cockpit_toolbar_title">Aplikasi saya</string>
+    <string name="cockpit_title">Aplikasi saya</string>
     <string name="cockpit_toast_phone_number_empty">Masukkan nomor telepon</string>
     <string name="cockpit_toast_number_valid">Silakan masukkan nomor telepon yang valid</string>
     <string name="cockpit_toast_facebook_not_install">Facebook tidak diinstal</string>

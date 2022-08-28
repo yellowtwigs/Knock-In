@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout_manage_notif"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible"
-            tools:context=".ui.settings.ManageNotificationActivity">
+            tools:context=".ui.notifications.settings.NotificationsSettingsActivity">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -57,7 +57,6 @@
                     android:id="@+id/vip_multi_select_button"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
-                    android:text="VIP"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -65,8 +64,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <RelativeLayout
-                android:id="@+id/constraintLayout11"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -74,91 +72,102 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp">
 
-                <TextView
-                    android:id="@+id/textView_stop_service"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/notifications_activate_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/notifications_activate_title"
+                    android:textColor="?attr/textColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/activate_notification"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/activate_notification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/switch_stop_service"
-                    android:text="@string/notification_manager_stop_service"
-                    android:textColor="?attr/textColor" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_stop_service"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/manage_notif_layout_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:id="@+id/textView_manage_notif"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/switch_stop_popup"
-                    android:text="@string/notification_manager_stop_popup"
-                    android:textColor="?attr/textColor" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_stop_popup"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/manage_notif_reminder_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:id="@+id/textView_manage_reminder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/switch_manage_notif_reminder"
-                    android:text="@string/notification_reminder"
-                    android:textColor="?attr/textColor" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_manage_notif_reminder"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
-
-            </RelativeLayout>
+                    android:text="@string/start_activity_button_notification"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/modify_hour_Constariant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/overlay_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/superposition_subtitle"
+                    android:textColor="?attr/textColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/activate_overlay"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/activate_overlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_activity_button_notification"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/reminder_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/notification_reminder"
+                    android:textColor="?attr/textColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/switch_reminder"
+                    app:layout_constraintEnd_toStartOf="@+id/switch_reminder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/switch_reminder" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_reminder"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_reminder_hour_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView_horraire_reminder"
-                    android:layout_width="268dp"
+                    android:id="@+id/reminder_hour_title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -170,7 +179,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView_heure"
+                    android:id="@+id/reminder_hour_content"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -181,7 +190,7 @@
                     android:textColor="?attr/textColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView_horraire_reminder"
+                    app:layout_constraintStart_toEndOf="@+id/reminder_hour_title"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -197,6 +206,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/switch_1_to_0"
                     android:textColor="?attr/textColor"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -215,7 +225,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout
-                android:id="@+id/settings_choose_notif_sound_layout_open_close"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
@@ -223,7 +232,6 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/settings_choose_notif_sound_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -256,6 +264,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"

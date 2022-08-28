@@ -6,15 +6,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -28,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yellowtwigs.knockin.R;
 
 import com.yellowtwigs.knockin.ui.CircularImageView;
-import com.yellowtwigs.knockin.model.data.ContactDB;
+import com.yellowtwigs.knockin.model.database.data.ContactDB;
 import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
 
 import java.util.ArrayList;

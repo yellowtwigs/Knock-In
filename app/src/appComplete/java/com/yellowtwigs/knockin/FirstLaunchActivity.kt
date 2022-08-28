@@ -32,7 +32,7 @@ class FirstLaunchActivity : AppCompatActivity() {
         //region ======================================= First Launch =======================================
 
         val sharedFirstLaunch = getSharedPreferences("FirstLaunch", Context.MODE_PRIVATE)
-        if (sharedFirstLaunch.getBoolean("first_launch", false)) {
+        if (sharedFirstLaunch.getBoolean("First_Launch", false)) {
             startActivity(Intent(this@FirstLaunchActivity, Main2Activity::class.java))
             finish()
         }
@@ -52,7 +52,7 @@ class FirstLaunchActivity : AppCompatActivity() {
         textViewCLUF.movementMethod = LinkMovementMethod.getInstance()
 
         buttonAccept.setOnClickListener {
-            edit.putBoolean("first_launch", true)
+            edit.putBoolean("First_Launch", true)
             edit.apply()
             startActivity(Intent(this@FirstLaunchActivity, StartActivity::class.java))
             finish()

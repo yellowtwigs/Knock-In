@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model
+package com.yellowtwigs.knockin.model.database
 
 import androidx.room.TypeConverter
 

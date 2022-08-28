@@ -19,7 +19,7 @@
             android:title="@string/left_drawer_chat"
             android:visible="false"/>
         <item
-            android:id="@+id/nav_notif_config"
+            android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notification"
             android:title="@string/left_drawer_notif_config"
             android:visible="false"/>
