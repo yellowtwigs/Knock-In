@@ -1,9 +1,9 @@
-package com.yellowtwigs.knockin.model.data
+package com.yellowtwigs.knockin.model.database.data
 
 import android.content.Context
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.yellowtwigs.knockin.model.ContactsDatabase
+import com.yellowtwigs.knockin.model.database.ContactsDatabase
 
 class GroupWithContact {
     fun getListContact(context: Context): ArrayList<ContactDB> {

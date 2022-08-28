@@ -1,8 +1,7 @@
-package com.yellowtwigs.knockin.model.dao
+package com.yellowtwigs.knockin.model.database.dao
 
 import androidx.room.*
-import com.yellowtwigs.knockin.model.data.ContactDB
-import com.yellowtwigs.knockin.model.data.NotificationDB
+import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import kotlinx.coroutines.flow.Flow
 
 

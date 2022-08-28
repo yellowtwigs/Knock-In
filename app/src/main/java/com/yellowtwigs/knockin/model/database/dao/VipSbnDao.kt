@@ -1,9 +1,9 @@
-package com.yellowtwigs.knockin.model.dao
+package com.yellowtwigs.knockin.model.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.yellowtwigs.knockin.model.data.VipSbnDB
+import com.yellowtwigs.knockin.model.database.data.VipSbnDB
 
 /**
  * Interface réunissent les différentes requêtes d'interaction avec la table vip_sbn_table

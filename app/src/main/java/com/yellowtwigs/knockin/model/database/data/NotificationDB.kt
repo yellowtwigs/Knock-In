@@ -1,7 +1,6 @@
-package com.yellowtwigs.knockin.model.data
+package com.yellowtwigs.knockin.model.database.data
 
 import androidx.room.*
-import com.yellowtwigs.knockin.model.ContactsDatabase
 
 @Entity(tableName = "notifications_table")
 data class NotificationDB(
