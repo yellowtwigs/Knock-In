@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.SectionIndexer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ import com.yellowtwigs.knockin.utils.ContactGesture.openSms
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ContactsListAdapter(private val cxt: Context, private val onClickedCallback: (Int) -> Unit) :

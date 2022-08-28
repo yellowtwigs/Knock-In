@@ -1,9 +1,13 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
@@ -16,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
+import com.yellowtwigs.knockin.model.service.NotificationsListenerService
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.ScrollBarAdapter
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsListFragment
@@ -49,6 +55,10 @@ class ContactsListActivity : AppCompatActivity() {
 
         val binding = ActivityContactsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (isNotificationServiceEnabled()) {
+            toggleNotificationListenerService()
+        }
 
         setupToolbar(binding)
         setupRecyclerView(binding)
@@ -243,9 +253,7 @@ class ContactsListActivity : AppCompatActivity() {
 
         binding.recyclerView.apply {
             contactsListViewModel.getAllContacts().observe(this@ContactsListActivity) { contacts ->
-//                CoroutineScope(Dispatchers.).launch {
                 contactsListAdapter.submitList(contacts)
-//                }
                 smoothScrollToPosition(0)
             }
             adapter = contactsListAdapter
@@ -290,6 +298,38 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     //endregion
+
+    private fun isNotificationServiceEnabled(): Boolean {
+        val pkgName = packageName
+        val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        if (!TextUtils.isEmpty(str)) {
+            val names = str.split(":")
+            for (i in names.indices) {
+                val cn = ComponentName.unflattenFromString(names[i])
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.packageName)) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    private fun toggleNotificationListenerService() {
+        val pm = packageManager
+        val cmpName = ComponentName(this, NotificationsListenerService::class.java)
+        pm.setComponentEnabledSetting(
+            cmpName,
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
+        pm.setComponentEnabledSetting(
+            cmpName,
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
+    }
 
     private fun hideKeyboard() {
         val view = this.currentFocus

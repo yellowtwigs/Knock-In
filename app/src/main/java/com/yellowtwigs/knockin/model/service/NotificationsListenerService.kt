@@ -62,8 +62,6 @@ class NotificationsListenerService : NotificationListenerService() {
 
     override fun onCreate() {
         super.onCreate()
-//        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-//        mDbWorkerThread.start()
     }
 
     override fun onListenerDisconnected() {

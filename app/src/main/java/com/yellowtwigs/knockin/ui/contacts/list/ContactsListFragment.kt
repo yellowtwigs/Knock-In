@@ -28,38 +28,6 @@ class ContactsListFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentContactsListBinding.inflate(inflater, container, false)
-        setupRecyclerView(binding)
         return binding.root
     }
-
-    //region =========================================== SETUP UI ===========================================
-
-    private fun setupRecyclerView(binding: FragmentContactsListBinding) {
-        val contactsListViewModel: ContactsListViewModel by activityViewModels()
-
-        val contactsListAdapter = ContactsListAdapter(contextActivity) { id ->
-//            navController.navigate(
-//                ContactsListFragmentDirections.actionContactsListFragmentToEditContactFragment(
-//                    id
-//                )
-//            )
-        }
-
-        binding.recyclerView.apply {
-            contactsListViewModel.getAllContacts().observe(viewLifecycleOwner) { contacts ->
-                contactsListAdapter.submitList(contacts)
-                scrollToPosition(0)
-            }
-            adapter = contactsListAdapter
-            layoutManager = LinearLayoutManager(context)
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    contactsListAdapter.setIsScrolling(true)
-                    super.onScrollStateChanged(recyclerView, newState)
-                }
-            })
-        }
-    }
-
-    //endregion
 }
