@@ -6,7 +6,7 @@
     <corners android:radius="20dp" />
     <gradient
         android:angle="90"
-        android:centerColor="#73e989"
-        android:endColor="#73e989"
-        android:startColor="#73e989" />
+        android:centerColor="@color/knock_in_color"
+        android:endColor="@color/knock_in_color"
+        android:startColor="@color/knock_in_color" />
 </shape>

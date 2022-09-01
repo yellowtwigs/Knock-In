@@ -6,12 +6,14 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemNotificationBinding
+import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToBackgroundPackage
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 
 import java.text.SimpleDateFormat
@@ -52,6 +54,12 @@ class NotificationsListAdapter(private val context: Context) :
 
                 notification.apply {
                     notificationContent.text = description
+                    mainBackground.background =
+                        ResourcesCompat.getDrawable(
+                            context.resources,
+                            convertPackageToBackgroundPackage(platform, context),
+                            null
+                        )
                     app.text = convertPackageToString(platform, context)
                     notificationSenderName.text = contactName
                     notificationDate.text = text

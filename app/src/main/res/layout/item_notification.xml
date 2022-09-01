@@ -16,13 +16,13 @@
         tools:srcCompat="@tools:sample/avatars[0]" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_background"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_notification_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/notification_image"

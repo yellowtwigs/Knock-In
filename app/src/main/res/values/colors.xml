@@ -7,9 +7,6 @@
 
     <color name="colorPrimaryDark">#e4b41e</color>
 
-    <color name="colorPrimaryOM">#5e94d5</color>
-    <color name="colorPrimaryVariantOM">#6097d8</color>
-
     <color name="backgroundColor">#fafafa</color>
     <color name="backgroundColorDark">#262626</color>
 
@@ -74,5 +71,29 @@
     <color name="yellow_tag_group">#fcd74c</color>
     <color name="purple_tag_group">#a282ff</color>
     <!-- endregion -->
+
+    <color name="whatsapp_color">#46be53</color>
+    <color name="facebook_color">#4262a5</color>
+    <color name="outlook_color">#006bbb</color>
+    <color name="gmail_color">#ff5d5d</color>
+    <color name="knock_in_color">#ffc000</color>
+    <color name="xiaomi_color">#f2b144</color>
+
+    <color name="telegram_color">#24abec</color>
+
+    <color name="instagram_1_color">#8b49c3</color>
+    <color name="instagram_2_color">#d12054</color>
+    <color name="instagram_3_color">#ffb700</color>
+
+    <color name="discord_color">#5460e6</color>
+
+    <color name="tiktok_1_color">#25f4ee</color>
+    <color name="tiktok_2_color">#ffffff</color>
+    <color name="tiktok_3_color">#fe2c55</color>
+
+    <color name="snapchat_color">#f2ef01</color>
+
+    <color name="reddit_color">#ff4019</color>
+    <color name="viber_color">#6c5be1</color>
 
 </resources>

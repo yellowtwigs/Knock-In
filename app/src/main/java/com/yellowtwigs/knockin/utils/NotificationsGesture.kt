@@ -1,14 +1,8 @@
 package com.yellowtwigs.knockin.utils
 
-import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.provider.Telephony
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import com.yellowtwigs.knockin.R
 
 object NotificationsGesture {
     private const val FACEBOOK_PACKAGE = "com.facebook.katana"
@@ -55,6 +49,32 @@ object NotificationsGesture {
             REDDIT_PACKAGE -> return "Reddit"
             VIBER_PACKAGE -> return "Viber"
             else -> return ""
+        }
+    }
+
+    fun convertPackageToBackgroundPackage(packageName: String, context: Context): Int {
+        when (packageName) {
+            FACEBOOK_PACKAGE -> return R.drawable.rounded_notification_background_facebook
+            MESSENGER_PACKAGE -> return R.drawable.rounded_notification_background_facebook
+            WHATSAPP_PACKAGE -> return R.drawable.rounded_notification_background_whatsapp
+            GMAIL_PACKAGE -> return R.drawable.rounded_notification_background_gmail
+            OUTLOOK_PACKAGE -> return R.drawable.rounded_notification_background_outlook
+
+            MESSAGE_PACKAGE -> return R.drawable.rounded_notification_background_facebook
+            XIAOMI_MESSAGE_PACKAGE -> return R.drawable.rounded_notification_background_xiaomi
+            MESSAGE_SAMSUNG_PACKAGE -> return R.drawable.rounded_notification_background_facebook
+            MESSAGES_PACKAGE -> return R.drawable.rounded_notification_background_facebook
+            Telephony.Sms.getDefaultSmsPackage(context) -> return R.drawable.rounded_notification_background_knock_in
+
+            SIGNAL_PACKAGE -> return R.drawable.rounded_notification_background_outlook
+            TELEGRAM_PACKAGE -> return R.drawable.rounded_notification_background_telegram
+            INSTAGRAM_PACKAGE -> return R.drawable.rounded_notification_background_instagram
+            DISCORD_PACKAGE -> return R.drawable.rounded_notification_background_discord
+            TIKTOK_PACKAGE -> return R.drawable.rounded_notification_background_tiktok
+            SNAPCHAT_PACKAGE -> return R.drawable.rounded_notification_background_snapchat
+            REDDIT_PACKAGE -> return R.drawable.rounded_notification_background_reddit
+            VIBER_PACKAGE -> return R.drawable.rounded_notification_background_viber
+            else -> return R.drawable.rounded_notification_background_knock_in
         }
     }
 
