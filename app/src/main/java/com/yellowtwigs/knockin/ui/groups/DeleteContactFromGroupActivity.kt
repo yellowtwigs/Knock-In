@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group
+package com.yellowtwigs.knockin.ui.groups
 
 import android.content.Context
 import android.content.Intent
@@ -14,10 +14,10 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.ui.group.create.AddContactToGroupAdapter
-import com.yellowtwigs.knockin.ui.group.create.CreateGroupGridViewAdapter
-import com.yellowtwigs.knockin.ui.group.create.CreateGroupListViewAdapter
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.create.AddContactToGroupAdapter
+import com.yellowtwigs.knockin.ui.groups.create.CreateGroupGridViewAdapter
+import com.yellowtwigs.knockin.ui.groups.create.CreateGroupListViewAdapter
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 
 /**
  * Activité qui nous permet de supprimmer les contact d'un groupe
@@ -149,7 +149,7 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
     }
 
     private fun refreshActivity() {
-        startActivity(Intent(this@DeleteContactFromGroupActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        startActivity(Intent(this@DeleteContactFromGroupActivity, GroupsListActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
         finish()
     }
 
@@ -169,68 +169,64 @@ class DeleteContactFromGroupActivity : AppCompatActivity() {
                 refreshActivity()
             }
             R.id.nav_validate -> {
-                deleteFromGroup(selectContact!!, groupId)
+//                deleteFromGroup(selectContact!!, groupId)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    /**
-     * Supprime du groupe les contacts présent dans la liste
-     * @param listContact [List<ContactDB>]
-     * @param groupId [Int]
-     */
-    private fun deleteFromGroup(listContact: MutableList<ContactDB>, groupId: Int) {
 
-        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
-//            removeFromFavorite()
-        }
-
-        var message: String
-        when {
-            listContact.isEmpty() -> {
-                listIsEmpty = true
-                message = resources.getString(R.string.delete_contact_0_contact)
-            }
-            listContact.size == 1 -> message = String.format(resources.getString(R.string.delete_contact_from_group), " " + listContact[0].firstName + " " + listContact[0].lastName + " ")
-            else -> {
-                message = String.format(resources.getString(R.string.delete_contact_from_group), "") + " :"
-                listContact.forEach {
-                    message += "\n- " + it.firstName + " " + it.lastName
-                }
-            }
-        }
-
-        if (listIsEmpty) {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(R.string.delete_contact_from_group_title)
-                    .setMessage(message)
-                    .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
-        } else {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(R.string.delete_contact_from_group_title)
-                    .setMessage(message)
-                    .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
-                        listContact.forEach {
-//                            contactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it.id!!, groupId)
-                        }
-                        var counter = 0
-
-                        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
-//                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" || contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
-                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
-                                contactsDatabase?.GroupsDao()!!.deleteGroupById(contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
-                                break
-                            }
+//    private fun deleteFromGroup(listContact: MutableList<ContactDB>, groupId: Int) {
+//
+//        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
+////            removeFromFavorite()
+//        }
+//
+//        var message: String
+//        when {
+//            listContact.isEmpty() -> {
+//                listIsEmpty = true
+//                message = resources.getString(R.string.delete_contact_0_contact)
+//            }
+//            listContact.size == 1 -> message = String.format(resources.getString(R.string.delete_contact_from_group), " " + listContact[0].firstName + " " + listContact[0].lastName + " ")
+//            else -> {
+//                message = String.format(resources.getString(R.string.delete_contact_from_group), "") + " :"
+//                listContact.forEach {
+//                    message += "\n- " + it.firstName + " " + it.lastName
+//                }
+//            }
+//        }
+//
+//        if (listIsEmpty) {
+//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                    .setTitle(R.string.delete_contact_from_group_title)
+//                    .setMessage(message)
+//                    .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
+//        } else {
+//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+//                    .setTitle(R.string.delete_contact_from_group_title)
+//                    .setMessage(message)
+//                    .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
+//                        listContact.forEach {
+////                            contactsDatabase!!.LinkContactGroupDao().deleteContactIngroup(it.id!!, groupId)
+//                        }
+//                        var counter = 0
+//
+//                        while (counter < contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ().size) {
+////                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favorites" || contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.name == "Favoris") {
+//                            if (contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].getListContact(this).isEmpty()) {
+//                                contactsDatabase?.GroupsDao()!!.deleteGroupById(contactsDatabase?.GroupsDao()!!.getAllGroupsByNameAZ()[counter].groupDB!!.id!!.toInt())
+//                                break
 //                            }
-                            counter++
-                        }
-
-                        startActivity(Intent(this, GroupManagerActivity::class.java))
-                    }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
-        }
-
-    }
+////                            }
+//                            counter++
+//                        }
+//
+//                        startActivity(Intent(this, GroupsListActivity::class.java))
+//                    }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
+//        }
+//
+//    }
 
     /**
      * Enlever un contact du groupe favoris lui envleve aussi l'attribut favoris

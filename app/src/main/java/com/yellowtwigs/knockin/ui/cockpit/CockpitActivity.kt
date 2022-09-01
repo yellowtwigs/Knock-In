@@ -1,11 +1,10 @@
-package com.yellowtwigs.knockin.ui
+package com.yellowtwigs.knockin.ui.cockpit
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.Resources
 import android.net.Uri
@@ -22,19 +21,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityCockpitBinding
+import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
@@ -73,27 +76,14 @@ class CockpitActivity : AppCompatActivity() {
     private var cockpit_CallKeyboard_0: RelativeLayout? = null
     private var cockpit_CallKeyboard_Sharp: RelativeLayout? = null
 
-    private var link_socials_networks_Facebook: AppCompatImageView? = null
-    private var link_socials_networks_Messenger: AppCompatImageView? = null
-    private var link_socials_networks_Instagram: AppCompatImageView? = null
-    private var link_socials_networks_Whatsapp: AppCompatImageView? = null
-    private var link_socials_networks_Gmail: AppCompatImageView? = null
-    private var link_socials_networks_Snapchat: AppCompatImageView? = null
-    private var link_socials_networks_Telegram: AppCompatImageView? = null
-    private var link_socials_networks_Outlook: AppCompatImageView? = null
-    private var link_socials_networks_Skype: AppCompatImageView? = null
-    private var link_socials_networks_Linkedin: AppCompatImageView? = null
-    private var link_socials_networks_Twitter: AppCompatImageView? = null
-    private var signalIcon: AppCompatImageView? = null
-
     private var cockpit_CallBackSpace: ImageView? = null
     private var cockpit_ButtonAddContact: ImageView? = null
 
     //endregion
 
     private lateinit var binding: ActivityCockpitBinding
+    private lateinit var listApp: ArrayList<String>
 
-    @SuppressLint("ShowToast", "Recycle", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -113,19 +103,16 @@ class CockpitActivity : AppCompatActivity() {
 
         hideKeyboard()
 
-        val listApp = getAppOnPhone()
+        listApp = getAppOnPhone()
 
-        //region ========================================== Toolbar =========================================
-
-        val cockpitOpenDrawer = findViewById<AppCompatImageView>(R.id.cockpit_open_drawer)
-        val cockpitHelp = findViewById<AppCompatImageView>(R.id.cockpit_toolbar_help)
-
-        //endregion
+        setupBottomNavigationView()
+        setupToolbar()
+        setupDrawerLayout()
+        setupRecyclerView()
 
         //region ======================================= FindViewById =======================================
 
         cockpit_IncomingCallButton = findViewById(R.id.cockpit_incoming_call_button)
-        bottomNavigationView = findViewById(R.id.navigation)
 
         cockpit_ButtonOpen = findViewById(R.id.cockpit_button_open_id)
         cockpit_CallLayout = findViewById(R.id.cockpit_call_layout_id)
@@ -149,19 +136,6 @@ class CockpitActivity : AppCompatActivity() {
         cockpit_CallKeyboard_0 = findViewById(R.id.cockpit_call_keyboard_0)
         cockpit_CallKeyboard_Sharp = findViewById(R.id.cockpit_call_keyboard_sharp)
 
-        link_socials_networks_Facebook = findViewById(R.id.facebook_link_socials_networks)
-        link_socials_networks_Messenger = findViewById(R.id.messenger_link_socials_networks)
-        link_socials_networks_Instagram = findViewById(R.id.instagram_link_socials_networks)
-        link_socials_networks_Gmail = findViewById(R.id.gmail_link_socials_networks)
-        link_socials_networks_Snapchat = findViewById(R.id.snapchat_link_socials_networks)
-        link_socials_networks_Telegram = findViewById(R.id.telegram_link_socials_networks)
-        link_socials_networks_Outlook = findViewById(R.id.outlook_link_socials_networks)
-        link_socials_networks_Skype = findViewById(R.id.skype_link_socials_networks)
-        link_socials_networks_Linkedin = findViewById(R.id.linkedin_link_socials_networks)
-        link_socials_networks_Twitter = findViewById(R.id.twitter_link_socials_networks)
-        link_socials_networks_Whatsapp = findViewById(R.id.whatsapp_link_socials_networks)
-        signalIcon = findViewById(R.id.signal_icon)
-
         cockpit_CallBackSpace = findViewById(R.id.cockpit_call_back_space)
         cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
 
@@ -176,180 +150,8 @@ class CockpitActivity : AppCompatActivity() {
 
         //region ========================================== Listener ========================================
 
-        cockpitOpenDrawer.setOnClickListener {
-            cockpit_DrawerLayout?.openDrawer(GravityCompat.START)
-            hideKeyboard()
-
-        }
-        cockpitHelp.setOnClickListener {
-            if (Resources.getSystem().configuration.locale.language == "fr") {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit")
-                )
-                startActivity(browserIntent)
-            } else {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.yellowtwigs.com/help-cockpit")
-                )
-                startActivity(browserIntent)
-            }
-        }
-
-        if (!listApp.contains("com.facebook.katana")) {
-            link_socials_networks_Facebook?.setImageResource(R.drawable.ic_facebook_disable)
-            link_socials_networks_Facebook?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_facebook_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Facebook?.setOnClickListener { goToFacebook() }
-        }
-
-        if (!listApp.contains("com.facebook.orca")) {
-            link_socials_networks_Messenger?.setImageResource(R.drawable.ic_messenger_disable)
-            link_socials_networks_Messenger?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_messenger_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Messenger?.setOnClickListener { openMessenger("") }
-        }
-
-        if (!listApp.contains("com.instagram.android")) {
-            link_socials_networks_Instagram?.setImageResource(R.drawable.ic_instagram_disable)
-            link_socials_networks_Instagram?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_instagram_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Instagram?.setOnClickListener { goToInstagramPage() }
-        }
-
-        if (!listApp.contains("com.whatsapp")) {
-            link_socials_networks_Whatsapp?.setImageResource(R.drawable.ic_whatsapp_disable)
-            link_socials_networks_Whatsapp?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_whatsapp_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Whatsapp?.setOnClickListener { goToWhatsapp() }
-        }
-
-        if (!listApp.contains("com.google.android.gm")) {
-            link_socials_networks_Gmail?.setImageResource(R.drawable.ic_gmail_disable)
-            link_socials_networks_Gmail?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_gmail_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Gmail?.setOnClickListener { goToGmail() }
-        }
-
-        if (!listApp.contains("com.snapchat.android")) {
-            link_socials_networks_Snapchat?.setImageResource(R.drawable.ic_snapchat_disable)
-            link_socials_networks_Snapchat?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_snapchat_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Snapchat?.setOnClickListener { goToSnapchat() }
-        }
-
-        if (!listApp.contains("org.telegram.messenger")) {
-            link_socials_networks_Telegram?.setImageResource(R.drawable.ic_telegram_disable)
-            link_socials_networks_Telegram?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_telegram_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Telegram?.setOnClickListener {
-                goToTelegram(this)
-            }
-        }
-
-        if (!listApp.contains("com.microsoft.office.outlook")) {
-            link_socials_networks_Outlook?.setImageResource(R.drawable.ic_outlook_disable)
-            link_socials_networks_Outlook?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_outlook_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Outlook?.setOnClickListener { goToOutlook(this@CockpitActivity) }
-        }
-
-        if (!listApp.contains("com.skype.raider")) {
-            link_socials_networks_Skype?.setImageResource(R.drawable.ic_skype_disable)
-            link_socials_networks_Skype?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_skype_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Skype?.setOnClickListener { goToSkype() }
-        }
-
-        if (!listApp.contains("com.linkedin.android")) {
-            link_socials_networks_Linkedin?.setImageResource(R.drawable.ic_linkedin_disable)
-            link_socials_networks_Linkedin?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_linkedin_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Linkedin?.setOnClickListener { goToLinkedin() }
-        }
-
-        if (!listApp.contains("com.twitter.android")) {
-            link_socials_networks_Twitter?.setImageResource(R.drawable.ic_twitter_disable)
-            link_socials_networks_Twitter?.setOnClickListener {
-                Toast.makeText(
-                    this,
-                    R.string.cockpit_toast_twitter_not_install,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            link_socials_networks_Twitter?.setOnClickListener { goToTwitter() }
-        }
-
-        if (!listApp.contains("org.thoughtcrime.securesms")) {
-            signalIcon?.setImageResource(R.drawable.ic_signal_disable)
-        } else {
-            signalIcon?.setOnClickListener { goToSignal(this) }
-        }
-
         cockpit_IncomingCallButton?.setOnClickListener {
-            phoneCall(cockpit_PhoneNumberEditText?.text.toString())
+//            phoneCall(cockpit_PhoneNumberEditText?.text.toString())
         }
 
         cockpit_SendMessage?.setOnClickListener {
@@ -484,7 +286,28 @@ class CockpitActivity : AppCompatActivity() {
     //region =========================================== TOOLBAR ============================================
 
     private fun setupToolbar() {
+        binding.apply {
+            openDrawer.setOnClickListener {
+                drawerLayout.openDrawer(GravityCompat.START)
+                hideKeyboard()
+            }
+        }
 
+        binding.help.setOnClickListener {
+            if (Resources.getSystem().configuration.locale.language == "fr") {
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit")
+                )
+                startActivity(browserIntent)
+            } else {
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.yellowtwigs.com/help-cockpit")
+                )
+                startActivity(browserIntent)
+            }
+        }
     }
 
     //endregion
@@ -492,18 +315,12 @@ class CockpitActivity : AppCompatActivity() {
     //region ========================================= DRAWER LAYOUT ========================================
 
     private fun setupDrawerLayout() {
-        binding
-        cockpit_DrawerLayout = findViewById(R.id.cockpit_drawer_layout)
-        val navigationView = findViewById<NavigationView>(R.id.cockpit_nav_view)
-        val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_home)
-        navItem.isChecked = true
+        val menu = binding.navView.menu
+        menu.findItem(R.id.nav_home).isChecked = true
 
-        navigationView?.menu?.getItem(0)?.isChecked = true
-
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            cockpit_DrawerLayout?.closeDrawers()
+            binding.drawerLayout.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_notifications -> startActivity(
@@ -538,7 +355,7 @@ class CockpitActivity : AppCompatActivity() {
                 )
             }
 
-            cockpit_DrawerLayout?.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }
@@ -548,42 +365,215 @@ class CockpitActivity : AppCompatActivity() {
     //region =========================================== SETUP UI ===========================================
 
     private fun setupBottomNavigationView() {
+        binding.navigation.apply {
+            menu.getItem(3).isChecked = true
+            setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.navigation_contacts -> {
+                        startActivity(
+                            Intent(
+                                this@CockpitActivity,
+                                ContactsListActivity::class.java
+                            ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        )
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_groups -> {
+                        startActivity(
+                            Intent(
+                                this@CockpitActivity,
+                                GroupsListActivity::class.java
+                            ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        )
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_notifcations -> {
+                        startActivity(
+                            Intent(
+                                this@CockpitActivity,
+                                NotificationsHistoryActivity::class.java
+                            ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        )
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                false
+            })
+        }
+    }
 
+    private fun setupRecyclerView() {
+        val listOfApps = arrayListOf<Int>()
 
-        bottomNavigationView?.menu?.getItem(3)?.isChecked = true
-        bottomNavigationView?.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_contacts -> {
+        if (!listApp.contains("com.facebook.katana")) {
+            listOfApps.add(R.drawable.ic_facebook_disable)
+//            link_socials_networks_Facebook?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_facebook_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_facebook_selector)
+//            link_socials_networks_Facebook?.setOnClickListener { goToFacebook() }
+        }
 
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_groups -> {
-                    startActivity(
-                        Intent(
-                            this@CockpitActivity,
-                            GroupsListActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_teleworking -> {
-                    startActivity(
-                        Intent(
-                            this@CockpitActivity,
-                            TeleworkingActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_notifcations -> {
+        if (!listApp.contains("com.facebook.orca")) {
+            listOfApps.add(R.drawable.ic_messenger_disable)
+//            link_socials_networks_Messenger?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_messenger_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+        } else {
+            listOfApps.add(R.drawable.ic_messenger_selector)
+//            link_socials_networks_Messenger?.setOnClickListener { openMessenger("") }
+        }
 
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_cockpit -> {
-                }
-            }
-            false
-        })
+        if (!listApp.contains("com.instagram.android")) {
+            listOfApps.add(R.drawable.ic_instagram_disable)
+//            link_socials_networks_Instagram?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_instagram_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_instagram)
+        }
+
+        if (!listApp.contains("com.whatsapp")) {
+            listOfApps.add(R.drawable.ic_whatsapp_disable)
+//            link_socials_networks_Whatsapp?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_whatsapp_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_whatsapp)
+//            link_socials_networks_Whatsapp?.setOnClickListener {
+//                goToWhatsapp() }
+        }
+
+        if (!listApp.contains("com.google.android.gm")) {
+            listOfApps.add(R.drawable.ic_gmail_disable)
+//            link_socials_networks_Gmail?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_gmail_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_gmail)
+//            link_socials_networks_Gmail?.setOnClickListener { goToGmail() }
+        }
+
+        if (!listApp.contains("com.snapchat.android")) {
+            listOfApps.add(R.drawable.ic_snapchat_disable)
+//            link_socials_networks_Snapchat?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_snapchat_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_snapchat)
+//            link_socials_networks_Snapchat?.setOnClickListener { goToSnapchat() }
+        }
+
+        if (!listApp.contains("org.telegram.messenger")) {
+            listOfApps.add(R.drawable.ic_telegram_disable)
+//            link_socials_networks_Telegram?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_telegram_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_telegram)
+
+//            link_socials_networks_Telegram?.setOnClickListener {
+//                goToTelegram(this)
+//            }
+        }
+
+        if (!listApp.contains("com.microsoft.office.outlook")) {
+            listOfApps.add(R.drawable.ic_outlook_disable)
+//            link_socials_networks_Outlook?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_outlook_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_outlook)
+//            link_socials_networks_Outlook?.setOnClickListener { goToOutlook(this@CockpitActivity) }
+        }
+
+        if (!listApp.contains("com.skype.raider")) {
+            listOfApps.add(R.drawable.ic_skype_disable)
+//            link_socials_networks_Skype?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_skype_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_skype)
+//            link_socials_networks_Skype?.setOnClickListener { goToSkype() }
+        }
+
+        if (!listApp.contains("com.linkedin.android")) {
+            listOfApps.add(R.drawable.ic_linkedin_disable)
+//            link_socials_networks_Linkedin?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_linkedin_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_linkedin)
+//            link_socials_networks_Linkedin?.setOnClickListener { goToLinkedin() }
+        }
+
+        if (!listApp.contains("com.twitter.android")) {
+            listOfApps.add(R.drawable.ic_twitter_disable)
+//            link_socials_networks_Twitter?.setOnClickListener {
+//                Toast.makeText(
+//                    this,
+//                    R.string.cockpit_toast_twitter_not_install,
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        } else {
+            listOfApps.add(R.drawable.ic_twitter)
+//            link_socials_networks_Twitter?.setOnClickListener { goToTwitter() }
+        }
+
+        if (!listApp.contains("org.thoughtcrime.securesms")) {
+            listOfApps.add(R.drawable.ic_signal_disable)
+        } else {
+            listOfApps.add(R.drawable.ic_signal)
+//            signalIcon?.setOnClickListener { goToSignal(this) }
+        }
+
+        binding.recyclerView.apply {
+            val cockpitListAdapter = CockpitListAdapter()
+            cockpitListAdapter.submitList(listOfApps)
+            adapter = cockpitListAdapter
+            layoutManager = GridLayoutManager(context, 4)
+        }
     }
 
     //endregion
@@ -615,140 +605,6 @@ class CockpitActivity : AppCompatActivity() {
         }
         return packageNameList
     }
-
-    private fun openMessenger(id: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
-            startActivity(intent)
-        }
-    }
-
-    private fun goToSnapchat() {
-        val i = packageManager.getLaunchIntentForPackage("com.snapchat.android")
-        try {
-            startActivity(i)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://snapchat.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToWhatsapp() {
-        val i = packageManager.getLaunchIntentForPackage("com.whatsapp")
-        try {
-            startActivity(i)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://whatsapp.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToInstagramPage() {
-        val uri = Uri.parse("https://www.instagram.com/")
-        val likeIng = Intent(Intent.ACTION_VIEW, uri)
-
-        likeIng.setPackage("com.instagram.android")
-
-        try {
-            startActivity(likeIng)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://instagram.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToFacebook() {
-        val uri = Uri.parse("facebook:/newsfeed")
-        val likeIng = Intent(Intent.ACTION_VIEW, uri)
-        try {
-            startActivity(likeIng)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("http://facebook.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToGmail() {
-        val appIntent = Intent(Intent.ACTION_VIEW)
-        appIntent.setClassName(
-            "com.google.android.gm",
-            "com.google.android.gm.ConversationListActivityGmail"
-        )
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://gmail.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToLinkedin() {
-        /// don't work
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://you"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://linkedin.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToSkype() {
-        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://skype.com/")
-                )
-            )
-        }
-    }
-
-    private fun goToTwitter() {
-        val appIntent = Intent(Intent.ACTION_VIEW)
-        appIntent.setClassName("com.twitter.android", "com.twitter.android")
-        try {
-            startActivity(appIntent)
-        } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://twitter.com/")
-                )
-            )
-        }
-    }
-
     override fun onBackPressed() {
     }
 
@@ -772,43 +628,6 @@ class CockpitActivity : AppCompatActivity() {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 cockpit_IncomingCallButton?.isEnabled = true
             }
-        }
-    }
-
-    private fun phoneCall(phoneNumber: String) {
-        if (!TextUtils.isEmpty(phoneNumber)) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.CALL_PHONE
-                ) != PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.CALL_PHONE),
-                    MAKE_CALL_PERMISSION_REQUEST_CODE
-                )
-                numberForPermission = phoneNumber
-            } else {
-                if (numberForPermission.isEmpty()) {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_CALL,
-                            Uri.fromParts("tel", phoneNumber, null)
-                        )
-                    )
-                } else {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_CALL,
-                            Uri.fromParts("tel", phoneNumber, null)
-                        )
-                    )
-                    numberForPermission = ""
-                }
-            }
-        } else {
-            Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
-                .show()
         }
     }
 

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group.create;
+package com.yellowtwigs.knockin.ui.groups.create;
 
 import android.content.Context;
 
@@ -25,7 +25,7 @@ import com.yellowtwigs.knockin.R;
 
 import com.yellowtwigs.knockin.ui.CircularImageView;
 import com.yellowtwigs.knockin.model.database.data.ContactDB;
-import com.yellowtwigs.knockin.ui.group.DeleteContactFromGroupActivity;
+import com.yellowtwigs.knockin.ui.groups.DeleteContactFromGroupActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

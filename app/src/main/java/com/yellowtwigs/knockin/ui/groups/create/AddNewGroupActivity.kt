@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group.create
+package com.yellowtwigs.knockin.ui.groups.create
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 
 /**
  * Activité qui nous permet de créer un groupe
@@ -165,10 +165,10 @@ class AddNewGroupActivity : AppCompatActivity() {
             android.R.id.home -> {
                 refreshActivity()
             }
-            R.id.nav_validate -> {//Si l'utilisateur clique sur validé ont crée le groupe avec les contact séléctionner dans l'adapter
-                if (addNewGroupName!!.text.isNotEmpty()) {//Avant de vréer le groupe on vérifie que celui-ci à un nom
-                    if (selectContact!!.isNotEmpty()) {//Et qu'il y a des contact dans le groupe
-                        addToGroup(selectContact, addNewGroupName!!.text.toString())
+            R.id.nav_validate -> {
+                if (addNewGroupName!!.text.isNotEmpty()) {
+                    if (selectContact!!.isNotEmpty()) {
+//                        addToGroup(selectContact, addNewGroupName!!.text.toString())
                     } else {
                         Toast.makeText(
                             this,
@@ -215,44 +215,39 @@ class AddNewGroupActivity : AppCompatActivity() {
 //        }
 //    }
 
-    /**
-     * crée un groupe et ajoute les contact de la liste a celui-ci
-     * @param listContact [List<ContactDB>]
-     * @param name [String]
-     */
-    private fun addToGroup(listContact: List<ContactDB>?, name: String) {
-        val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
-        var counter = 0
-        var alreadyExist = false
-
-        while (counter < contactsDatabase?.GroupsDao()!!
-                .getAllGroupsByNameAZ().size
-        ) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
-            if (name == contactsDatabase?.GroupsDao()!!
-                    .getAllGroupsByNameAZ()[counter].groupDB!!.name
-            ) {
-                alreadyExist = true
-                break
-            }
-            counter++
-        }
-
-        if (alreadyExist) {//Si il existe Nous prévenons l'utilisateur sinon nous créons le groupe
-            Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
-        } else {
-            val groupId = contactsDatabase!!.GroupsDao().insert(group)
-            listContact!!.forEach {
-                val link = LinkContactGroup(groupId!!.toInt(), it.id)
-//                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
-            }
-            println(contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
-            refreshActivity()
-        }
-    }
+//    private fun addToGroup(listContact: List<ContactDB>?, name: String) {
+//        val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
+//        var counter = 0
+//        var alreadyExist = false
+//
+//        while (counter < contactsDatabase?.GroupsDao()!!
+//                .getAllGroupsByNameAZ().size
+//        ) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
+//            if (name == contactsDatabase?.GroupsDao()!!
+//                    .getAllGroupsByNameAZ()[counter].groupDB!!.name
+//            ) {
+//                alreadyExist = true
+//                break
+//            }
+//            counter++
+//        }
+//
+//        if (alreadyExist) {//Si il existe Nous prévenons l'utilisateur sinon nous créons le groupe
+//            Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
+//        } else {
+//            val groupId = contactsDatabase!!.GroupsDao().insert(group)
+//            listContact!!.forEach {
+//                val link = LinkContactGroup(groupId!!.toInt(), it.id)
+////                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
+//            }
+//            println(contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
+//            refreshActivity()
+//        }
+//    }
 
     private fun refreshActivity() {
         startActivity(
-            Intent(this@AddNewGroupActivity, GroupManagerActivity::class.java).addFlags(
+            Intent(this@AddNewGroupActivity, GroupsListActivity::class.java).addFlags(
                 Intent.FLAG_ACTIVITY_NO_ANIMATION
             )
         )

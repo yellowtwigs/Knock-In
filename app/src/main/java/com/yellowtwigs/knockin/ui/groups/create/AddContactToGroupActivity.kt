@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group.create
+package com.yellowtwigs.knockin.ui.groups.create
 
 import android.content.Context
 import android.content.Intent
@@ -17,7 +17,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 
 /**
  * Activité qui nous permet d'ajouter des contacts a un groupe précis
@@ -188,20 +188,15 @@ class AddContactToGroupActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    /**
-     * Ajoute la liste des contacts sélectionné au groupe
-     * @param listContact [List<ContactDB>]
-     * @param groupId [Int]
-     */
     private fun addToGroup(listContact: List<ContactDB>, groupId: Int) {
-        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
-            addToFavorite()
-        }
-
-        listContact.forEach {
-            val link = LinkContactGroup(groupId, it.id!!)
-//            contactsDatabase!!.LinkContactGroupDao().insert(link)
-        }
+//        if (contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favorites" || contactsDatabase?.GroupsDao()!!.getGroup(groupId).name == "Favoris") {
+//            addToFavorite()
+//        }
+//
+//        listContact.forEach {
+//            val link = LinkContactGroup(groupId, it.id!!)
+////            contactsDatabase!!.LinkContactGroupDao().insert(link)
+//        }
     }
 
     //region ========================================== Favorites ===========================================
@@ -244,7 +239,7 @@ class AddContactToGroupActivity : AppCompatActivity() {
      * Retour vers l'activité groupManager
      */
     private fun refreshActivity() {
-        startActivity(Intent(this@AddContactToGroupActivity, GroupManagerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        startActivity(Intent(this@AddContactToGroupActivity, GroupsListActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
         finish()
     }
 }

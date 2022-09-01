@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group.create;
+package com.yellowtwigs.knockin.ui.groups.create;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
