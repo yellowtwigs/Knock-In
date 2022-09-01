@@ -103,7 +103,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var main_ToolbarMultiSelectModeMenu: AppCompatImageView? = null
     private var main_toolbar_OpenDrawer: AppCompatImageView? = null
 
-    // Database && Thread
     private var main_ContactsDatabase: ContactsRoomDatabase? = null
     private lateinit var main_mDbWorkerThread: DbWorkerThread
 
@@ -120,8 +119,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private val PERMISSION_READ_CONTACT = 99
 
     private var idGroup: Long = 0
-
-    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
 
     private lateinit var sharedFromSplashScreen: SharedPreferences
     private lateinit var sharedShowPopup: SharedPreferences
@@ -197,7 +194,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val importWhatsapp =
             importWhatsappSharedPreferences.getBoolean("importWhatsappPreferences", false)
 
-        setContentView()
+        setContentView(R.layout.activity_main)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         val isDelete = intent.getBooleanExtra("isDelete", false)
         if (isDelete) {
@@ -276,8 +274,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================= FindViewById =======================================
 
-        //Pour tous nos attributs qui sont des vues (TextView, listView , ConstraintLayout, ImageView etc) sur lesquelles notre activité agit nous les récupérons
-
         main_FloatingButtonAddNewContact =
             this.findViewById(R.id.main_floating_button_add_new_contact)
         main_FloatingButtonMultiChannel = findViewById(R.id.main_floating_button_multichannel)
@@ -286,7 +282,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         main_FloatingButtonGroup = findViewById(R.id.main_group_button)
 
         bottomNavigationView = findViewById(R.id.navigation)
-        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         main_SearchBar = findViewById(R.id.main_toolbar_search)
         main_constraintLayout = findViewById(R.id.constraintLyout)
@@ -294,25 +290,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         main_GridView = findViewById(R.id.main_grid_view_id)
         main_RecyclerView = findViewById(R.id.main_recycler_view_id)
-
-        val main_SettingsLeftDrawerLayout =
-            findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        //region ================================ Call Popup from LeftDrawer ================================
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch?.isChecked = true
-        }
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch?.isChecked = true
-        }
-        //endregion
 
         //endregion
 
@@ -332,8 +309,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         setSupportActionBar(main_toolbar_Menu)
         main_toolbar_Menu.overflowIcon = getDrawable(R.drawable.ic_toolbar_menu)
         val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(false)
-        actionbar.setDisplayShowTitleEnabled(false)
+        actionbar?.setDisplayHomeAsUpEnabled(false)
+        actionbar?.setDisplayShowTitleEnabled(false)
 
         //endregion
 
@@ -498,41 +475,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
          *  Partie du code qui permet de mettre en place des actions liées aux interactions de l'utilisateur
          */
         //region ======================================== Listeners =========================================
-
-        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                main_constraintLayout!!.setBackgroundResource(R.drawable.dark_background)
-//                main_constraintLayout!!.setBackgroundResource(R.drawable.galactic_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(Intent(this, MainActivity::class.java))
-            } else {
-
-                setTheme(R.style.AppTheme)
-//                main_constraintLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-        }
 
         navInviteFriend.setOnMenuItemClickListener {
             val intent = Intent(Intent.ACTION_SEND)
@@ -977,21 +919,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     //region ========================================== Functions ===========================================
-
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_main)
-            height in 1800..2499 -> setContentView(R.layout.activity_main)
-            height in 1100..1799 -> setContentView(R.layout.activity_main_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_main_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-    }
 
     /**
      *  Les affichages du mode Multiselect sont enlevés pour remettre l'affichage initial
@@ -1681,57 +1608,66 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         if (contactCursor != null) {
             if (contactCursor.count > 0) {
                 if (contactCursor.moveToFirst()) {
-                    do {
-                        val whatsappContactId =
-                            contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.RawContacts.CONTACT_ID))
-
-                        if (whatsappContactId != null) {
-                            val whatsAppContactCursor = cr.query(
-                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                arrayOf(
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-                                    ContactsContract.CommonDataKinds.Phone.NUMBER,
-                                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
-                                ),
-                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                                arrayOf(whatsappContactId), null
-                            );
-
-                            if (whatsAppContactCursor != null) {
-                                whatsAppContactCursor.moveToFirst()
-                                val name = whatsAppContactCursor.getString(
-                                    whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                                )
-                                val number = whatsAppContactCursor.getString(
-                                    whatsAppContactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    try {
+                        do {
+                            val whatsappContactId =
+                                contactCursor.getString(
+                                    contactCursor.getColumnIndexOrThrow(
+                                        ContactsContract.RawContacts.CONTACT_ID
+                                    )
                                 )
 
-                                whatsAppContactCursor.close()
+                            if (whatsappContactId != null) {
+                                val whatsAppContactCursor = cr.query(
+                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                    arrayOf(
+                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                                        ContactsContract.CommonDataKinds.Phone.NUMBER,
+                                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+                                    ),
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                    arrayOf(whatsappContactId), null
+                                );
 
-                                myWhatsappContacts.add(number)
+                                if (whatsAppContactCursor != null) {
+                                    whatsAppContactCursor.moveToFirst()
+                                    val name = whatsAppContactCursor.getString(
+                                        whatsAppContactCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                                    )
+                                    val number = whatsAppContactCursor.getString(
+                                        whatsAppContactCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                                    )
 
-                                for (contact in listContact) {
-                                    if (contact.firstName + " " + contact.lastName == name || contact.firstName == name || contact.lastName == name) {
+                                    whatsAppContactCursor.close()
 
-                                        main_ContactsDatabase!!.contactsDao()
-                                            .getContact(contact.id!!)
-                                            .setHasWhatsapp(main_ContactsDatabase)
+                                    myWhatsappContacts.add(number)
 
-                                        val detail = ContactDetailDB(
-                                            null,
-                                            contact.id,
-                                            number,
-                                            "phone",
-                                            "",
-                                            0
-                                        )
-                                        main_ContactsDatabase!!.contactDetailsDao().insert(detail)
+                                    for (contact in listContact) {
+                                        if (contact.firstName + " " + contact.lastName == name || contact.firstName == name || contact.lastName == name) {
+
+                                            main_ContactsDatabase!!.contactsDao()
+                                                .getContact(contact.id!!)
+                                                .setHasWhatsapp(main_ContactsDatabase)
+
+                                            val detail = ContactDetailDB(
+                                                null,
+                                                contact.id,
+                                                number,
+                                                "phone",
+                                                "",
+                                                0
+                                            )
+                                            main_ContactsDatabase!!.contactDetailsDao()
+                                                .insert(detail)
+                                        }
                                     }
                                 }
                             }
-                        }
-                    } while (contactCursor.moveToNext())
-                    contactCursor.close()
+                        } while (contactCursor.moveToNext())
+                        contactCursor.close()
+                    } catch (e: Exception) {
+
+                    }
                 }
             }
         }

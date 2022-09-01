@@ -47,7 +47,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView()
+        setContentView(R.layout.activity_splash_screen)
 
         //region ======================================== Animation =========================================
 
@@ -101,20 +101,5 @@ class SplashScreenActivity : AppCompatActivity() {
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 
         //endregion
-    }
-
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_splash_screen)
-            height in 1800..2499 -> setContentView(R.layout.activity_splash_screen)
-            height in 1100..1799 -> setContentView(R.layout.activity_splash_screen_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_splash_screen_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 }

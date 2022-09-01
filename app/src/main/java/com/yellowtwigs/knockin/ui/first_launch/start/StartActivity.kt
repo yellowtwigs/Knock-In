@@ -53,23 +53,19 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region ========================================== Val or Var ==========================================
 
     private var importContactsButton: MaterialButton? = null
-    private var importContactsLayout: RelativeLayout? = null
     private var importContactsLoading: ProgressBar? = null
     private var importContactsCheck: AppCompatImageView? = null
 
     private var activateNotificationsButton: MaterialButton? = null
-    private var activateNotificationsLayout: RelativeLayout? = null
     private var activateNotificationsLoading: ProgressBar? = null
     private var activateNotificationsCheck: AppCompatImageView? = null
 
     private var superpositionButton: MaterialButton? = null
-    private var superpositionLayout: RelativeLayout? = null
     private var superpositionLoading: ProgressBar? = null
     private var superpositionCheck: AppCompatImageView? = null
 
     private var permissionsButton: MaterialButton? = null
     private var permissionsLoading: ProgressBar? = null
-    private var permissionsLayout: RelativeLayout? = null
     private var permissionsCheck: AppCompatImageView? = null
 
     private var startActivityNext: MaterialButton? = null
@@ -98,7 +94,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView()
+        setContentView(R.layout.activity_start_activity)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
         val listApp = getAppOnPhone()
 
         sharedFunkySoundPreferences =
@@ -120,13 +117,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             findViewById(R.id.activate_notifications_button)
         superpositionButton = findViewById(R.id.superposition_button)
         permissionsButton = findViewById(R.id.permissions_button)
-
-        importContactsLayout = findViewById(R.id.start_activity_import_contacts_layout)
-        activateNotificationsLayout =
-            findViewById(R.id.start_activity_notifications_layout)
-        superpositionLayout =
-            findViewById(R.id.start_activity_superposition_layout)
-        permissionsLayout = findViewById(R.id.start_activity_permissions_layout)
 
         startActivityNext = findViewById(R.id.start_activity_next)
         startActivitySkip = findViewById(R.id.start_activity_skip)
@@ -189,9 +179,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         //endregion
 
         if (checkIfGoEdition()) {
-            activateNotificationsLayout?.visibility = View.GONE
-            superpositionLayout?.visibility = View.GONE
-
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))
                 .setMessage(getString(R.string.start_activity_go_edition_message))
@@ -461,21 +448,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private fun checkAndroid8(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-    }
-
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_start_activity)
-            height in 1800..2499 -> setContentView(R.layout.activity_start_activity)
-            height in 1100..1799 -> setContentView(R.layout.activity_start_activity_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_start_activity_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 
     private fun setupBillingClient() {

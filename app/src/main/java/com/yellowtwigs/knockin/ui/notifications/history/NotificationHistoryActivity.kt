@@ -19,7 +19,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -158,7 +157,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
 
-        setupSwitchesFromLeftDrawer()
         setupToolbar()
         setupDrawerLayout()
         setupBottomNavigationView()
@@ -243,74 +241,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
             it.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
-        }
-    }
-
-    private fun setupSwitchesFromLeftDrawer() {
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val callPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            callPopupSwitch?.isChecked = true
-        }
-
-        val themeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            themeSwitch?.isChecked = true
-        }
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            themeSwitch.isChecked = true
-        }
-
-        callPopupSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@NotificationHistoryActivity,
-                        NotificationHistoryActivity::class.java
-                    )
-                )
-            } else {
-                setTheme(R.style.AppTheme)
-//                notification_history_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@NotificationHistoryActivity,
-                        NotificationHistoryActivity::class.java
-                    )
-                )
-            }
         }
     }
 

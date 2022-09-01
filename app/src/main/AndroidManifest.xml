@@ -53,15 +53,7 @@
             android:name=".ui.edit_contact.EditContactActivity"
             android:exported="false" />
         <activity android:name=".ui.edit_contact.VipSettingsActivity" />
-        <activity
-            android:name=".ui.SplashScreenActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.SplashScreenActivity" />
         <activity android:name=".ui.first_launch.start.StartActivity" />
         <activity android:name=".FirstLaunchActivity" />
         <activity android:name=".ui.group.AddNewGroupActivity" />
@@ -89,8 +81,12 @@
         <activity
             android:name=".ui.contacts.MainActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

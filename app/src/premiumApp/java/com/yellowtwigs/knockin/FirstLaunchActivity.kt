@@ -16,18 +16,8 @@ class FirstLaunchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
 
-        when {
-            height > 2500 -> setContentView(R.layout.activity_first_launch_bigger)
-            height in 2000..2499 -> setContentView(R.layout.activity_first_launch)
-            height in 1100..1999 -> setContentView(R.layout.activity_first_launch_smaller_screen)
-            height < 1100 -> setContentView(R.layout.activity_first_launch_mini_screen)
-        }
-
+        setContentView(R.layout.activity_first_launch)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         //region ======================================= First Launch =======================================

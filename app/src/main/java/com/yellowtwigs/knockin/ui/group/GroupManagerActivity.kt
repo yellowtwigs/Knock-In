@@ -38,8 +38,8 @@ import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationHistoryActivity
+import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 /**
@@ -79,7 +79,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private var sectionAdapter: SectionGroupAdapter? = null
     private lateinit var multiSelectAdapter: MultiSelectAdapter
 
-    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
     private var recyclerLen: Int = 1
 
     var touchHelper: ItemTouchHelper? = null
@@ -144,7 +143,8 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         super.onCreate(savedInstanceState)
 
-        setContentView()
+        setContentView(R.layout.activity_group_manager)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         //region ========================================= Toolbar ==========================================
 
@@ -171,34 +171,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         group_manager_ToolbarHelp = findViewById(R.id.group_manager_toolbar_help)
 
         group_manager_MainLayout = findViewById(R.id.group_manager_main_layout)
-
-        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch!!.isChecked = true
-//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-        }
-
-        val main_SettingsLeftDrawerLayout =
-            findViewById<RelativeLayout>(R.id.settings_left_drawer_layout)
-
-        //region ================================ Call Popup from LeftDrawer ================================
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch!!.isChecked = true
-//            group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-        }
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch!!.isChecked = true
-        }
-
-        //endregion
 
         //endregion
 
@@ -316,45 +288,11 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================= Listeners ==========================================
 
-        settings_CallPopupSwitch!!.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-
-        settings_left_drawer_ThemeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(Intent(this@GroupManagerActivity, GroupManagerActivity::class.java))
-            } else {
-                setTheme(R.style.AppTheme)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(Intent(this@GroupManagerActivity, GroupManagerActivity::class.java))
-            }
-        }
-
         group_manager_OpenDrawer.setOnClickListener {
-            group_manager_DrawerLayout!!.openDrawer(GravityCompat.START)
+            group_manager_DrawerLayout?.openDrawer(GravityCompat.START)
         }
 
-        group_manager_ToolbarHelp!!.setOnClickListener {
+        group_manager_ToolbarHelp?.setOnClickListener {
             if (Resources.getSystem().configuration.locale.language == "fr") {
                 val browserIntent = Intent(
                     Intent.ACTION_VIEW,
@@ -436,21 +374,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     }
 
     //region ========================================= Functions ============================================
-
-    private fun setContentView() {
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val height = size.y
-
-        when {
-            height > 2500 -> setContentView(R.layout.activity_group_manager)
-            height in 1800..2499 -> setContentView(R.layout.activity_group_manager)
-            height in 1100..1799 -> setContentView(R.layout.activity_group_manager_smaller_screen)
-            height < 1099 -> setContentView(R.layout.activity_group_manager_mini_screen)
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-    }
 
     fun recyclerMultiSelectItemClick(position: Int) {
         if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
