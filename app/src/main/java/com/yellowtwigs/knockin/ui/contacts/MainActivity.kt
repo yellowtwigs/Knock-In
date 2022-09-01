@@ -322,8 +322,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val menu = navigationView.menu
 
-        val navItem = menu.findItem(R.id.nav_home)
-        navItem.isChecked = true
+        menu.findItem(R.id.nav_home).isChecked = true
 
         val navSyncContact = menu.findItem(R.id.nav_sync_contact)
         navSyncContact.isVisible = true
@@ -335,7 +334,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             mainDrawerLayout?.closeDrawers()
             when (menuItem.itemId) {
                 R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                R.id.nav_notif_config -> startActivity(
+                R.id.nav_notifications -> startActivity(
                     Intent(
                         this@MainActivity,
                         ManageNotificationActivity::class.java

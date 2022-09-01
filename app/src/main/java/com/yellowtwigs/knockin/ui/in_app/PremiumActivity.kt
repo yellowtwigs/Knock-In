@@ -19,7 +19,6 @@ import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkSwitchFromLeftDrawer
 import kotlinx.coroutines.*
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -94,11 +93,9 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 premiumActivityToolbarLayout.visibility = View.VISIBLE
                 premiumActivityToolbarFromMultiSelectLayout.visibility = View.GONE
             }
-            checkSwitchFromLeftDrawer(activity, sharedThemePreferences)
 
             val menu = navViewPremium.menu
-            val navItem = menu.findItem(R.id.nav_in_app)
-            navItem.isChecked = true
+            menu.findItem(R.id.nav_in_app).isChecked = true
 
             navViewPremium.setNavigationItemSelectedListener { menuItem ->
                 menuItem.isChecked = true
@@ -108,7 +105,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     R.id.nav_home -> {
                         startActivity(Intent(this@PremiumActivity, MainActivity::class.java))
                     }
-                    R.id.nav_notif_config -> startActivity(
+                    R.id.nav_notifications -> startActivity(
                         Intent(
                             this@PremiumActivity,
                             ManageNotificationActivity::class.java

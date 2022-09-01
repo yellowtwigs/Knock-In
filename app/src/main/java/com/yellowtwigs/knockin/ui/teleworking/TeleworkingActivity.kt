@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.widget.TimePicker
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
 import com.yellowtwigs.knockin.model.ContactManager
@@ -120,10 +121,11 @@ class TeleworkingActivity : AppCompatActivity() {
     private fun setupDrawerLayout() {
         binding.apply {
             navView.setNavigationItemSelectedListener { menuItem ->
+                navView.menu.findItem(R.id.navigation_teleworking).isChecked = true
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
                     R.id.nav_home -> startActivity(Intent(this@TeleworkingActivity, MainActivity::class.java))
-                    R.id.nav_notif_config -> startActivity(
+                    R.id.nav_notifications -> startActivity(
                         Intent(
                             this@TeleworkingActivity,
                             ManageNotificationActivity::class.java

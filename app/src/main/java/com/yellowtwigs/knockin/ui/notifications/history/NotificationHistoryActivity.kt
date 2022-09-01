@@ -260,7 +260,7 @@ class NotificationHistoryActivity : AppCompatActivity() {
                             MainActivity::class.java
                         )
                     )
-                    R.id.nav_notif_config -> startActivity(
+                    R.id.nav_notifications -> startActivity(
                         Intent(
                             this@NotificationHistoryActivity,
                             ManageNotificationActivity::class.java

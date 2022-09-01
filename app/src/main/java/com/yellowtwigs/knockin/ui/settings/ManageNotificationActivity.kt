@@ -89,17 +89,6 @@ class ManageNotificationActivity : AppCompatActivity() {
             settings_left_drawer_ThemeSwitch!!.isChecked = true
         }
 
-        //region ================================ Call Popup from LeftDrawer ================================
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch!!.isChecked = true
-        }
-
-        //endregion
-
         //endregion
 
         if (this.isNotificationServiceEnabled) {
@@ -123,7 +112,6 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //region ========================================== Toolbar =========================================
 
-        // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar = supportActionBar
@@ -138,7 +126,7 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view_manage_notif)
         val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_notif_config)
+        val navItem = menu.findItem(R.id.nav_notifications)
         navItem.isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -198,51 +186,6 @@ class ManageNotificationActivity : AppCompatActivity() {
         //endregion
 
         //region ======================================== Listeners =========================================
-
-        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-
-        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@ManageNotificationActivity,
-                        ManageNotificationActivity::class.java
-                    )
-                )
-            } else {
-
-                setTheme(R.style.AppTheme)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@ManageNotificationActivity,
-                        ManageNotificationActivity::class.java
-                    )
-                )
-            }
-        }
 
         switchPopupNotif?.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()

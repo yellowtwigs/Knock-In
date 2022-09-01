@@ -261,8 +261,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         val navigationView = findViewById<NavigationView>(R.id.manage_my_screen_nav_view)
         val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_manage_screen)
-        navItem.isChecked = true
+        menu.findItem(R.id.nav_manage_screen).isChecked = true
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -272,7 +271,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
                 }
-                R.id.nav_notif_config -> startActivity(
+                R.id.nav_notifications -> startActivity(
                     Intent(
                         this@ManageMyScreenActivity,
                         ManageNotificationActivity::class.java
