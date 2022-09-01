@@ -31,7 +31,6 @@ import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 
 /**
  * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de Knockin
@@ -140,12 +139,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                     Intent(
                         this@HelpActivity,
                         ManageNotificationActivity::class.java
-                    )
-                )
-                R.id.nav_settings -> startActivity(
-                    Intent(
-                        this@HelpActivity,
-                        SettingsActivity::class.java
                     )
                 )
                 R.id.nav_manage_screen -> startActivity(

@@ -144,57 +144,57 @@
                         android:id="@+id/activity_manage_my_screen_color_blue_indigo"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
+                        android:layout_margin="5dp"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:layout_margin="5dp" />
+                        android:focusable="true" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_green_lime"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
+                        android:layout_margin="5dp"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:layout_margin="5dp" />
+                        android:focusable="true" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_purple_grape"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
+                        android:layout_margin="5dp"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:layout_margin="5dp" />
+                        android:focusable="true" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_red"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
+                        android:layout_margin="5dp"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:layout_margin="5dp" />
+                        android:focusable="true" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_grey"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
+                        android:layout_margin="5dp"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:layout_margin="5dp" />
+                        android:focusable="true" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_orange"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
+                        android:layout_margin="5dp"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:layout_margin="5dp" />
+                        android:focusable="true" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/activity_manage_my_screen_color_cyan_teal"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
+                        android:layout_margin="5dp"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:layout_margin="5dp" />
+                        android:focusable="true" />
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -211,10 +211,6 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer">
-
-        <include layout="@layout/nav_bottom_drawer" />
-
-    </com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/menu_left_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

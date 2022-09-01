@@ -230,7 +230,5 @@
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
         app:menu="@menu/menu_left_drawer"
-        app:theme="@style/NavigationViewMiniScreenStyle">
-
-    </com.google.android.material.navigation.NavigationView>
+        app:theme="@style/NavigationViewMiniScreenStyle"/>
 </androidx.drawerlayout.widget.DrawerLayout>

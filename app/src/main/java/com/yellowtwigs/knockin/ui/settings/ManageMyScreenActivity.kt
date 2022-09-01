@@ -300,12 +300,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
                         TeleworkingActivity::class.java
                     )
                 )
-                R.id.nav_settings -> startActivity(
-                    Intent(
-                        this@ManageMyScreenActivity,
-                        SettingsActivity::class.java
-                    )
-                )
                 R.id.nav_in_app -> startActivity(
                     Intent(
                         this@ManageMyScreenActivity,

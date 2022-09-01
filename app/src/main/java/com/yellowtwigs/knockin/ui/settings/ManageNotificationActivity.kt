@@ -171,18 +171,6 @@ class ManageNotificationActivity : AppCompatActivity() {
                         TeleworkingActivity::class.java
                     )
                 )
-                R.id.nav_settings -> {
-
-                    if (settings_NotificationMessagesAlarmSound != null) {
-                        settings_NotificationMessagesAlarmSound!!.stop()
-                    }
-                    startActivity(
-                        Intent(
-                            this@ManageNotificationActivity,
-                            SettingsActivity::class.java
-                        )
-                    )
-                }
                 R.id.nav_in_app -> {
 
                     if (settings_NotificationMessagesAlarmSound != null) {

@@ -34,7 +34,6 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectAdapter
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
@@ -240,12 +239,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     Intent(
                         this@GroupManagerActivity,
                         ManageMyScreenActivity::class.java
-                    )
-                )
-                R.id.nav_settings -> startActivity(
-                    Intent(
-                        this@GroupManagerActivity,
-                        SettingsActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(

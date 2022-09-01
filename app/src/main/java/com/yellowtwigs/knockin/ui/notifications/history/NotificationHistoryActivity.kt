@@ -37,7 +37,6 @@ import com.yellowtwigs.knockin.model.data.NotificationDB
 import com.yellowtwigs.knockin.ui.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationListener
@@ -341,12 +340,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                         Intent(
                             this@NotificationHistoryActivity,
                             TeleworkingActivity::class.java
-                        )
-                    )
-                    R.id.nav_settings -> startActivity(
-                        Intent(
-                            this@NotificationHistoryActivity,
-                            SettingsActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> startActivity(

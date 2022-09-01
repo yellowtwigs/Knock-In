@@ -15,7 +15,6 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.settings.SettingsActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
@@ -128,9 +127,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 ManageMyScreenActivity::class.java
                             )
                         )
-                    }
-                    R.id.nav_settings -> {
-                        startActivity(Intent(this@PremiumActivity, SettingsActivity::class.java))
                     }
                     R.id.nav_help -> {
                         startActivity(Intent(this@PremiumActivity, HelpActivity::class.java))
