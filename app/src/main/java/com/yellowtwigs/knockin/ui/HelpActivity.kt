@@ -25,15 +25,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 
-/**
- * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de Knockin
- * @author Kenzy Suon
- */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HelpActivity : AppCompatActivity(), SensorEventListener {
 
@@ -180,7 +176,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                 val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
                 edit.putBoolean("darkTheme", false)
                 edit.apply()
-                startActivity(Intent(this, GroupManagerActivity::class.java))
+                startActivity(Intent(this, GroupsListActivity::class.java))
             }
         }
 

@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Numero Tel</string>
     <string name="filter_mail">Email</string>
-    <string name="main_search_hint">Cerca nei contatti</string>
+    <string name="search_hint">Ricerca</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="sort_by">Filtra per:</string>
     <string name="sort_by_first_name">Nome</string>
@@ -272,7 +272,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat non e\’ installato</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Ricerca</string>
     <string name="notification_history_delete_notifications">Rimuovi una o piu\’ notifiche </string>
     <string name="notification_history_delete_notifications_confirmation">Sei sicuro ?</string>
     <string name="notification_history_alert_dialog_text">Promemoria: puoi anche selezionare una notifica con un lungo tocco ed eliminarla utilizzando il simbolo in alto a destra</string>

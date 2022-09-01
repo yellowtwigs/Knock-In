@@ -1,56 +1,6 @@
 package com.yellowtwigs.knockin.ui.edit_contact
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.media.ExifInterface
-import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.provider.ContactsContract
-import android.provider.MediaStore
-import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Base64
-import android.util.Log
-import android.view.*
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
-import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
-import com.yellowtwigs.knockin.model.*
-import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 /**
  * La Classe qui permet d'éditer un contact choisi

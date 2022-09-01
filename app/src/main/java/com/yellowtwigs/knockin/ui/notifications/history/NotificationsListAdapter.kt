@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemNotificationBinding
+import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -50,19 +51,9 @@ class NotificationsListAdapter(private val context: Context) :
                 notificationImage.setImageDrawable(icon)
 
                 notification.apply {
-                    if (description.length > 151) {
-                        notificationContent.text =
-                            description.substring(0, 150) + ".."
-                    } else {
-                        notificationContent.text = description
-                    }
-
-                    if (contactName.length > 25) {
-                        notificationSenderName.text =
-                            contactName.substring(0, 24) + ".."
-                    } else {
-                        notificationSenderName.text = contactName
-                    }
+                    notificationContent.text = description
+                    app.text = convertPackageToString(platform, context)
+                    notificationSenderName.text = contactName
                     notificationDate.text = text
 
                     val click = View.OnClickListener {

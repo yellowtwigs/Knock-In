@@ -32,8 +32,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
+import com.yellowtwigs.knockin.databinding.ActivityCockpitBinding
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
@@ -42,10 +42,6 @@ import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 
-/**
- * La Classe qui permet d'afficher la liste des appels reçu
- * @author Kenzy Suon & Ryan Granet
- */
 class CockpitActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
@@ -54,9 +50,6 @@ class CockpitActivity : AppCompatActivity() {
 
     private var numberForPermission = ""
 
-    private var cockpit_DrawerLayout: DrawerLayout? = null
-
-    private var bottomNavigationView: BottomNavigationView? = null
     private var cockpit_IncomingCallButton: FloatingActionButton? = null
     private var cockpit_SendMessage: ImageView? = null
 
@@ -67,7 +60,6 @@ class CockpitActivity : AppCompatActivity() {
     private var cockpit_PhoneNumberEditText: AppCompatEditText? = null
     private var cockpit_ButtonClose: ImageView? = null
 
-    // Keyboard Pad
     private var cockpit_CallKeyboard_1: RelativeLayout? = null
     private var cockpit_CallKeyboard_2: RelativeLayout? = null
     private var cockpit_CallKeyboard_3: RelativeLayout? = null
@@ -81,7 +73,6 @@ class CockpitActivity : AppCompatActivity() {
     private var cockpit_CallKeyboard_0: RelativeLayout? = null
     private var cockpit_CallKeyboard_Sharp: RelativeLayout? = null
 
-    //social network
     private var link_socials_networks_Facebook: AppCompatImageView? = null
     private var link_socials_networks_Messenger: AppCompatImageView? = null
     private var link_socials_networks_Instagram: AppCompatImageView? = null
@@ -98,42 +89,9 @@ class CockpitActivity : AppCompatActivity() {
     private var cockpit_CallBackSpace: ImageView? = null
     private var cockpit_ButtonAddContact: ImageView? = null
 
-    private val mOnNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_contacts -> {
-
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_groups -> {
-                    startActivity(
-                        Intent(
-                            this@CockpitActivity,
-                            GroupManagerActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_teleworking -> {
-                    startActivity(
-                        Intent(
-                            this@CockpitActivity,
-                            TeleworkingActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_notifcations -> {
-
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_cockpit -> {
-                }
-            }
-            false
-        }
-
     //endregion
+
+    private lateinit var binding: ActivityCockpitBinding
 
     @SuppressLint("ShowToast", "Recycle", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,8 +108,11 @@ class CockpitActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_cockpit)
+        binding = ActivityCockpitBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         hideKeyboard()
+
         val listApp = getAppOnPhone()
 
         //region ========================================== Toolbar =========================================
@@ -204,29 +165,7 @@ class CockpitActivity : AppCompatActivity() {
         cockpit_CallBackSpace = findViewById(R.id.cockpit_call_back_space)
         cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
 
-        val settings_left_drawer_ThemeSwitch =
-            findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
-
         //endregion
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch?.isChecked = true
-//            group_manager_MainLayout?.setBackgroundResource(R.drawable.dark_background)
-        }
-
-        //region ================================ Call Popup from LeftDrawer ================================
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch?.isChecked = true
-        }
-
-        //endregion
-
-        bottomNavigationView?.menu?.getItem(3)?.isChecked = true
-        bottomNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         if (cockpit_PhoneNumberEditText?.text?.isEmpty() == true) {
             cockpit_EditTextLayout?.visibility = View.GONE
@@ -234,58 +173,6 @@ class CockpitActivity : AppCompatActivity() {
             cockpit_EditTextLayout?.visibility = View.VISIBLE
         }
 
-        //region ======================================= DrawerLayout =======================================
-
-        cockpit_DrawerLayout = findViewById(R.id.cockpit_drawer_layout)
-        val navigationView = findViewById<NavigationView>(R.id.cockpit_nav_view)
-        val menu = navigationView.menu
-        val navItem = menu.findItem(R.id.nav_home)
-        navItem.isChecked = true
-
-        navigationView?.menu?.getItem(0)?.isChecked = true
-
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            cockpit_DrawerLayout?.closeDrawers()
-
-            when (menuItem.itemId) {
-                R.id.nav_notifications -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        NotificationsSettingsActivity::class.java
-                    )
-                )
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        TeleworkingActivity::class.java
-                    )
-                )
-                R.id.nav_in_app -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        PremiumActivity::class.java
-                    )
-                )
-                R.id.nav_manage_screen -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        ManageMyScreenActivity::class.java
-                    )
-                )
-                R.id.nav_help -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        HelpActivity::class.java
-                    )
-                )
-            }
-
-            cockpit_DrawerLayout?.closeDrawer(GravityCompat.START)
-            true
-        }
-
-        //endregion
 
         //region ========================================== Listener ========================================
 
@@ -307,40 +194,6 @@ class CockpitActivity : AppCompatActivity() {
                     Uri.parse("https://www.yellowtwigs.com/help-cockpit")
                 )
                 startActivity(browserIntent)
-            }
-        }
-
-        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-
-        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(Intent(this@CockpitActivity, CockpitActivity::class.java))
-            } else {
-                setTheme(R.style.AppTheme)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(Intent(this@CockpitActivity, CockpitActivity::class.java))
             }
         }
 
@@ -512,12 +365,12 @@ class CockpitActivity : AppCompatActivity() {
 
         cockpit_ButtonAddContact?.setOnClickListener {
             if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
-                startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        AddNewContactActivity::class.java
-                    ).putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString())
-                )
+//                startActivity(
+//                    Intent(
+//                        this@CockpitActivity,
+//                        AddNewContactActivity::class.java
+//                    ).putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString())
+//                )
             } else {
                 Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
                     .show()
@@ -627,6 +480,113 @@ class CockpitActivity : AppCompatActivity() {
 
         //endregion
     }
+
+    //region =========================================== TOOLBAR ============================================
+
+    private fun setupToolbar() {
+
+    }
+
+    //endregion
+
+    //region ========================================= DRAWER LAYOUT ========================================
+
+    private fun setupDrawerLayout() {
+        binding
+        cockpit_DrawerLayout = findViewById(R.id.cockpit_drawer_layout)
+        val navigationView = findViewById<NavigationView>(R.id.cockpit_nav_view)
+        val menu = navigationView.menu
+        val navItem = menu.findItem(R.id.nav_home)
+        navItem.isChecked = true
+
+        navigationView?.menu?.getItem(0)?.isChecked = true
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            cockpit_DrawerLayout?.closeDrawers()
+
+            when (menuItem.itemId) {
+                R.id.nav_notifications -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        NotificationsSettingsActivity::class.java
+                    )
+                )
+                R.id.navigation_teleworking -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        TeleworkingActivity::class.java
+                    )
+                )
+                R.id.nav_in_app -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        PremiumActivity::class.java
+                    )
+                )
+                R.id.nav_manage_screen -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        ManageMyScreenActivity::class.java
+                    )
+                )
+                R.id.nav_help -> startActivity(
+                    Intent(
+                        this@CockpitActivity,
+                        HelpActivity::class.java
+                    )
+                )
+            }
+
+            cockpit_DrawerLayout?.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
+    //endregion
+
+    //region =========================================== SETUP UI ===========================================
+
+    private fun setupBottomNavigationView() {
+
+
+        bottomNavigationView?.menu?.getItem(3)?.isChecked = true
+        bottomNavigationView?.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_contacts -> {
+
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_groups -> {
+                    startActivity(
+                        Intent(
+                            this@CockpitActivity,
+                            GroupsListActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_teleworking -> {
+                    startActivity(
+                        Intent(
+                            this@CockpitActivity,
+                            TeleworkingActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_notifcations -> {
+
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_cockpit -> {
+                }
+            }
+            false
+        })
+    }
+
+    //endregion
 
     //region ========================================== Functions ===========================================
 

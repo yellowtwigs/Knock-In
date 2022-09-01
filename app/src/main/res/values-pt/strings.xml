@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Número de telefone</string>
     <string name="filter_mail"> Email</string>
-    <string name="main_search_hint">Pesquise seus contatos</string>
+    <string name="search_hint">Procurar</string>
     <string name="main_change_format_phone_book">Ajuda</string>
     <string name="sort_by">Filtrado por:</string>
     <string name="sort_by_first_name">Primeiro nome</string>
@@ -272,7 +272,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat não está instalado</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Procurar</string>
     <string name="notification_history_delete_notifications">Delete uma ou mais notificações</string>
     <string name="notification_history_delete_notifications_confirmation">Você tem certeza ?</string>
     <string name="notification_history_alert_dialog_text">Lembrete: você também pode selecionar uma notificação com um toque longo e excluí-la usando o símbolo superior direito</string>

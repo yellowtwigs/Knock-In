@@ -24,11 +24,6 @@ import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
 import static com.yellowtwigs.knockin.ui.CircularImageView.ShadowGravity.*;
 
-/**
- * La Classe qui permet d'arrondir les images
- *
- * @author Florian Striebel, Kenzy Suon, Ryan Granet
- */
 public class CircularImageView extends AppCompatImageView {
 
     // Default Values

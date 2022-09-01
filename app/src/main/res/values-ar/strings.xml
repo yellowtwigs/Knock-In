@@ -52,7 +52,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">رقم الهاتف</string>
     <string name="filter_mail">البريد الإلكتروني</string>
-    <string name="main_search_hint">بحث</string>
+    <string name="search_hint">بحث</string>
     <string name="main_change_format_phone_book">مساعدة</string>
     <string name="sort_by">الترتيب حسب :</string>
     <string name="sort_by_first_name">الإسم الشخصي</string>

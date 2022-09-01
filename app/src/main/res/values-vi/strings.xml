@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Số điện thoại</string>
     <string name="filter_mail">Email</string>
-    <string name="main_search_hint">Tìm kiếm liên hệ của bạn</string>
+    <string name="search_hint">Tìm kiếm</string>
     <string name="main_change_format_phone_book">Trợ giúp</string>
     <string name="sort_by">Lọc theo:</string>
     <string name="sort_by_first_name">Tên</string>
@@ -273,7 +273,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat chưa được cài đặt</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Tìm kiếm</string>
     <string name="notification_history_delete_notifications">Xóa một hoặc nhiều thông báo</string>
     <string name="notification_history_delete_notifications_confirmation">Bạn có chắc không?</string>
     <string name="notification_history_alert_dialog_text">Lời nhắc: bạn cũng có thể chọn thông báo bằng một lần nhấn dài và xóa thông báo đó bằng biểu tượng trên cùng bên phải</string>

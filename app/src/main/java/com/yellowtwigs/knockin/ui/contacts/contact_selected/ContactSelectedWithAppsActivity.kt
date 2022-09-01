@@ -15,7 +15,6 @@ import com.yellowtwigs.knockin.databinding.ActivityContactSelectedWithAppsBindin
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.Converter
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 
 class ContactSelectedWithAppsActivity : AppCompatActivity() {
@@ -24,8 +23,6 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        checkThemePreferences(this)
 
         val binding = ActivityContactSelectedWithAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)

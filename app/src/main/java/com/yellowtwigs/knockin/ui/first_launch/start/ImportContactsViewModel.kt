@@ -12,7 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.model.database.data.LinkContactGroup
+import com.yellowtwigs.knockin.repositories.groups.create.CreateGroupRepository
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ImportContactsViewModel @Inject constructor(
     private val createContactUseCase: CreateContactUseCase,
+    private val createGroupRepository: CreateGroupRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -34,8 +35,8 @@ class ImportContactsViewModel @Inject constructor(
     suspend fun syncAllContactsInDatabase(contentResolver: ContentResolver) {
         val structuredNameSync = getStructuredNameSync(contentResolver)
         val contactDetails = getContactDetailsSync(contentResolver)
-
         val contactGroup = getContactGroupSync(contentResolver)
+
         createListContactsSync(structuredNameSync, contactDetails.toList(), contactGroup)
     }
 
@@ -296,20 +297,13 @@ class ImportContactsViewModel @Inject constructor(
         contactGroup: List<Triple<Int, String?, String?>>
     ) {
         viewModelScope.launch {
-            var linksGroup: Pair<LinkContactGroup, GroupDB>
-            val listLinkAndGroup = arrayListOf<Pair<LinkContactGroup, GroupDB>>()
-            var lastSyncId = ""
-            var lastSync = ""
-
-            var modifiedContact = 0
+            val contactsInGroup = arrayListOf<String>()
+            val groupsName = arrayListOf<String>()
             phoneStructName?.forEachIndexed { _, fullName ->
-                val set = mutableSetOf<String>()
-
                 contactDetails.forEach { details ->
                     val id = details[1].toString().toInt()
 
                     if (!ids.contains(id)) {
-                        val contactGroups = getGroupsAndLinks(id, contactGroup)
                         if (fullName.first == details[1]) {
                             ids.add(id)
                             val listOfApps = arrayListOf<String>()
@@ -366,18 +360,6 @@ class ImportContactsViewModel @Inject constructor(
                             } else {
                             }
 
-                            if (fullName.second.first.contains("An")) {
-                                Log.i(
-                                    "listOfMails",
-                                    "details[4].toString() : ${details[4].toString()}"
-                                )
-                                Log.i("listOfMails", "fullName.second.first : ${fullName.second.first}")
-                                Log.i("listOfMails", "listOfMails : ${listOfMails}")
-                                Log.i("listOfMails", "listOfMails : ${listOfMails.size}")
-                                Log.i("listOfMails", "listOfMails : ${listOfMails.isEmpty()}")
-                                Log.i("listOfMails", "listOfApps : ${listOfApps}")
-                            }
-
                             createContactUseCase.invoke(
                                 ContactDB(
                                     0,
@@ -401,15 +383,6 @@ class ImportContactsViewModel @Inject constructor(
                                 )
                             )
 
-                            if (fullName.second.first.contains("An")) {
-                                Log.i(
-                                    "listOfMails",
-                                    "details[4].toString() : ${details[4].toString()}"
-                                )
-                                Log.i("listOfMails", "listOfMails : ${listOfMails}")
-                                Log.i("listOfMails", "listOfMails : ${listOfMails.size}")
-                                Log.i("listOfMails", "listOfMails : ${listOfMails.isEmpty()}")
-                            }
 
 //                            if (fullName.second.second == "") {
 //                                val contacts = ContactDB(
@@ -533,6 +506,44 @@ class ImportContactsViewModel @Inject constructor(
                         }
                     }
                 }
+
+
+            }
+            // Restaurés depuis l'appareil Huawei - BLN-L21
+            // Favorites
+
+            var groupIsDone = false
+
+            contactGroup.forEachIndexed { index, triple ->
+
+                // Index : 1
+                // Importés le 28/06/2022
+
+                if (!groupsName.contains(triple.third!!)) {
+                    // groupsName add Importés le 28/06/2022
+                    groupsName.add(triple.third!!)
+                }
+                // contactsInGroup add 402
+                contactsInGroup.add(triple.first.toString())
+
+                if (index + 1 < contactGroup.size) {
+                    // Importés le 28/06/2022 != Coworkers
+                    groupIsDone = contactGroup[index + 1].third!! != triple.third!!
+                }
+
+                if (groupIsDone) {
+                    createGroupRepository.insertGroup(
+                        GroupDB(
+                            0,
+                            triple.third!!,
+                            "",
+                            -500138,
+                            contactsInGroup,
+                            1
+                        )
+                    )
+                    contactsInGroup.clear()
+                }
             }
         }
     }
@@ -570,6 +581,7 @@ class ImportContactsViewModel @Inject constructor(
             }
         }
         phoneContact?.close()
+
         return allGroupMembers
     }
 
@@ -601,21 +613,6 @@ class ImportContactsViewModel @Inject constructor(
         }
         phoneContact?.close()
         return groupMembers
-    }
-
-    private fun getGroupsAndLinks(
-        id: Int,
-        contactGroup: List<Triple<Int, String?, String?>>
-    ): List<GroupDB> {
-        val contactGroups = arrayListOf<GroupDB>()
-        var linkAndGroup: GroupDB
-        contactGroup.forEach {
-            if (it.first == id) {
-                linkAndGroup = GroupDB(null, it.third!!, "", -500138)
-                contactGroups.add(linkAndGroup)
-            }
-        }
-        return contactGroups
     }
 
     //endregion

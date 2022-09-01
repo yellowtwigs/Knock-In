@@ -19,7 +19,6 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.model.database.data.LinkContactGroup
 import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 
 /**

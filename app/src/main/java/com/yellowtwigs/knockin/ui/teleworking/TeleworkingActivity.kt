@@ -20,7 +20,6 @@ import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import java.util.*
 
 class TeleworkingActivity : AppCompatActivity() {
@@ -31,7 +30,7 @@ class TeleworkingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkThemePreferences(this)
+
         binding = ActivityTeleworkingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

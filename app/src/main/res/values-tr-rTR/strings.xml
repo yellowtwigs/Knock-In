@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Telefon Numarası</string>
     <string name="filter_mail">Eposta</string>
-    <string name="main_search_hint">Kişilerinizi arayın</string>
+    <string name="search_hint">Ara</string>
     <string name="main_change_format_phone_book">Yardım</string>
     <string name="sort_by">Filtrele</string>
     <string name="sort_by_first_name">İsim</string>
@@ -272,7 +272,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat kurulu değil</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Ara</string>
     <string name="notification_history_delete_notifications">Bir veya daha fazla bildirimi sil</string>
     <string name="notification_history_delete_notifications_confirmation">Emin misiniz?</string>
     <string name="notification_history_alert_dialog_text">Hatırlatma: Ayrıca uzun bir dokunuşla bir bildirim seçebilir ve sağ üstteki simgeyi kullanarak silebilirsiniz</string>

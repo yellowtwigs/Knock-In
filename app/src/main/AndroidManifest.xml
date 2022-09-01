@@ -68,15 +68,15 @@
         <activity android:name=".ui.first_launch.first_vip_selection.FirstVipSelectionActivity" />
 
         <activity android:name=".FirstLaunchActivity" />
-        <activity android:name=".ui.group.create.AddNewGroupActivity" />
-        <activity android:name=".ui.group.DeleteContactFromGroupActivity" />
-        <activity android:name=".ui.group.create.AddContactToGroupActivity" />
+        <activity android:name=".ui.groups.create.AddNewGroupActivity" />
+        <activity android:name=".ui.groups.DeleteContactFromGroupActivity" />
+        <activity android:name=".ui.groups.create.AddContactToGroupActivity" />
         <activity android:name=".ui.contacts.MultiChannelActivity" />
         <activity
             android:name=".ui.notifications.NotificationAlarmActivity"
             android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
-        <activity android:name=".ui.group.list.GroupManagerActivity" />
+        <activity android:name=".ui.groups.list.GroupsListActivity" />
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
 
 
@@ -84,7 +84,7 @@
 
         <activity android:name=".ui.notifications.history.NotificationsHistoryActivity" />
 
-        <activity android:name=".ui.CockpitActivity" />
+        <activity android:name=".ui.cockpit.CockpitActivity" />
         <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
         <activity android:name=".ui.notifications.settings.NotificationsSettingsActivity" />

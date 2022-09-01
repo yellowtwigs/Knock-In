@@ -13,7 +13,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import java.net.URLEncoder
 
 
@@ -204,7 +204,7 @@ class MultiChannelActivity : AppCompatActivity() {
             startActivity(
                 Intent(
                     this@MultiChannelActivity,
-                    GroupManagerActivity::class.java
+                    GroupsListActivity::class.java
                 ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             )
             hideKeyboard()

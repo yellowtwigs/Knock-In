@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.content.Context
+import android.provider.SyncStateContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +32,7 @@ import kotlin.collections.ArrayList
 class ContactsListAdapter(private val cxt: Context, private val onClickedCallback: (Int) -> Unit) :
     ListAdapter<ContactsListViewState, ContactsListAdapter.ViewHolder>(
         ContactsListViewStateComparator()
-    ) {
+    ), SectionIndexer {
 
     private var modeMultiSelect = false
     private var isScrolling = false
@@ -222,5 +223,76 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                     oldItem.hasTelegram == newItem.hasTelegram &&
                     oldItem.hasSignal == newItem.hasSignal
         }
+    }
+
+    override fun getSectionForPosition(position: Int): Int {
+        return position
+    }
+
+    override fun getSections(): Array<Any> {
+        val alphabetFull: ArrayList<String> = ArrayList()
+
+        val mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+        for (element in mSections) {
+            alphabetFull.add(element.toString())
+        }
+        return alphabetFull.toArray(arrayOfNulls<String>(0))
+    }
+
+    override fun getPositionForSection(sectionIndex: Int): Int {
+        val sections = arrayListOf(
+            "",
+            "#",
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z"
+        )
+
+        var position = 0
+
+        currentList.forEachIndexed { index, contact ->
+            // sectionIndex = 7
+            // sections[sectionIndex] = G
+//            sections[sectionIndex]
+
+            val firstLetter = if (contact.firstName.isNotBlank() && contact.firstName != "") {
+                contact.firstName.first().uppercase()
+            } else {
+                contact.lastName.first().uppercase()
+            }
+
+            if (firstLetter == sections[sectionIndex]) {
+                position = index
+                return@forEachIndexed
+            }
+        }
+
+
+        return position
+//        return currentList.indexOf(currentList[sectionIndex])
     }
 }

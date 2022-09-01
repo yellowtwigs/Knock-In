@@ -60,6 +60,7 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
             }
 
             viewStateLiveData.value = sortedContactsList(sortedBy, filterBy, input, listOfContacts)
+//            viewStateLiveData.value = listOfContacts
         }
     }
 
@@ -124,7 +125,7 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
         filterBy: Int?,
         input: String?,
         listOfContacts: ArrayList<ContactsListViewState>
-    ):  List<ContactsListViewState> {
+    ): List<ContactsListViewState> {
         return if (input != null) {
             filterContactsList(filterBy, listOfContacts.filter { contact ->
                 val name = contact.firstName + " " + contact.lastName

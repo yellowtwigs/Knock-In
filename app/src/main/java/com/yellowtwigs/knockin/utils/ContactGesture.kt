@@ -249,6 +249,8 @@ object ContactGesture {
 
     //endregion
 
+    //region ============================================= MAIL =============================================
+
     fun goToOutlook(context: Context) {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("ms-outlook://emails"))
         try {
@@ -274,4 +276,57 @@ object ContactGesture {
         )
         context.startActivity(intent)
     }
+
+    fun goToGmail(context: Context) {
+        val appIntent = Intent(Intent.ACTION_VIEW)
+        appIntent.setClassName(
+            "com.google.android.gm",
+            "com.google.android.gm.ConversationListActivityGmail"
+        )
+        try {
+            context.startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://gmail.com/")
+                )
+            )
+        }
+    }
+
+    //endregion
+
+    //region ============================================ OTHERS ============================================
+
+//    private fun goToSkype(context: Context) {
+//        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))
+//        try {
+//            startActivity(appIntent)
+//        } catch (e: ActivityNotFoundException) {
+//            startActivity(
+//                Intent(
+//                    Intent.ACTION_VIEW,
+//                    Uri.parse("https://skype.com/")
+//                )
+//            )
+//        }
+//    }
+
+//    private fun goToDiscord(context: Context) {
+//        val appIntent = Intent(Intent.ACTION_VIEW)
+//        appIntent.setClassName("com.twitter.android", "com.twitter.android")
+//        try {
+//            startActivity(appIntent)
+//        } catch (e: ActivityNotFoundException) {
+//            startActivity(
+//                Intent(
+//                    Intent.ACTION_VIEW,
+//                    Uri.parse("https://twitter.com/")
+//                )
+//            )
+//        }
+//    }
+
+    //endregion
 }

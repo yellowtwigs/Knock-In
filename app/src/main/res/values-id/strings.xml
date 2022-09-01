@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Nomor telepon</string>
     <string name="filter_mail">Email</string>
-    <string name="main_search_hint">Cari kontak anda</string>
+    <string name="search_hint">Mencari</string>
     <string name="main_change_format_phone_book">Menbantu</string>
     <string name="sort_by">Filter oleh:</string>
     <string name="sort_by_first_name">Nama depan</string>
@@ -273,7 +273,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat tidak diinstal</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Mencari</string>
     <string name="notification_history_delete_notifications">Hapus satu atau lebih notifikasi</string>
     <string name="notification_history_delete_notifications_confirmation">Kau yakin?</string>
     <string name="notification_history_alert_dialog_text">Pengingat: Anda juga dapat memilih pemberitahuan dengan ketukan lama dan menghapusnya menggunakan simbol kanan atas</string>
@@ -360,7 +359,6 @@
     <!-- endregion -->
     <!-- region GroupManager -->
     <string name="group_manager_toolbar_title">Manajer Grup</string>
-    <string name="group_manager_search_hint">Mencari</string>
     <string name="menu_group_edit_group">Sunting grup</string>
     <string name="menu_group_add_contacts">Tambah kontak</string>
     <string name="menu_group_delete_contacts">Hapus kontak dari grup</string>
@@ -377,7 +375,6 @@
     <string name="delete_contact_from_group_alert_dialog_message">Anda akan menghapus %1s dari grup %2s</string>
     <!-- endregion-->
     <!-- region Add a contact to a Group -->
-    <string name="group_search_hint">Mencari</string>
     <string name="add_contact_to_group_toolbar_title">Pilih kontak untuk ditambahkan</string>
     <string name="add_contact_to_group_alert_dialog_title">Peringatan</string>
     <string name="add_contact_to_group_alert_dialog_message">Anda tidak dapat menambahkan 0 kontak ke grup</string>

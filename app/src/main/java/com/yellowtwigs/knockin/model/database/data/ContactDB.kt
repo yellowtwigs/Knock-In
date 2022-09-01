@@ -22,7 +22,6 @@ data class ContactDB(
     @ColumnInfo(name = "messenger_id") val messengerId: String,
     @ColumnInfo(name = "listOfMessagingApps") val listOfMessagingApps: List<String>,
 
-
     @ColumnInfo(name = "notification_tone") var notificationTone: String,
     @ColumnInfo(name = "notification_Sound") var notificationSound: Int = R.raw.sms_ring,
     @ColumnInfo(name = "is_custom_sound") var isCustomSound: Int,

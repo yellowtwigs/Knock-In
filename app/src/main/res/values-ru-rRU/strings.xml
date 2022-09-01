@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Номер телефона</string>
     <string name="filter_mail">Электронная почта</string>
-    <string name="main_search_hint">Искать мои контакты</string>
+    <string name="search_hint">Поиск</string>
     <string name="main_change_format_phone_book">Помощь</string>
     <string name="sort_by">Отсортировать по:</string>
     <string name="sort_by_first_name">Имя</string>
@@ -273,7 +273,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat не установлен</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Поиск</string>
     <string name="notification_history_delete_notifications">Удалить одно или несколько уведомлений</string>
     <string name="notification_history_delete_notifications_confirmation">Вы уверены?</string>
     <string name="notification_history_alert_dialog_text">Напоминание: вы также можете выбрать уведомление долгим нажатием и удалить его с помощью верхнего правого символа</string>

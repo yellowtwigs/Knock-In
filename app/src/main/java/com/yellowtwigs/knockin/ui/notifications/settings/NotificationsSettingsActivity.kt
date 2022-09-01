@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -27,7 +28,6 @@ import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkThemePreferences
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -51,7 +51,6 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         //region ======================================== Theme Dark ========================================
 
         sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        checkThemePreferences(this)
 
         //endregion
 
@@ -60,7 +59,6 @@ class NotificationsSettingsActivity : AppCompatActivity() {
 
         setupToolbar()
         setupDrawerLayout()
-        setupSettingsLeftDrawer()
         setupSwitchToPriority1To0()
         vipReselection()
         setupCheckBoxes()
@@ -142,57 +140,6 @@ class NotificationsSettingsActivity : AppCompatActivity() {
             true
         }
 
-    }
-
-    private fun setupSettingsLeftDrawer() {
-        val themeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val callPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            callPopupSwitch.isChecked = true
-        }
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            themeSwitch.isChecked = true
-        }
-
-        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            setTheme(R.style.AppThemeDark)
-            val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-            if (isChecked) {
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@NotificationsSettingsActivity,
-                        NotificationsSettingsActivity::class.java
-                    )
-                )
-            } else {
-                setTheme(R.style.AppTheme)
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@NotificationsSettingsActivity,
-                        NotificationsSettingsActivity::class.java
-                    )
-                )
-            }
-        }
-        callPopupSwitch.setOnCheckedChangeListener { _, isChecked ->
-            val sharedCallPopupPreferences =
-                getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-            val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-
-            if (isChecked) {
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -382,7 +329,8 @@ class NotificationsSettingsActivity : AppCompatActivity() {
             }
 
             editReminderHourLayout.setOnClickListener {
-                val timePickerDialog = TimePickerDialog(this@NotificationsSettingsActivity,
+                val timePickerDialog = TimePickerDialog(
+                    this@NotificationsSettingsActivity,
                     { _, h, m ->
                         val editor = sharedPreferences.edit()
                         editor.putInt("remindHour", h)
@@ -395,7 +343,8 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                     },
                     hour,
                     minute,
-                    true)
+                    true
+                )
                 timePickerDialog.show()
             }
         }

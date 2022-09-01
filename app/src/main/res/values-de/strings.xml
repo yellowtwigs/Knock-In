@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Telefonnummer</string>
     <string name="filter_mail">Email</string>
-    <string name="main_search_hint">Aufsuchen</string>
+    <string name="search_hint">Aufsuchen</string>
     <string name="main_change_format_phone_book">Hilfe</string>
     <string name="sort_by">Sortiere nach :</string>
     <string name="sort_by_first_name">Vorname</string>

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.group.list
+package com.yellowtwigs.knockin.ui.groups.list
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
-import com.yellowtwigs.knockin.model.database.data.GroupWithContact
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -29,15 +28,11 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionAdapter
 import com.yellowtwigs.knockin.ui.contacts.MultiChannelActivity
-import com.yellowtwigs.knockin.ui.group.create.AddNewGroupActivity
+import com.yellowtwigs.knockin.ui.groups.create.AddNewGroupActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
-/**
- * Activité qui nous affiche les groupes de contact sous forme de section
- * @author Florian Striebel
- */
 class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
 

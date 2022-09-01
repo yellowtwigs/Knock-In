@@ -39,6 +39,10 @@ class AppModule {
     @Singleton
     fun provideNotificationsDao(database: ContactsDatabase) = database.notificationsDao()
 
+    @Provides
+    @Singleton
+    fun provideGroupsDao(database: ContactsDatabase) = database.groupsDao()
+
     @Singleton
     @Provides
     fun provideNotificationsListenerUseCases(

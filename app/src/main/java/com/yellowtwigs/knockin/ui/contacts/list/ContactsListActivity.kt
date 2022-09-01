@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.ui.contacts.list
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
@@ -21,23 +22,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.model.service.NotificationsListenerService
+import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.ScrollBarAdapter
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
-import com.yellowtwigs.knockin.ui.notifications.history.NotificationsListFragment
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ContactsListActivity : AppCompatActivity() {
 
     private val contactsListViewModel: ContactsListViewModel by viewModels()
+
+    private lateinit var sortByPreferences : SharedPreferences
+    private lateinit var filterByPreferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +61,10 @@ class ContactsListActivity : AppCompatActivity() {
             toggleNotificationListenerService()
         }
 
+        sortByPreferences = getSharedPreferences("Sort_By_Preferences", Context.MODE_PRIVATE)
+
         setupToolbar(binding)
         setupRecyclerView(binding)
-
         setupBottomNavigationView(binding)
         setupDrawerLayout(binding)
     }
@@ -91,8 +93,6 @@ class ContactsListActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.contacts_toolbar_menu, menu)
 
-        val sortByPreferences = getSharedPreferences("Sort_By_Preferences", Context.MODE_PRIVATE)
-
         when (sortByPreferences.getInt("Sort_By_Preferences", R.id.sort_by_priority)) {
             R.id.sort_by_first_name -> {
                 menu.findItem(R.id.sort_by_first_name).isChecked = true
@@ -120,8 +120,6 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val sortByPreferences = getSharedPreferences("Sort_By_Preferences", Context.MODE_PRIVATE)
-
         when (item.itemId) {
             R.id.sort_by_first_name -> {
                 val editSortBy = sortByPreferences.edit()
@@ -200,9 +198,7 @@ class ContactsListActivity : AppCompatActivity() {
     private fun setupDrawerLayout(binding: ActivityContactsListBinding) {
         binding.drawerLayout.apply {
             val menu = binding.navView.menu
-            val navItem = menu.findItem(R.id.nav_home)
-            navItem.isChecked = true
-            menu.getItem(0).isChecked = true
+            menu.findItem(R.id.nav_home).isChecked = true
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 hideKeyboard()
@@ -212,9 +208,6 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_notifications -> startActivity(
                         Intent(this@ContactsListActivity, NotificationsSettingsActivity::class.java)
                     )
-//                    R.id.nav_messenger -> startActivity(
-//                        Intent(this@MainActivity, Mess::class.java)
-//                    )
                     R.id.navigation_teleworking -> startActivity(
                         Intent(this@ContactsListActivity, TeleworkingActivity::class.java)
                     )
@@ -272,12 +265,12 @@ class ContactsListActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_groups -> {
-//                    startActivity(
-//                        Intent(
-//                            this@ContactsListActivity,
-//                            GroupManagerActivity::class.java
-//                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-//                    )
+                    startActivity(
+                        Intent(
+                            this@ContactsListActivity,
+                            GroupsListActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_notifcations -> {
@@ -290,6 +283,12 @@ class ContactsListActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_cockpit -> {
+                    startActivity(
+                        Intent(
+                            this@ContactsListActivity,
+                            CockpitActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -298,6 +297,8 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     //endregion
+
+    //region ======================================== NOTIFICATIONS =========================================
 
     private fun isNotificationServiceEnabled(): Boolean {
         val pkgName = packageName
@@ -330,6 +331,8 @@ class ContactsListActivity : AppCompatActivity() {
             PackageManager.DONT_KILL_APP
         )
     }
+
+    //endregion
 
     private fun hideKeyboard() {
         val view = this.currentFocus

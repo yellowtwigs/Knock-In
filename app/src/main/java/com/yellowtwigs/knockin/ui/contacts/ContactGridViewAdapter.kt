@@ -3,15 +3,9 @@ package com.yellowtwigs.knockin.ui.contacts
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,11 +14,7 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu.MenuStateChangeListener
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
-import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
-import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 
 /**
  * La Classe qui permet de remplir la convertView avec les bon éléments

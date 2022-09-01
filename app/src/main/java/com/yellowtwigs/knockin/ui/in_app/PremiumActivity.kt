@@ -18,7 +18,6 @@ import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelec
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkSwitchFromLeftDrawer
 import kotlinx.coroutines.*
 
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -93,7 +92,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 premiumActivityToolbarLayout.visibility = View.VISIBLE
                 premiumActivityToolbarFromMultiSelectLayout.visibility = View.GONE
             }
-            checkSwitchFromLeftDrawer(activity, sharedThemePreferences)
 
             val menu = navViewPremium.menu
             val navItem = menu.findItem(R.id.nav_in_app)

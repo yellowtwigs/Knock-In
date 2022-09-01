@@ -13,16 +13,15 @@ import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
 import com.yellowtwigs.knockin.model.database.dao.VipSbnDao
 import com.yellowtwigs.knockin.model.database.data.*
 
-
 @Database(
-    entities = [ContactDB::class, NotificationDB::class, GroupDB::class, LinkContactGroup::class, VipSbnDB::class],
+    entities = [ContactDB::class, NotificationDB::class, GroupDB::class, VipSbnDB::class],
     version = 20
 )
 @TypeConverters(Converters::class)
 abstract class ContactsDatabase : RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
     abstract fun notificationsDao(): NotificationsDao
-    abstract fun GroupsDao(): GroupsDao
+    abstract fun groupsDao(): GroupsDao
     abstract fun VipSbnDao(): VipSbnDao
 
     companion object {

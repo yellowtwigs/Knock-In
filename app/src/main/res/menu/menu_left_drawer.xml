@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <group
         android:id="@+id/menu_top"
+        android:orderInCategory="@android:integer/config_longAnimTime"
         android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home"
-            android:title="@string/left_drawer_home" />
-        <item
-            android:id="@+id/nav_messenger"
-            android:icon="@drawable/ic_chat"
-            android:title="@string/left_drawer_chat"
-            android:visible="false" />
-        <item
-            android:id="@+id/nav_notifications"
-            android:icon="@drawable/ic_notification"
-            android:title="@string/left_drawer_notif_config" />
         <item
             android:id="@+id/navigation_teleworking"
             android:icon="@drawable/ic_teleworking"
             android:title="@string/teleworking" />
         <item
-            android:id="@+id/nav_manage_screen"
-            android:icon="@drawable/ic_grid"
-            android:title="@string/left_drawer_my_screen" />
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/left_drawer_home" />
         <item
             android:id="@+id/nav_in_app"
             android:icon="@drawable/ic_in_app"
             android:title="@string/left_drawer_in_app" />
+        <item
+            android:id="@+id/nav_messenger"
+            android:icon="@drawable/ic_chat"
+            android:title="@string/left_drawer_chat"
+            android:visible="false" />
+    </group>
+    <group
+        android:id="@+id/menu_bottom"
+        android:menuCategory="system"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notification"
+            android:title="@string/left_drawer_notif_config" />
+        <item
+            android:id="@+id/nav_manage_screen"
+            android:icon="@drawable/ic_grid"
+            android:title="@string/left_drawer_my_screen" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"

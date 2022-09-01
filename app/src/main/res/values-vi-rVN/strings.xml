@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">Số điện thoại</string>
     <string name="filter_mail">Email</string>
-    <string name="main_search_hint">Tìm kiếm liên hệ của bạn</string>
+    <string name="search_hint">Tìm kiếm</string>
     <string name="main_change_format_phone_book">Trợ giúp</string>
     <string name="sort_by">Lọc theo:</string>
     <string name="sort_by_first_name">Tên</string>

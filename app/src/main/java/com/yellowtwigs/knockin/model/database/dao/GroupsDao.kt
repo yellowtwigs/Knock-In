@@ -1,64 +1,59 @@
 package com.yellowtwigs.knockin.model.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.model.database.data.GroupWithContact
+import kotlinx.coroutines.flow.Flow
 
-/**
- * Interface réunissent les différentes requêtes d'interaction avec la table groups
- * @author Ryan Granet
- */
 @Dao
 interface GroupsDao {
-    /**
-     * Récupère touts les [groupes][GroupDB] trier par prénom A->Z
-     * @return List&lt[ContactWithAllInformation]&gt
-     */
-    //get touts les groupes de la database trié par nom de A à Z
+
+    //region ============================================= GET ==============================================
+
     @Query("SELECT * FROM groups_table ORDER BY name ASC")
-    fun getAllGroupsByNameAZ(): List<GroupWithContact>
+    fun getAllGroups(): Flow<List<GroupDB>>
 
     @Query("SELECT * FROM groups_table WHERE name = :groupName")
-    fun getGroupWithName(groupName: String): GroupDB
-
-    //get touts les groupes de la database trié par nom de Z à A
-    @Query("SELECT * FROM groups_table ORDER BY name DESC")
-    fun getAllGroupsByNameZA(): List<GroupDB>
-
-    //get un groupe grace à son id
-    @Query("SELECT * FROM groups_table WHERE id = :id")
-    fun getGroup(id: Int): GroupDB
+    fun getGroupWithName(groupName: String): Flow<GroupDB>
 
     @Query("SELECT * FROM groups_table WHERE id = :id")
-    fun getGroupWithContact(id: Int): GroupWithContact
+    fun getGroup(id: Int): Flow<GroupDB>
 
-    @Query("SELECT * FROM groups_table INNER JOIN link_contact_group_table ON groups_table.id = link_contact_group_table.id_group WHERE id_contact = :contactId")
-    fun getGroupForContact(contactId: Int): List<GroupDB>
+    //endregion
 
-    //get nb of member in a group
+    //region ============================================ INSERT ============================================
 
-    //insert le groupe dans la database
-    @Insert
-    fun insert(groups: GroupDB): Long?
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGroup(group: GroupDB)
 
-    //update le nom du groupe grâce à son id
+    //endregion
+
+    //region ============================================ UPDATE ============================================
+
+    @Update
+    suspend fun updateGroup(group: GroupDB)
+
+    @Query("UPDATE groups_table SET priority = :priority WHERE id = :id")
+    suspend fun updateGroupPriorityById(id: Int, priority: Int)
+
     @Query("UPDATE groups_table SET name = :name WHERE id = :id")
-    fun updateGroupNameById(id: Int, name: String)
+    suspend fun updateGroupNameById(id: Int, name: String)
 
-    //update la section d'un groupe grâce à son id
     @Query("UPDATE groups_table SET section_color = :section_color WHERE id = :id")
-    fun updateGroupSectionColorById(id: Int, section_color: Int)
+    suspend fun updateGroupSectionColorById(id: Int, section_color: Int)
 
-    //delete un groupe grace à son id
+    //endregion
+
+    //region ============================================ DELETE ============================================
+
+    @Delete
+    suspend fun deleteContact(group: GroupDB)
+
     @Query("DELETE FROM groups_table WHERE id = :id")
-    fun deleteGroupById(id: Int)
+    suspend fun deleteGroupById(id: Int)
 
-    //delete tout les groupes de la database
     @Query("DELETE FROM groups_table")
-    fun deleteAll()
+    suspend fun deleteAll()
 
-    @Query("SELECT MAX(id)  FROM groups_table")
-    fun getIdNeverUsed(): Int
+    //endregion
 }

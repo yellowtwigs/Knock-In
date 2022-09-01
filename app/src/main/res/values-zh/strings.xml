@@ -51,7 +51,7 @@
     <!-- region Main Activity !-->
     <string name="filter_sms">电话号码</string>
     <string name="filter_mail">电子邮箱</string>
-    <string name="main_search_hint">搜索联系人</string>
+    <string name="search_hint">搜索</string>
     <string name="main_change_format_phone_book">帮助</string>
     <string name="sort_by">筛选条件:</string>
     <string name="sort_by_first_name">名字</string>
@@ -271,8 +271,8 @@
     <string name="cockpit_toast_twitter_not_install">未安装Twitter</string>
     <string name="cockpit_toast_snapchat_not_install">未安装Snapchat</string>
     <!-- endregion -->
+
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">搜索</string>
     <string name="notification_history_delete_notifications">删除一个或多个通知</string>
     <string name="notification_history_delete_notifications_confirmation">您确定吗？</string>
     <string name="notification_history_alert_dialog_text">提醒：您还可以长按选择一个通知，然后使用右上角的bin符号将其删除</string>

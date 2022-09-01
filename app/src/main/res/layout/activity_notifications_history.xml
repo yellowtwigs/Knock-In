@@ -44,7 +44,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="?attr/backgroundColor"
-                android:hint="@string/main_search_hint"
+                android:hint="@string/search_hint"
                 android:inputType="textPersonName"
                 android:textColor="?attr/textColor"
                 android:textColorHint="?attr/textColor"
@@ -174,10 +174,6 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer">
-
-        <include layout="@layout/nav_bottom_drawer" />
-
-    </com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/menu_left_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

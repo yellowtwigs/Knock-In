@@ -32,7 +32,7 @@
         <!--                android:layout_toStartOf="@+id/main_toolbar_help"-->
         <!--                android:layout_toEndOf="@+id/main_toolbar_open_drawer"-->
         <!--                android:background="?attr/backgroundColor"-->
-        <!--                android:hint="@string/main_search_hint"-->
+        <!--                android:hint="@string/search_hint"-->
         <!--                android:inputType="textPersonName"-->
         <!--                android:textColor="?attr/textColor"-->
         <!--                android:textColorHint="?attr/textColor" />-->

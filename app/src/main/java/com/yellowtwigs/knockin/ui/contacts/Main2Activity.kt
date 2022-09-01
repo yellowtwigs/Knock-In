@@ -46,7 +46,7 @@
 //import com.yellowtwigs.knockin.model.database.ContactsDatabase
 //import com.yellowtwigs.knockin.model.DbWorkerThread
 //import com.yellowtwigs.knockin.model.data.*
-//import com.yellowtwigs.knockin.ui.CockpitActivity
+//import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 //import com.yellowtwigs.knockin.ui.HelpActivity
 //import com.yellowtwigs.knockin.ui.contacts.list.ContactRecyclerViewAdapter
 //import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity

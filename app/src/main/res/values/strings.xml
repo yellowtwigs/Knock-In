@@ -50,10 +50,11 @@
     <string name="settings_invite_friend_text">Invite your friends</string>
     <string name="invite_friend_text">Use Knock In for a new communication experience</string>
     <!-- endregion-->
+
     <!-- region Main Activity !-->
     <string name="filter_sms">Phone Number</string>
     <string name="filter_mail">Email</string>
-    <string name="main_search_hint">Search your contacts</string>
+    <string name="search_hint">Search</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="sort_by">Sort by:</string>
     <string name="sort_by_first_name">Firstname</string>
@@ -284,7 +285,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat is not installed</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Search</string>
     <string name="notification_history_delete_notifications">Delete one or more notifications</string>
     <string name="notification_history_delete_notifications_confirmation">Are you sure ?</string>
     <string name="notification_history_alert_dialog_text">Reminder: you can also select a notification with a long tap and delete it using the top right symbol</string>
@@ -372,7 +372,6 @@
     <!-- endregion -->
     <!-- region GroupManager -->
     <string name="group_manager_toolbar_title">Group Manager</string>
-    <string name="group_manager_search_hint">Search</string>
     <string name="menu_group_edit_group">Edit the group</string>
     <string name="menu_group_add_contacts">Add contacts</string>
     <string name="menu_group_delete_contacts">Remove contacts from the group</string>
@@ -389,7 +388,6 @@
     <string name="delete_contact_from_group_alert_dialog_message">You are about to remove %1s from the group %2s</string>
     <!-- endregion-->
     <!-- region Add a contact to a Group -->
-    <string name="group_search_hint">Search</string>
     <string name="add_contact_to_group_toolbar_title">Choose a contact to add</string>
     <string name="add_contact_to_group_alert_dialog_title">Warning</string>
     <string name="add_contact_to_group_alert_dialog_message">You cannot add 0 contact to a group</string>

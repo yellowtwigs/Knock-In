@@ -1,53 +1,32 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
-import android.Manifest
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.provider.Telephony
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.databinding.ActivityNotificationsHistoryBinding
-import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
-import com.yellowtwigs.knockin.model.database.ContactsDatabase
-import com.yellowtwigs.knockin.ui.CockpitActivity
+import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
-import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
-import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
-import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
-import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class NotificationsHistoryActivity : AppCompatActivity() {
@@ -100,7 +79,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
 
-        setupSwitchesFromLeftDrawer()
         setupToolbar()
         setupDrawerLayout()
         setupBottomNavigationView()
@@ -292,74 +270,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //region ======================================== DRAWER LAYOUT =========================================
 
-    private fun setupSwitchesFromLeftDrawer() {
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val callPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            callPopupSwitch?.isChecked = true
-        }
-
-        val themeSwitch = findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            themeSwitch?.isChecked = true
-        }
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            themeSwitch.isChecked = true
-        }
-
-        callPopupSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                notification_history_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@NotificationsHistoryActivity,
-                        NotificationsHistoryActivity::class.java
-                    )
-                )
-            } else {
-                setTheme(R.style.AppTheme)
-//                notification_history_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(
-                    Intent(
-                        this@NotificationsHistoryActivity,
-                        NotificationsHistoryActivity::class.java
-                    )
-                )
-            }
-        }
-    }
-
     private fun setupDrawerLayout() {
         binding.navView.apply {
             val navItem = menu.findItem(R.id.nav_manage_screen)
@@ -460,9 +370,10 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 this@NotificationsHistoryActivity
             ) { notifications ->
                 notificationsAdapter.submitList(notifications)
+                scrollToPosition(0)
+                (layoutManager as LinearLayoutManager).scrollToPosition(0)
             }
             layoutManager = LinearLayoutManager(this@NotificationsHistoryActivity)
-            (layoutManager as LinearLayoutManager).scrollToPosition(0)
             recycledViewPool.setMaxRecycledViews(0, 0)
             setItemViewCacheSize(50)
         }

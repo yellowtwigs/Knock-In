@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.repositories.contacts.list
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.yellowtwigs.knockin.model.database.dao.ContactsDao
