@@ -53,7 +53,7 @@ class TeleworkingActivity : AppCompatActivity() {
         }
 
         binding.vipContactsButton.setOnClickListener {
-            startActivity(Intent(this@TeleworkingActivity, MultiSelectActivity::class.java))
+            startActivity(Intent(this@TeleworkingActivity, MultiSelectActivity::class.java).putExtra("fromTeleworking", true))
         }
 
         binding.teleworkingModeSwitch.isChecked =

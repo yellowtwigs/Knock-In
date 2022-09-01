@@ -21,6 +21,7 @@ import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import kotlinx.coroutines.*
 
 /**
@@ -188,12 +189,21 @@ class MultiSelectActivity : AppCompatActivity() {
             .setBackground(getDrawable(R.color.backgroundColor))
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 setPriorityList()
-                startActivity(
-                    Intent(
-                        this@MultiSelectActivity, MainActivity::class.java
-                    ).putExtra("fromStartActivity", true)
-                )
-                finish()
+                if (intent.getBooleanExtra("fromTeleworking", false)) {
+                    startActivity(
+                        Intent(
+                            this@MultiSelectActivity, TeleworkingActivity::class.java
+                        )
+                    )
+                    finish()
+                } else {
+                    startActivity(
+                        Intent(
+                            this@MultiSelectActivity, MainActivity::class.java
+                        ).putExtra("fromStartActivity", true)
+                    )
+                    finish()
+                }
             }
             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
             }
