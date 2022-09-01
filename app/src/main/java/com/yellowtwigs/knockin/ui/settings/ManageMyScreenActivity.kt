@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
-import android.graphics.Point
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -110,6 +109,8 @@ class ManageMyScreenActivity : AppCompatActivity() {
             findViewById(R.id.activity_manage_my_screen_color_cyan_teal)
 
         //endregion
+
+        checkTheme(sharedThemePreferences)
 
         //region ===================================== SetImageResource =====================================
 
@@ -513,6 +514,19 @@ class ManageMyScreenActivity : AppCompatActivity() {
         //endregion
 
         // endregion
+    }
+
+    private fun checkTheme(sharedThemePreferences: SharedPreferences) {
+        val switchTheme = findViewById<SwitchCompat>(R.id.switch_theme)
+        switchTheme.isChecked = sharedThemePreferences.getBoolean("darkTheme", false)
+
+        switchTheme.setOnCheckedChangeListener { compoundButton, isChecked ->
+            val editTheme = sharedThemePreferences.edit()
+            editTheme.putBoolean("darkTheme", isChecked)
+            editTheme.apply()
+
+            refreshActivity()
+        }
     }
 
     //region ========================================== Functions ===========================================
