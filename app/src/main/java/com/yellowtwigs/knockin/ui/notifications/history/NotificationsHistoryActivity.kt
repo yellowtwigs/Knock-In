@@ -14,11 +14,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityNotificationsHistoryBinding
+import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
@@ -267,7 +269,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //endregion
 
-
     //region ======================================== DRAWER LAYOUT =========================================
 
     private fun setupDrawerLayout() {
@@ -320,7 +321,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //endregion
 
-
     //region =========================================== SETUP UI ===========================================
 
     private fun setupBottomNavigationView() {
@@ -370,12 +370,14 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 this@NotificationsHistoryActivity
             ) { notifications ->
                 notificationsAdapter.submitList(notifications)
-                scrollToPosition(0)
-                (layoutManager as LinearLayoutManager).scrollToPosition(0)
+//                scrollToPosition(0)
+//                (layoutManager as LinearLayoutManager).scrollToPosition(0)
             }
             layoutManager = LinearLayoutManager(this@NotificationsHistoryActivity)
             recycledViewPool.setMaxRecycledViews(0, 0)
-            setItemViewCacheSize(50)
+//            setItemViewCacheSize(50)
+            val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(notificationsAdapter))
+            itemTouchHelper.attachToRecyclerView(this)
         }
     }
 
@@ -503,6 +505,22 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 //    }
 //
 //    //endregion
+
+    fun deleteItem(notification: NotificationsListViewState) {
+        notificationsListViewModel.deleteNotification(
+            NotificationDB(
+                notification.id,
+                notification.title,
+                notification.contactName,
+                notification.description,
+                notification.platform,
+                notification.timestamp,
+                0,
+                notification.idContact,
+                notification.priority
+            )
+        )
+    }
 
     override fun onResume() {
         super.onResume()

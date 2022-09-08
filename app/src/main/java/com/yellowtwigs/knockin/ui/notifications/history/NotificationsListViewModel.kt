@@ -4,10 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.provider.Telephony
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
@@ -16,11 +13,12 @@ import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsListViewModel @Inject constructor(
-    repository: NotificationsRepository,
+    private val repository: NotificationsRepository,
     @ApplicationContext val context: Context
 ) : ViewModel() {
 
@@ -71,6 +69,7 @@ class NotificationsListViewModel @Inject constructor(
             }
         }
 
+        Log.i("allNotifications", "notifications : $notifications")
         viewStateLiveData.value = notifications
 //        viewStateLiveData.value = sortedContactsList(sortedBy, filterBy, input, notifications)
     }
@@ -211,6 +210,10 @@ class NotificationsListViewModel @Inject constructor(
 
     fun getAllNotifications(): LiveData<List<NotificationsListViewState>> {
         return viewStateLiveData
+    }
+
+    fun deleteNotification(notification: NotificationDB) = viewModelScope.launch {
+        repository.deleteNotification(notification)
     }
 
     fun setSearchTextChanged(text: String) {

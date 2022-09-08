@@ -235,7 +235,7 @@
     <string name="notification_manager_horaire">Select recall daily time: </string>
     <string name="notification_manager_prio_1">Hide priority 1 notifications</string>
     <string name="notification_alert_dialog_title">Selection of VIP contacts</string>
-    <string name="notification_alert_dialog_message">Do you want to choose your high-priority contacts ?</string>
+    <string name="notification_alert_dialog_message">Choose your high-priority contacts to receive VIP Messages</string>
     <string name="notification_vip_message_tone">VIP Notifications Tone</string>
     <string name="notification_vip_default_message_tone">Default Tone</string>
     <string name="notification_vip_message_choose_tone">Personal Ringtone</string>

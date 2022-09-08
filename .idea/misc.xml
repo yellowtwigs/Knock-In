@@ -44,7 +44,6 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_list.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_man.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_messenger.xml" value="0.1395" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_messenger_circle_menu.xml" value="0.194" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_messenger_disable.xml" value="0.352" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_messenger_pressed.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_more_vert_black_24dp.xml" value="0.1395" />
@@ -76,23 +75,15 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_whatsapp_disable.xml" value="0.2425" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/notification_popup_top_bar.xml" value="0.3245" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/recycler_section.xml" value="0.1955" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_button_background_blue.xml" value="0.194" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_button_background_red.xml" value="0.1955" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_button_color_red.xml" value="0.1955" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_button_pressed_red.xml" value="0.1955" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_form_layout.xml" value="0.194" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background.xml" value="0.1955" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_blue.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_discord.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_green.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_instagram.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_outlook.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_red.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_reddit.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_snapchat.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_telegram.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_tiktok.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_viber.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_xiaomi.xml" value="0.194" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_yellow.xml" value="0.194" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_google.xml" value="0.156" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_viber.xml" value="0.1695" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/rounded_notification_background_youtube.xml" value="0.194" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/section_textview.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_add_new_contact.xml" value="0.27239583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_add_new_group.xml" value="0.36614583333333334" />
@@ -166,6 +157,7 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/item_notification.xml" value="0.378125" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/item_notification_adapter.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/item_scroll_bar_layout.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/layout_notification_pop_up.xml" value="0.171225937183384" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/layout_product_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/list_contact_item_layout.xml" value="0.25" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/list_contact_item_layout_smaller.xml" value="0.36614583333333334" />

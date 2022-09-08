@@ -9,6 +9,7 @@ class NotificationsRepositoryImpl @Inject constructor(private val dao: Notificat
     NotificationsRepository {
 
     override fun getAllNotifications() = dao.getAllNotifications().asLiveData()
+    override fun getAllNotificationsList() = dao.getAllNotificationsList()
 
     override suspend fun insertNotification(notification: NotificationDB) {
         dao.insertNotification(notification)

@@ -6,6 +6,7 @@ import com.yellowtwigs.knockin.model.database.data.NotificationDB
 interface NotificationsRepository {
 
     fun getAllNotifications(): LiveData<List<NotificationDB>>
+    fun getAllNotificationsList(): List<NotificationDB>
 
     suspend fun insertNotification(notification: NotificationDB)
 

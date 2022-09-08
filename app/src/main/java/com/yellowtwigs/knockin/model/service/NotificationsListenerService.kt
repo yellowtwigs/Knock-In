@@ -81,88 +81,102 @@ class NotificationsListenerService : NotificationListenerService() {
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
 //            val app = convertPackageToString(sbp.appNotifier!!, this)
 
-            Log.i("getNotifications", "sbp.appNotifier : ${sbp.appNotifier?.toString()}")
+//            Log.i("notification_platform", "name : $name")
+//            Log.i("notification_platform", "message : $message")
+//            Log.i("notification_platform", "name != null : ${name != null}")
+//            Log.i("notification_platform", "message != null : ${message != null}")
 
-            if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
-                if (message.contains("call") || message.contains("Incoming") || message.contains("Incoming Call") ||
-                    message.contains("Appel entrant") || message.contains("appel entrant")
-                ) {
-                } else {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        notificationsListenerUseCases.apply {
-                            val contact = when {
-                                isPhoneNumber(name) -> {
-                                    getContactByPhoneNumber.invoke(name)
-                                }
-                                isValidEmail(name) -> {
-                                    getContactByMail.invoke(name)
-                                }
-                                else -> {
-                                    getContactByName.invoke(name)
-                                }
-                            }
+                if (name != "" && message != "" && name != "null" && message != "null") {
+                    if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
+                        if (message.contains("call") || message.contains("Incoming") || message.contains(
+                                "Incoming Call"
+                            ) ||
+                            message.contains("Appel entrant") || message.contains("appel entrant")
+                        ) {
+                        } else {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                notificationsListenerUseCases.apply {
+                                    val contact = when {
+                                        isPhoneNumber(name) -> {
+                                            getContactByPhoneNumber.invoke(name)
+                                        }
+                                        isValidEmail(name) -> {
+                                            getContactByMail.invoke(name)
+                                        }
+                                        else -> {
+                                            getContactByName.invoke(name)
+                                        }
+                                    }
 
-                            val notification = if (contact != null) {
-                                NotificationDB(
-                                    0,
-                                    sbp.tickerText.toString(),
-                                    sbp.statusBarNotificationInfo["android.title"].toString(),
-                                    sbp.statusBarNotificationInfo["android.text"].toString(),
-                                    sbp.appNotifier!!,
-                                    System.currentTimeMillis(),
-                                    0,
-                                    contact.id,
-                                    contact.priority
-                                )
-                            } else {
-                                NotificationDB(
-                                    0,
-                                    sbp.tickerText.toString(),
-                                    sbp.statusBarNotificationInfo["android.title"].toString(),
-                                    sbp.statusBarNotificationInfo["android.text"].toString(),
-                                    sbp.appNotifier!!,
-                                    System.currentTimeMillis(),
-                                    0,
-                                    0,
-                                    0
-                                )
-                            }
+//                                Log.i("notification_platform", "name : $name")
+//                                Log.i("notification_platform", "message : $message")
+//                                Log.i(
+//                                    "notification_platform",
+//                                    "sbp.appNotifier : ${sbp.appNotifier!!}"
+//                                )
+//                                Log.i("notification_platform", "contact : ${contact}")
+
+                                    val notification = if (contact != null) {
+                                        NotificationDB(
+                                            0,
+                                            sbp.tickerText.toString(),
+                                            sbp.statusBarNotificationInfo["android.title"].toString(),
+                                            sbp.statusBarNotificationInfo["android.text"].toString(),
+                                            sbp.appNotifier!!,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            contact.id,
+                                            contact.priority
+                                        )
+                                    } else {
+                                        NotificationDB(
+                                            0,
+                                            sbp.tickerText.toString(),
+                                            sbp.statusBarNotificationInfo["android.title"].toString(),
+                                            sbp.statusBarNotificationInfo["android.text"].toString(),
+                                            sbp.appNotifier!!,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            0,
+                                            0
+                                        )
+                                    }
 
 //                                    && notificationNotDouble(notification)
-                            if (sbp.appNotifier != "com.samsung.android.incallui") {
-                                contact?.let {
-                                    saveNotification.invoke(notification)
-                                }
-                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                    if (contact != null) {
-                                        displayNotificationWithContact(sbp, sbn, contact)
-                                    } else {
+                                    if (sbp.appNotifier != "com.samsung.android.incallui") {
+                                        saveNotification.invoke(notification)
+//                                        cancelWhatsappNotification(sbn)
+                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                                            if (contact != null) {
+                                                displayNotificationWithContact(sbp, sbn, contact)
+                                            } else {
 //                                        displayNotificationWithoutContact(sbp, sbn)
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
+                    } else {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            notificationsListenerUseCases.apply {
+                                saveNotification.invoke(
+                                    NotificationDB(
+                                        0,
+                                        sbp.tickerText.toString(),
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        sbp.statusBarNotificationInfo["android.text"].toString(),
+                                        sbp.appNotifier!!,
+                                        System.currentTimeMillis(),
+                                        0,
+                                        0,
+                                        0
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-                    notificationsListenerUseCases.apply {
-                        saveNotification.invoke(
-                            NotificationDB(
-                                0,
-                                sbp.tickerText.toString(),
-                                sbp.statusBarNotificationInfo["android.title"].toString(),
-                                sbp.statusBarNotificationInfo["android.text"].toString(),
-                                sbp.appNotifier!!,
-                                System.currentTimeMillis(),
-                                0,
-                                0,
-                                0
-                            )
-                        )
-                    }
-                }
-            }
         }
     }
 

@@ -22,6 +22,9 @@ interface NotificationsDao {
     @Query("SELECT * FROM notifications_table ORDER BY id DESC")
     fun getAllNotifications(): Flow<List<NotificationDB>>
 
+    @Query("SELECT * FROM notifications_table ORDER BY id DESC")
+    fun getAllNotificationsList(): List<NotificationDB>
+
     //endregion
 
     //region ============================================ INSERT ============================================

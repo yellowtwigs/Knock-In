@@ -26,6 +26,10 @@ object NotificationsGesture {
     private const val MESSAGES_PACKAGE = "com.chating.messages.chat.fun"
     private const val VIBER_PACKAGE = "com.viber.voip"
 
+    private const val YOUTUBE_PACKAGE = "com.google.android.youtube"
+    private const val GOOGLE_PACKAGE = "com.google.android.googlequicksearchbox"
+    private const val SCREEN_RECORDER = "com.huawei.screenrecorder"
+
     fun convertPackageToString(packageName: String, context: Context): String {
         when (packageName) {
             FACEBOOK_PACKAGE -> return "Facebook"
@@ -48,6 +52,9 @@ object NotificationsGesture {
             SNAPCHAT_PACKAGE -> return "Snapchat"
             REDDIT_PACKAGE -> return "Reddit"
             VIBER_PACKAGE -> return "Viber"
+            YOUTUBE_PACKAGE -> return "YouTube"
+            GOOGLE_PACKAGE -> return "Google"
+            SCREEN_RECORDER -> return "Screen Recorder"
             else -> return ""
         }
     }
@@ -74,6 +81,8 @@ object NotificationsGesture {
             SNAPCHAT_PACKAGE -> return R.drawable.rounded_notification_background_snapchat
             REDDIT_PACKAGE -> return R.drawable.rounded_notification_background_reddit
             VIBER_PACKAGE -> return R.drawable.rounded_notification_background_viber
+            YOUTUBE_PACKAGE -> return R.drawable.rounded_notification_background_youtube
+            GOOGLE_PACKAGE -> return R.drawable.rounded_notification_background_google
             else -> return R.drawable.rounded_notification_background_knock_in
         }
     }

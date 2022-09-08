@@ -1,11 +1,11 @@
-package com.yellowtwigs.knockin.ui.notifications
+package com.yellowtwigs.knockin.ui.notifications.history
 
+import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class SwipeToDeleteCallback(
-//    private val mAdapter: NotifPopupRecyclerViewAdapter?
-) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+class SwipeToDeleteCallback(private val adapter: NotificationsListAdapter?) :
+    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
     override fun onMove(
         recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
@@ -14,7 +14,6 @@ class SwipeToDeleteCallback(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
-//        mAdapter?.deleteItem(position)
+        adapter?.deleteItem(viewHolder.layoutPosition)
     }
 }

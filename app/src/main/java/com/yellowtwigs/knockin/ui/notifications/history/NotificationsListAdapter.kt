@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.ui.notifications.history
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,8 @@ import java.util.Date
 class NotificationsListAdapter(private val context: Context) :
     ListAdapter<NotificationsListViewState, NotificationsListAdapter.ViewHolder>(ContactComparator()) {
 
+    private lateinit var notification: NotificationsListViewState
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,6 +33,7 @@ class NotificationsListAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        notification = getItem(position)
         holder.onBind(getItem(position), context)
     }
 
@@ -54,12 +58,12 @@ class NotificationsListAdapter(private val context: Context) :
 
                 notification.apply {
                     notificationContent.text = description
-                    mainBackground.background =
-                        ResourcesCompat.getDrawable(
-                            context.resources,
-                            convertPackageToBackgroundPackage(platform, context),
-                            null
-                        )
+//                    mainBackground.background =
+//                        ResourcesCompat.getDrawable(
+//                            context.resources,
+//                            convertPackageToBackgroundPackage(platform, context),
+//                            null
+//                        )
                     app.text = convertPackageToString(platform, context)
                     notificationSenderName.text = contactName
                     notificationDate.text = text
@@ -116,8 +120,8 @@ class NotificationsListAdapter(private val context: Context) :
                         modeMultiSelect
                     }
 
-                    root.setOnLongClickListener(longClick)
-                    root.setOnClickListener(click)
+//                    root.setOnLongClickListener(longClick)
+//                    root.setOnClickListener(click)
                 }
             }
         }
@@ -142,6 +146,10 @@ class NotificationsListAdapter(private val context: Context) :
                     oldItem.platform == newItem.platform
 
         }
+    }
+
+    fun deleteItem(layoutPosition: Int) {
+        (context as NotificationsHistoryActivity).deleteItem(currentList[layoutPosition])
     }
 
     fun clearAll() {

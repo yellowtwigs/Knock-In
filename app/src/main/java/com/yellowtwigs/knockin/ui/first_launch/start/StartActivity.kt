@@ -34,11 +34,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //region ========================================== Val or Var ==========================================
 
-    private lateinit var radioButton1: AppCompatRadioButton
-    private lateinit var radioButton2: AppCompatRadioButton
-    private lateinit var radioButton3: AppCompatRadioButton
-    private lateinit var radioButton4: AppCompatRadioButton
-
     private var currentPosition = 0
 
     //endregion
@@ -59,11 +54,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
 
         //region ======================================= FindViewById =======================================
-
-        radioButton1 = findViewById(R.id.radio_button_1)
-        radioButton2 = findViewById(R.id.radio_button_2)
-        radioButton3 = findViewById(R.id.radio_button_3)
-        radioButton4 = findViewById(R.id.radio_button_4)
 
         setSliderContainer()
 
@@ -117,11 +107,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
-        sliderItems.add(SliderItem(R.drawable.carrousel_4))
-        sliderItems.add(SliderItem(R.drawable.carrousel_3))
+        sliderItems.add(SliderItem(R.drawable.notification_reception))
+        sliderItems.add(SliderItem(R.drawable.vip_message_reception))
         sliderItems.add(SliderItem(R.drawable.carrousel_1))
 
-        val sliderAdapter = SliderAdapter(sliderItems)
+        val sliderAdapter = SliderAdapter(sliderItems, this)
 
         viewPager.apply {
             adapter = sliderAdapter
@@ -152,35 +142,26 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             binding.subtitle.text =
                                 getString(R.string.start_activity_notification_subtitle)
 
-                            radioButton1.isChecked = true
-                            radioButton2.isChecked = false
-                            radioButton3.isChecked = false
-                            radioButton4.isChecked = false
+                            binding.radioButton1.isChecked = true
+                            binding.radioButton2.isChecked = false
+                            binding.radioButton3.isChecked = false
                         }
                         1 -> {
                             binding.title.text = getString(R.string.superposition_title)
                             binding.subtitle.text = getString(R.string.superposition_subtitle)
 
-                            radioButton1.isChecked = false
-                            radioButton2.isChecked = true
-                            radioButton3.isChecked = false
-                            radioButton4.isChecked = false
+                            binding.radioButton1.isChecked = false
+                            binding.radioButton2.isChecked = true
+                            binding.radioButton3.isChecked = false
                         }
                         2 -> {
-                            radioButton1.isChecked = false
-                            radioButton2.isChecked = false
-                            radioButton3.isChecked = true
-                            radioButton4.isChecked = false
-                        }
-                        3 -> {
-                            binding.title.text = "VIP"
-                            binding.subtitle.text = ""
-                            binding.activateButton.text = "Next"
+                            binding.title.text = getString(R.string.notification_alert_dialog_title)
+                            binding.subtitle.text = getString(R.string.notification_alert_dialog_message)
+                            binding.activateButton.text  = getString(R.string.alert_dialog_yes)
 
-                            radioButton1.isChecked = false
-                            radioButton2.isChecked = false
-                            radioButton3.isChecked = false
-                            radioButton4.isChecked = true
+                            binding.radioButton1.isChecked = false
+                            binding.radioButton2.isChecked = false
+                            binding.radioButton3.isChecked = true
                         }
                     }
                 }

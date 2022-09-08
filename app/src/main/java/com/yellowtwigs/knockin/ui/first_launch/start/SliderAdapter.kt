@@ -1,13 +1,17 @@
 package com.yellowtwigs.knockin.ui.first_launch.start
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.yellowtwigs.knockin.databinding.SlideItemContainerBinding
 
 class SliderAdapter(
-    private val sliderItems: MutableList<SliderItem>
+    private val sliderItems: MutableList<SliderItem>,
+    private val context: Context
 ) : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
@@ -32,8 +36,9 @@ class SliderAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(sliderItem: SliderItem) {
-            binding.image.setImageResource(sliderItem.image)
+            Glide.with(context)
+                .load(sliderItem.image)
+                .into(binding.gifImageView)
         }
-
     }
 }

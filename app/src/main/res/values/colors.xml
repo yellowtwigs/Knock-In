@@ -81,6 +81,8 @@
 
     <color name="telegram_color">#24abec</color>
 
+    <color name="youtube_color">#f24c19</color>
+
     <color name="instagram_1_color">#8b49c3</color>
     <color name="instagram_2_color">#d12054</color>
     <color name="instagram_3_color">#ffb700</color>
@@ -96,4 +98,5 @@
     <color name="reddit_color">#ff4019</color>
     <color name="viber_color">#6c5be1</color>
 
+    <color name="google_color">#f28c33</color>
 </resources>
