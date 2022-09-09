@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.contacts.MainActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
@@ -27,9 +27,9 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private var splashScreenActivityAppIcon: AppCompatImageView? = null
 
-    private val SPLASH_DISPLAY_LENGHT = 1450
-    private val SPLASH_DISPLAY_LENGHT_ANIMATION = 1000
-    private val SPLASH_DISPLAY_LENGHT_INTENT = 3000
+    private val SPLASH_DISPLAY_LENGHT = 965
+    private val SPLASH_DISPLAY_LENGHT_ANIMATION = 665
+    private val SPLASH_DISPLAY_LENGHT_INTENT = 2000
 
     //endregion
 
@@ -47,7 +47,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         //endregion
 
-        setContentView(R.layout.activity_splash_screen)
+        setContentView()
 
         //region ======================================== Animation =========================================
 
@@ -94,12 +94,21 @@ class SplashScreenActivity : AppCompatActivity() {
             splashScreenActivitySubtitle?.visibility = View.VISIBLE
         }, SPLASH_DISPLAY_LENGHT.toLong())
 
-
         Handler().postDelayed({
-            startActivity(Intent(this@SplashScreenActivity, FirstLaunchActivity::class.java))
+            val sharedFirstLaunch = getSharedPreferences("First_Launch", Context.MODE_PRIVATE)
+            if (sharedFirstLaunch.getBoolean("First_Launch", false)) {
+                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+            } else {
+                startActivity(Intent(this@SplashScreenActivity, FirstLaunchActivity::class.java))
+            }
             finish()
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 
         //endregion
+    }
+
+    private fun setContentView() {
+        setContentView(R.layout.activity_splash_screen)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     }
 }
