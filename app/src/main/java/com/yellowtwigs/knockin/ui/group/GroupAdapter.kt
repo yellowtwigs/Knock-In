@@ -361,28 +361,13 @@ class GroupAdapter(
             )
             numberForPermission = phoneNumber
         } else {
-            val sharedPreferences = context.getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-            val popup = sharedPreferences.getBoolean("popup", true)
-            if (popup && numberForPermission.isEmpty()) {
-                AlertDialog.Builder(context)
-                    .setTitle(R.string.main_contact_grid_title)
-                    .setMessage(R.string.main_contact_grid_message)
-                    .setPositiveButton(android.R.string.yes) { dialog: DialogInterface?, id: Int ->
-                        context.startActivity(
-                            Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
-                        )
-                    }
-                    .setNegativeButton(android.R.string.no, null)
-                    .show()
-            } else {
-                context.startActivity(
-                    Intent(
-                        Intent.ACTION_CALL,
-                        Uri.fromParts("tel", phoneNumber, null)
-                    )
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_CALL,
+                    Uri.fromParts("tel", phoneNumber, null)
                 )
-                numberForPermission = ""
-            }
+            )
+            numberForPermission = ""
         }
     }
 

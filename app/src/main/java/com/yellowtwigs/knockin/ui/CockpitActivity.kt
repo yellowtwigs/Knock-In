@@ -215,25 +215,6 @@ class CockpitActivity : AppCompatActivity() {
         cockpit_CallBackSpace = findViewById(R.id.cockpit_call_back_space)
         cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
 
-        val settings_left_drawer_ThemeSwitch =
-            findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
-
-        //endregion
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch?.isChecked = true
-//            group_manager_MainLayout?.setBackgroundResource(R.drawable.dark_background)
-        }
-
-        //region ================================ Call Popup from LeftDrawer ================================
-
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch?.isChecked = true
-        }
-
         //endregion
 
         bottomNavigationView?.menu?.getItem(3)?.isChecked = true
@@ -324,40 +305,6 @@ class CockpitActivity : AppCompatActivity() {
                     Uri.parse("https://www.yellowtwigs.com/help-cockpit")
                 )
                 startActivity(browserIntent)
-            }
-        }
-
-        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
-
-        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.dark_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(Intent(this@CockpitActivity, CockpitActivity::class.java))
-            } else {
-                setTheme(R.style.AppTheme)
-//                group_manager_MainLayout!!.setBackgroundResource(R.drawable.mr_white_blur_background)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(Intent(this@CockpitActivity, CockpitActivity::class.java))
             }
         }
 

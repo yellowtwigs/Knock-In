@@ -82,13 +82,6 @@ class ManageNotificationActivity : AppCompatActivity() {
         settings_ChooseNotifSoundTitle = findViewById(R.id.settings_choose_notif_sound_title)
         settings_ChooseNotifSoundLayout = findViewById(R.id.settings_choose_notif_sound_layout)
 
-        val settings_left_drawer_ThemeSwitch =
-            findViewById<SwitchCompat>(R.id.settings_left_drawer_theme_switch)
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch!!.isChecked = true
-        }
-
         //endregion
 
         if (this.isNotificationServiceEnabled) {

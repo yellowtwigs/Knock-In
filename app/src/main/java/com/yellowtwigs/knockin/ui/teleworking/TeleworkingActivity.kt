@@ -49,11 +49,16 @@ class TeleworkingActivity : AppCompatActivity() {
             getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
 
         binding.apply {
-            navView.menu.getItem(4).isChecked = true
+            navView.menu.findItem(R.id.navigation_teleworking).isChecked = true
         }
 
         binding.vipContactsButton.setOnClickListener {
-            startActivity(Intent(this@TeleworkingActivity, MultiSelectActivity::class.java).putExtra("fromTeleworking", true))
+            startActivity(
+                Intent(
+                    this@TeleworkingActivity,
+                    MultiSelectActivity::class.java
+                ).putExtra("fromTeleworking", true)
+            )
         }
 
         binding.teleworkingModeSwitch.isChecked =
@@ -124,7 +129,12 @@ class TeleworkingActivity : AppCompatActivity() {
                 navView.menu.findItem(R.id.navigation_teleworking).isChecked = true
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
-                    R.id.nav_home -> startActivity(Intent(this@TeleworkingActivity, MainActivity::class.java))
+                    R.id.nav_home -> startActivity(
+                        Intent(
+                            this@TeleworkingActivity,
+                            MainActivity::class.java
+                        )
+                    )
                     R.id.nav_notifications -> startActivity(
                         Intent(
                             this@TeleworkingActivity,
@@ -143,7 +153,12 @@ class TeleworkingActivity : AppCompatActivity() {
                             ManageMyScreenActivity::class.java
                         )
                     )
-                    R.id.nav_help -> startActivity(Intent(this@TeleworkingActivity, HelpActivity::class.java))
+                    R.id.nav_help -> startActivity(
+                        Intent(
+                            this@TeleworkingActivity,
+                            HelpActivity::class.java
+                        )
+                    )
                 }
 
                 true
