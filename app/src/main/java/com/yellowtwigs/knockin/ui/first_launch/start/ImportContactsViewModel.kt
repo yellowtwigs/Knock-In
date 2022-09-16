@@ -17,6 +17,8 @@ import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 import java.io.InputStream
@@ -296,7 +298,8 @@ class ImportContactsViewModel @Inject constructor(
         contactDetails: List<Map<Int, Any>>,
         contactGroup: List<Triple<Int, String?, String?>>
     ) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
+
             val contactsInGroup = arrayListOf<String>()
             val groupsName = arrayListOf<String>()
             phoneStructName?.forEachIndexed { _, fullName ->
@@ -524,7 +527,7 @@ class ImportContactsViewModel @Inject constructor(
                     groupsName.add(triple.third!!)
                 }
                 // contactsInGroup add 402
-                contactsInGroup.add(triple.first.toString())
+                contactsInGroup.add(triple.second!!)
 
                 if (index + 1 < contactGroup.size) {
                     // Importés le 28/06/2022 != Coworkers
@@ -532,16 +535,15 @@ class ImportContactsViewModel @Inject constructor(
                 }
 
                 if (groupIsDone) {
-                    createGroupRepository.insertGroup(
-                        GroupDB(
-                            0,
-                            triple.third!!,
-                            "",
-                            -500138,
-                            contactsInGroup,
-                            1
-                        )
+                    val group = GroupDB(
+                        0,
+                        triple.third!!,
+                        "",
+                        -500138,
+                        contactsInGroup,
+                        1
                     )
+                    createGroupRepository.insertGroup(group)
                     contactsInGroup.clear()
                 }
             }
@@ -581,6 +583,8 @@ class ImportContactsViewModel @Inject constructor(
             }
         }
         phoneContact?.close()
+
+//        Log.i("getAllGroups", "$allGroupMembers")
 
         return allGroupMembers
     }

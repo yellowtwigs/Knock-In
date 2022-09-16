@@ -247,10 +247,10 @@ class ContactsListActivity : AppCompatActivity() {
         binding.recyclerView.apply {
             contactsListViewModel.getAllContacts().observe(this@ContactsListActivity) { contacts ->
                 contactsListAdapter.submitList(contacts)
-                smoothScrollToPosition(0)
             }
             adapter = contactsListAdapter
             layoutManager = LinearLayoutManager(context)
+            LinearLayoutManager(context).scrollToPositionWithOffset(0, 0);
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     contactsListAdapter.setIsScrolling(true)

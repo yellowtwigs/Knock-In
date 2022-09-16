@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 20,
-    "identityHash": "cfca828a66283d62a4fcae4076951731",
+    "identityHash": "a7789215a9390f2277d434714d9dfa31",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -196,13 +196,13 @@
       },
       {
         "tableName": "groups_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `profile_picture_str` TEXT NOT NULL, `section_color` INTEGER NOT NULL, `listOfContactsId` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `profile_picture_str` TEXT NOT NULL, `section_color` INTEGER NOT NULL, `listOfContactsData` TEXT NOT NULL, `priority` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "name",
@@ -223,8 +223,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "listOfContactsId",
-            "columnName": "listOfContactsId",
+            "fieldPath": "listOfContactsData",
+            "columnName": "listOfContactsData",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -286,7 +286,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cfca828a66283d62a4fcae4076951731')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7789215a9390f2277d434714d9dfa31')"
     ]
   }
 }

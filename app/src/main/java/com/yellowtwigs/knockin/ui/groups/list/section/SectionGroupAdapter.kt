@@ -1,4 +1,4 @@
-//package com.yellowtwigs.knockin.ui.groups.list
+package com.yellowtwigs.knockin.ui.groups.list.section//package com.yellowtwigs.knockin.ui.groups.list
 //
 //import android.annotation.SuppressLint
 //import android.content.Context

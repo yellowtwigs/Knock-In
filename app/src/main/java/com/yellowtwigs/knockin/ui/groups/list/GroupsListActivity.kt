@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.databinding.ActivityGroupsListBinding
@@ -16,6 +18,8 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionAdapter
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListAdapter
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
@@ -27,7 +31,7 @@ class GroupsListActivity : AppCompatActivity() {
 
     private var firstClick: Boolean = true
 
-//    private var sectionAdapter: SectionGroupAdapter? = null
+    //    private var sectionAdapter: SectionGroupAdapter? = null
     private lateinit var firstVipSelectionAdapter: FirstVipSelectionAdapter
 
     private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
@@ -57,6 +61,7 @@ class GroupsListActivity : AppCompatActivity() {
         setupToolbar(binding)
         setupDrawerLayout(binding)
         setupBottomNavigationView(binding)
+        setupGroupsList(binding)
 
         //region ======================================= Listeners ==========================================
 
@@ -242,13 +247,15 @@ class GroupsListActivity : AppCompatActivity() {
     }
 
     private fun setupGroupsList(binding: ActivityGroupsListBinding) {
-        binding
+        val sectionGroupsListAdapter = SectionGroupsListAdapter(this)
 
-        groupsListViewModel.getAllGroups().observe(this, { groups ->
-
-//            val sections = ArrayList<SectionGroupAdapter.Section>()
-//            sections.add(SectionGroupAdapter.Section(position, i.groupDB!!.name, i.groupDB!!.id!!))
-        })
+        binding.recyclerView.apply {
+            groupsListViewModel.getAllGroups().observe(this@GroupsListActivity) { groups ->
+                sectionGroupsListAdapter.submitList(groups)
+            }
+            adapter = sectionGroupsListAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
 //        if (len >= 4) {
 ////            groupAdapter = GroupAdapter(this, gestionnaireContacts!!, len)

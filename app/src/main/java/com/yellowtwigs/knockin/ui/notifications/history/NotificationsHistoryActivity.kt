@@ -24,6 +24,7 @@ import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
@@ -337,12 +338,12 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_groups -> {
-//                    startActivity(
-//                        Intent(
-//                            this@NotificationsHistoryActivity,
-//                            GroupManagerActivity::class.java
-//                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-//                    )
+                    startActivity(
+                        Intent(
+                            this@NotificationsHistoryActivity,
+                            GroupsListActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_cockpit -> {

@@ -9,6 +9,9 @@ import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,15 +55,23 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
         sortedBy: Int?,
         filterBy: Int?
     ) {
-        val listOfContacts = arrayListOf<ContactsListViewState>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val listOfContacts = arrayListOf<ContactsListViewState>()
 
-        if (allContacts?.isNotEmpty() == true) {
-            for (contact in allContacts) {
-                addContactInList(listOfContacts, contact)
+            if (allContacts?.isNotEmpty() == true) {
+                for (contact in allContacts) {
+                    addContactInList(listOfContacts, contact)
+                }
+
+                viewStateLiveData.postValue(
+                    sortedContactsList(
+                        sortedBy,
+                        filterBy,
+                        input,
+                        listOfContacts
+                    )
+                )
             }
-
-            viewStateLiveData.value = sortedContactsList(sortedBy, filterBy, input, listOfContacts)
-//            viewStateLiveData.value = listOfContacts
         }
     }
 
