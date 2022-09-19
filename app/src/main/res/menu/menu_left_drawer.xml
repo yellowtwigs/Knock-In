@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group
-        android:id="@+id/menu_top"
-        android:checkableBehavior="none">
-        <item
-            android:id="@+id/navigation_teleworking"
-            android:icon="@drawable/ic_teleworking"
-            android:title="@string/teleworking" />
-    </group>
-
-    <group
         android:checkableBehavior="none">
         <item
             android:id="@+id/nav_home"
@@ -46,5 +37,15 @@
             android:title="@string/settings_invite_friend_text"
             android:icon="@drawable/ic_invite_friend"
             android:visible="false" />
+    </group>
+
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/navigation_teleworking"
+            android:icon="@drawable/ic_teleworking"
+            
+            android:title="@string/teleworking" />
     </group>
 </menu>

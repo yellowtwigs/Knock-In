@@ -216,7 +216,6 @@
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_title">Modification de l\'affichage des contacts</string>
     <string name="manage_my_screen_display_contacts_edit_alert_dialog_message">Vous venez de modifier l\'affichage des contacts, voulez-vous revenir à l\'écran des Contacts ?</string>
 
-
     <!-- endregion -->
     <!-- region Notification Manager -->
     <string name="notification_manager_toolbar_title">Paramètres de notifications</string>

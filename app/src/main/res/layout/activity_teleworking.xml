@@ -206,7 +206,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="#d1d1d1"
                 android:textAlignment="viewEnd"
-                android:textColor="@color/lightColor"
+                android:textColor="@color/darkColor"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/edit_reminder_hour_title"
                 app:layout_constraintEnd_toEndOf="parent"
