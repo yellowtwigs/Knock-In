@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">Фамилия</string>
     <string name="add_new_contact_phone_number">Номер телефона</string>
     <string name="add_new_contact_phone_number_mobile">Мобильный номер</string>
-    <string name="add_new_contact_priority0">Все уведомления, связанные с этим контактом, будут видны только в истории</string>
-    <string name="add_new_contact_priority1">Уведомления, связанные с этим контактом, будут рассматриваться как стандартные уведомления</string>
-    <string name="add_new_contact_priority2">Все сообщения этого контакта будут иметь высокий приоритет уведомлений</string>
+    <string name="priority_0_subtitle">Все уведомления, связанные с этим контактом, будут видны только в истории</string>
+    <string name="priority_1_subtitle">Уведомления, связанные с этим контактом, будут рассматриваться как стандартные уведомления</string>
+    <string name="priority_2_subtitle">Все сообщения этого контакта будут иметь высокий приоритет уведомлений</string>
     <string name="add_new_contact_toast">"Поле Фамилия должно быть заполнено!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Мобильный</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">Управление</string>
     <string name="add_new_contact_mail_identifier">Почтовый идентификатор</string>
     <string name="add_new_contact_mail_identifier_help">Соответствует идентификатору, видимому при получении сообщения электронной почты</string>
-    <string name="add_new_contact_priority_0">Нет уведомлений</string>
+    <string name="priority_0_title">Нет уведомлений</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Офис</item>
         <item>Домой</item>

@@ -43,7 +43,7 @@
     <string name="left_drawer_statistics">Thống kê</string>
     <string name="left_drawer_help">Trợ giúp</string>
     <string name="left_drawer_import">Nhập liên hệ</string>
-    <string name="settings_contact_popup_phone_call">Gọi điện thoại Popup</string>
+    <string name="settings_contact_popup_phone_call">Gọi điện thoại</string>
     <string name="manage_my_screen_contact_popup_long_text">Bật / tắt cửa sổ bật lên trước khi gọi điện cho một liên hệ </string>
     <string name="settings_invite_friend_text">Mời bạn bè của bạn</string>
     <string name="invite_friend_text">Sử dụng Knock In để có trải nghiệm giao tiếp mới</string>
@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">Tên</string>
     <string name="add_new_contact_phone_number">Số điện thoại</string>
     <string name="add_new_contact_phone_number_mobile">Điện thoại di động</string>
-    <string name="add_new_contact_priority0">Tất cả các thông báo liên quan đến liên hệ này sẽ chỉ hiển thị trong lịch sử</string>
-    <string name="add_new_contact_priority1">Các thông báo liên quan đến liên hệ này sẽ được coi là thông báo tiêu chuẩn</string>
-    <string name="add_new_contact_priority2">Tất cả các tin nhắn của liên hệ này sẽ được thông báo với mức độ ưu tiên cao</string>
+    <string name="priority_0_subtitle">Tất cả các thông báo liên quan đến liên hệ này sẽ chỉ hiển thị trong lịch sử</string>
+    <string name="priority_1_subtitle">Các thông báo liên quan đến liên hệ này sẽ được coi là thông báo tiêu chuẩn</string>
+    <string name="priority_2_subtitle">Tất cả các tin nhắn của liên hệ này sẽ được thông báo với mức độ ưu tiên cao</string>
     <string name="add_new_contact_toast">"Tên phải được điền!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Điện thoại di động</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">Văn phòng</string>
     <string name="add_new_contact_mail_identifier">Định danh email</string>
     <string name="add_new_contact_mail_identifier_help">Tương ứng với mã định danh hiển thị khi nhận email</string>
-    <string name="add_new_contact_priority_0">Không có thông báo</string>
+    <string name="priority_0_title">Không có thông báo</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Văn phòng</item>
         <item>Trang Chủ</item>

@@ -151,6 +151,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 whatsappLayout.setOnClickListener(listener)
                 telegramLayout.setOnClickListener(listener)
                 signalLayout.setOnClickListener(listener)
+                editLayout.setOnClickListener(listener)
 
                 itemLayout.setOnClickListener {
                     Log.i("onScrollStateChanged", "onScrollStateChanged")
@@ -185,7 +186,7 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                         param.setMargins(50, 0, 0, 0)
                         listContactItemMenu.layoutParams = param
                     }
-                    6 -> {
+                    else -> {
                         param.setMargins(0, 0, 0, 0)
                         listContactItemMenu.layoutParams = param
                     }

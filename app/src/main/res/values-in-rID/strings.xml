@@ -43,7 +43,7 @@
     <string name="left_drawer_statistics">Statistik</string>
     <string name="left_drawer_help">Membantu</string>
     <string name="left_drawer_import">Kontak impor</string>
-    <string name="settings_contact_popup_phone_call">Panggilan telepon Popup</string>
+    <string name="settings_contact_popup_phone_call">Panggilan telepon</string>
     <string name="manage_my_screen_contact_popup_long_text">Aktifkan/nonaktifkan popup sebelum memanggil kontak</string>
     <string name="settings_invite_friend_text">Undang temanmu</string>
     <string name="invite_friend_text">Gunakan Knock In untuk pengalaman komunikasi baru</string>
@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">Nama depan</string>
     <string name="add_new_contact_phone_number">Nomor telepon</string>
     <string name="add_new_contact_phone_number_mobile">Mobil</string>
-    <string name="add_new_contact_priority0">Semua notifikasi yang berhubungan dengan kontak ini hanya akan terlihat dalam sejarah</string>
-    <string name="add_new_contact_priority1">Semua notifikasi yang berhubungan dengan kontak ini hanya akan terlihat dalam sejarah</string>
-    <string name="add_new_contact_priority2">Semua pesan kontak ini akan diberitahukan dengan prioritas tinggi</string>
+    <string name="priority_0_subtitle">Semua notifikasi yang berhubungan dengan kontak ini hanya akan terlihat dalam sejarah</string>
+    <string name="priority_1_subtitle">Semua notifikasi yang berhubungan dengan kontak ini hanya akan terlihat dalam sejarah</string>
+    <string name="priority_2_subtitle">Semua pesan kontak ini akan diberitahukan dengan prioritas tinggi</string>
     <string name="add_new_contact_toast">"Bidang nama depan harus dihuni!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">Kantor</string>
     <string name="add_new_contact_mail_identifier">Pengidentifikasi Email</string>
     <string name="add_new_contact_mail_identifier_help">Dapat disamakan dengan pengidentifikasi yang terlihat ketika menerima email</string>
-    <string name="add_new_contact_priority_0">Tidak ada notifikasi</string>
+    <string name="priority_0_title">Tidak ada notifikasi</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Kantor</item>
         <item>Rumah</item>

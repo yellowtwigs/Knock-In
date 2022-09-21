@@ -8,20 +8,7 @@ interface ContactsListRepository {
 
     fun getAllContacts(): LiveData<List<ContactDB>>
 
-    fun getContact(id: Int): Flow<ContactDB>
-
-    suspend fun updateContact(contact: ContactDB)
-
     suspend fun updateContactPriorityById(id: Int, priority: Int)
 
     suspend fun deleteContact(contact: ContactDB)
-
-    fun getSearchBarText(): LiveData<String>
-    fun setSearchTextChanged(text: String)
-
-    fun getSortedBy(): LiveData<Int>
-    fun setSortedBy(sortBy: Int)
-
-    fun getFilterBy(): LiveData<Int>
-    fun setFilterBy(filterBy: Int)
 }

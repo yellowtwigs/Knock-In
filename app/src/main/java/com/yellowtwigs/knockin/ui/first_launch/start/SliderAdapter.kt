@@ -10,8 +10,7 @@ import com.bumptech.glide.Glide
 import com.yellowtwigs.knockin.databinding.SlideItemContainerBinding
 
 class SliderAdapter(
-    private val sliderItems: MutableList<SliderItem>,
-    private val context: Context
+    private val sliderItems: MutableList<SliderItem>
 ) : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
@@ -36,7 +35,7 @@ class SliderAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(sliderItem: SliderItem) {
-            Glide.with(context)
+            Glide.with(binding.gifImageView)
                 .load(sliderItem.image)
                 .into(binding.gifImageView)
         }

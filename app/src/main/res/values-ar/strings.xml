@@ -97,9 +97,9 @@
     <string name="add_new_contact_first_name">الإسم الشخصي</string>
     <string name="add_new_contact_phone_number">رقم الهاتف</string>
     <string name="add_new_contact_phone_number_mobile">الهاتف المحمول</string>
-    <string name="add_new_contact_priority0">ستكون جميع الإشعارات المتعلقة بجهة الاتصال هذه مرئية فقط في سجل الإشعارات</string>
-    <string name="add_new_contact_priority1">سيتم التعامل مع الإشعارات المرتبطة بجهة الاتصال هذه كإشعارات قياسية</string>
-    <string name="add_new_contact_priority2">سيتم إعلامك بجميع الرسائل الواردة من جهة الاتصال هذه على سبيل الأولوية</string>
+    <string name="priority_0_subtitle">ستكون جميع الإشعارات المتعلقة بجهة الاتصال هذه مرئية فقط في سجل الإشعارات</string>
+    <string name="priority_1_subtitle">سيتم التعامل مع الإشعارات المرتبطة بجهة الاتصال هذه كإشعارات قياسية</string>
+    <string name="priority_2_subtitle">سيتم إعلامك بجميع الرسائل الواردة من جهة الاتصال هذه على سبيل الأولوية</string>
     <string name="add_new_contact_toast">"Le champ prénom ne peut pas être vide !"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>الهاتف المحمول</item>
@@ -113,7 +113,7 @@
     <string name="add_new_contact_mail_mobile">المكتب</string>
     <string name="add_new_contact_mail_identifier">معرف البريد الإلكتروني</string>
     <string name="add_new_contact_mail_identifier_help">يتوافق مع المعرف المرئي عند تلقي بريد إلكتروني</string>
-    <string name="add_new_contact_priority_0">بدون إشعارات</string>
+    <string name="priority_0_title">بدون إشعارات</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>المكتب</item>
         <item>المنزل</item>

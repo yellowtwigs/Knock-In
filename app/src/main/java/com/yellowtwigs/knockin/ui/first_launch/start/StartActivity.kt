@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatRadioButton
@@ -19,8 +20,10 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.android.billingclient.api.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityStartActivityBinding
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -35,13 +38,12 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region ========================================== Val or Var ==========================================
 
     private var currentPosition = 0
-
-    //endregion
-
+    private lateinit var binding: ActivityStartActivityBinding
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
 
-    private lateinit var binding: ActivityStartActivityBinding
     private lateinit var importContactPreferences: SharedPreferences
+
+    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,74 +52,108 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         setContentView(binding.root)
 
         setupBillingClient()
+        setSliderContainer()
+
+        if (checkIfGoEdition()) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                .setBackground(getDrawable(R.color.backgroundColor))
+                .setMessage(getString(R.string.start_activity_go_edition_message))
+                .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                }
+                .show()
+        }
 
         importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
 
-        //region ======================================= FindViewById =======================================
-
-        setSliderContainer()
-
-        //endregion
-
-        val arraylistPermission = ArrayList<String>()
-        arraylistPermission.add(Manifest.permission.READ_CONTACTS)
-        arraylistPermission.add(Manifest.permission.SEND_SMS)
-        arraylistPermission.add(Manifest.permission.CALL_PHONE)
-
-        if (!importContactPreferences.getBoolean("Import_Contact", false)) {
-            ActivityCompat.requestPermissions(
-                this,
-                arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)),
-                ALL_PERMISSIONS
-            )
-        }
-
-        binding.activateButton.setOnClickListener {
-            when (currentPosition) {
-                0 -> {
-                    activateNotificationsClick()
+        binding.apply {
+            activateButton.setOnClickListener {
+                when (currentPosition) {
+                    0 -> {
+                        if (!importContactPreferences.getBoolean("Import_Contact", false)) {
+                            ActivityCompat.requestPermissions(
+                                this@StartActivity,
+                                arrayOf(Manifest.permission.READ_CONTACTS),
+                                REQUEST_CODE_READ_CONTACT
+                            )
+                        }
+                    }
+                    1 -> {
+                        activateNotificationsClick()
+                    }
+                    2 -> {
+                        openOverlaySettings()
+                    }
+                    3 -> {
+                        if (checkIfGoEdition()) {
+                            firstLaunchValidate()
+                            val intent =
+                                Intent(this@StartActivity, ContactsListActivity::class.java)
+                            intent.putExtra("fromStartActivity", true)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
                 }
-                1 -> {
-                    openOverlaySettings()
-                }
-                2 -> {
-                    val sharedFirstLaunch = getSharedPreferences("First_Launch", Context.MODE_PRIVATE)
-                    val edit = sharedFirstLaunch.edit()
-                    edit.putBoolean("First_Launch", true)
-                    edit.apply()
-                    startActivity(Intent(this, FirstVipSelectionActivity::class.java))
-                    finish()
-                }
+            }
+            next.setOnClickListener {
+                firstLaunchValidate()
+                startActivity(Intent(this@StartActivity, FirstVipSelectionActivity::class.java))
+                val sharedPreferences: SharedPreferences =
+                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("view", true)
+                edit.apply()
+                finish()
+            }
+            skip.setOnClickListener {
+                firstLaunchValidate()
+                val sharedPreferences: SharedPreferences =
+                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                edit.putBoolean("view", true)
+                edit.apply()
+                val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
+                intent.putExtra("fromStartActivity", true)
+                startActivity(intent)
+                finish()
+            }
+
+            radioButton1.setOnClickListener {
+                binding.viewPager.currentItem = 0
+                checkRadioButton(radioButton1.id)
+            }
+            radioButton2.setOnClickListener {
+                binding.viewPager.currentItem = 1
+                checkRadioButton(radioButton2.id)
+            }
+            radioButton3.setOnClickListener {
+                binding.viewPager.currentItem = 2
+                checkRadioButton(radioButton3.id)
+            }
+            radioButton4.setOnClickListener {
+                binding.viewPager.currentItem = 3
+                checkRadioButton(radioButton4.id)
             }
         }
     }
 
-    //region ========================================== Functions ===========================================
+    //region ========================================== Functions ==========================================
 
     private fun setSliderContainer() {
-//        if (checkIfGoEdition()) {
-//
-//            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                .setBackground(getDrawable(R.color.backgroundColor))
-//                .setMessage(getString(R.string.start_activity_go_edition_message))
-//                .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-//                }
-//                .show()
-//        }
-
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
+        sliderItems.add(SliderItem(R.drawable.final_contact))
         sliderItems.add(SliderItem(R.drawable.notification_reception))
         sliderItems.add(SliderItem(R.drawable.vip_message_reception))
-        sliderItems.add(SliderItem(R.drawable.carrousel_1))
+        sliderItems.add(SliderItem(R.drawable.vip_message_reception))
 
-        val sliderAdapter = SliderAdapter(sliderItems, this)
+        val sliderAdapter = SliderAdapter(sliderItems)
 
         viewPager.apply {
             adapter = sliderAdapter
             clipToPadding = false
             clipChildren = false
-            offscreenPageLimit = 3
+//            offscreenPageLimit = 3
             getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
             val compositePageTransformer = CompositePageTransformer()
@@ -135,46 +171,81 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                     currentPosition = position
 
-                    when (position) {
-                        0 -> {
-                            binding.title.text =
-                                getString(R.string.start_activity_notification_title)
-                            binding.subtitle.text =
-                                getString(R.string.start_activity_notification_subtitle)
+                    if (checkIfGoEdition()) {
+                        currentPosition = 4
+                    }
 
-                            binding.radioButton1.isChecked = true
-                            binding.radioButton2.isChecked = false
-                            binding.radioButton3.isChecked = false
-                        }
-                        1 -> {
-                            binding.title.text = getString(R.string.superposition_title)
-                            binding.subtitle.text = getString(R.string.superposition_subtitle)
+                    binding.apply {
+                        when (currentPosition) {
+                            0 -> {
+                                title.text = getString(R.string.start_activity_import_title)
+                                subtitle.text = getString(R.string.start_activity_import_subtitle)
 
-                            binding.radioButton1.isChecked = false
-                            binding.radioButton2.isChecked = true
-                            binding.radioButton3.isChecked = false
-                        }
-                        2 -> {
-                            binding.title.text = getString(R.string.notification_alert_dialog_title)
-                            binding.subtitle.text = getString(R.string.notification_alert_dialog_message)
-                            binding.activateButton.text  = getString(R.string.alert_dialog_yes)
+                                checkRadioButton(radioButton1.id)
 
-                            binding.radioButton1.isChecked = false
-                            binding.radioButton2.isChecked = false
-                            binding.radioButton3.isChecked = true
+                                activateButton.visibility = View.VISIBLE
+                                activateButton.setText(R.string.start_activity_button_notification)
+                                next.visibility = View.GONE
+                                skip.visibility = View.GONE
+                            }
+                            1 -> {
+                                title.text = getString(R.string.start_activity_notification_title)
+                                subtitle.text =
+                                    getString(R.string.start_activity_notification_subtitle)
+
+                                checkRadioButton(radioButton2.id)
+
+                                activateButton.visibility = View.VISIBLE
+                                activateButton.setText(R.string.start_activity_button_notification)
+                                next.visibility = View.GONE
+                                skip.visibility = View.GONE
+                            }
+                            2 -> {
+                                title.text = getString(R.string.superposition_title)
+                                subtitle.text = getString(R.string.superposition_subtitle)
+
+                                checkRadioButton(radioButton3.id)
+
+                                activateButton.visibility = View.VISIBLE
+                                activateButton.setText(R.string.start_activity_button_notification)
+                                next.visibility = View.GONE
+                                skip.visibility = View.GONE
+                            }
+                            3 -> {
+                                if (checkIfGoEdition()) {
+                                    radioButton1.visibility = View.GONE
+                                    radioButton2.visibility = View.GONE
+                                    radioButton3.visibility = View.GONE
+                                    radioButton4.visibility = View.GONE
+
+                                    title.text =
+                                        "${getString(R.string.notif_adapter_show_message_button)} " +
+                                                "${getString(R.string.left_drawer_home)}"
+
+                                    subtitle.visibility = View.GONE
+                                    activateButton.setText(R.string.start_activity_next)
+                                } else {
+                                    title.text = getString(R.string.notification_alert_dialog_title)
+                                    subtitle.text =
+                                        getString(R.string.notification_alert_dialog_message)
+
+                                    checkRadioButton(radioButton4.id)
+
+                                    activateButton.visibility = View.GONE
+                                    next.visibility = View.VISIBLE
+                                    skip.visibility = View.VISIBLE
+                                }
+                            }
                         }
                     }
                 }
             })
+
+            setCurrentItem(currentPosition, true)
         }
     }
 
     private fun openOverlaySettings() {
-        val sharedPreferences = getSharedPreferences("Overlay_Preferences", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-        edit.putBoolean("Overlay_Preferences", true)
-        edit.apply()
-
         val intent = Intent(
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
             Uri.parse("package:$packageName")
@@ -182,12 +253,18 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         startActivity(intent)
     }
 
-    private fun checkAndroid6(): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+    private fun checkRadioButton(id: Int) {
+        binding.radioButton1.isChecked = binding.radioButton1.id == id
+        binding.radioButton2.isChecked = binding.radioButton2.id == id
+        binding.radioButton3.isChecked = binding.radioButton3.id == id
+        binding.radioButton4.isChecked = binding.radioButton4.id == id
     }
 
-    private fun checkAndroid8(): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+    private fun firstLaunchValidate() {
+        val sharedFirstLaunch = getSharedPreferences("First_Launch", Context.MODE_PRIVATE)
+        val edit = sharedFirstLaunch.edit()
+        edit.putBoolean("First_Launch", true)
+        edit.apply()
     }
 
     //region =========================================== BILLING ============================================
@@ -288,7 +365,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == ALL_PERMISSIONS) {
+        if (requestCode == REQUEST_CODE_READ_CONTACT) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 CoroutineScope(Dispatchers.Main).launch {
                     importContactsViewModel.syncAllContactsInDatabase(contentResolver)
@@ -298,37 +375,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 edit.putBoolean("Import_Contact", true)
                 edit.apply()
 
-//                Toast.makeText(this, R.string.import_contacts_toast, Toast.LENGTH_LONG).show()
-
-//                val sync = Runnable {
-//                    ContactManager(this).getAllContactsInfoSync(contentResolver)
-//
-//                    val sharedPreferencesSync =
-//                        getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
-//                    var index = 1
-//                    var stringSet = listOf<String>()
-//                    if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-//                        stringSet =
-//                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
-//                    arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
-//                    while (sharedPreferencesSync.getStringSet(
-//                            index.toString(),
-//                            null
-//                        ) != null && stringSet.isNotEmpty()
-//                    ) {
-//                        stringSet =
-//                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
-//                        index++
-//                    }
-//
-//                    val runnable = Runnable {
-//                        importContactsLoading?.visibility = View.INVISIBLE
-//                        importContactsCheck?.visibility = View.VISIBLE
-//                        allIsChecked()
-//                        allIsCheckedGOEdition()
-//                    }
-//                    runOnUiThread(runnable)
-//                }
+                checkRadioButton(binding.radioButton2.id)
+                binding.viewPager.currentItem = 1
             }
         }
     }
@@ -343,7 +391,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     companion object {
-        const val ALL_PERMISSIONS = 1
+        const val REQUEST_CODE_READ_CONTACT = 2
     }
 
     private fun isNotificationServiceEnabled(): Boolean {
@@ -364,7 +412,28 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     override fun onPurchasesUpdated(p0: BillingResult, p1: MutableList<Purchase>?) {
+    }
 
+    //endregion
+
+    //region =========================================== Lifecycle ==========================================
+
+    override fun onRestart() {
+        super.onRestart()
+
+        val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        if (isNotificationServiceEnabled()) {
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("serviceNotif", true)
+            edit.apply()
+            binding.viewPager.currentItem = 2
+        }
+        if (Settings.canDrawOverlays(this)) {
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif", true)
+            edit.apply()
+            binding.viewPager.currentItem = 3
+        }
     }
 
     //endregion

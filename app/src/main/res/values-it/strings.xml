@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">Nome</string>
     <string name="add_new_contact_phone_number">Numero di telefono</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
-    <string name="add_new_contact_priority0">Tutte le notifiche per questo contatto saranno solo visibili nello storico</string>
-    <string name="add_new_contact_priority1">Le notifiche per questo contatto saranno trattate come standard </string>
-    <string name="add_new_contact_priority2">I messaggi per questo contatto saranno notificati con priorita\’ alta </string>
+    <string name="priority_0_subtitle">Tutte le notifiche per questo contatto saranno solo visibili nello storico</string>
+    <string name="priority_1_subtitle">Le notifiche per questo contatto saranno trattate come standard </string>
+    <string name="priority_2_subtitle">I messaggi per questo contatto saranno notificati con priorita\’ alta </string>
     <string name="add_new_contact_toast">"Il campo nome deve essere riempito!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">Ufficio</string>
     <string name="add_new_contact_mail_identifier">ID Email</string>
     <string name="add_new_contact_mail_identifier_help">Corrisponde all’identificatore visibile quando si riceve email</string>
-    <string name="add_new_contact_priority_0">Nessuna notifica</string>
+    <string name="priority_0_title">Nessuna notifica</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Ufficio</item>
         <item>Casa</item>

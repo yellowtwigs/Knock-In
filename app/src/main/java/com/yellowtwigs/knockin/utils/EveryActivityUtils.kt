@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SwitchCompat
 import com.yellowtwigs.knockin.R
 
@@ -19,5 +20,13 @@ object EveryActivityUtils {
             packageNameList.add(activityInfo.applicationInfo.packageName)
         }
         return packageNameList
+    }
+
+    fun hideKeyboard(cxt: Activity) {
+        val view = cxt.currentFocus
+        view?.let { v ->
+            val imm = cxt.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
     }
 }

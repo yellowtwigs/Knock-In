@@ -151,34 +151,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
             help_activity_DrawerLayout?.closeDrawer(GravityCompat.START)
             true
         }
-        val sharedPreferencePopup = getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-        val settings_CallPopupSwitch = findViewById<SwitchCompat>(R.id.settings_call_popup_switch)
-        settings_left_drawer_ThemeSwitch = findViewById(R.id.settings_left_drawer_theme_switch)
-
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            settings_left_drawer_ThemeSwitch?.isChecked = true
-//            main_constraintLayout?.setBackgroundResource(R.drawable.dark_background)
-        }
-
-        if (sharedPreferencePopup.getBoolean("popup", true)) {
-            settings_CallPopupSwitch?.isChecked = true
-        }
-
-        settings_left_drawer_ThemeSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(R.style.AppThemeDark)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", true)
-                edit.apply()
-                startActivity(Intent(this, HelpActivity::class.java))
-            } else {
-                setTheme(R.style.AppTheme)
-                val edit: SharedPreferences.Editor = sharedThemePreferences.edit()
-                edit.putBoolean("darkTheme", false)
-                edit.apply()
-                startActivity(Intent(this, GroupsListActivity::class.java))
-            }
-        }
 
         //endregion
 
@@ -238,21 +210,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         helpActivityVideoTutorial?.setOnClickListener(onClick)
 
 
-        settings_CallPopupSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", true)
-                edit.apply()
-            } else {
-                val sharedCallPopupPreferences: SharedPreferences =
-                    getSharedPreferences("Phone_call", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedCallPopupPreferences.edit()
-                edit.putBoolean("popup", false)
-                edit.apply()
-            }
-        }
         //endregion
     }
 

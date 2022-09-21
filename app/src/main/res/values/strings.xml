@@ -45,7 +45,7 @@
     <string name="left_drawer_statistics">Statistics</string>
     <string name="left_drawer_help">Help</string>
     <string name="left_drawer_import">Import contacts</string>
-    <string name="settings_contact_popup_phone_call">Phone call Popup</string>
+    <string name="settings_contact_popup_phone_call">Phone call</string>
     <string name="manage_my_screen_contact_popup_long_text"> Enable/disable popup before calling a contact</string>
     <string name="settings_invite_friend_text">Invite your friends</string>
     <string name="invite_friend_text">Use Knock In for a new communication experience</string>
@@ -99,9 +99,9 @@
     <string name="add_new_contact_first_name">Firstname</string>
     <string name="add_new_contact_phone_number">Phone number</string>
     <string name="add_new_contact_phone_number_mobile">Mobile</string>
-    <string name="add_new_contact_priority0">All the notifications related to this contact will only be visible in the history</string>
-    <string name="add_new_contact_priority1">The notifications related to this contact will be treated as standard notifications</string>
-    <string name="add_new_contact_priority2">All the messages of this contact will be notified with high priority</string>
+    <string name="priority_0_subtitle">All the notifications related to this contact will only be visible in the history</string>
+    <string name="priority_1_subtitle">The notifications related to this contact will be treated as standard notifications</string>
+    <string name="priority_2_subtitle">All the messages of this contact will be notified with high priority</string>
     <string name="add_new_contact_toast">" Firstname field must be populated!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -115,7 +115,7 @@
     <string name="add_new_contact_mail_mobile">Office</string>
     <string name="add_new_contact_mail_identifier">Email Identifier</string>
     <string name="add_new_contact_mail_identifier_help">Corresponds to the identifier visible when receiving an email</string>
-    <string name="add_new_contact_priority_0">No notification</string>
+    <string name="priority_0_title">No notification</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Office</item>
         <item>Home</item>

@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">İsim</string>
     <string name="add_new_contact_phone_number">Telefon numarası</string>
     <string name="add_new_contact_phone_number_mobile">Cep telefonu</string>
-    <string name="add_new_contact_priority0">Bu kişiyle ilgili tüm bildirimler yalnızca geçmişte görünür olacak</string>
-    <string name="add_new_contact_priority1">Bu kişiyle ilgili bildirimler standart bildirimler olarak değerlendirilecektir.</string>
-    <string name="add_new_contact_priority2">Bu kişinin tüm mesajları yüksek öncelikli olarak bildirilecektir</string>
+    <string name="priority_0_subtitle">Bu kişiyle ilgili tüm bildirimler yalnızca geçmişte görünür olacak</string>
+    <string name="priority_1_subtitle">Bu kişiyle ilgili bildirimler standart bildirimler olarak değerlendirilecektir.</string>
+    <string name="priority_2_subtitle">Bu kişinin tüm mesajları yüksek öncelikli olarak bildirilecektir</string>
     <string name="add_new_contact_toast">"İsim alanı doldurulmalıdır!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Cep Telefonu</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">Ofis</string>
     <string name="add_new_contact_mail_identifier">E-posta Tanımlayıcı</string>
     <string name="add_new_contact_mail_identifier_help">Bir e-posta alırken görünen tanımlayıcıya karşılık gelir</string>
-    <string name="add_new_contact_priority_0">Bildirim yok</string>
+    <string name="priority_0_title">Bildirim yok</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Ofis</item>
         <item>Ev</item>

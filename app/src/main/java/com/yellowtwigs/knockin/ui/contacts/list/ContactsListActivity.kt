@@ -24,6 +24,7 @@ import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.model.service.NotificationsListenerService
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.edit_contact.EditContactActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
@@ -37,8 +38,8 @@ class ContactsListActivity : AppCompatActivity() {
 
     private val contactsListViewModel: ContactsListViewModel by viewModels()
 
-    private lateinit var sortByPreferences : SharedPreferences
-    private lateinit var filterByPreferences : SharedPreferences
+    private lateinit var sortByPreferences: SharedPreferences
+    private lateinit var filterByPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -242,6 +243,7 @@ class ContactsListActivity : AppCompatActivity() {
     private fun setupRecyclerView(binding: ActivityContactsListBinding) {
         val contactsListAdapter = ContactsListAdapter(this) { id ->
             hideKeyboard()
+            startActivity(Intent(this, EditContactActivity::class.java).putExtra("contactId", id))
         }
 
         binding.recyclerView.apply {

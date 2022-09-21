@@ -190,11 +190,6 @@
 //
 //        setContentView()
 //
-//        val isDelete = intent.getBooleanExtra("isDelete", false)
-//        if (isDelete) {
-//            Toast.makeText(this, R.string.main_toast_delete_contact, Toast.LENGTH_LONG).show()
-//        }
-//
 //        val position = intent.getIntExtra("position", 0)
 //
 //        //region ======================= Relancement du Service de Notification =============================

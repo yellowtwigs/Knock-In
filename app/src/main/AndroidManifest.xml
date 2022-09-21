@@ -88,9 +88,9 @@
         <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
         <activity android:name=".ui.notifications.settings.NotificationsSettingsActivity" />
-        <activity
-            android:name=".ui.edit_contact.AddNewContactActivity"
-            android:configChanges="orientation|screenSize" />
+<!--        <activity-->
+<!--            android:name=".ui.edit_contact.AddNewContactActivity"-->
+<!--            android:configChanges="orientation|screenSize" />-->
         <activity
             android:name=".ui.edit_contact.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />

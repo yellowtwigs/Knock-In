@@ -527,7 +527,7 @@
 //
 //        // drop list
 //        val priority_list =
-//            arrayOf(getString(R.string.add_new_contact_priority_0), "Standard", "VIP")
+//            arrayOf(getString(R.string.priority_0_title), "Standard", "VIP")
 //        val array_adapter = ArrayAdapter(this, R.layout.spinner_item, priority_list)
 //        add_new_contact_Priority!!.adapter = array_adapter
 //        add_new_contact_Priority!!.onItemSelectedListener =
@@ -545,7 +545,7 @@
 //                    when (position) {
 //                        0 -> {
 //                            add_new_contact_PriorityExplain!!.text =
-//                                getString(R.string.add_new_contact_priority0)
+//                                getString(R.string.priority_0_subtitle)
 //                            add_new_contact_RoundedImageView!!.visibility = View.GONE
 //                            add_new_contact_RoundedImageView!!.setBorderColor(
 //                                resources.getColor(
@@ -563,7 +563,7 @@
 //                        }
 //                        1 -> {
 //                            add_new_contact_PriorityExplain!!.text =
-//                                getString(R.string.add_new_contact_priority1)
+//                                getString(R.string.priority_1_subtitle)
 //                            add_new_contact_RoundedImageView!!.visibility = View.GONE
 //                            add_new_contact_RoundedImageView!!.setBorderColor(
 //                                resources.getColor(
@@ -581,7 +581,7 @@
 //                        }
 //                        2 -> {
 //                            add_new_contact_PriorityExplain!!.text =
-//                                getString(R.string.add_new_contact_priority2)
+//                                getString(R.string.priority_2_subtitle)
 //                            add_new_contact_RoundedImageView!!.visibility = View.GONE
 //                            add_new_contact_RoundedImageView!!.setBorderColor(
 //                                resources.getColor(

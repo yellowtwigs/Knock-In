@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">名字</string>
     <string name="add_new_contact_phone_number">电话号码</string>
     <string name="add_new_contact_phone_number_mobile">手机号码</string>
-    <string name="add_new_contact_priority0">与该联系人相关的所有通知仅在历史记录中可见</string>
-    <string name="add_new_contact_priority1">与该联系人有关的通知将被视为普通通知</string>
-    <string name="add_new_contact_priority2">该联系人的所有消息将会优先通知</string>
+    <string name="priority_0_subtitle">与该联系人相关的所有通知仅在历史记录中可见</string>
+    <string name="priority_1_subtitle">与该联系人有关的通知将被视为普通通知</string>
+    <string name="priority_2_subtitle">该联系人的所有消息将会优先通知</string>
     <string name="add_new_contact_toast">“名字一栏不可为空”</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>电话</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">办公室</string>
     <string name="add_new_contact_mail_identifier">邮箱验证码</string>
     <string name="add_new_contact_mail_identifier_help">收到邮件后请输入验证码</string>
-    <string name="add_new_contact_priority_0">没有通知</string>
+    <string name="priority_0_title">没有通知</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>办公室</item>
         <item>主页</item>

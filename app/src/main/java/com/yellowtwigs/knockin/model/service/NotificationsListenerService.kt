@@ -145,7 +145,7 @@ class NotificationsListenerService : NotificationListenerService() {
 //                                    && notificationNotDouble(notification)
                                     if (sbp.appNotifier != "com.samsung.android.incallui") {
                                         saveNotification.invoke(notification)
-//                                        cancelWhatsappNotification(sbn)
+                                        cancelWhatsappNotification(sbn)
                                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                                             if (contact != null) {
                                                 displayNotificationWithContact(sbp, sbn, contact)
@@ -207,6 +207,8 @@ class NotificationsListenerService : NotificationListenerService() {
                     val endTime = convertTimeToEndTime(hourLimitForNotification)
                     val hourEnd = convertTimeToHour(endTime)
                     val minutesEnd = convertTimeToMinutes(endTime)
+
+                    vipNotificationsDeployment(sbp, sbn, contact)
 
 //                    when (vipSchedule) {
 //                        1 -> vipNotificationsDeployment(sbp, sbn, contact)
@@ -444,10 +446,10 @@ class NotificationsListenerService : NotificationListenerService() {
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
     }
 
-//    private fun vipNotificationsDeployment(
-//        sbp: StatusBarParcelable, sbn: StatusBarNotification,
-//        contact: ContactDB
-//    ) {
+    private fun vipNotificationsDeployment(
+        sbp: StatusBarParcelable, sbn: StatusBarNotification,
+        contact: ContactDB
+    ) {
 //        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
 //            var i = 0
 //            val vipNotif = VipNotificationsDB(
@@ -500,12 +502,19 @@ class NotificationsListenerService : NotificationListenerService() {
 //        } else {
 //            this.cancelNotification(sbn.key)
 //            cancelWhatsappNotif(sbn)
-////            displayLayoutWithSharedPreferences(
-////                sbp,
-////                contact.contactDB!!
-////            )
+//            displayLayoutWithSharedPreferences(
+//                sbp,
+//                contact
+//            )
 //        }
-//    }
+
+        this.cancelNotification(sbn.key)
+//        cancelWhatsappNotif(sbn)
+        displayLayoutWithSharedPreferences(
+            sbp,
+            contact
+        )
+    }
 
     private fun displayLayoutWithSharedPreferences(
         sbp: StatusBarParcelable,

@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">Vorname</string>
     <string name="add_new_contact_phone_number">Telefonnummer</string>
     <string name="add_new_contact_phone_number_mobile">Mobiltelefon</string>
-    <string name="add_new_contact_priority0">Alle Benachrichtigungen zu diesem Kontakt werden nur im Benachrichtigungsverlauf angezeigt</string>
-    <string name="add_new_contact_priority1">Benachrichtigungen bezüglich dieses Kontakts werden standardmäßig behandelt.</string>
-    <string name="add_new_contact_priority2">Alle Nachrichten von diesem Kontakt werden Ihnen vorrangig mitgeteilt</string>
+    <string name="priority_0_subtitle">Alle Benachrichtigungen zu diesem Kontakt werden nur im Benachrichtigungsverlauf angezeigt</string>
+    <string name="priority_1_subtitle">Benachrichtigungen bezüglich dieses Kontakts werden standardmäßig behandelt.</string>
+    <string name="priority_2_subtitle">Alle Nachrichten von diesem Kontakt werden Ihnen vorrangig mitgeteilt</string>
     <string name="add_new_contact_toast">"Das Vornamenfeld darf nicht leer sein!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">Büro</string>
     <string name="add_new_contact_mail_identifier">Email ID</string>
     <string name="add_new_contact_mail_identifier_help">Entspricht der Kennung, die beim Empfang einer Email angezeigt wird</string>
-    <string name="add_new_contact_priority_0">Keine Benachrichtigung</string>
+    <string name="priority_0_title">Keine Benachrichtigung</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Büro</item>
         <item>Zuhause</item>

@@ -43,7 +43,7 @@
     <string name="left_drawer_statistics">Estatisticas</string>
     <string name="left_drawer_help">Ajuda</string>
     <string name="left_drawer_import">Contatos da importação </string>
-    <string name="settings_contact_popup_phone_call">Popup de chamada telefônica</string>
+    <string name="settings_contact_popup_phone_call">Chamada telefônica</string>
     <string name="manage_my_screen_contact_popup_long_text">Ativar/desativar o pop-up antes de ligar para um contato</string>
     <string name="settings_invite_friend_text">Convide seus amigos</string>
     <string name="invite_friend_text">Use o Knock In para uma nova experiência de comunicação</string>
@@ -96,9 +96,9 @@
     <string name="add_new_contact_first_name">Primeiro nome</string>
     <string name="add_new_contact_phone_number">Número de telefone</string>
     <string name="add_new_contact_phone_number_mobile">Móvel</string>
-    <string name="add_new_contact_priority0">Todas as notificações relacionadas a este contato serão visíveis somente na história</string>
-    <string name="add_new_contact_priority1">As notificações relacionadas a este contato serão tratadas como notificações de padrão</string>
-    <string name="add_new_contact_priority2">Todas as mensagens deste contato serão notificadas com alta prioridade</string>
+    <string name="priority_0_subtitle">Todas as notificações relacionadas a este contato serão visíveis somente na história</string>
+    <string name="priority_1_subtitle">As notificações relacionadas a este contato serão tratadas como notificações de padrão</string>
+    <string name="priority_2_subtitle">Todas as mensagens deste contato serão notificadas com alta prioridade</string>
     <string name="add_new_contact_toast">"O campo primeiro nome deve ser preenchido!"</string>
     <string-array name="add_new_contact_phone_number_arrays">
         <item>Mobile</item>
@@ -112,7 +112,7 @@
     <string name="add_new_contact_mail_mobile">Escritório</string>
     <string name="add_new_contact_mail_identifier">Identificador do Email</string>
     <string name="add_new_contact_mail_identifier_help">Corresponde ao identificador visível ao receber um email</string>
-    <string name="add_new_contact_priority_0">Nenhuma notificação</string>
+    <string name="priority_0_title">Nenhuma notificação</string>
     <string-array name="add_new_contact_mail_arrays">
         <item>Escritório</item>
         <item>Casa</item>
