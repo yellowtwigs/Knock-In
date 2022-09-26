@@ -74,26 +74,28 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         val importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
 
-        if (!importContactPreferences.getBoolean("Import_Contact", false)) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_CONTACTS),
-                REQUEST_CODE_READ_CONTACT
-            )
-        }
-
         binding.apply {
             activateButton.setOnClickListener {
                 when (currentPosition) {
                     0 -> {
-                        activateNotificationsClick()
+                        if (!importContactPreferences.getBoolean("Import_Contact", false)) {
+                            ActivityCompat.requestPermissions(
+                                this@StartActivity,
+                                arrayOf(Manifest.permission.READ_CONTACTS),
+                                REQUEST_CODE_READ_CONTACT
+                            )
+                        }
                     }
                     1 -> {
-                        openOverlaySettings()
+                        activateNotificationsClick()
                     }
                     2 -> {
+                        openOverlaySettings()
+                    }
+                    3 -> {
                         if (checkIfGoEdition()) {
-                            val intent = Intent(this@StartActivity, MainActivity::class.java)
+                            val intent =
+                                Intent(this@StartActivity, MainActivity::class.java)
                             intent.putExtra("fromStartActivity", true)
                             startActivity(intent)
                             finish()
@@ -122,14 +124,17 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 finish()
             }
 
-            radioButton3.setOnClickListener {
+            radioButton1.setOnClickListener {
                 binding.viewPager.currentItem = 0
             }
-            radioButton4.setOnClickListener {
+            radioButton2.setOnClickListener {
                 binding.viewPager.currentItem = 1
             }
-            radioButton5.setOnClickListener {
+            radioButton3.setOnClickListener {
                 binding.viewPager.currentItem = 2
+            }
+            radioButton4.setOnClickListener {
+                binding.viewPager.currentItem = 3
             }
         }
     }
@@ -139,9 +144,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private fun setSliderContainer() {
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
-        sliderItems.add(SliderItem(R.drawable.notification_reception))
-        sliderItems.add(SliderItem(R.drawable.vip_message_reception))
-        sliderItems.add(SliderItem(R.drawable.carrousel_1))
+        sliderItems.add(SliderItem(R.drawable.contacts_list))
+        sliderItems.add(SliderItem(R.drawable.notif_history))
+        sliderItems.add(SliderItem(R.drawable.vip_message))
+        sliderItems.add(SliderItem(R.drawable.screen_lock_msg))
 
         val sliderAdapter = SliderAdapter(sliderItems)
 
@@ -174,11 +180,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     binding.apply {
                         when (currentPosition) {
                             0 -> {
-                                title.text = getString(R.string.start_activity_notification_title)
-                                subtitle.text =
-                                    getString(R.string.start_activity_notification_subtitle)
+                                title.text = getString(R.string.start_activity_import_title)
+                                subtitle.text = getString(R.string.start_activity_import_subtitle)
 
-                                checkRadioButton(radioButton3.id)
+                                checkRadioButton(radioButton1.id)
 
                                 activateButton.visibility = View.VISIBLE
                                 activateButton.setText(R.string.start_activity_button_notification)
@@ -186,10 +191,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 skip.visibility = View.GONE
                             }
                             1 -> {
-                                title.text = getString(R.string.superposition_title)
-                                subtitle.text = getString(R.string.superposition_subtitle)
+                                title.text = getString(R.string.start_activity_notification_title)
+                                subtitle.text =
+                                    getString(R.string.start_activity_notification_subtitle)
 
-                                checkRadioButton(radioButton4.id)
+                                checkRadioButton(radioButton2.id)
 
                                 activateButton.visibility = View.VISIBLE
                                 activateButton.setText(R.string.start_activity_button_notification)
@@ -198,12 +204,24 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 skip.visibility = View.GONE
                             }
                             2 -> {
+                                title.text = getString(R.string.superposition_title)
+                                subtitle.text = getString(R.string.superposition_subtitle)
+
+                                checkRadioButton(radioButton3.id)
+
+                                activateButton.visibility = View.VISIBLE
+                                activateButton.setText(R.string.start_activity_button_notification)
+
+                                next.visibility = View.GONE
+                                skip.visibility = View.GONE
+                            }
+                            3 -> {
+                                checkRadioButton(radioButton4.id)
                                 if (checkIfGoEdition()) {
                                     radioButton1.visibility = View.GONE
                                     radioButton2.visibility = View.GONE
                                     radioButton3.visibility = View.GONE
                                     radioButton4.visibility = View.GONE
-                                    radioButton5.visibility = View.GONE
 
                                     title.text =
                                         "${getString(R.string.notif_adapter_show_message_button)} " +
@@ -216,7 +234,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     subtitle.text =
                                         getString(R.string.notification_alert_dialog_message)
 
-                                    checkRadioButton(radioButton5.id)
+                                    checkRadioButton(radioButton3.id)
 
                                     activateButton.visibility = View.GONE
                                     next.visibility = View.VISIBLE
@@ -245,7 +263,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         binding.radioButton2.isChecked = binding.radioButton2.id == id
         binding.radioButton3.isChecked = binding.radioButton3.id == id
         binding.radioButton4.isChecked = binding.radioButton4.id == id
-        binding.radioButton5.isChecked = binding.radioButton5.id == id
     }
 
     //region =========================================== BILLING ============================================
@@ -378,14 +395,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 workerThread.postTask(sync)
                 checkRadioButton(binding.radioButton2.id)
 
-                val arraylistPermission = ArrayList<String>()
-                arraylistPermission.add(Manifest.permission.SEND_SMS)
-                arraylistPermission.add(Manifest.permission.CALL_PHONE)
-                ActivityCompat.requestPermissions(
-                    this,
-                    arraylistPermission.toArray(arrayOfNulls<String>(arraylistPermission.size)),
-                    REQUEST_CODE_SMS_AND_CALL
-                )
+                binding.viewPager.currentItem = 1
             }
         }
 
@@ -440,13 +450,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("serviceNotif", true)
             edit.apply()
-            binding.viewPager.currentItem = 1
+            binding.viewPager.currentItem = 2
         }
         if (Settings.canDrawOverlays(this)) {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("popupNotif", true)
             edit.apply()
-            binding.viewPager.currentItem = 2
+            binding.viewPager.currentItem = 3
         }
     }
 

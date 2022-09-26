@@ -10,7 +10,7 @@
         android:topRightRadius="10dp" />
     <gradient
         android:angle="90"
-        android:centerColor="#ecede6"
-        android:endColor="#ecede6"
-        android:startColor="#ecede6" />
+        android:centerColor="@color/custom_shape_top_bar_notif_adapter_whatsapp"
+        android:endColor="@color/custom_shape_top_bar_notif_adapter_whatsapp"
+        android:startColor="@color/custom_shape_top_bar_notif_adapter_whatsapp" />
 </shape>

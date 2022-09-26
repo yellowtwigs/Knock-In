@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         app:layout_constraintBottom_toTopOf="@+id/title"
-        app:layout_constraintEnd_toStartOf="@+id/radio_button_3"
+        app:layout_constraintEnd_toStartOf="@+id/view2"
         app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
     <androidx.appcompat.widget.AppCompatRadioButton
@@ -37,8 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/view2" />
 
     <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/radio_button_4"
@@ -46,14 +45,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/title"
         app:layout_constraintStart_toEndOf="@+id/radio_button_3"
-        app:layout_constraintTop_toBottomOf="@+id/view_pager" />
-
-    <androidx.appcompat.widget.AppCompatRadioButton
-        android:id="@+id/radio_button_5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/title"
-        app:layout_constraintStart_toEndOf="@+id/radio_button_4"
         app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
     <View
@@ -68,10 +59,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/start_activity_notification_title"
+        android:textAlignment="center"
         android:textColor="@color/darkColor"
         android:textSize="24sp"
         android:textStyle="bold"
