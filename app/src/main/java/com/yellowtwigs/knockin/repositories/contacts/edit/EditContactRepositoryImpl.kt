@@ -13,6 +13,8 @@ class EditContactRepositoryImpl @Inject constructor(private val dao: ContactsDao
 
     override fun getContact(id: Int) = dao.getContact(id).asLiveData()
 
+    override suspend fun addNewContact(contact: ContactDB) = dao.insertContact(contact)
+
     override suspend fun updateContact(contact: ContactDB) = dao.updateContact(contact)
 
     override suspend fun updateContactPriorityById(id: Int, priority: Int) {

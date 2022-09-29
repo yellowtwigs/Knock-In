@@ -15,6 +15,8 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -204,13 +206,24 @@ class ContactsListActivity : AppCompatActivity() {
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 hideKeyboard()
                 closeDrawers()
+
+                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+                itemText.text =
+                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+                itemLayout.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@ContactsListActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
+                }
                 when (menuItem.itemId) {
-                    R.id.nav_home -> {}
                     R.id.nav_notifications -> startActivity(
                         Intent(this@ContactsListActivity, NotificationsSettingsActivity::class.java)
-                    )
-                    R.id.navigation_teleworking -> startActivity(
-                        Intent(this@ContactsListActivity, TeleworkingActivity::class.java)
                     )
                     R.id.nav_in_app -> startActivity(
                         Intent(this@ContactsListActivity, PremiumActivity::class.java)

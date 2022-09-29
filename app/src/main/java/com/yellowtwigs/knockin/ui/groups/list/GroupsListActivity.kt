@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.net.Uri
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -177,16 +179,24 @@ class GroupsListActivity : AppCompatActivity() {
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 closeDrawers()
+
+                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+                itemText.text =
+                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+                itemLayout.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@GroupsListActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
+                }
                 when (menuItem.itemId) {
-                    R.id.nav_home -> {}
                     R.id.nav_notifications -> startActivity(
                         Intent(this@GroupsListActivity, NotificationsSettingsActivity::class.java)
-                    )
-//                    R.id.nav_messenger -> startActivity(
-//                        Intent(this@MainActivity, Mess::class.java)
-//                    )
-                    R.id.navigation_teleworking -> startActivity(
-                        Intent(this@GroupsListActivity, TeleworkingActivity::class.java)
                     )
                     R.id.nav_in_app -> startActivity(
                         Intent(this@GroupsListActivity, PremiumActivity::class.java)

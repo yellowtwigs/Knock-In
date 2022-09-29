@@ -15,5 +15,7 @@ class EditContactViewModel @Inject constructor(private val editContactRepository
 
     suspend fun updateContact(contact: ContactDB) = editContactRepository.updateContact(contact)
 
+    suspend fun addNewContact(contact: ContactDB) = editContactRepository.addNewContact(contact)
+
     suspend fun deleteContact(contact: ContactDB) = editContactRepository.deleteContact(contact)
 }

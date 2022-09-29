@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.SectionIndexer
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -66,6 +67,8 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 name.text = contact.firstName + " " + contact.lastName
 
                 var cpt = 1
+
+                favoriteIcon.isVisible = contact.isFavorite
 
                 if (contact.listOfMails.isNotEmpty() && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
                     cpt += 1

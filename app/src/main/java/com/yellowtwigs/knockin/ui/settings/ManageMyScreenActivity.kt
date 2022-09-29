@@ -11,14 +11,17 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
@@ -268,20 +271,34 @@ class ManageMyScreenActivity : AppCompatActivity() {
             menuItem.isChecked = true
             drawerLayout?.closeDrawers()
 
+            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+            itemText.text =
+                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+            itemLayout.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@ManageMyScreenActivity,
+                        TeleworkingActivity::class.java
+                    )
+                )
+            }
+
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-//                    startActivity(Intent(this@ManageMyScreenActivity, Main2Activity::class.java))
+                    startActivity(
+                        Intent(
+                            this@ManageMyScreenActivity,
+                            ContactsListActivity::class.java
+                        )
+                    )
                 }
                 R.id.nav_notifications -> startActivity(
                     Intent(
                         this@ManageMyScreenActivity,
                         NotificationsSettingsActivity::class.java
-                    )
-                )
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@ManageMyScreenActivity,
-                        TeleworkingActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(

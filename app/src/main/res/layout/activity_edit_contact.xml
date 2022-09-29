@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.edit_contact.EditContactActivity">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -21,63 +21,56 @@
             android:id="@+id/return_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
             android:background="?attr/actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_left_arrow" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/delete_contact"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
             android:layout_toStartOf="@+id/favorite_contact"
             android:background="?attr/actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/favorite_contact"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_garbage" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/favorite_contact"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
-            android:layout_toStartOf="@+id/validate"
             android:background="?attr/actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@drawable/ic_star_selector" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/favorite_contact_shine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:layout_toStartOf="@+id/validate"
-            android:background="?attr/actionBarItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_star_selector_shine" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/validate"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_star_no_shine" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/validate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:layout_marginEnd="15dp"
             android:background="?attr/actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_validate" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
@@ -472,9 +465,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="?attr/spinnerColor"
-                app:layout_constraintBottom_toBottomOf="@+id/edit_contact_priority_explain"
+                app:layout_constraintBottom_toBottomOf="@+id/priority_explain"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/edit_contact_priority_explain">
+                app:layout_constraintTop_toTopOf="@+id/priority_explain">
 
                 <Spinner
                     android:id="@+id/priority_spinner"
@@ -513,10 +506,8 @@
                 android:textColorHint="?attr/textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.617"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/priority_explain"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/priority_explain" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/edit_contact_vip_settings"
@@ -532,7 +523,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.178"
                 app:layout_constraintStart_toEndOf="@+id/contact_vip_settings"
-                app:layout_constraintTop_toBottomOf="@+id/edit_contact_priority_explain"
+                app:layout_constraintTop_toBottomOf="@+id/priority_explain"
                 app:srcCompat="@drawable/ic_circular_vip_icon"
                 tools:ignore="MissingConstraints" />
 

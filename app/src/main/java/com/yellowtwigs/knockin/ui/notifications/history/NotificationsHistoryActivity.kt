@@ -12,6 +12,8 @@ import android.view.MenuItem
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -281,17 +283,26 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 menuItem.isChecked = true
                 binding.drawerLayout.closeDrawers()
 
+                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+                itemText.text =
+                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+                itemLayout.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@NotificationsHistoryActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
+                }
+
                 when (menuItem.itemId) {
                     R.id.nav_notifications -> startActivity(
                         Intent(
                             this@NotificationsHistoryActivity,
                             NotificationsSettingsActivity::class.java
-                        )
-                    )
-                    R.id.navigation_teleworking -> startActivity(
-                        Intent(
-                            this@NotificationsHistoryActivity,
-                            TeleworkingActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> startActivity(

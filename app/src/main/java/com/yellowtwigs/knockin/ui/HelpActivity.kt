@@ -18,6 +18,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -25,10 +26,12 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HelpActivity : AppCompatActivity(), SensorEventListener {
@@ -126,7 +129,30 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
             menuItem.isChecked = true
             help_activity_DrawerLayout?.closeDrawers()
 
+            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+            itemText.text =
+                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+            itemLayout.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@HelpActivity,
+                        TeleworkingActivity::class.java
+                    )
+                )
+            }
+
             when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    startActivity(
+                        Intent(
+                            this@HelpActivity,
+                            ContactsListActivity::class.java
+                        )
+                    )
+                }
                 R.id.nav_notifications -> startActivity(
                     Intent(
                         this@HelpActivity,

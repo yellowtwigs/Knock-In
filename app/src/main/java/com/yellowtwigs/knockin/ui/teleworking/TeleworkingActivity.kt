@@ -8,6 +8,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TimePicker
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
@@ -117,6 +119,21 @@ class TeleworkingActivity : AppCompatActivity() {
         binding.apply {
             navView.setNavigationItemSelectedListener { menuItem ->
                 drawerLayout.closeDrawers()
+
+                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+                itemText.text =
+                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+                itemLayout.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@TeleworkingActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
+                }
                 when (menuItem.itemId) {
                     R.id.nav_home -> startActivity(
                         Intent(

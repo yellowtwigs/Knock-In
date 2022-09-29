@@ -49,7 +49,7 @@
 //import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 //import com.yellowtwigs.knockin.ui.HelpActivity
 //import com.yellowtwigs.knockin.ui.contacts.list.ContactRecyclerViewAdapter
-//import com.yellowtwigs.knockin.ui.edit_contact.AddNewContactActivity
+//import com.yellowtwigs.knockin.ui.contacts.add_new.AddNewContactActivity
 //import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 //import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 //import com.yellowtwigs.knockin.ui.notifications.NotificationListener

@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.*
@@ -16,6 +18,7 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import kotlinx.coroutines.*
@@ -101,20 +104,34 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 menuItem.isChecked = true
                 drawerLayout.closeDrawers()
 
+                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+                itemText.text =
+                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+                itemLayout.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@PremiumActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
+                }
+
                 when (menuItem.itemId) {
                     R.id.nav_home -> {
-//                        startActivity(Intent(this@PremiumActivity, Main2Activity::class.java))
+                        startActivity(
+                            Intent(
+                                this@PremiumActivity,
+                                ContactsListActivity::class.java
+                            )
+                        )
                     }
                     R.id.nav_notifications -> startActivity(
                         Intent(
                             this@PremiumActivity,
                             NotificationsSettingsActivity::class.java
-                        )
-                    )
-                    R.id.navigation_teleworking -> startActivity(
-                        Intent(
-                            this@PremiumActivity,
-                            TeleworkingActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> {

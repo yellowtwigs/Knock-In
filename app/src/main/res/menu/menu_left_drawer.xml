@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group
-        android:id="@+id/menu_top"
-        android:orderInCategory="@android:integer/config_longAnimTime"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/navigation_teleworking"
-            android:icon="@drawable/ic_teleworking"
-            android:title="@string/teleworking" />
+        android:checkableBehavior="none">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
@@ -21,16 +14,11 @@
             android:id="@+id/nav_messenger"
             android:icon="@drawable/ic_chat"
             android:title="@string/left_drawer_chat"
-            android:visible="false" />
-    </group>
-    <group
-        android:id="@+id/menu_bottom"
-        android:menuCategory="system"
-        android:checkableBehavior="single">
+            android:visible="false"/>
         <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notification"
-            android:title="@string/left_drawer_notif_config" />
+            android:title="@string/left_drawer_notif_config"/>
         <item
             android:id="@+id/nav_manage_screen"
             android:icon="@drawable/ic_grid"
@@ -46,8 +34,8 @@
             android:visible="false" />
         <item
             android:id="@+id/nav_invite_friend"
-            android:icon="@drawable/ic_invite_friend"
             android:title="@string/settings_invite_friend_text"
+            android:icon="@drawable/ic_invite_friend"
             android:visible="false" />
     </group>
 </menu>

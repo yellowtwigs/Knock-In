@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
@@ -95,6 +96,21 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound?.stop()
             }
 
+            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+            itemText.text =
+                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+            itemLayout.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@NotificationsSettingsActivity,
+                        TeleworkingActivity::class.java
+                    )
+                )
+            }
+
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     startActivity(
@@ -112,12 +128,6 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                         )
                     )
                 }
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@NotificationsSettingsActivity,
-                        TeleworkingActivity::class.java
-                    )
-                )
                 R.id.nav_in_app -> {
                     startActivity(
                         Intent(
