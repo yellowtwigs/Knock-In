@@ -19,6 +19,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -77,15 +79,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                         Intent(
                             this@NotificationHistoryActivity,
                             MainActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_teleworking -> {
-                    startActivity(
-                        Intent(
-                            this@NotificationHistoryActivity,
-                            TeleworkingActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -253,6 +246,21 @@ class NotificationHistoryActivity : AppCompatActivity() {
                 menuItem.isChecked = true
                 binding.drawerLayout.closeDrawers()
 
+                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+                itemText.text =
+                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+                itemLayout.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@NotificationHistoryActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
+                }
+
                 when (menuItem.itemId) {
                     R.id.nav_home -> startActivity(
                         Intent(
@@ -264,12 +272,6 @@ class NotificationHistoryActivity : AppCompatActivity() {
                         Intent(
                             this@NotificationHistoryActivity,
                             ManageNotificationActivity::class.java
-                        )
-                    )
-                    R.id.navigation_teleworking -> startActivity(
-                        Intent(
-                            this@NotificationHistoryActivity,
-                            TeleworkingActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> startActivity(

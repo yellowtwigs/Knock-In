@@ -421,6 +421,7 @@
     <string name="button_permission">السماح</string>
     <string name="start_activity_skip">تخطي</string>
     <string name="start_activity_next">التالي</string>
+    <string name="start_activity_select">يختار</string>
     <string name="start_activity_skip_alert_dialog_title">تمرير الصلاحيات</string>
     <string name="start_activity_skip_alert_dialog_message">إذا قمت بتمرير الصلاحيات ، يمكنك تنشيطها لاحقًا</string>
     <string name="start_activity_skip_alert_dialog_message_importation">يعمل Knock In على استيراد جهات الاتصال الخاصة بك ، إذا قمت بالتبديل الآن ، فلن يتم حفظ جهات الاتصال الخاصة بك</string>

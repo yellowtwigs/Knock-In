@@ -423,6 +423,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="button_permission">Memperbolehkan</string>
     <string name="start_activity_skip">Melompati</string>
     <string name="start_activity_next">Berikutnya</string>
+    <string name="start_activity_select">Pilih</string>
     <string name="start_activity_skip_alert_dialog_title">Melewatkan izin</string>
     <string name="start_activity_skip_alert_dialog_message">Jika anda melewatkan izin, anda bisa membiarkan mereka nanti</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In mengimpor kontak anda; Jika anda mengabaikan sekarang, kontak anda tidak akan diselamatkan</string>

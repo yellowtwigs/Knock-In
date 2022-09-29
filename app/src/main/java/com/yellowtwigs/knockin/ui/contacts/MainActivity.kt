@@ -23,11 +23,10 @@ import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -133,15 +132,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         Intent(
                             this@MainActivity,
                             GroupManagerActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_teleworking -> {
-                    startActivity(
-                        Intent(
-                            this@MainActivity,
-                            TeleworkingActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -330,6 +320,21 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val navInviteFriend = menu.findItem(R.id.nav_invite_friend)
         navInviteFriend.isVisible = true
 
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+        itemLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    TeleworkingActivity::class.java
+                )
+            )
+        }
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             mainDrawerLayout?.closeDrawers()
             when (menuItem.itemId) {
@@ -338,12 +343,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     Intent(
                         this@MainActivity,
                         ManageNotificationActivity::class.java
-                    )
-                )
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@MainActivity,
-                        TeleworkingActivity::class.java
                     )
                 )
 //                R.id.nav_go_to_kin -> {

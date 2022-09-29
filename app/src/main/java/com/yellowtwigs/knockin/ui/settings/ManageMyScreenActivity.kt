@@ -11,8 +11,10 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -263,6 +265,21 @@ class ManageMyScreenActivity : AppCompatActivity() {
         val menu = navigationView.menu
         menu.findItem(R.id.nav_manage_screen).isChecked = true
 
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+        itemLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@ManageMyScreenActivity,
+                    TeleworkingActivity::class.java
+                )
+            )
+        }
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout?.closeDrawers()
@@ -275,12 +292,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
                     Intent(
                         this@ManageMyScreenActivity,
                         ManageNotificationActivity::class.java
-                    )
-                )
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@ManageMyScreenActivity,
-                        TeleworkingActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(

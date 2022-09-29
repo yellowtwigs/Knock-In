@@ -419,6 +419,7 @@
     <string name="button_permission">同意</string>
     <string name="start_activity_skip">跳过</string>
     <string name="start_activity_next">下一步</string>
+    <string name="start_activity_select">选择</string>
     <string name="start_activity_skip_alert_dialog_title">跳过授权</string>
     <string name="start_activity_skip_alert_dialog_message">如果您选择跳过授权的话，您接下来将会全部同意</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In正在导入您的联系人；如果您忽略本通知的话，您的联系人信息将不会保存</string>

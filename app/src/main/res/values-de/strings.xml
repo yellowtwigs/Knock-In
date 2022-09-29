@@ -419,6 +419,7 @@
     <string name="button_permission">Gestatten</string>
     <string name="start_activity_skip">Überspringen</string>
     <string name="start_activity_next">Weitere</string>
+    <string name="start_activity_select">Auswählen</string>
     <string name="start_activity_skip_alert_dialog_title">Berechtigungen überspringen</string>
     <string name="start_activity_skip_alert_dialog_message">Wenn Sie Berechtigungen überspringen, können Sie sie später zulassen</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In importiert Ihre Kontakte. Wenn Sie dies jetzt ignorieren, werden Ihre Kontakte nicht gespeichert</string>

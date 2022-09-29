@@ -22,6 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -116,15 +117,6 @@ class CockpitActivity : AppCompatActivity() {
                         Intent(
                             this@CockpitActivity,
                             GroupManagerActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_teleworking -> {
-                    startActivity(
-                        Intent(
-                            this@CockpitActivity,
-                            TeleworkingActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -236,6 +228,21 @@ class CockpitActivity : AppCompatActivity() {
 
         navigationView?.menu?.getItem(0)?.isChecked = true
 
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+        itemLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@CockpitActivity,
+                    TeleworkingActivity::class.java
+                )
+            )
+        }
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             cockpit_DrawerLayout?.closeDrawers()
@@ -251,12 +258,6 @@ class CockpitActivity : AppCompatActivity() {
                     Intent(
                         this@CockpitActivity,
                         ManageNotificationActivity::class.java
-                    )
-                )
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        TeleworkingActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(

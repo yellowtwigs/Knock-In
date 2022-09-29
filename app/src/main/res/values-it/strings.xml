@@ -419,6 +419,7 @@
     <string name="button_permission">Consenti</string>
     <string name="start_activity_skip">Salta</string>
     <string name="start_activity_next">Prossimo</string>
+    <string name="start_activity_select">Selezionare</string>
     <string name="start_activity_skip_alert_dialog_title">Salta permessi </string>
     <string name="start_activity_skip_alert_dialog_message">Se salti i permessi, potrai sempre modificarli piu\’ tardi</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In sta importando i tuoi contatti; se annulli ora, i tuoi contatti non verranno salvati</string>

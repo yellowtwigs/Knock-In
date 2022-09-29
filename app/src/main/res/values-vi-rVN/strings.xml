@@ -421,6 +421,7 @@
     <string name="button_permission">Đồng ý</string>
     <string name="start_activity_skip">Bỏ qua</string>
     <string name="start_activity_next">Bước tiếp theo</string>
+    <string name="start_activity_select">Lựa chọn</string>
     <string name="start_activity_skip_alert_dialog_title">Bỏ qua ủy quyền</string>
     <string name="start_activity_skip_alert_dialog_message">Nếu bạn bỏ qua ủy quyền, thì tất cả tiếp theo bạn sẽ đồng ý</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In đang nhập liên hệ của bạn; nếu bạn bỏ qua ngay bây giờ, liên hệ của bạn sẽ không được lưu lại </string>

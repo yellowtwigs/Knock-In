@@ -420,6 +420,7 @@
     <string name="button_permission">İzin ver</string>
     <string name="start_activity_skip">Atla</string>
     <string name="start_activity_next">İleri</string>
+    <string name="start_activity_select">Seçme</string>
     <string name="start_activity_skip_alert_dialog_title">İzinleri atla</string>
     <string name="start_activity_skip_alert_dialog_message">İzinleri atlarsanız, daha sonra izin verebilirsiniz</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In kişilerinizi içe aktarıyor; şimdi yoksayarsanız, kişileriniz kaydedilmez</string>

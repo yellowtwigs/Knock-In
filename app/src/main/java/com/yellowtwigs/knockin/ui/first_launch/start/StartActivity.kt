@@ -216,7 +216,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 skip.visibility = View.GONE
                             }
                             3 -> {
-                                checkRadioButton(radioButton4.id)
                                 if (checkIfGoEdition()) {
                                     radioButton1.visibility = View.GONE
                                     radioButton2.visibility = View.GONE
@@ -234,7 +233,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     subtitle.text =
                                         getString(R.string.notification_alert_dialog_message)
 
-                                    checkRadioButton(radioButton3.id)
+                                    checkRadioButton(radioButton4.id)
 
                                     activateButton.visibility = View.GONE
                                     next.visibility = View.VISIBLE
@@ -398,10 +397,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 binding.viewPager.currentItem = 1
             }
         }
-
-        if (requestCode == REQUEST_CODE_SMS_AND_CALL) {
-            checkRadioButton(binding.radioButton3.id)
-        }
     }
 
     override fun onBackPressed() {
@@ -415,7 +410,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     companion object {
         const val REQUEST_CODE_READ_CONTACT = 2
-        const val REQUEST_CODE_SMS_AND_CALL = 5
     }
 
     private fun isNotificationServiceEnabled(): Boolean {

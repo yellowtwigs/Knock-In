@@ -419,6 +419,7 @@
     <string name="button_permission">Permitir</string>
     <string name="start_activity_skip">Pular</string>
     <string name="start_activity_next">Próximo</string>
+    <string name="start_activity_select">Selecionar</string>
     <string name="start_activity_skip_alert_dialog_title">Ignorar permissões</string>
     <string name="start_activity_skip_alert_dialog_message">Se você pular permissões, poderá as permitir mais tarde</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In está importando seus contatos;  se você os ignorar agora, seus contatos não serão salvos</string>

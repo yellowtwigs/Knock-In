@@ -425,6 +425,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="button_permission">Permitir</string>
     <string name="start_activity_skip">Omitir</string>
     <string name="start_activity_next">Siguiente</string>
+    <string name="start_activity_select">Seleccione</string>
     <string name="start_activity_skip_alert_dialog_title">Omitir permisos</string>
     <string name="start_activity_skip_alert_dialog_message">Si omite permisos podrá autorizarlos mas tarde</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In está importando tus contactos; si ignora ahora, sus contactos no se guardarán</string>

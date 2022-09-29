@@ -104,15 +104,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     )
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.navigation_teleworking -> {
-                    startActivity(
-                        Intent(
-                            this@GroupManagerActivity,
-                            TeleworkingActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    )
-                    return@OnNavigationItemSelectedListener true
-                }
                 R.id.navigation_cockpit -> {
                     startActivity(
                         Intent(
@@ -199,12 +190,6 @@ class GroupManagerActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     Intent(
                         this@GroupManagerActivity,
                         ManageNotificationActivity::class.java
-                    )
-                )
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@GroupManagerActivity,
-                        TeleworkingActivity::class.java
                     )
                 )
                 R.id.nav_manage_screen -> startActivity(

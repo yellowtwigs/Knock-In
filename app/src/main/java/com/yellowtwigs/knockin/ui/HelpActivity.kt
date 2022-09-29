@@ -19,6 +19,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +32,7 @@ import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 /**
  * La Classe qui permet d'afficher les informations,la FAQ, le contact et les conditions de Knockin
@@ -126,6 +128,21 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         val menu = navigationView.menu
         val navItem = menu.findItem(R.id.nav_help)
         navItem.isChecked = true
+
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+        itemLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@HelpActivity,
+                    TeleworkingActivity::class.java
+                )
+            )
+        }
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true

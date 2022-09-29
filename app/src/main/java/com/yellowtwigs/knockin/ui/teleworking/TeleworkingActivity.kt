@@ -8,6 +8,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TimePicker
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.navigation.NavigationView
@@ -49,8 +52,17 @@ class TeleworkingActivity : AppCompatActivity() {
             getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
 
         binding.apply {
-            navView.menu.findItem(R.id.navigation_teleworking).isChecked = true
+//            navView.menu.findItem(R.id.teleworking_item).isChecked = true
         }
+
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemIcon = findViewById<AppCompatImageView>(R.id.teleworking_item_icon)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+        itemIcon.setImageResource(R.drawable.ic_teleworking_yellow)
+        itemText.setTextColor(resources.getColor(R.color.colorPrimaryDark))
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
 
         binding.vipContactsButton.setOnClickListener {
             startActivity(
@@ -126,7 +138,7 @@ class TeleworkingActivity : AppCompatActivity() {
     private fun setupDrawerLayout() {
         binding.apply {
             navView.setNavigationItemSelectedListener { menuItem ->
-                navView.menu.findItem(R.id.navigation_teleworking).isChecked = true
+//                navView.menu.findItem(R.id.navigation_teleworking).isChecked = true
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
                     R.id.nav_home -> startActivity(

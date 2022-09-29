@@ -419,6 +419,7 @@
     <string name="button_permission">Autoriser</string>
     <string name="start_activity_skip">Passer</string>
     <string name="start_activity_next">Suivant</string>
+    <string name="start_activity_select">Sélectionner</string>
     <string name="start_activity_skip_alert_dialog_title">Passer les autorisations</string>
     <string name="start_activity_skip_alert_dialog_message">Si vous passez les autorisations, vous pourrez les activer plus tard</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In importe vos contacts,

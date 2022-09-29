@@ -38,14 +38,4 @@
             android:icon="@drawable/ic_invite_friend"
             android:visible="false" />
     </group>
-
-    <group
-        android:id="@+id/menu_top"
-        android:checkableBehavior="none">
-        <item
-            android:id="@+id/navigation_teleworking"
-            android:icon="@drawable/ic_teleworking"
-            
-            android:title="@string/teleworking" />
-    </group>
 </menu>

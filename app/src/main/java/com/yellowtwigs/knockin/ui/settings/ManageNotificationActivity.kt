@@ -122,6 +122,21 @@ class ManageNotificationActivity : AppCompatActivity() {
         val navItem = menu.findItem(R.id.nav_notifications)
         navItem.isChecked = true
 
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+        itemLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@ManageNotificationActivity,
+                    TeleworkingActivity::class.java
+                )
+            )
+        }
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             drawerLayout?.closeDrawers()
@@ -145,12 +160,6 @@ class ManageNotificationActivity : AppCompatActivity() {
                         )
                     )
                 }
-                R.id.navigation_teleworking -> startActivity(
-                    Intent(
-                        this@ManageNotificationActivity,
-                        TeleworkingActivity::class.java
-                    )
-                )
                 R.id.nav_in_app -> {
 
                     if (settings_NotificationMessagesAlarmSound != null) {
