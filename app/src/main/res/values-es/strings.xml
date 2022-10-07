@@ -303,6 +303,7 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="import_contacts_button_yes">Importar</string>
     <string name="import_contacts_button_no">Omitir</string>
     <string name="import_contacts_toast">Contactos importados</string>
+    <string name="import_contacts_toast_2">La importación aún no está completa</string>
     <string name="import_contacts_alert_dialog"> Podrá importar sus contactos más tarde desde el menú de navegación a través de la pestaña "Importar sus contactos" </string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -498,4 +499,8 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="modify">Modificar</string>
     <string name="work_schedule_title">Horario de trabajo (lunes a viernes)</string>
     <string name="edit_reminder_hour_title">Tiempo de recordatorio diario para notificaciones no VIP:</string>
+    <string name="daily_reminder_time">Tiempo de recordatorio diario</string>
+    <string name="teleworking_help">En esta pantalla puedes configurar tu entorno de Teletrabajo</string>
+    <string name="teleworking_alert_dialog_title">Cambiar el modo de teletrabajo</string>
+    <string name="teleworking_alert_dialog_subtitle">Acabas de cambiar el modo de teletrabajo, ¿quieres volver a la pantalla de Contactos?</string>
 </resources>

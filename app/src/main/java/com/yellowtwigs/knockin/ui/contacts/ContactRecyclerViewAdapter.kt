@@ -392,6 +392,7 @@ class ContactRecyclerViewAdapter(
 
         holder.constraintLayoutMenu.scrollBarFadeDuration = 20000
         holder.constraintLayoutMenu.scrollBarSize = 25
+        holder.constraintLayoutMenu.scrollBarStyle
         holder.constraintLayoutMenu.scrollBarStyle = View.SCROLLBARS_OUTSIDE_OVERLAY
         when (cpt) {
             3 -> {

@@ -11,9 +11,11 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -29,6 +31,7 @@ import com.yellowtwigs.knockin.model.data.ContactDetailDB
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
+import kotlinx.coroutines.*
 import kotlin.math.abs
 
 /**
@@ -42,6 +45,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var workerThread: DbWorkerThread
     private var currentPosition = 0
     private lateinit var binding: ActivityStartActivityBinding
+
+    private var contactsAreImported = false
+    private var importationFinished = false
 
     //endregion
 
@@ -73,6 +79,19 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         val importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+        contactsAreImported = importContactPreferences.getBoolean("Import_Contact", false)
+
+        val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        if (isNotificationServiceEnabled()) {
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("serviceNotif", true)
+            edit.apply()
+        }
+        if (Settings.canDrawOverlays(this)) {
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif", true)
+            edit.apply()
+        }
 
         binding.apply {
             activateButton.setOnClickListener {
@@ -186,6 +205,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 checkRadioButton(radioButton1.id)
 
                                 activateButton.visibility = View.VISIBLE
+                                activateButtonIsClickable(!contactsAreImported)
                                 activateButton.setText(R.string.start_activity_button_notification)
                                 next.visibility = View.GONE
                                 skip.visibility = View.GONE
@@ -198,6 +218,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 checkRadioButton(radioButton2.id)
 
                                 activateButton.visibility = View.VISIBLE
+                                activateButtonIsClickable(!isNotificationServiceEnabled())
                                 activateButton.setText(R.string.start_activity_button_notification)
 
                                 next.visibility = View.GONE
@@ -210,6 +231,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 checkRadioButton(radioButton3.id)
 
                                 activateButton.visibility = View.VISIBLE
+                                activateButtonIsClickable(!Settings.canDrawOverlays(this@StartActivity))
                                 activateButton.setText(R.string.start_activity_button_notification)
 
                                 next.visibility = View.GONE
@@ -236,8 +258,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     checkRadioButton(radioButton4.id)
 
                                     activateButton.visibility = View.GONE
-                                    next.visibility = View.VISIBLE
                                     skip.visibility = View.VISIBLE
+
+                                    if (importationFinished) {
+                                        binding.next.visibility = View.VISIBLE
+                                    } else {
+                                        binding.next.visibility = View.INVISIBLE
+                                    }
+
+                                    binding.loading.isVisible = !importationFinished
                                 }
                             }
                         }
@@ -246,6 +275,28 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             })
 
             setCurrentItem(currentPosition, true)
+        }
+    }
+
+    private fun activateButtonIsClickable(isClickable: Boolean) {
+        binding.activateButton.isClickable = isClickable
+
+        if (isClickable) {
+            binding.activateButton.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.colorPrimary,
+                    null
+                )
+            )
+        } else {
+            binding.activateButton.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.greyColor,
+                    null
+                )
+            )
         }
     }
 
@@ -370,8 +421,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     edit.putBoolean("importWhatsappPreferences", true)
                     edit.apply()
                 }
-                val sync = Runnable {
-                    ContactManager(this).getAllContactsInfoSync(contentResolver)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    contactsAreImported = true
+
+                    ContactManager(this@StartActivity).getAllContactsInfoSync(contentResolver)
 
                     val sharedPreferencesSync =
                         getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
@@ -390,8 +444,22 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                         index++
                     }
+
+                    importationFinished = true
+
+                    withContext(Dispatchers.Main) {
+                        if (binding.viewPager.currentItem == 3) {
+                            if (importationFinished) {
+                                binding.next.visibility = View.VISIBLE
+                            } else {
+                                binding.next.visibility = View.INVISIBLE
+                            }
+
+                            binding.loading.isVisible = !importationFinished
+                        }
+                    }
                 }
-                workerThread.postTask(sync)
+
                 checkRadioButton(binding.radioButton2.id)
 
                 binding.viewPager.currentItem = 1

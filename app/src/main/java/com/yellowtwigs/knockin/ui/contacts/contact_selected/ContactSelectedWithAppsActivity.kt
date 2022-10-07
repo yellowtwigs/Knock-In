@@ -325,7 +325,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
     private fun randomDefaultImage(avatarId: Int): Int {
         val sharedPreferencesIsMultiColor =
             getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
-        val multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
+        val multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0)
         val sharedPreferencesContactsColor =
             getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
         val contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0)

@@ -665,7 +665,7 @@ class ContactManager(var contactList: ArrayList<ContactWithAllInformation>, var 
     fun randomDefaultImage(avatarId: Int, createOrGet: String): Int {
         val sharedPreferencesIsMultiColor =
             context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
-        val multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
+        val multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0)
 
         if (createOrGet == "Create") {
             return kotlin.random.Random.nextInt(0, 7)

@@ -433,7 +433,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
             edit_contact_priority = 2
         }
         if (intent.getBooleanExtra("fromVipSettings", false)) {
-
             notificationSound = intent.getIntExtra("notification_Sound", 0)
             notificationTone = intent.getStringExtra("notificationTone").toString()
             isCustomSound = intent.getIntExtra("isCustomSound", 0)
@@ -835,6 +834,7 @@ class EditContactDetailsActivity : AppCompatActivity() {
                 hourLimit != currentContact.contactDB?.hourLimitForNotification
             ) {
                 setCustomAlarmTone()
+
                 editContactValidation()
                 if (fromGroupActivity) {
                     startActivity(
@@ -1098,7 +1098,6 @@ class EditContactDetailsActivity : AppCompatActivity() {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     if (isFavorite == true) {
-
                         textChanged(messengerInput, messengerInput.editText?.text?.toString())
                         edit_contact_ContactsDatabase?.contactsDao()?.updateContact(
                             ContactDB(
@@ -1123,6 +1122,8 @@ class EditContactDetailsActivity : AppCompatActivity() {
                             )
                         )
                     } else {
+                        Log.i("notification_Sound", "notificationSound : $notificationSound")
+
                         edit_contact_ContactsDatabase?.contactsDao()?.updateContact(
                             ContactDB(
                                 edit_contact_id,

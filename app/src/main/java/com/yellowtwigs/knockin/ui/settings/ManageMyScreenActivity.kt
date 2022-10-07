@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +17,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,8 +25,10 @@ import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.MainActivity
+import com.yellowtwigs.knockin.ui.group.GroupManagerActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+
 
 /**
  * La Classe qui permet de changer le theme de l'application et de changer le nombre de contact par ligne
@@ -76,7 +81,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         val sharedPreferencesIsMultiColor =
             getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
-        var isMultiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
+        var IsMultiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0)
 
         val sharedPreferencesContactsColor =
             getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
@@ -113,6 +118,10 @@ class ManageMyScreenActivity : AppCompatActivity() {
         //endregion
 
         checkTheme(sharedThemePreferences)
+
+        if (intent.getBooleanExtra("ChangeTheme", false)) {
+            buildMaterialAlertDialogBuilder()
+        }
 
         //region ===================================== SetImageResource =====================================
 
@@ -363,7 +372,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
         val colorList = resources.getStringArray(R.array.manage_my_screen_spinner_array)
         val colorsSpinnerAdapter = ArrayAdapter(this, R.layout.spinner_item, colorList)
         manageMyScreenSpinnerSelectColor?.adapter = colorsSpinnerAdapter
-        manageMyScreenSpinnerSelectColor?.setSelection(isMultiColor)
+        manageMyScreenSpinnerSelectColor?.setSelection(IsMultiColor)
         manageMyScreenSpinnerSelectColor?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
 
@@ -378,24 +387,24 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 ) {
                     when (position) {
                         0 -> {
-                            if (isMultiColor == 1) {
+                            if (IsMultiColor == 1) {
                                 buildMaterialAlertDialogBuilder()
                             }
 
                             val edit: SharedPreferences.Editor =
                                 sharedPreferencesIsMultiColor.edit()
-                            edit.putInt("isMultiColor", position)
+                            edit.putInt("IsMultiColor", position)
                             edit.apply()
-                            isMultiColor = 0
+                            IsMultiColor = 0
 
                             manageMyScreenButtonSelectColorLayout?.visibility = View.INVISIBLE
                         }
                         1 -> {
                             val edit: SharedPreferences.Editor =
                                 sharedPreferencesIsMultiColor.edit()
-                            edit.putInt("isMultiColor", position)
+                            edit.putInt("IsMultiColor", position)
                             edit.apply()
-                            isMultiColor = 1
+                            IsMultiColor = 1
 
                             manageMyScreenButtonSelectColorLayout?.visibility = View.VISIBLE
                         }
@@ -488,7 +497,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
 
         manageMyScreenColorContactOrange?.setOnClickListener {
-
             manageMyScreenColorContactBlueIndigo?.setBackgroundResource(R.drawable.border_selected_grey)
             manageMyScreenColorContactGreenLime?.setBackgroundResource(R.drawable.border_selected_grey)
             manageMyScreenColorContactPurpleGrape?.setBackgroundResource(R.drawable.border_selected_grey)
@@ -505,7 +513,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
         }
 
         manageMyScreenColorContactCyanTeal?.setOnClickListener {
-
             manageMyScreenColorContactBlueIndigo?.setBackgroundResource(R.drawable.border_selected_grey)
             manageMyScreenColorContactGreenLime?.setBackgroundResource(R.drawable.border_selected_grey)
             manageMyScreenColorContactPurpleGrape?.setBackgroundResource(R.drawable.border_selected_grey)
@@ -531,26 +538,71 @@ class ManageMyScreenActivity : AppCompatActivity() {
         switchTheme.isChecked = sharedThemePreferences.getBoolean("darkTheme", false)
 
         switchTheme.setOnCheckedChangeListener { compoundButton, isChecked ->
+            changeSwitchCompatColor(switchTheme)
             val editTheme = sharedThemePreferences.edit()
             editTheme.putBoolean("darkTheme", isChecked)
             editTheme.apply()
-
             refreshActivity()
         }
     }
 
+    private fun changeSwitchCompatColor(switchTheme: SwitchCompat) {
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_checked),
+            intArrayOf(android.R.attr.state_checked)
+        )
+
+        lateinit var thumbColors: IntArray
+        lateinit var trackColors: IntArray
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            thumbColors = intArrayOf(
+                Color.WHITE,
+                Color.CYAN
+            )
+
+            trackColors = intArrayOf(
+                Color.LTGRAY,
+                Color.argb(120, 3, 214, 194)
+            )
+        } else {
+            thumbColors = intArrayOf(
+                Color.LTGRAY,
+                Color.CYAN
+            )
+
+            trackColors = intArrayOf(
+                Color.LTGRAY,
+                Color.argb(120, 3, 214, 194)
+            )
+        }
+
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(switchTheme.thumbDrawable),
+            ColorStateList(states, thumbColors)
+        )
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(switchTheme.trackDrawable),
+            ColorStateList(states, trackColors)
+        )
+    }
+
     //region ========================================== Functions ===========================================
+
+    private fun refreshActivity() {
+        startActivity(
+            Intent(this@ManageMyScreenActivity, ManageMyScreenActivity::class.java).addFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION
+            ).putExtra("ChangeTheme", true)
+        )
+        finish()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu_help, menu)
         return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun refreshActivity() {
-        val i = Intent(applicationContext, ManageMyScreenActivity::class.java)
-        startActivity(i)
-        finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -571,12 +623,13 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
     private fun buildMaterialAlertDialogBuilder() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title)) // getString(R.string.main_alert_dialog_delete_contact_title)
+            .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title))
             .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 startActivity(Intent(this@ManageMyScreenActivity, MainActivity::class.java))
             }
             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+
             }
             .show()
     }

@@ -301,6 +301,7 @@
     <string name="import_contacts_button_yes">استيراد</string>
     <string name="import_contacts_button_no">عدم الاستيراد</string>
     <string name="import_contacts_toast">جهات الاتصال المستوردة</string>
+    <string name="import_contacts_toast_2">الاستيراد لم يكتمل بعد</string>
     <string name="import_contacts_alert_dialog">(يمكنك دائمًا استيراد جهات الاتصال الخاصة بك في القائمة اليسرى من خلال علامة التبويب ( استيراد جهات الاتصال الخاصة بك</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -493,4 +494,8 @@
     <string name="modify">تعديل</string>
     <string name="work_schedule_title">جدول العمل (الاثنين - الجمعة)</string>
     <string name="edit_reminder_hour_title">وقت التذكير اليومي لإخطارات غير VIP:</string>
+    <string name="daily_reminder_time">وقت التذكير اليومي</string>
+    <string name="teleworking_help">في هذه الشاشة ، يمكنك تكوين بيئة العمل عن بعد الخاصة بك</string>
+    <string name="teleworking_alert_dialog_title">تغيير وضع العمل عن بعد</string>
+    <string name="teleworking_alert_dialog_subtitle">لقد قمت للتو بتغيير وضع العمل عن بعد ، هل تريد العودة إلى شاشة جهات الاتصال؟</string>
 </resources>

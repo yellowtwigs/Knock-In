@@ -5,15 +5,19 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.navigation.NavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
 import com.yellowtwigs.knockin.model.ContactManager
@@ -52,7 +56,6 @@ class TeleworkingActivity : AppCompatActivity() {
             getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
 
         binding.apply {
-//            navView.menu.findItem(R.id.teleworking_item).isChecked = true
         }
 
         val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
@@ -76,8 +79,12 @@ class TeleworkingActivity : AppCompatActivity() {
         binding.teleworkingModeSwitch.isChecked =
             vipScheduleValueSharedPreferences.getBoolean("VipScheduleValue", false)
 
+        changeSwitchCompatColor(binding.teleworkingModeSwitch)
+
         binding.teleworkingModeSwitch.setOnCheckedChangeListener { compoundButton, isChecked ->
+            changeSwitchCompatColor(binding.teleworkingModeSwitch)
             if (isChecked) {
+                binding.teleworkingModeSwitch.thumbTintList
                 val contactManager = ContactManager(this.applicationContext)
                 for (contact in contactManager.contactList) {
                     if (contact.contactDB?.contactPriority == 1) {
@@ -98,6 +105,8 @@ class TeleworkingActivity : AppCompatActivity() {
                 edit.putBoolean("VipScheduleValue", false)
                 edit.apply()
             }
+
+            buildMaterialAlertDialogBuilder()
         }
 
         setupDrawerLayout()
@@ -110,6 +119,48 @@ class TeleworkingActivity : AppCompatActivity() {
             binding.startTimeEditText.setText(convertTimeToStartTime(notificationsHour))
             binding.endTimeEditText.setText(convertTimeToEndTime(notificationsHour))
         }
+    }
+
+    private fun changeSwitchCompatColor(switchTheme: SwitchCompat) {
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_checked),
+            intArrayOf(android.R.attr.state_checked)
+        )
+
+        lateinit var thumbColors: IntArray
+        lateinit var trackColors: IntArray
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            thumbColors = intArrayOf(
+                Color.WHITE,
+                Color.CYAN
+            )
+
+            trackColors = intArrayOf(
+                Color.LTGRAY,
+                Color.argb(120, 3, 214, 194)
+            )
+        } else {
+            thumbColors = intArrayOf(
+                Color.LTGRAY,
+                Color.CYAN
+            )
+
+            trackColors = intArrayOf(
+                Color.LTGRAY,
+                Color.argb(120, 3, 214, 194)
+            )
+        }
+
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(switchTheme.thumbDrawable),
+            ColorStateList(states, thumbColors)
+        )
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(switchTheme.trackDrawable),
+            ColorStateList(states, trackColors)
+        )
     }
 
     override fun onStop() {
@@ -132,13 +183,18 @@ class TeleworkingActivity : AppCompatActivity() {
             openDrawer.setOnClickListener {
                 drawerLayout.openDrawer(GravityCompat.START)
             }
+            toolbarHelp.setOnClickListener {
+                MaterialAlertDialogBuilder(this@TeleworkingActivity, R.style.AlertDialog)
+                    .setTitle(getString(R.string.help))
+                    .setMessage(getString(R.string.teleworking_help))
+                    .show()
+            }
         }
     }
 
     private fun setupDrawerLayout() {
         binding.apply {
             navView.setNavigationItemSelectedListener { menuItem ->
-//                navView.menu.findItem(R.id.navigation_teleworking).isChecked = true
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
                     R.id.nav_home -> startActivity(
@@ -214,22 +270,20 @@ class TeleworkingActivity : AppCompatActivity() {
         var minute = sharedPreferences.getInt("remindMinute", 0)
 
         binding.apply {
-            reminderHourContent.text = hourGetString(hour, minute)
+            reminderHourEditText.setText(hourGetString(hour, minute))
             setReminderAlarm(hour, minute)
-            editReminderHourLayout.setOnClickListener {
+            reminderHourContent.setOnClickListener {
                 val timePickerDialog =
-                    TimePickerDialog(this@TeleworkingActivity, TimePickerDialog.OnTimeSetListener(
-                        function = { _, h, m ->
-                            val editor = sharedPreferences.edit()
-                            editor.putInt("remindHour", h)
-                            editor.putInt("remindMinute", m)
-                            editor.apply()
-                            reminderHourContent.text = hourGetString(h, m)
-                            hour = h
-                            minute = m
-                            setReminderAlarm(hour, minute)
-                        }
-                    ), hour, minute, true)
+                    TimePickerDialog(this@TeleworkingActivity, { _, h, m ->
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("remindHour", h)
+                        editor.putInt("remindMinute", m)
+                        editor.apply()
+                        reminderHourEditText.setText(hourGetString(h, m))
+                        hour = h
+                        minute = m
+                        setReminderAlarm(hour, minute)
+                    }, hour, minute, true)
                 timePickerDialog.show()
             }
         }
@@ -327,6 +381,18 @@ class TeleworkingActivity : AppCompatActivity() {
     }
 
     //endregion
+
+    private fun buildMaterialAlertDialogBuilder() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+            .setTitle(getString(R.string.teleworking_alert_dialog_title))
+            .setMessage(getString(R.string.teleworking_alert_dialog_subtitle))
+            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                startActivity(Intent(this@TeleworkingActivity, MainActivity::class.java))
+            }
+            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+            }
+            .show()
+    }
 
 //    private fun notificationsSchedule(binding: ActivityTeleworkingBinding){
 //        if (currentContact.contactDB?.hourLimitForNotification.toString().contains("to")) {

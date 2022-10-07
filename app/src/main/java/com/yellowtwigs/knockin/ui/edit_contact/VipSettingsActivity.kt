@@ -6,19 +6,23 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.database.SQLException
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.RadioButton
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
@@ -71,13 +75,13 @@ class VipSettingsActivity : AppCompatActivity() {
         permissionsPref = getSharedPreferences("PermissionsPreferences", Context.MODE_PRIVATE)
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
-        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", true)
+        jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
-        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", true)
+        relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)
 
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
-        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", true)
+        funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
 
         //region ========================================== Intent ==========================================
 
@@ -123,6 +127,13 @@ class VipSettingsActivity : AppCompatActivity() {
 
             //region =================================== Jazz Checkboxes ====================================
 
+            changeCheckboxColor(moaninCheckbox)
+            changeCheckboxColor(blueBossaCheckbox)
+            changeCheckboxColor(caravanCheckbox)
+            changeCheckboxColor(dolphinDanceCheckbox)
+            changeCheckboxColor(autumnLeavesCheckbox)
+            changeCheckboxColor(freddieFreeloaderCheckbox)
+
             moaninCheckbox.setOnClickListener {
                 onClickFirstCheckbox(moaninCheckbox, R.raw.moanin_jazz, jazzySoundBought)
             }
@@ -158,6 +169,13 @@ class VipSettingsActivity : AppCompatActivity() {
 
             //region =================================== Funky Checkboxes ===================================
 
+            changeCheckboxColor(slapCheckbox)
+            changeCheckboxColor(offTheCurveCheckbox)
+            changeCheckboxColor(funkYallCheckbox)
+            changeCheckboxColor(keyboardFunkyToneCheckbox)
+            changeCheckboxColor(uCantHoldNoGrooveCheckbox)
+            changeCheckboxColor(coldSweatCheckbox)
+
             slapCheckbox.setOnClickListener {
                 onClickFirstCheckbox(slapCheckbox, R.raw.bass_slap, funkySoundBought)
             }
@@ -192,6 +210,13 @@ class VipSettingsActivity : AppCompatActivity() {
             //endregion
 
             //region =================================== Relax Checkboxes ===================================
+
+            changeCheckboxColor(xyloRelaxCheckbox)
+            changeCheckboxColor(guitarRelaxCheckbox)
+            changeCheckboxColor(gravityCheckbox)
+            changeCheckboxColor(slowDancingCheckbox)
+            changeCheckboxColor(scorpionThemeCheckbox)
+            changeCheckboxColor(interstellarThemeCheckbox)
 
             xyloRelaxCheckbox.setOnClickListener {
                 onClickFirstCheckbox(
@@ -239,6 +264,8 @@ class VipSettingsActivity : AppCompatActivity() {
                 checkRuntimePermission()
             }
 
+            changeCheckboxColor(uploadCheckbox)
+
             uploadCheckbox.setOnClickListener {
                 uncheckBoxAll()
                 uploadCheckbox.isChecked = true
@@ -253,6 +280,11 @@ class VipSettingsActivity : AppCompatActivity() {
                     alarmSound?.stop()
                 }
             }
+
+            changeRadioButtonColor(permanentRadioButton)
+            changeRadioButtonColor(daytimeRadioButton)
+            changeRadioButtonColor(workweekRadioButton)
+            changeRadioButtonColor(scheduleCustomRadioButton)
 
             permanentRadioButton.setOnClickListener {
                 vipScheduleValue = 1
@@ -421,6 +453,60 @@ class VipSettingsActivity : AppCompatActivity() {
 
     //endregion
 
+    private fun changeRadioButtonColor(radioButton: RadioButton) {
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_checked),
+            intArrayOf(android.R.attr.state_checked)
+        )
+
+        lateinit var thumbColors: IntArray
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            thumbColors = intArrayOf(
+                Color.WHITE,
+                Color.CYAN
+            )
+        } else {
+            thumbColors = intArrayOf(
+                Color.LTGRAY,
+                Color.CYAN
+            )
+        }
+
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(radioButton.buttonDrawable!!),
+            ColorStateList(states, thumbColors)
+        )
+    }
+
+    private fun changeCheckboxColor(checkBox: AppCompatCheckBox) {
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_checked),
+            intArrayOf(android.R.attr.state_checked)
+        )
+
+        lateinit var thumbColors: IntArray
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        thumbColors = if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            intArrayOf(
+                Color.WHITE,
+                Color.CYAN
+            )
+        } else {
+            intArrayOf(
+                Color.BLACK,
+                Color.CYAN
+            )
+        }
+
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(checkBox.buttonDrawable!!),
+            ColorStateList(states, thumbColors)
+        )
+    }
+
     private fun checkIfUserBoughtCustomSound() {
         binding.apply {
             val isBought = jazzySoundBought || relaxSoundBought || funkySoundBought
@@ -434,13 +520,19 @@ class VipSettingsActivity : AppCompatActivity() {
     private fun onClickFirstCheckbox(checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean) {
         uncheckBoxAll()
         checkBox.isChecked = true
-        notificationSound = sound
-        playAlarmSound()
+        CoroutineScope(Dispatchers.Main).launch {
+            alarmSound?.stop()
+            alarmSound = MediaPlayer.create(this@VipSettingsActivity, sound)
+            alarmSound?.start()
+            delay(7000)
+            alarmSound?.stop()
+        }
 
         if (!isBought) {
             notificationSound = currentContact.contactDB?.notificationSound!!
             alertDialogBuySound()
         } else {
+            notificationSound = sound
             isCustomSound = false
         }
     }
@@ -596,9 +688,12 @@ class VipSettingsActivity : AppCompatActivity() {
         alarmSound?.stop()
         uncheckBoxAll()
         binding.apply {
+            Log.i("notification_Sound", "currentContact.contactDB?.isCustomSound : ${currentContact.contactDB?.isCustomSound}")
             if (currentContact.contactDB?.isCustomSound == 1) {
                 binding.uploadCheckbox.isChecked = true
             } else {
+                Log.i("notification_Sound", "notificationSound : ${notificationSound}")
+
                 when (notificationSound) {
                     R.raw.moanin_jazz -> {
                         moaninCheckbox.isChecked = true
@@ -648,7 +743,7 @@ class VipSettingsActivity : AppCompatActivity() {
                     R.raw.slow_dancing -> {
                         slowDancingCheckbox.isChecked = true
                     }
-                    R.raw.relax_sms -> {
+                    R.raw.xylophone_tone -> {
                         xyloRelaxCheckbox.isChecked = true
                     }
                     R.raw.interstellar_main_theme -> {

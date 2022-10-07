@@ -22,6 +22,7 @@ import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.databinding.ActivityMultiSelectBinding
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import kotlinx.coroutines.*
 
 /**
@@ -50,6 +51,7 @@ class MultiSelectActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EveryActivityUtils.checkThemePreferences(this)
         binding = ActivityMultiSelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

@@ -301,6 +301,7 @@
     <string name="import_contacts_button_yes">Nhập</string>
     <string name="import_contacts_button_no">Bỏ qua</string>
     <string name="import_contacts_toast">Liên hệ đã được nhập</string>
+    <string name="import_contacts_toast_2">Quá trình nhập vẫn chưa hoàn tất</string>
     <string name="import_contacts_alert_dialog">Bạn sẽ có thể nhập liện hệ của bạn sau từ menu điều hướng thông qua tab "Nhập liện hệ của bạn"</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -494,4 +495,8 @@
     <string name="modify">Biến đổi</string>
     <string name="work_schedule_title">Lịch làm việc (Thứ Hai - Thứ Sáu)</string>
     <string name="edit_reminder_hour_title">Thời gian nhắc hàng ngày cho các thông báo không phải VIP:</string>
+    <string name="daily_reminder_time">Thời gian nhắc hàng ngày</string>
+    <string name="teleworking_help">Trong màn hình này, bạn có thể định cấu hình môi trường Làm việc từ xa của mình</string>
+    <string name="teleworking_alert_dialog_title">Thay đổi chế độ teleworking</string>
+    <string name="teleworking_alert_dialog_subtitle">Bạn vừa thay đổi chế độ teleworking, bạn có muốn quay lại màn hình Danh bạ không?</string>
 </resources>

@@ -202,17 +202,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/activity_manage_my_screen_change_contact_color_scroll_view">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/switch_theme_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:text="@string/manage_my_screen_theme"
                     android:textColor="?attr/textColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:textSize="@dimen/settings_subtitle_size"
+                    android:textStyle="normal"
                     app:layout_constraintEnd_toStartOf="@+id/switch_theme"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -223,10 +223,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/manage_my_screen_theme_long_text"
                     android:textColor="?attr/textColor"
-                    android:textStyle="italic"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/switch_theme"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/switch_theme_title"
                     app:layout_constraintTop_toBottomOf="@+id/switch_theme_title" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -237,7 +236,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -251,7 +249,7 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer" >
+        app:menu="@menu/menu_left_drawer">
 
         <include layout="@layout/teleworking_menu_item" />
 

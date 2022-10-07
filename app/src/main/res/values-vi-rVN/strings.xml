@@ -491,4 +491,8 @@
     <string name="modify">Biến đổi</string>
     <string name="work_schedule_title">Lịch làm việc (Thứ Hai - Thứ Sáu)</string>
     <string name="edit_reminder_hour_title">Daily reminder time for non-VIP notifications :</string>
+    <string name="daily_reminder_time">Thời gian nhắc hàng ngày</string>
+    <string name="teleworking_help">Trong màn hình này, bạn có thể định cấu hình môi trường Làm việc từ xa của mình</string>
+    <string name="teleworking_alert_dialog_title">Thay đổi chế độ teleworking</string>
+    <string name="teleworking_alert_dialog_subtitle">Bạn vừa thay đổi chế độ teleworking, bạn có muốn quay lại màn hình Danh bạ không?</string>
 </resources>

@@ -134,8 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:buttonTint="?attr/textColor" />
+                        android:layout_marginEnd="8dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1049,6 +1048,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:buttonTint="?attr/textColor"
+                    android:checked="true"
                     app:layout_constraintBottom_toBottomOf="@+id/schedule_permanent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -1073,6 +1074,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:buttonTint="?attr/textColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/permanent_radio_button" />
 
@@ -1096,6 +1098,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:buttonTint="?attr/textColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/daytime_radio_button" />
 
@@ -1119,6 +1122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:buttonTint="?attr/textColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/workweek_radio_button" />
 

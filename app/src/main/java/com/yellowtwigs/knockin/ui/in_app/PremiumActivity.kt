@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.*
@@ -100,6 +102,21 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             navViewPremium.setNavigationItemSelectedListener { menuItem ->
                 menuItem.isChecked = true
                 drawerLayout.closeDrawers()
+
+                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+                itemText.text =
+                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+
+                itemLayout.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@PremiumActivity,
+                            TeleworkingActivity::class.java
+                        )
+                    )
+                }
 
                 when (menuItem.itemId) {
                     R.id.nav_home -> {

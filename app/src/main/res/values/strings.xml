@@ -312,6 +312,7 @@
     <string name="import_contacts_button_yes">Import</string>
     <string name="import_contacts_button_no">Skip</string>
     <string name="import_contacts_toast">Contacts imported</string>
+    <string name="import_contacts_toast_2">The import is not yet complete</string>
     <string name="import_contacts_alert_dialog">You will be able to import your contacts later from the navigation menu via the "Import your contacts" tab</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -440,7 +441,7 @@
     <string name="start_activity_skip_alert_dialog_positive_button">Skip</string>
 
     <string name="start_activity_go_edition_message">VIP notifications and notification history features are not available for "GO Edition" versions of Android.</string>
-    <string name="start_activity_go_edition_positive_button">Okay</string>
+    <string name="start_activity_go_edition_positive_button">Ok</string>
     <string name="start_activity_personnalize_alert" translatable="false">You can personnalize notification for each individual VIP.</string>
     <string name="start_activity_alert_dialog_android_11_warning">Knock In\'s floating notifications (Bubbles) are not supported yet with Android 11 (version of your smartphone).  A version of the app offering floating notifications for Android 11 will be available soon. However, you can use the other functions of the application.</string>
 
@@ -499,4 +500,8 @@
     <string name="modify">Modify</string>
     <string name="work_schedule_title">Work schedule (Monday - Friday)</string>
     <string name="edit_reminder_hour_title">Daily reminder time for non-VIP notifications :</string>
+    <string name="daily_reminder_time">Daily reminder time</string>
+    <string name="teleworking_help">In this screen, you can configure your Teleworking environment</string>
+    <string name="teleworking_alert_dialog_title">Changing the teleworking mode</string>
+    <string name="teleworking_alert_dialog_subtitle">You have just changed the teleworking mode, do you want to return to the Contacts screen?</string>
 </resources>

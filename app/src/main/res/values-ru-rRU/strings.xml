@@ -301,6 +301,7 @@
     <string name="import_contacts_button_yes">Импортировать</string>
     <string name="import_contacts_button_no">Пропустить</string>
     <string name="import_contacts_toast">Контакты импортированы</string>
+    <string name="import_contacts_toast_2">Импорт еще не завершен</string>
     <string name="import_contacts_alert_dialog">Вы сможете импортировать контакты позже в навигационном меню на вкладке "Импортируйте свои контакты"</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -493,4 +494,8 @@
     <string name="modify">Изменить</string>
     <string name="work_schedule_title">График работы (понедельник - пятница)</string>
     <string name="edit_reminder_hour_title">Время ежедневного напоминания для не-VIP уведомлений:</string>
+    <string name="daily_reminder_time">Ежедневное время напоминания</string>
+    <string name="teleworking_help">На этом экране вы можете настроить среду удаленной работы.</string>
+    <string name="teleworking_alert_dialog_title">Изменение режима удаленной работы</string>
+    <string name="teleworking_alert_dialog_subtitle">Вы только что изменили режим удаленной работы, хотите вернуться к экрану контактов?</string>
 </resources>

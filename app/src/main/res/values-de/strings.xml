@@ -300,6 +300,7 @@
     <string name="import_contacts_button_yes">Importieren</string>
     <string name="import_contacts_button_no">Überspringen</string>
     <string name="import_contacts_toast">Kontakte importiert</string>
+    <string name="import_contacts_toast_2">Der Import ist noch nicht abgeschlossen</string>
     <string name="import_contacts_alert_dialog">Sie können Ihre Kontakte später über das Navigationsmenü über die Registerkarte "Kontakte importieren" importieren</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -492,4 +493,8 @@
     <string name="modify">Ändern</string>
     <string name="work_schedule_title">Arbeitsplan (Montag - Freitag)</string>
     <string name="edit_reminder_hour_title">Tägliche Erinnerungszeit für Nicht-VIP-Benachrichtigungen:</string>
+    <string name="daily_reminder_time">Tägliche Erinnerungszeit</string>
+    <string name="teleworking_help">In diesem Bildschirm können Sie Ihre Telearbeitsumgebung konfigurieren</string>
+    <string name="teleworking_alert_dialog_title">Ändern des Telearbeitsmodus</string>
+    <string name="teleworking_alert_dialog_subtitle">Sie haben gerade den Telearbeitsmodus geändert, möchten Sie zum Bildschirm Kontakte zurückkehren?</string>
 </resources>

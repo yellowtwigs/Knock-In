@@ -51,11 +51,19 @@
         android:id="@+id/view2"
         android:layout_width="0.5dp"
         android:layout_height="0.5dp"
-        android:buttonTint="@color/lightColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textColorDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_pager" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
@@ -108,7 +116,22 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/start_activity_next"
+        android:text="@string/start_activity_go_edition_positive_button"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/skip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitle" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:indeterminate="true"
         android:textColor="#000000"
         android:textSize="16sp"
         android:visibility="gone"
@@ -123,7 +146,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/start_activity_skip"
+        android:text="@string/popup_shop_later"
         android:textColor="#000000"
         android:textSize="16sp"
         android:visibility="gone"

@@ -1,14 +1,19 @@
 package com.yellowtwigs.knockin.utils
 
 import android.content.Context
+import android.util.Log
 import com.yellowtwigs.knockin.R
 
 object RandomDefaultImage {
     fun randomDefaultImage(avatarId: Int, cxt: Context): Int {
         val sharedPrefMultiColor = cxt.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
         val multiColor = sharedPrefMultiColor.getInt("IsMultiColor", 0)
-        val sharedPrefContactsColor = cxt.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
-        val contactsColorPosition = sharedPrefContactsColor.getInt("IsMultiColor", 0)
+        val sharedPreferencesContactsColor =
+            cxt.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
+        val contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0)
+
+        Log.i("randomDefaultImage", "multiColor : $multiColor")
+        Log.i("randomDefaultImage", "contactsColorPosition : $contactsColorPosition")
 
         return if (multiColor == 0) {
             when (avatarId) {
@@ -101,7 +106,7 @@ object RandomDefaultImage {
     fun randomDefaultImage(avatarId: Int, cxt: Context, createOrGet: String): Int {
         val sharedPreferencesIsMultiColor =
             cxt.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE)
-        val multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0)
+        val multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0)
 
         if (createOrGet == "Create") {
             return kotlin.random.Random.nextInt(0, 7)

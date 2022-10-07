@@ -5,7 +5,9 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.*
+import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -189,6 +192,10 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         //region ======================================== Listeners =========================================
 
+        changeSwitchCompatColor(switchPopupNotif!!)
+        changeSwitchCompatColor(switchservice!!)
+        changeSwitchCompatColor(switchReminder)
+
         switchPopupNotif?.setOnCheckedChangeListener { _, _ ->
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             if (switchPopupNotif!!.isChecked) {
@@ -268,6 +275,7 @@ class ManageNotificationActivity : AppCompatActivity() {
         knockinCheckbox.isChecked = defaultSoundCheck.getBoolean("defaultSoundCheck", true)
         noSoundCheckbox.isChecked = !knockinCheckbox.isChecked
 
+
         knockinCheckbox.setOnCheckedChangeListener { _, isChecked ->
             val edit = defaultSoundCheck.edit()
             edit.putBoolean("defaultSoundCheck", isChecked)
@@ -280,6 +288,8 @@ class ManageNotificationActivity : AppCompatActivity() {
 
         val switch1To0Checked = getSharedPreferences("switch1To0Checked", Context.MODE_PRIVATE)
         val switch1To0 = findViewById<SwitchCompat>(R.id.vip_0_switch)
+        changeSwitchCompatColor(switch1To0)
+
         switch1To0.isChecked = switch1To0Checked.getBoolean("switch1To0Checked", false)
         switch1To0.setOnCheckedChangeListener { button, isChecked ->
             if (isChecked) {
@@ -316,6 +326,48 @@ class ManageNotificationActivity : AppCompatActivity() {
     }
 
     //region ========================================== Functions =========================================
+
+    private fun changeSwitchCompatColor(switchTheme: SwitchCompat) {
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_checked),
+            intArrayOf(android.R.attr.state_checked)
+        )
+
+        lateinit var thumbColors: IntArray
+        lateinit var trackColors: IntArray
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            thumbColors = intArrayOf(
+                Color.WHITE,
+                Color.CYAN
+            )
+
+            trackColors = intArrayOf(
+                Color.LTGRAY,
+                Color.argb(120, 3, 214, 194)
+            )
+        } else {
+            thumbColors = intArrayOf(
+                Color.LTGRAY,
+                Color.CYAN
+            )
+
+            trackColors = intArrayOf(
+                Color.LTGRAY,
+                Color.argb(120, 3, 214, 194)
+            )
+        }
+
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(switchTheme.thumbDrawable),
+            ColorStateList(states, thumbColors)
+        )
+        DrawableCompat.setTintList(
+            DrawableCompat.wrap(switchTheme.trackDrawable),
+            ColorStateList(states, trackColors)
+        )
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater

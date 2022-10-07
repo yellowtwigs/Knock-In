@@ -302,6 +302,7 @@
     <string name="import_contacts_button_yes">Mengimpor</string>
     <string name="import_contacts_button_no">Melompati</string>
     <string name="import_contacts_toast">Kontak impor</string>
+    <string name="import_contacts_toast_2">Impor belum selesai</string>
     <string name="import_contacts_alert_dialog">Anda akan dapat mengimpor kontak anda nanti dari menu navigasi melalui tab "Impor kontak anda"</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -423,6 +424,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="button_permission">Memperbolehkan</string>
     <string name="start_activity_skip">Melompati</string>
     <string name="start_activity_next">Berikutnya</string>
+    <string name="start_activity_select">Pilih</string>
     <string name="start_activity_skip_alert_dialog_title">Melewatkan izin</string>
     <string name="start_activity_skip_alert_dialog_message">Jika anda melewatkan izin, anda bisa membiarkan mereka nanti</string>
     <string name="start_activity_skip_alert_dialog_message_importation">Knock In mengimpor kontak anda; Jika anda mengabaikan sekarang, kontak anda tidak akan diselamatkan</string>
@@ -495,4 +497,8 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="modify">Memodifikasi</string>
     <string name="work_schedule_title">Jadwal kerja (Senin - Jumat)</string>
     <string name="edit_reminder_hour_title">Waktu pengingat harian untuk notifikasi non-VIP :</string>
+    <string name="daily_reminder_time">Waktu pengingat harian</string>
+    <string name="teleworking_help">Di layar ini, Anda dapat mengonfigurasi lingkungan Teleworking Anda</string>
+    <string name="teleworking_alert_dialog_title">Mengubah mode teleworking</string>
+    <string name="teleworking_alert_dialog_subtitle">Anda baru saja mengubah mode teleworking, apakah Anda ingin kembali ke layar Kontak?</string>
 </resources>

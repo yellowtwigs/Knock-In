@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
+    android:background="?attr/backgroundColor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -69,7 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_layout_selector"
-        android:visibility="gone"
+        android:scrollbarThumbHorizontal="?attr/textColor"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_contact_item_layout">

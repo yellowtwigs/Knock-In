@@ -300,6 +300,7 @@
     <string name="import_contacts_button_yes">导入</string>
     <string name="import_contacts_button_no">跳过</string>
     <string name="import_contacts_toast">联系人已导入</string>
+    <string name="import_contacts_toast_2">导入尚未完成</string>
     <string name="import_contacts_alert_dialog">稍后您可以通过导航菜单的“导入联系人”选项导入联系人</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -491,4 +492,8 @@
     <string name="modify">调整</string>
     <string name="work_schedule_title">工作时间表（周一至周五）</string>
     <string name="edit_reminder_hour_title">非VIP通知每日提醒时间：</string>
+    <string name="daily_reminder_time">每日提醒时间</string>
+    <string name="teleworking_help">在此屏幕中，您可以配置远程办公环境</string>
+    <string name="teleworking_alert_dialog_title">更改远程办公模式</string>
+    <string name="teleworking_alert_dialog_subtitle">您刚刚更改了远程办公模式，是否要返回“联系人”屏幕？</string>
 </resources>

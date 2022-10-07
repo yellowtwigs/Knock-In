@@ -165,6 +165,10 @@
                     android:maxLines="1"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.60dp"
+                    android:background="?attr/textColor"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,6 +223,10 @@
                     android:maxLines="1"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.60dp"
+                    android:background="?attr/textColor"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -286,6 +294,10 @@
                     android:maxLines="1"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.60dp"
+                    android:background="?attr/textColor"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -353,6 +365,10 @@
                     android:maxLines="1"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.60dp"
+                    android:background="?attr/textColor"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -418,6 +434,10 @@
                     android:maxLines="1"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.60dp"
+                    android:background="?attr/textColor"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -474,6 +494,10 @@
                     android:maxLines="1"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.60dp"
+                    android:background="?attr/textColor"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatImageView

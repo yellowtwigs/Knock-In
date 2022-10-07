@@ -300,6 +300,7 @@
     <string name="import_contacts_button_yes">Importar</string>
     <string name="import_contacts_button_no">Pular</string>
     <string name="import_contacts_toast">Contatos importados</string>
+    <string name="import_contacts_toast_2">A importação ainda não está concluída</string>
     <string name="import_contacts_alert_dialog">Você poderá importar seus contatos posteriormente no menu de navegação, através de"Importar seus contatos"</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -492,4 +493,8 @@
     <string name="modify">Modificar</string>
     <string name="work_schedule_title">Horário de trabalho (segunda a sexta)</string>
     <string name="edit_reminder_hour_title">Tempo de lembrete diário para notificações não VIP:</string>
+    <string name="daily_reminder_time">Hora do lembrete diário</string>
+    <string name="teleworking_help">Nesta tela, você pode configurar seu ambiente de Teletrabalho</string>
+    <string name="teleworking_alert_dialog_title">Alterar o modo de teletrabalho</string>
+    <string name="teleworking_alert_dialog_subtitle">Você acabou de alterar o modo de teletrabalho, deseja retornar à tela de Contatos?</string>
 </resources>

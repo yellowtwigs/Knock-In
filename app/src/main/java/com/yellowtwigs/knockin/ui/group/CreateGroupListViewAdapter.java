@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -216,7 +217,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
     private int randomDefaultImage(int avatarId) {
 
         SharedPreferences sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
-        int multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0);
+        int multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0);
 
         SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE);
         int contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0);
@@ -390,7 +391,7 @@ public class CreateGroupListViewAdapter extends RecyclerView.Adapter<CreateGroup
     static class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView contactFirstNameView;
         RelativeLayout constraintLayout;
-        ConstraintLayout constraintLayoutMenu;
+        HorizontalScrollView constraintLayoutMenu;
         AppCompatImageView listContactItemFavoriteShine;
         CircularImageView contactRoundedImageView;
 

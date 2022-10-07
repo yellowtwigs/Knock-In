@@ -300,6 +300,7 @@
     <string name="import_contacts_button_yes">Importa</string>
     <string name="import_contacts_button_no">Salta</string>
     <string name="import_contacts_toast">Contatti importati</string>
+    <string name="import_contacts_toast_2">L\'importazione non è ancora completa</string>
     <string name="import_contacts_alert_dialog">Potrai importare i tuoi contatti piu\’ tardi dal menu di navigazione attraverso l\’opzione "Importa i tuoi contatti" </string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -492,4 +493,8 @@
     <string name="modify">Modificare</string>
     <string name="work_schedule_title">Orario di lavoro (lunedì - venerdì)</string>
     <string name="edit_reminder_hour_title">Tempo di promemoria giornaliero per le notifiche non VIP:</string>
+    <string name="daily_reminder_time">Tempo di promemoria giornaliero</string>
+    <string name="teleworking_help">In questa schermata puoi configurare il tuo ambiente di telelavoro</string>
+    <string name="teleworking_alert_dialog_title">Modifica della modalità di telelavoro</string>
+    <string name="teleworking_alert_dialog_subtitle">Hai appena cambiato la modalità di telelavoro, vuoi tornare alla schermata Contatti?</string>
 </resources>

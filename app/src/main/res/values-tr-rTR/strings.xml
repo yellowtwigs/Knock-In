@@ -300,6 +300,7 @@
     <string name="import_contacts_button_yes">İçe Aktar</string>
     <string name="import_contacts_button_no">Atla</string>
     <string name="import_contacts_toast">İçe aktarılan kişiler</string>
+    <string name="import_contacts_toast_2">İçe aktarma henüz tamamlanmadı</string>
     <string name="import_contacts_alert_dialog">Kişilerinizi daha sonra "Kişilerinizi içe aktarın" sekmesi aracılığıyla gezinme menüsünden içe aktarabilirsiniz.</string>
     <!-- endregion -->
     <!-- region First Launch -->
@@ -492,4 +493,8 @@
     <string name="modify">değiştir</string>
     <string name="work_schedule_title">Çalışma programı (Pazartesi - Cuma)</string>
     <string name="edit_reminder_hour_title">VIP olmayan bildirimler için günlük hatırlatma zamanı:</string>
+    <string name="daily_reminder_time">Günlük hatırlatma zamanı</string>
+    <string name="teleworking_help">Bu ekranda Teleworking ortamınızı yapılandırabilirsiniz</string>
+    <string name="teleworking_alert_dialog_title">Uzaktan çalışma modunu değiştirme</string>
+    <string name="teleworking_alert_dialog_subtitle">Uzaktan çalışma modunu yeni değiştirdiniz, Kişiler ekranına dönmek istiyor musunuz?</string>
 </resources>

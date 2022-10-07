@@ -162,9 +162,8 @@ public class ContactListViewAdapter extends BaseAdapter {
     }
 
     private int randomDefaultImage(int avatarId) {
-
         SharedPreferences sharedPreferencesIsMultiColor = context.getSharedPreferences("IsMultiColor", Context.MODE_PRIVATE);
-        int multiColor = sharedPreferencesIsMultiColor.getInt("isMultiColor", 0);
+        int multiColor = sharedPreferencesIsMultiColor.getInt("IsMultiColor", 0);
 
         SharedPreferences sharedPreferencesContactsColor = context.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE);
         int contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0);
