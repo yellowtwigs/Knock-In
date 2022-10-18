@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.ui.first_launch.start
 import android.Manifest
 import android.app.ActivityManager
 import android.content.*
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -15,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -43,6 +45,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private lateinit var importContactPreferences: SharedPreferences
 
+    private var contactsAreImported = false
+    private var importationFinished = false
+
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +55,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         binding = ActivityStartActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         setupBillingClient()
         setSliderContainer()
@@ -64,6 +71,19 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
 
         importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+        contactsAreImported = importContactPreferences.getBoolean("Import_Contact", false)
+
+        val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        if (isNotificationServiceEnabled()) {
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("serviceNotif", true)
+            edit.apply()
+        }
+        if (Settings.canDrawOverlays(this)) {
+            val edit: SharedPreferences.Editor = sharedPreferences.edit()
+            edit.putBoolean("popupNotif", true)
+            edit.apply()
+        }
 
         binding.apply {
             activateButton.setOnClickListener {
@@ -98,18 +118,14 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             next.setOnClickListener {
                 firstLaunchValidate()
                 startActivity(Intent(this@StartActivity, FirstVipSelectionActivity::class.java))
-                val sharedPreferences: SharedPreferences =
-                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                val edit = sharedPreferences.edit()
                 edit.putBoolean("view", true)
                 edit.apply()
                 finish()
             }
             skip.setOnClickListener {
                 firstLaunchValidate()
-                val sharedPreferences: SharedPreferences =
-                    getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-                val edit: SharedPreferences.Editor = sharedPreferences.edit()
+                val edit = sharedPreferences.edit()
                 edit.putBoolean("view", true)
                 edit.apply()
                 val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
@@ -142,10 +158,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private fun setSliderContainer() {
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
-        sliderItems.add(SliderItem(R.drawable.final_contact))
-        sliderItems.add(SliderItem(R.drawable.notification_reception))
-        sliderItems.add(SliderItem(R.drawable.vip_message_reception))
-        sliderItems.add(SliderItem(R.drawable.vip_message_reception))
+        sliderItems.add(SliderItem(R.drawable.contacts_list))
+        sliderItems.add(SliderItem(R.drawable.notif_history))
+        sliderItems.add(SliderItem(R.drawable.vip_message))
+        sliderItems.add(SliderItem(R.drawable.screen_lock_msg))
 
         val sliderAdapter = SliderAdapter(sliderItems)
 
@@ -153,7 +169,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             adapter = sliderAdapter
             clipToPadding = false
             clipChildren = false
-//            offscreenPageLimit = 3
+            offscreenPageLimit = 3
             getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
             val compositePageTransformer = CompositePageTransformer()
@@ -184,6 +200,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 checkRadioButton(radioButton1.id)
 
                                 activateButton.visibility = View.VISIBLE
+                                activateButtonIsClickable(!contactsAreImported)
                                 activateButton.setText(R.string.start_activity_button_notification)
                                 next.visibility = View.GONE
                                 skip.visibility = View.GONE
@@ -196,6 +213,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 checkRadioButton(radioButton2.id)
 
                                 activateButton.visibility = View.VISIBLE
+                                activateButtonIsClickable(!isNotificationServiceEnabled())
                                 activateButton.setText(R.string.start_activity_button_notification)
                                 next.visibility = View.GONE
                                 skip.visibility = View.GONE
@@ -207,6 +225,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 checkRadioButton(radioButton3.id)
 
                                 activateButton.visibility = View.VISIBLE
+                                activateButtonIsClickable(!Settings.canDrawOverlays(this@StartActivity))
                                 activateButton.setText(R.string.start_activity_button_notification)
                                 next.visibility = View.GONE
                                 skip.visibility = View.GONE
@@ -242,6 +261,28 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             })
 
             setCurrentItem(currentPosition, true)
+        }
+    }
+
+    private fun activateButtonIsClickable(isClickable: Boolean) {
+        binding.activateButton.isClickable = isClickable
+
+        if (isClickable) {
+            binding.activateButton.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.colorPrimary,
+                    null
+                )
+            )
+        } else {
+            binding.activateButton.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.greyColor,
+                    null
+                )
+            )
         }
     }
 

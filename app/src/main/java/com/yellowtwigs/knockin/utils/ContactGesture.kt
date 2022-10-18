@@ -298,20 +298,7 @@ object ContactGesture {
 //        }
 //    }
 
-//    private fun goToDiscord(context: Context) {
-//        val appIntent = Intent(Intent.ACTION_VIEW)
-//        appIntent.setClassName("com.twitter.android", "com.twitter.android")
-//        try {
-//            startActivity(appIntent)
-//        } catch (e: ActivityNotFoundException) {
-//            startActivity(
-//                Intent(
-//                    Intent.ACTION_VIEW,
-//                    Uri.parse("https://twitter.com/")
-//                )
-//            )
-//        }
-//    }
+
 
     //endregion
 }

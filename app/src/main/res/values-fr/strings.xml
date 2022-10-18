@@ -490,4 +490,5 @@
     <string name="modify">Modifier</string>
     <string name="work_schedule_title">Horaire de travail (du lundi au vendredi)</string>
     <string name="edit_reminder_hour_title">Heure de rappel quotidienne pour les notifications non VIP :</string>
+    <string name="remove_filter">Supprimer le filtre</string>
 </resources>

@@ -10,7 +10,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+
+        android:background="?attr/backgroundColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
@@ -138,7 +140,7 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer" >
+        app:menu="@menu/menu_left_drawer">
 
         <include layout="@layout/teleworking_menu_item" />
 

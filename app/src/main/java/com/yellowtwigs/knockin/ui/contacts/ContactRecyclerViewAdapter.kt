@@ -19,7 +19,7 @@
 //import androidx.recyclerview.widget.RecyclerView
 //import com.yellowtwigs.knockin.R
 //import com.yellowtwigs.knockin.ui.CircularImageView
-//import com.yellowtwigs.knockin.ui.edit_contact.EditContactDetailsActivity
+//import com.yellowtwigs.knockin.ui.add_edit_contact.edit_contact.EditContactDetailsActivity
 //import com.yellowtwigs.knockin.ui.group.list.GroupManagerActivity
 //import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 //import com.yellowtwigs.knockin.utils.ContactGesture.callPhone

@@ -31,6 +31,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,11 +43,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     private var notification_history_ToolbarMultiSelectModeTitle: TextView? = null
 
     private var fromPopup: Boolean = false
-    private var firstClick: Boolean = true
-    private var multiSelectMode: Boolean = false
-
-    private var numberForPermission = ""
-    private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
 
     private lateinit var notificationsAdapter: NotificationsListAdapter
     private lateinit var binding: ActivityNotificationsHistoryBinding
@@ -59,28 +55,10 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkTheme(this)
 
         binding = ActivityNotificationsHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //region ====================================== FindViewById =======================================
-
-        notification_history_ToolbarMultiSelectModeLayout =
-            findViewById(R.id.toolbar_mode_multi_select)
-        notification_history_ToolbarMultiSelectModeTitle =
-            findViewById(R.id.notification_history_toolbar_multi_select_mode_tv)
-
-        //endregion
 
         sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
 
@@ -102,31 +80,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                         null
                     )
                     .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button) { _, _ -> deleteAllNotificationsSystem() }
-                    .show()
-            }
-
-            closeIcon.setOnClickListener {
-//                refreshActivity()
-            }
-
-            deleteIcon.setOnClickListener {
-                MaterialAlertDialogBuilder(this@NotificationsHistoryActivity, R.style.AlertDialog)
-                    .setTitle(getString(R.string.notification_history_delete_notifications))
-                    .setMessage(getString(R.string.notification_history_delete_notifications_confirmation))
-                    .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
-//                        listOfItemSelected.forEach { notification ->
-//                            notification.id?.let { id ->
-//                                dao.deleteNotificationById(id)
-//                            }
-//                        }
-//                        listOfItemSelected.clear()
-//                        refreshActivity()
-//                        finish()
-//                        overridePendingTransition(0, 0)
-//                        startActivity(intent)
-//                        overridePendingTransition(0, 0)
-                    }
-                    .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
                     .show()
             }
         }
@@ -266,6 +219,54 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_msg_apps)
             }
+            R.id.sms_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.sms_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.sms_filter)
+            }
+            R.id.mail_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.mail_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.mail_filter)
+            }
+            R.id.whatsapp_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.whatsapp_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.whatsapp_filter)
+            }
+            R.id.facebook_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.facebook_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.facebook_filter)
+            }
+            R.id.signal_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.signal_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.signal_filter)
+            }
+            R.id.telegram_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.telegram_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.telegram_filter)
+            }
+            R.id.discord_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.discord_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.discord_filter)
+            }
+            R.id.viber_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.viber_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.viber_filter)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -381,6 +382,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             notificationsListViewModel.getAllNotifications().observe(
                 this@NotificationsHistoryActivity
             ) { notifications ->
+                notificationsAdapter.submitList(null)
                 notificationsAdapter.submitList(notifications)
 //                scrollToPosition(0)
 //                (layoutManager as LinearLayoutManager).scrollToPosition(0)

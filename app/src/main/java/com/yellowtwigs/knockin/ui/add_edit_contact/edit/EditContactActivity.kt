@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.edit_contact
+package com.yellowtwigs.knockin.ui.add_edit_contact.edit_contact
 
 import android.Manifest
 import android.app.Activity
@@ -13,11 +13,8 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
@@ -30,11 +27,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityEditContactBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
@@ -55,6 +52,9 @@ class EditContactActivity : AppCompatActivity() {
     private var isChanged = false
     private var editInAndroid = false
     private var editInGoogle = false
+
+    private var numberOfContactsVIP = 0
+    private var contactsUnlimitedIsBought = false
 
     private var imageUri: Uri? = null
     private var SELECT_FILE = 0
@@ -81,12 +81,12 @@ class EditContactActivity : AppCompatActivity() {
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val sharedNumberOfContactsVIPPreferences = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
-//        val nb_Contacts_VIP = sharedNumberOfContactsVIPPreferences.getInt("nb_Contacts_VIP", 0)
-//        val sharedAlarmNotifInAppPreferences: SharedPreferences =
-//            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
-//        contactsUnlimitedIsBought =
-//            sharedAlarmNotifInAppPreferences.getBoolean("Contacts_Unlimited_Bought", false)
+        numberOfContactsVIP = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
+            .getInt("nb_Contacts_VIP", 0)
+
+        contactsUnlimitedIsBought =
+            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
+                .getBoolean("Contacts_Unlimited_Bought", false)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
@@ -189,8 +189,8 @@ class EditContactActivity : AppCompatActivity() {
                         null
                     )
                 )
-//                vipSettingsIcon?.visibility = View.GONE
-//                contactVipSettingsText.visibility = View.GONE
+                binding.vipSettingsIcon.visibility = View.GONE
+                binding.vipSettingsText.visibility = View.GONE
             }
             1 -> {
                 binding.priorityExplain.text = getString(R.string.priority_0_subtitle)
@@ -200,8 +200,8 @@ class EditContactActivity : AppCompatActivity() {
                         null
                     )
                 )
-//                vipSettingsIcon?.visibility = View.GONE
-//                contactVipSettingsText.visibility = View.GONE
+                binding.vipSettingsIcon.visibility = View.GONE
+                binding.vipSettingsText.visibility = View.GONE
             }
             2 -> {
                 binding.priorityExplain.text = getString(R.string.priority_2_subtitle)
@@ -211,35 +211,36 @@ class EditContactActivity : AppCompatActivity() {
                         null
                     )
                 )
-//                vipSettingsIcon?.isVisible = nb_Contacts_VIP <= 5
-//                contactVipSettingsText.isVisible = nb_Contacts_VIP <= 5
-//                if (nb_Contacts_VIP > 4 &&
-//                    edit_contact_priority != prioritySpinner?.selectedItemPosition &&
-//                    contactsUnlimitedIsBought == false
-//                ) {
-//                    MaterialAlertDialogBuilder(
-//                        this@EditContactDetailsActivity,
-//                        R.style.AlertDialog
-//                    )
-//                        .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
-//                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
-//                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-//                            startActivity(
-//                                Intent(
-//                                    this@EditContactDetailsActivity,
-//                                    PremiumActivity::class.java
-//                                )
-//                            )
-//                            finish()
-//                        }
-//                        .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-//                        }
-//                        .show()
-//                }
-//                if (nb_Contacts_VIP > 5 && contactsUnlimitedIsBought == true) {
-//                    vipSettingsIcon?.isVisible = true
-//                    contactVipSettingsText.isVisible = true
-//                }
+
+                binding.vipSettingsIcon.isVisible = numberOfContactsVIP <= 5
+                binding.vipSettingsText.isVisible = numberOfContactsVIP <= 5
+
+                if (numberOfContactsVIP > 4 && currentContact.priority != binding.prioritySpinner.selectedItemPosition &&
+                    !contactsUnlimitedIsBought
+                ) {
+                    MaterialAlertDialogBuilder(
+                        this@EditContactActivity,
+                        R.style.AlertDialog
+                    )
+                        .setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
+                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
+                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                            startActivity(
+                                Intent(
+                                    this@EditContactActivity,
+                                    PremiumActivity::class.java
+                                )
+                            )
+                            finish()
+                        }
+                        .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                        }
+                        .show()
+                }
+                if (numberOfContactsVIP > 5 && contactsUnlimitedIsBought) {
+                    binding.vipSettingsIcon.isVisible = true
+                    binding.vipSettingsText.isVisible = true
+                }
             }
         }
     }
@@ -263,12 +264,14 @@ class EditContactActivity : AppCompatActivity() {
                             editContactViewModel.deleteContact(currentContact)
 
                             withContext(Dispatchers.Main) {
-//                                if (edit_contact_priority == 2) {
-//                                    val edit: SharedPreferences.Editor =
-//                                        sharedNumberOfContactsVIPPreferences.edit()
-//                                    edit.putInt("nb_Contacts_VIP", nb_Contacts_VIP - 1)
-//                                    edit.apply()
-//                                }
+                                if (currentContact.priority == 2) {
+                                    val edit = getSharedPreferences(
+                                        "nb_Contacts_VIP",
+                                        Context.MODE_PRIVATE
+                                    ).edit()
+                                    edit.putInt("nb_Contacts_VIP", numberOfContactsVIP - 1)
+                                    edit.apply()
+                                }
                                 goToContactsListActivity()
                             }
                         }
@@ -352,7 +355,7 @@ class EditContactActivity : AppCompatActivity() {
                     binding.phoneNumberInput.editText?.text.toString(),
                     binding.phoneNumberFixInput.editText?.text.toString()
                 ),
-                arrayListOf(binding.mailIdInput.editText?.text.toString()),
+                arrayListOf(binding.mailInput.editText?.text.toString()),
                 binding.mailIdInput.editText?.text.toString(),
                 binding.prioritySpinner.selectedItemPosition,
                 isFavorite,

@@ -490,4 +490,5 @@
     <string name="modify">调整</string>
     <string name="work_schedule_title">工作时间表（周一至周五）</string>
     <string name="edit_reminder_hour_title">非VIP通知每日提醒时间：</string>
+    <string name="remove_filter">删除过滤器</string>
 </resources>

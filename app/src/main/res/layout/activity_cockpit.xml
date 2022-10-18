@@ -71,19 +71,19 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="32dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/cockpit_call_layout_id"
+            app:layout_constraintBottom_toTopOf="@+id/call_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             tools:listitem="@layout/item_cockpit_app" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cockpit_call_edit_text_layout"
+            android:id="@+id/edit_text_layout"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:background="?attr/backgroundColor"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/cockpit_call_keyboard_view">
+            app:layout_constraintBottom_toTopOf="@+id/table_layout">
 
             <View
                 android:layout_width="match_parent"
@@ -94,7 +94,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/cockpit_button_add_contact"
+                android:id="@+id/add_contact"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -105,9 +105,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/cockpit_call_phone_number_edit_text"
+                android:id="@+id/phone_number_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -124,7 +123,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/cockpit_call_back_space"
+                android:id="@+id/back_space"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="30dp"
@@ -138,14 +137,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TableLayout
-            android:id="@+id/cockpit_call_keyboard_view"
+            android:id="@+id/table_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/backgroundColor"
             android:shrinkColumns="*"
             android:stretchColumns="*"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/cockpit_call_layout_id">
+            app:layout_constraintBottom_toTopOf="@+id/call_layout">
 
             <View
                 android:layout_width="match_parent"
@@ -155,7 +153,7 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_1"
+                    android:id="@+id/call_keyboard_1"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
@@ -197,7 +195,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_2"
+                    android:id="@+id/call_keyboard_2"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
@@ -241,7 +239,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_3"
+                    android:id="@+id/call_keyboard_3"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
@@ -289,7 +287,7 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_4"
+                    android:id="@+id/call_keyboard_4"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
@@ -334,7 +332,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_5"
+                    android:id="@+id/call_keyboard_5"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
@@ -379,7 +377,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_6"
+                    android:id="@+id/call_keyboard_6"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
@@ -427,7 +425,7 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_7"
+                    android:id="@+id/call_keyboard_7"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
@@ -474,7 +472,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_8"
+                    android:id="@+id/call_keyboard_8"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
@@ -518,9 +516,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
-
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_9"
+                    android:id="@+id/call_keyboard_9"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
@@ -569,7 +566,7 @@
             <TableRow>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_star"
+                    android:id="@+id/call_keyboard_star"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="0"
@@ -587,7 +584,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_0"
+                    android:id="@+id/call_keyboard_0"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="1"
@@ -631,9 +628,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
-
                 <RelativeLayout
-                    android:id="@+id/cockpit_call_keyboard_sharp"
+                    android:id="@+id/call_keyboard_sharp"
                     android:layout_width="@dimen/cockpit_keyboard_width"
                     android:layout_height="@dimen/cockpit_keyboard_height"
                     android:layout_column="2"
@@ -653,7 +649,7 @@
         </TableLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cockpit_call_layout_id"
+            android:id="@+id/call_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/navigation"
@@ -665,7 +661,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/cockpit_send_message"
+                android:id="@+id/send_message"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="30dp"
@@ -679,7 +675,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/cockpit_button_close_id"
+                android:id="@+id/close_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="28dp"
@@ -692,7 +688,7 @@
                 app:layout_constraintVertical_bias="0.489" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/cockpit_incoming_call_button"
+                android:id="@+id/call_button"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_alignParentEnd="true"
@@ -711,11 +707,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/cockpit_button_open_id"
+            android:id="@+id/open_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/navigation"
-            android:layout_alignParentEnd="true"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"

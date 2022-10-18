@@ -490,4 +490,5 @@
     <string name="modify">Modificare</string>
     <string name="work_schedule_title">Orario di lavoro (lunedì - venerdì)</string>
     <string name="edit_reminder_hour_title">Tempo di promemoria giornaliero per le notifiche non VIP:</string>
+    <string name="remove_filter">Rimuovere il filtro</string>
 </resources>

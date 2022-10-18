@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,14 +64,14 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
                     addContactInList(listOfContacts, contact)
                 }
 
-                viewStateLiveData.postValue(
-                    sortedContactsList(
+                withContext(Dispatchers.Main) {
+                    viewStateLiveData.value = sortedContactsList(
                         sortedBy,
                         filterBy,
                         input,
                         listOfContacts
                     )
-                )
+                }
             }
         }
     }

@@ -490,4 +490,5 @@
     <string name="modify">Biến đổi</string>
     <string name="work_schedule_title">Lịch làm việc (Thứ Hai - Thứ Sáu)</string>
     <string name="edit_reminder_hour_title">Daily reminder time for non-VIP notifications :</string>
+    <string name="remove_filter">Xóa bộ lọc</string>
 </resources>

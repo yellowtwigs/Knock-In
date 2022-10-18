@@ -14,7 +14,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".ui.edit_contact.EditContactDetailsActivity">
+        tools:context=".ui.add_edit_contact.edit.EditContactDetailsActivity">
 
         <RelativeLayout
             android:id="@+id/edit_contact_toolbar"

@@ -51,9 +51,9 @@
             android:name=".ui.contacts.contact_selected.ContactSelectedWithAppsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.edit_contact.EditContactActivity"
+            android:name="com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity"
             android:exported="false" />
-        <activity android:name=".ui.edit_contact.VipSettingsActivity" />
+        <activity android:name="com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsActivity" />
         <activity
             android:name=".ui.SplashScreenActivity"
             android:exported="true">
@@ -88,11 +88,11 @@
         <activity android:name=".ui.HelpActivity" />
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
         <activity android:name=".ui.notifications.settings.NotificationsSettingsActivity" />
-<!--        <activity-->
-<!--            android:name=".ui.edit_contact.AddNewContactActivity"-->
-<!--            android:configChanges="orientation|screenSize" />-->
         <activity
-            android:name=".ui.edit_contact.EditContactDetailsActivity"
+            android:name="com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <!--        <activity-->
         <!--            android:name=".ui.contacts.Main2Activity"-->

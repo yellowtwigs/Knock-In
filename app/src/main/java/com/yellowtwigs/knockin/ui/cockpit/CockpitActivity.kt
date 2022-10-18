@@ -1,84 +1,44 @@
 package com.yellowtwigs.knockin.ui.cockpit
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
-import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TableLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityCockpitBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
-import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
+import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
-import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
-import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
+import com.yellowtwigs.knockin.utils.NotificationsGesture
+import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
 
 class CockpitActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
-
-    private var numberForPermission = ""
-
-    private var cockpit_IncomingCallButton: FloatingActionButton? = null
-    private var cockpit_SendMessage: ImageView? = null
-
-    private var cockpit_ButtonOpen: FloatingActionButton? = null
-    private var cockpit_CallLayout: ConstraintLayout? = null
-    private var cockpit_KeyboardView: TableLayout? = null
-    private var cockpit_EditTextLayout: ConstraintLayout? = null
-    private var cockpit_PhoneNumberEditText: AppCompatEditText? = null
-    private var cockpit_ButtonClose: ImageView? = null
-
-    private var cockpit_CallKeyboard_1: RelativeLayout? = null
-    private var cockpit_CallKeyboard_2: RelativeLayout? = null
-    private var cockpit_CallKeyboard_3: RelativeLayout? = null
-    private var cockpit_CallKeyboard_4: RelativeLayout? = null
-    private var cockpit_CallKeyboard_5: RelativeLayout? = null
-    private var cockpit_CallKeyboard_6: RelativeLayout? = null
-    private var cockpit_CallKeyboard_7: RelativeLayout? = null
-    private var cockpit_CallKeyboard_8: RelativeLayout? = null
-    private var cockpit_CallKeyboard_9: RelativeLayout? = null
-    private var cockpit_CallKeyboard_Star: RelativeLayout? = null
-    private var cockpit_CallKeyboard_0: RelativeLayout? = null
-    private var cockpit_CallKeyboard_Sharp: RelativeLayout? = null
-
-    private var cockpit_CallBackSpace: ImageView? = null
-    private var cockpit_ButtonAddContact: ImageView? = null
 
     //endregion
 
@@ -88,200 +48,126 @@ class CockpitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkTheme(this)
+        hideKeyboard(this)
 
         binding = ActivityCockpitBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        hideKeyboard()
-
-        listApp = getAppOnPhone()
+        listApp = getAppOnPhone(this)
 
         setupBottomNavigationView()
         setupToolbar()
         setupDrawerLayout()
         setupRecyclerView()
 
-        //region ======================================= FindViewById =======================================
+        binding.apply {
+            editTextLayout.isVisible = phoneNumberEditText.text?.isEmpty() == true
 
-        cockpit_IncomingCallButton = findViewById(R.id.cockpit_incoming_call_button)
+            //region ========================================== Listener ========================================
 
-        cockpit_ButtonOpen = findViewById(R.id.cockpit_button_open_id)
-        cockpit_CallLayout = findViewById(R.id.cockpit_call_layout_id)
-        cockpit_ButtonClose = findViewById(R.id.cockpit_button_close_id)
-
-        cockpit_SendMessage = findViewById(R.id.cockpit_send_message)
-        cockpit_KeyboardView = findViewById(R.id.cockpit_call_keyboard_view)
-        cockpit_EditTextLayout = findViewById(R.id.cockpit_call_edit_text_layout)
-        cockpit_PhoneNumberEditText = findViewById(R.id.cockpit_call_phone_number_edit_text)
-
-        cockpit_CallKeyboard_1 = findViewById(R.id.cockpit_call_keyboard_1)
-        cockpit_CallKeyboard_2 = findViewById(R.id.cockpit_call_keyboard_2)
-        cockpit_CallKeyboard_3 = findViewById(R.id.cockpit_call_keyboard_3)
-        cockpit_CallKeyboard_4 = findViewById(R.id.cockpit_call_keyboard_4)
-        cockpit_CallKeyboard_5 = findViewById(R.id.cockpit_call_keyboard_5)
-        cockpit_CallKeyboard_6 = findViewById(R.id.cockpit_call_keyboard_6)
-        cockpit_CallKeyboard_7 = findViewById(R.id.cockpit_call_keyboard_7)
-        cockpit_CallKeyboard_8 = findViewById(R.id.cockpit_call_keyboard_8)
-        cockpit_CallKeyboard_9 = findViewById(R.id.cockpit_call_keyboard_9)
-        cockpit_CallKeyboard_Star = findViewById(R.id.cockpit_call_keyboard_star)
-        cockpit_CallKeyboard_0 = findViewById(R.id.cockpit_call_keyboard_0)
-        cockpit_CallKeyboard_Sharp = findViewById(R.id.cockpit_call_keyboard_sharp)
-
-        cockpit_CallBackSpace = findViewById(R.id.cockpit_call_back_space)
-        cockpit_ButtonAddContact = findViewById(R.id.cockpit_button_add_contact)
-
-        //endregion
-
-        if (cockpit_PhoneNumberEditText?.text?.isEmpty() == true) {
-            cockpit_EditTextLayout?.visibility = View.GONE
-        } else {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-        }
-
-
-        //region ========================================== Listener ========================================
-
-        cockpit_IncomingCallButton?.setOnClickListener {
-//            phoneCall(cockpit_PhoneNumberEditText?.text.toString())
-        }
-
-        cockpit_SendMessage?.setOnClickListener {
-            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
-                val phone = cockpit_PhoneNumberEditText?.text.toString()
-                val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null))
-                startActivity(i)
-            } else {
-                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        cockpit_ButtonAddContact?.setOnClickListener {
-            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
-//                startActivity(
-//                    Intent(
-//                        this@CockpitActivity,
-//                        AddNewContactActivity::class.java
-//                    ).putExtra("ContactPhoneNumber", cockpit_PhoneNumberEditText!!.text.toString())
-//                )
-            } else {
-                Toast.makeText(this, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        cockpit_ButtonOpen?.setOnClickListener {
-            val slideLeft = AnimationUtils.loadAnimation(this, R.anim.slide_left)
-
-            slideUp(cockpit_EditTextLayout!!)
-            slideUp(cockpit_KeyboardView!!)
-            slideUp(cockpit_CallLayout!!)
-            cockpit_ButtonOpen?.startAnimation(slideLeft)
-
-            cockpit_CallLayout?.visibility = View.VISIBLE
-            cockpit_KeyboardView?.visibility = View.VISIBLE
-            cockpit_ButtonOpen?.visibility = View.GONE
-        }
-
-        cockpit_ButtonClose?.setOnClickListener {
-            val slideRight = AnimationUtils.loadAnimation(this, R.anim.slide_right)
-            val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
-
-            cockpit_EditTextLayout?.startAnimation(slideDown)
-            cockpit_KeyboardView?.startAnimation(slideDown)
-            cockpit_CallLayout?.startAnimation(slideDown)
-            cockpit_ButtonOpen?.startAnimation(slideRight)
-
-            cockpit_CallLayout?.visibility = View.GONE
-            cockpit_KeyboardView?.visibility = View.GONE
-            cockpit_EditTextLayout?.visibility = View.GONE
-            cockpit_ButtonOpen?.visibility = View.VISIBLE
-        }
-
-        //region ========================================== Keyboard ========================================
-
-        cockpit_CallKeyboard_1?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 1)
-        }
-        cockpit_CallKeyboard_2?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 2)
-        }
-        cockpit_CallKeyboard_3?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 3)
-        }
-        cockpit_CallKeyboard_4?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 4)
-        }
-        cockpit_CallKeyboard_5?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 5)
-        }
-        cockpit_CallKeyboard_6?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 6)
-        }
-        cockpit_CallKeyboard_7?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 7)
-        }
-        cockpit_CallKeyboard_8?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 8)
-        }
-        cockpit_CallKeyboard_9?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 9)
-        }
-        cockpit_CallKeyboard_Star?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + "*")
-        }
-        cockpit_CallKeyboard_0?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + 0)
-        }
-        cockpit_CallKeyboard_Sharp?.setOnClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + "#")
-        }
-        cockpit_CallKeyboard_0?.setOnLongClickListener {
-            cockpit_EditTextLayout?.visibility = View.VISIBLE
-            cockpit_PhoneNumberEditText?.setText(cockpit_PhoneNumberEditText?.text.toString() + "+")
-            true
-        }
-        cockpit_CallBackSpace?.setOnClickListener {
-            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
-                cockpit_PhoneNumberEditText?.text?.delete(
-                    cockpit_PhoneNumberEditText?.length()!! - 1,
-                    cockpit_PhoneNumberEditText?.length()!!
+            callButton.setOnClickListener {
+                phoneCall(
+                    this@CockpitActivity,
+                    phoneNumberEditText.text.toString(),
+                    MAKE_CALL_PERMISSION_REQUEST_CODE
                 )
             }
-        }
 
-        cockpit_CallBackSpace?.setOnLongClickListener {
-            if (cockpit_PhoneNumberEditText?.text?.isNotEmpty() == true) {
-                cockpit_PhoneNumberEditText?.setText("")
+            sendMessage.setOnClickListener {
+                if (phoneNumberEditText.text?.isNotEmpty() == true) {
+                    val phone = phoneNumberEditText.text.toString()
+                    val i = Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null))
+                    startActivity(i)
+                } else {
+                    Toast.makeText(
+                        this@CockpitActivity,
+                        R.string.cockpit_toast_phone_number_empty,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
-            true
+
+            addContact.setOnClickListener {
+                if (phoneNumberEditText.text?.isNotEmpty() == true) {
+                    startActivity(
+                        Intent(
+                            this@CockpitActivity,
+                            AddNewContactActivity::class.java
+                        ).putExtra(
+                            "ContactPhoneNumber",
+                            phoneNumberEditText.text.toString()
+                        )
+                    )
+                } else {
+                    Toast.makeText(
+                        this@CockpitActivity,
+                        R.string.cockpit_toast_phone_number_empty,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+
+            openFab.setOnClickListener {
+                val slideLeft =
+                    AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_left)
+
+                slideUp(editTextLayout)
+                slideUp(tableLayout)
+                slideUp(callLayout)
+                openFab.startAnimation(slideLeft)
+
+                callLayout.visibility = View.VISIBLE
+                tableLayout.visibility = View.VISIBLE
+                openFab.visibility = View.GONE
+            }
+
+            closeFab.setOnClickListener {
+                val slideRight =
+                    AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_right)
+                val slideDown =
+                    AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_down)
+
+                editTextLayout.startAnimation(slideDown)
+                tableLayout.startAnimation(slideDown)
+                callLayout.startAnimation(slideDown)
+                openFab.startAnimation(slideRight)
+
+                callLayout.visibility = View.GONE
+                tableLayout.visibility = View.GONE
+                editTextLayout.visibility = View.GONE
+                openFab.visibility = View.VISIBLE
+            }
+
+            //region ========================================== Keyboard ========================================
+
+            callKeyboardNumberClick(callKeyboard1, "1")
+            callKeyboardNumberClick(callKeyboard2, "2")
+            callKeyboardNumberClick(callKeyboard3, "3")
+            callKeyboardNumberClick(callKeyboard4, "4")
+            callKeyboardNumberClick(callKeyboard5, "5")
+            callKeyboardNumberClick(callKeyboard6, "6")
+            callKeyboardNumberClick(callKeyboard7, "7")
+            callKeyboardNumberClick(callKeyboard8, "8")
+            callKeyboardNumberClick(callKeyboard9, "9")
+            callKeyboardNumberClick(callKeyboardStar, "*")
+            callKeyboardNumberClick(callKeyboard0, "0")
+            callKeyboardNumberClick(callKeyboardSharp, "#")
+
+            backSpace.setOnClickListener {
+                if (phoneNumberEditText.text?.isNotEmpty() == true) {
+                    phoneNumberEditText.text?.delete(
+                        phoneNumberEditText.length() - 1,
+                        phoneNumberEditText.length()
+                    )
+                }
+            }
+            //endregion
+
+            //endregion
         }
-
-        //endregion
-
-        //endregion
     }
 
     //region =========================================== TOOLBAR ============================================
@@ -290,7 +176,7 @@ class CockpitActivity : AppCompatActivity() {
         binding.apply {
             openDrawer.setOnClickListener {
                 drawerLayout.openDrawer(GravityCompat.START)
-                hideKeyboard()
+                hideKeyboard(this@CockpitActivity)
             }
         }
 
@@ -421,176 +307,214 @@ class CockpitActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val listOfApps = arrayListOf<Int>()
+        val cockpitViewStateList = arrayListOf<CockpitViewState>()
 
-        if (!listApp.contains("com.facebook.katana")) {
-            listOfApps.add(R.drawable.ic_facebook_disable)
-//            link_socials_networks_Facebook?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_facebook_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.FACEBOOK_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_facebook_selector,
+                    NotificationsGesture.FACEBOOK_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_facebook_selector)
-//            link_socials_networks_Facebook?.setOnClickListener { goToFacebook() }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_facebook_disable,
+                    NotificationsGesture.FACEBOOK_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.facebook.orca")) {
-            listOfApps.add(R.drawable.ic_messenger_disable)
-//            link_socials_networks_Messenger?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_messenger_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
+        if (listApp.contains(NotificationsGesture.MESSENGER_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_messenger_selector,
+                    NotificationsGesture.MESSENGER_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_messenger_selector)
-//            link_socials_networks_Messenger?.setOnClickListener { openMessenger("") }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_messenger_disable,
+                    NotificationsGesture.MESSENGER_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.instagram.android")) {
-            listOfApps.add(R.drawable.ic_instagram_disable)
-//            link_socials_networks_Instagram?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_instagram_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.WHATSAPP_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_whatsapp,
+                    NotificationsGesture.WHATSAPP_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_instagram)
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_whatsapp_disable,
+                    NotificationsGesture.WHATSAPP_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.whatsapp")) {
-            listOfApps.add(R.drawable.ic_whatsapp_disable)
-//            link_socials_networks_Whatsapp?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_whatsapp_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.GMAIL_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_gmail,
+                    NotificationsGesture.GMAIL_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_whatsapp)
-//            link_socials_networks_Whatsapp?.setOnClickListener {
-//                goToWhatsapp() }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_gmail_disable,
+                    NotificationsGesture.GMAIL_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.google.android.gm")) {
-            listOfApps.add(R.drawable.ic_gmail_disable)
-//            link_socials_networks_Gmail?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_gmail_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.OUTLOOK_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_outlook,
+                    NotificationsGesture.OUTLOOK_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_gmail)
-//            link_socials_networks_Gmail?.setOnClickListener { goToGmail() }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_outlook_disable,
+                    NotificationsGesture.OUTLOOK_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.snapchat.android")) {
-            listOfApps.add(R.drawable.ic_snapchat_disable)
-//            link_socials_networks_Snapchat?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_snapchat_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.SIGNAL_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_signal,
+                    NotificationsGesture.SIGNAL_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_snapchat)
-//            link_socials_networks_Snapchat?.setOnClickListener { goToSnapchat() }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_signal_disable,
+                    NotificationsGesture.SIGNAL_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("org.telegram.messenger")) {
-            listOfApps.add(R.drawable.ic_telegram_disable)
-//            link_socials_networks_Telegram?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_telegram_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.LINKEDIN_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_linkedin,
+                    NotificationsGesture.LINKEDIN_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_telegram)
-
-//            link_socials_networks_Telegram?.setOnClickListener {
-//                goToTelegram(this)
-//            }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_linkedin_disable,
+                    NotificationsGesture.LINKEDIN_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.microsoft.office.outlook")) {
-            listOfApps.add(R.drawable.ic_outlook_disable)
-//            link_socials_networks_Outlook?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_outlook_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.SKYPE_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_skype,
+                    NotificationsGesture.SKYPE_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_outlook)
-//            link_socials_networks_Outlook?.setOnClickListener { goToOutlook(this@CockpitActivity) }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_skype_disable,
+                    NotificationsGesture.SKYPE_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.skype.raider")) {
-            listOfApps.add(R.drawable.ic_skype_disable)
-//            link_socials_networks_Skype?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_skype_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.TELEGRAM_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_telegram,
+                    NotificationsGesture.TELEGRAM_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_skype)
-//            link_socials_networks_Skype?.setOnClickListener { goToSkype() }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_telegram_disable,
+                    NotificationsGesture.TELEGRAM_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.linkedin.android")) {
-            listOfApps.add(R.drawable.ic_linkedin_disable)
-//            link_socials_networks_Linkedin?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_linkedin_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.INSTAGRAM_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_instagram,
+                    NotificationsGesture.INSTAGRAM_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_linkedin)
-//            link_socials_networks_Linkedin?.setOnClickListener { goToLinkedin() }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_instagram_disable,
+                    NotificationsGesture.INSTAGRAM_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("com.twitter.android")) {
-            listOfApps.add(R.drawable.ic_twitter_disable)
-//            link_socials_networks_Twitter?.setOnClickListener {
-//                Toast.makeText(
-//                    this,
-//                    R.string.cockpit_toast_twitter_not_install,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        if (listApp.contains(NotificationsGesture.TWITTER_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_twitter,
+                    NotificationsGesture.TWITTER_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_twitter)
-//            link_socials_networks_Twitter?.setOnClickListener { goToTwitter() }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_twitter_disable,
+                    NotificationsGesture.TWITTER_PACKAGE
+                )
+            )
         }
 
-        if (!listApp.contains("org.thoughtcrime.securesms")) {
-            listOfApps.add(R.drawable.ic_signal_disable)
+        if (listApp.contains(NotificationsGesture.SNAPCHAT_PACKAGE)) {
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_snapchat,
+                    NotificationsGesture.SNAPCHAT_PACKAGE
+                )
+            )
         } else {
-            listOfApps.add(R.drawable.ic_signal)
-//            signalIcon?.setOnClickListener { goToSignal(this) }
+            cockpitViewStateList.add(
+                CockpitViewState(
+                    R.drawable.ic_snapchat_disable,
+                    NotificationsGesture.SNAPCHAT_PACKAGE
+                )
+            )
         }
 
         binding.recyclerView.apply {
-            val cockpitListAdapter = CockpitListAdapter()
-            cockpitListAdapter.submitList(listOfApps)
+            val cockpitListAdapter = CockpitListAdapter(this@CockpitActivity)
+            cockpitListAdapter.submitList(cockpitViewStateList)
             adapter = cockpitListAdapter
             layoutManager = GridLayoutManager(context, 4)
+        }
+    }
+
+    private fun callKeyboardNumberClick(callKeyboard: RelativeLayout, value: String) {
+        callKeyboard.setOnClickListener {
+            binding.apply {
+                editTextLayout.visibility = View.VISIBLE
+                phoneNumberEditText.setText(phoneNumberEditText.text.toString() + value)
+            }
         }
     }
 
@@ -611,28 +535,7 @@ class CockpitActivity : AppCompatActivity() {
         view.startAnimation(animate)
     }
 
-    private fun getAppOnPhone(): ArrayList<String> {
-        val intent = Intent(Intent.ACTION_MAIN, null)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-        val resolveInfoList = packageManager.queryIntentActivities(intent, 0)
-        val packageNameList = ArrayList<String>()
-        for (resolveInfo in resolveInfoList) {
-            val activityInfo = resolveInfo.activityInfo
-            packageNameList.add(activityInfo.applicationInfo.packageName)
-        }
-        return packageNameList
-    }
     override fun onBackPressed() {
-    }
-
-    private fun hideKeyboard() {
-        val view = this.currentFocus
-
-        view?.let { v ->
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(v.windowToken, 0)
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -644,7 +547,11 @@ class CockpitActivity : AppCompatActivity() {
 
         when (requestCode) {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
-                cockpit_IncomingCallButton?.isEnabled = true
+                phoneCall(
+                    this@CockpitActivity,
+                    binding.phoneNumberEditText.text.toString(),
+                    MAKE_CALL_PERMISSION_REQUEST_CODE
+                )
             }
         }
     }

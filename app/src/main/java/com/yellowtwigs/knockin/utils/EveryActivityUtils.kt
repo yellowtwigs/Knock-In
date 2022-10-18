@@ -3,12 +3,20 @@ package com.yellowtwigs.knockin.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.SwitchCompat
 import com.yellowtwigs.knockin.R
 
 object EveryActivityUtils {
+
+    fun checkTheme(cxt: Activity) {
+        val sharedThemePreferences = cxt.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            cxt.setTheme(R.style.AppThemeDark)
+        } else {
+            cxt.setTheme(R.style.AppTheme)
+        }
+    }
+
     fun getAppOnPhone(cxt: Activity): ArrayList<String> {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)

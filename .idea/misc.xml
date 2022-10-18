@@ -69,6 +69,7 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_select_players_background_dark.xml" value="0.1395" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_signal.xml" value="0.2425" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_signal_disable.xml" value="0.3005" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_sort.xml" value="0.254" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_star_no_shine.xml" value="0.2975" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_star_selector.xml" value="0.2975" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/drawable/ic_star_shine.xml" value="0.2975" />
@@ -94,7 +95,7 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_contact_details.xml" value="0.23125" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_contact_selected_with_apps.xml" value="0.2" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_contacts_list.xml" value="0.2223731884057971" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_edit_contact.xml" value="0.75" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_edit_contact.xml" value="0.33" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_edit_contact_details.xml" value="0.21" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_edit_contact_vip_settings.xml" value="0.15198087431693988" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/activity_first_launch.xml" value="0.19882246376811594" />
@@ -132,6 +133,7 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/alert_dialog_mail_identifier_help.xml" value="0.27239583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/alert_dialog_messenger_identifier_help.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/alert_dialog_notif_details_messaging.xml" value="0.2515625" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/alert_dialog_select_contact_picture_layout.xml" value="0.35208333333333336" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/content_main.xml" value="0.25" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/content_main_mini_screen.xml" value="0.15789473684210525" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/content_main_smaller_screen.xml" value="0.19519927536231885" />
@@ -170,7 +172,7 @@
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/nav_header_drawer_smaller_screen.xml" value="0.18697916666666667" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/slide_item_container.xml" value="0.2515625" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/spinner_item.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/teleworking_menu_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/teleworking_menu_item.xml" value="0.6694129763130793" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/layout/test.xml" value="0.25" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/CompteDev/AndroidStudioProjects/Knocker/app/src/main/res/menu/bottom_navigation_view.xml" value="0.36614583333333334" />

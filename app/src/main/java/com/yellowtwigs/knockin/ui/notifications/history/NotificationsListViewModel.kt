@@ -64,14 +64,11 @@ class NotificationsListViewModel @Inject constructor(
 
         if (allNotifications?.isNotEmpty() == true) {
             for (notification in allNotifications) {
-//                Log.i("getNotifications", "notification : $notification")
                 addNotificationInList(notifications, notification)
             }
         }
 
-        Log.i("allNotifications", "notifications : $notifications")
-        viewStateLiveData.value = notifications
-//        viewStateLiveData.value = sortedContactsList(sortedBy, filterBy, input, notifications)
+        viewStateLiveData.value = sortedContactsList(sortedBy, filterBy, input, notifications)
     }
 
     private fun sortedContactsList(
@@ -156,7 +153,7 @@ class NotificationsListViewModel @Inject constructor(
                 }
                 R.id.whatsapp_filter -> {
                     return notifications.filter {
-                        convertPackageToString(it.platform, context) == "Whatsapp"
+                        convertPackageToString(it.platform, context) == "WhatsApp"
                     }
                 }
                 R.id.facebook_filter -> {
@@ -179,6 +176,14 @@ class NotificationsListViewModel @Inject constructor(
                             it.platform,
                             context
                         ) == "Discord"
+                    }
+                }
+                R.id.viber_filter -> {
+                    return notifications.filter {
+                        convertPackageToString(
+                            it.platform,
+                            context
+                        ) == "Viber"
                     }
                 }
                 else -> {

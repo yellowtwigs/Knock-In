@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemNotificationBinding
-import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToBackgroundPackage
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 
 import java.text.SimpleDateFormat

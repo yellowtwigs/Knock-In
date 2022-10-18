@@ -491,4 +491,5 @@
     <string name="modify">Ändern</string>
     <string name="work_schedule_title">Arbeitsplan (Montag - Freitag)</string>
     <string name="edit_reminder_hour_title">Tägliche Erinnerungszeit für Nicht-VIP-Benachrichtigungen:</string>
+    <string name="remove_filter">Filter entfernen</string>
 </resources>

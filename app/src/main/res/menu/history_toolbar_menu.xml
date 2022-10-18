@@ -7,8 +7,7 @@
         android:title="@string/sort_by"
         app:showAsAction="ifRoom">
         <menu>
-            <group
-                android:checkableBehavior="single">
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/sort_by_date"
                     android:title="@string/sort_by_date"
@@ -37,41 +36,35 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/filter_by_all"
-                    android:checkable="true"
                     android:title="@string/filter_by_all" />
                 <item
                     android:id="@+id/filter_by_msg_apps"
-                    android:checkable="true"
                     android:title="@string/filter_by_msg_apps" />
                 <item
                     android:id="@+id/sms_filter"
-                    android:checkable="true"
                     android:title="@string/filter_sms"
                     app:showAsAction="collapseActionView" />
                 <item
                     android:id="@+id/mail_filter"
-                    android:checkable="true"
                     android:title="@string/filter_mail" />
                 <item
                     android:id="@+id/whatsapp_filter"
-                    android:checkable="true"
                     android:title="@string/list_contact_item_whatsapp" />
                 <item
                     android:id="@+id/facebook_filter"
-                    android:checkable="true"
                     android:title="Facebook" />
                 <item
                     android:id="@+id/signal_filter"
-                    android:checkable="true"
                     android:title="Signal" />
                 <item
                     android:id="@+id/telegram_filter"
-                    android:checkable="true"
                     android:title="Telegram" />
                 <item
                     android:id="@+id/discord_filter"
-                    android:checkable="true"
                     android:title="Discord" />
+                <item
+                    android:id="@+id/viber_filter"
+                    android:title="Viber" />
             </group>
         </menu>
     </item>

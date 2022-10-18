@@ -67,58 +67,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <RelativeLayout
-            android:id="@+id/toolbar_mode_multi_select"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:background="?attr/backgroundColor"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/close_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:background="?attr/actionBarItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                app:srcCompat="@drawable/ic_close" />
-
-            <TextView
-                android:id="@+id/notification_history_toolbar_multi_select_mode_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="35dp"
-                android:layout_toEndOf="@+id/close_icon"
-                android:textColor="?attr/textColor"
-                android:textSize="21sp"
-                tools:ignore="RelativeOverlap" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/delete_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:background="?attr/actionBarItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                app:srcCompat="@drawable/ic_garbage" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.05dp"
-                android:layout_alignParentBottom="true"
-                android:background="?attr/darkGreyColor" />
-
-        </RelativeLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

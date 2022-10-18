@@ -38,29 +38,27 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/empty_filter"
+                    android:title="@string/remove_filter"
+                    app:showAsAction="collapseActionView" />
+                <item
                     android:id="@+id/sms_filter"
-                    android:checkable="true"
                     android:title="@string/filter_sms"
                     app:showAsAction="collapseActionView" />
                 <item
                     android:id="@+id/mail_filter"
-                    android:checkable="true"
                     android:title="@string/filter_mail" />
                 <item
                     android:id="@+id/whatsapp_filter"
-                    android:checkable="true"
                     android:title="@string/list_contact_item_whatsapp" />
                 <item
                     android:id="@+id/messenger_filter"
-                    android:checkable="true"
                     android:title="@string/list_contact_item_messenger" />
                 <item
                     android:id="@+id/signal_filter"
-                    android:checkable="true"
                     android:title="Signal" />
                 <item
                     android:id="@+id/telegram_filter"
-                    android:checkable="true"
                     android:title="Telegram" />
             </group>
         </menu>

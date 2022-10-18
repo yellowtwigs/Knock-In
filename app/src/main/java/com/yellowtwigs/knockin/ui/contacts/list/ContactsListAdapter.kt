@@ -1,8 +1,6 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.content.Context
-import android.provider.SyncStateContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -157,7 +155,6 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 editLayout.setOnClickListener(listener)
 
                 itemLayout.setOnClickListener {
-                    Log.i("onScrollStateChanged", "onScrollStateChanged")
                     if (listContactItemMenu.visibility == View.GONE) {
                         val slideUp = AnimationUtils.loadAnimation(cxt, R.anim.slide_up)
                         listContactItemMenu.startAnimation(slideUp)

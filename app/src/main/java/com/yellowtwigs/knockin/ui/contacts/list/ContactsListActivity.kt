@@ -26,7 +26,8 @@ import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.model.service.NotificationsListenerService
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.edit_contact.EditContactActivity
+import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
@@ -70,6 +71,7 @@ class ContactsListActivity : AppCompatActivity() {
         setupRecyclerView(binding)
         setupBottomNavigationView(binding)
         setupDrawerLayout(binding)
+        floatingButtonsClick(binding)
     }
 
     //region =========================================== TOOLBAR ============================================
@@ -160,6 +162,11 @@ class ContactsListActivity : AppCompatActivity() {
             R.id.sms_filter -> {
                 item.isChecked = !item.isChecked
                 contactsListViewModel.setFilterBy(R.id.sms_filter)
+                return true
+            }
+            R.id.empty_filter -> {
+                item.isChecked = !item.isChecked
+                contactsListViewModel.setFilterBy(R.id.empty_filter)
                 return true
             }
             R.id.mail_filter -> {
@@ -261,6 +268,7 @@ class ContactsListActivity : AppCompatActivity() {
 
         binding.recyclerView.apply {
             contactsListViewModel.getAllContacts().observe(this@ContactsListActivity) { contacts ->
+                contactsListAdapter.submitList(null)
                 contactsListAdapter.submitList(contacts)
             }
             adapter = contactsListAdapter
@@ -309,6 +317,12 @@ class ContactsListActivity : AppCompatActivity() {
             }
             false
         })
+    }
+
+    private fun floatingButtonsClick(binding: ActivityContactsListBinding) {
+        binding.addNewContact.setOnClickListener {
+            startActivity(Intent(this@ContactsListActivity, AddNewContactActivity::class.java))
+        }
     }
 
     //endregion

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
-        android:background="@drawable/background_layout_selector"
+        android:background="?attr/backgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="15dp"
-            android:background="@color/textColorDark"
+            android:background="?attr/textColor"
             app:layout_constraintBottom_toTopOf="@+id/teleworking_item_icon" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Teleworking Mode"
-            android:textColor="@color/textColorDark"
+            android:textColor="?attr/textColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/teleworking_item_icon"

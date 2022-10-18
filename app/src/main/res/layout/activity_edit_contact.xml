@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/backgroundColor"
     android:orientation="vertical"
-    tools:context=".ui.edit_contact.EditContactActivity">
+    tools:context=".ui.add_edit_contact.edit.EditContactActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
@@ -495,7 +495,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/messenger_id_layout" />
 
             <TextView
-                android:id="@+id/contact_vip_settings"
+                android:id="@+id/vip_settings_text"
                 android:layout_width="127dp"
                 android:layout_height="21dp"
                 android:layout_marginTop="12dp"
@@ -510,11 +510,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/priority_explain" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/edit_contact_vip_settings"
+                android:id="@+id/vip_settings_icon"
                 android:layout_width="57dp"
                 android:layout_height="32dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="7dp"
                 android:background="?attr/actionBarItemBackground"
