@@ -14,4 +14,5 @@ data class ContactsListViewState(
     val hasWhatsapp: Boolean,
     val hasTelegram: Boolean,
     val hasSignal: Boolean
+//    val contactsPerLineUI: ContactsPerLineUI?
 )

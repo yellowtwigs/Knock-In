@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.add_edit_contact.edit_contact
+package com.yellowtwigs.knockin.ui.add_edit_contact.edit
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

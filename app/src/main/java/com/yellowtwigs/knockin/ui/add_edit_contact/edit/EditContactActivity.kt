@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.add_edit_contact.edit_contact
+package com.yellowtwigs.knockin.ui.add_edit_contact.edit
 
 import android.Manifest
 import android.app.Activity
@@ -30,9 +30,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityEditContactBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
+import com.yellowtwigs.knockin.ui.add_edit_contact.IconAdapter
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
@@ -62,21 +65,15 @@ class EditContactActivity : AppCompatActivity() {
 
     private var isFavorite = 0
 
+    private var contactImageString = ""
+    private var contactImageStringIsChanged = false
+
     private lateinit var currentContact: ContactDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        EveryActivityUtils.checkTheme(this)
 
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -350,7 +347,7 @@ class EditContactActivity : AppCompatActivity() {
                 binding.firstNameInput.editText?.text.toString(),
                 binding.lastNameInput.editText?.text.toString(),
                 currentContact.profilePicture,
-                currentContact.profilePicture64,
+                contactImageString,
                 arrayListOf(
                     binding.phoneNumberInput.editText?.text.toString(),
                     binding.phoneNumberFixInput.editText?.text.toString()
@@ -430,7 +427,10 @@ class EditContactActivity : AppCompatActivity() {
                 LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerView?.layoutManager = layoutManager
 
-            val adapter = ContactIconeAdapter(this@EditContactActivity)
+            val adapter =
+                IconAdapter(
+                    this@EditContactActivity
+                )
             recyclerView?.adapter = adapter
             gallery?.setOnClickListener {
                 if (ActivityCompat.checkSelfPermission(
@@ -510,6 +510,12 @@ class EditContactActivity : AppCompatActivity() {
         }
     }
 
+    fun addContactIcon(bitmap: Bitmap) {
+        binding.contactImage.setImageBitmap(bitmap)
+        contactImageString = Converter.bitmapToBase64(bitmap)
+        contactImageStringIsChanged = true
+    }
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -529,8 +535,8 @@ class EditContactActivity : AppCompatActivity() {
                 bitmap =
                     Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 binding.contactImage.setImageBitmap(bitmap)
-//                edit_contact_imgString = bitmap.bitmapToBase64()
-//                edit_contact_imgStringChanged = true
+                contactImageString = Converter.bitmapToBase64(bitmap)
+                contactImageStringIsChanged = true
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
                 val selectedImageUri = data!!.data
@@ -547,8 +553,8 @@ class EditContactActivity : AppCompatActivity() {
                 bitmap =
                     Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 binding.contactImage.setImageBitmap(bitmap)
-//                edit_contact_imgString = bitmap.bitmapToBase64()
-//                edit_contact_imgStringChanged = true
+                contactImageString = Converter.bitmapToBase64(bitmap)
+                contactImageStringIsChanged = true
             }
         }
     }

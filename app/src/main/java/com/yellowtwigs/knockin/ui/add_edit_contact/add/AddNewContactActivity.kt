@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.add_edit_contact.add_new
+package com.yellowtwigs.knockin.ui.add_edit_contact.add
 
 import android.Manifest
 import android.app.Activity
@@ -30,9 +30,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityEditContactBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
-import com.yellowtwigs.knockin.ui.add_edit_contact.edit_contact.ContactIconeAdapter
-import com.yellowtwigs.knockin.ui.add_edit_contact.edit_contact.EditContactViewModel
+import com.yellowtwigs.knockin.ui.add_edit_contact.IconAdapter
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
@@ -59,6 +60,8 @@ class AddNewContactActivity : AppCompatActivity() {
     private var contactsUnlimitedIsBought = false
 
     private var contactImageString = ""
+    private var contactImageStringIsChanged = false
+
     private var avatar = 0
 
     private var imageUri: Uri? = null
@@ -310,7 +313,8 @@ class AddNewContactActivity : AppCompatActivity() {
                     phoneNumberFixInput.editText?.text.toString().isNotEmpty() ||
                     mailInput.editText?.text.toString().isNotEmpty() ||
                     mailIdInput.editText?.text.toString().isNotEmpty() ||
-                    messengerIdInput.editText?.text.toString().isNotEmpty()
+                    messengerIdInput.editText?.text.toString().isNotEmpty() ||
+                    contactImageStringIsChanged
         }
     }
 
@@ -364,7 +368,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 cameraClick(it, builderBottom)
             }
 
-            val adapter = ContactIconeAdapter(this@AddNewContactActivity)
+            val adapter = IconAdapter(this@AddNewContactActivity)
             recyclerView?.adapter = adapter
             builderBottom.show()
         }
@@ -397,7 +401,7 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun cameraClick(camera: ConstraintLayout, builderBottom: BottomSheetDialog){
+    private fun cameraClick(camera: ConstraintLayout, builderBottom: BottomSheetDialog) {
         camera.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(
                     this@AddNewContactActivity,
@@ -460,6 +464,12 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    fun addContactIcon(bitmap: Bitmap) {
+        binding.contactImage.setImageBitmap(bitmap)
+        contactImageString = bitmapToBase64(bitmap)
+        contactImageStringIsChanged = true
+    }
+
     //endregion
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -482,6 +492,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
                 binding.contactImage.setImageBitmap(bitmap)
                 contactImageString = bitmapToBase64(bitmap)
+                contactImageStringIsChanged = true
             } else if (requestCode == SELECT_FILE) {
                 val matrix = Matrix()
                 val selectedImageUri = data!!.data

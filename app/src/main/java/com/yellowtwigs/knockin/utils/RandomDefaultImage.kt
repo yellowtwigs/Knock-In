@@ -13,9 +13,6 @@ object RandomDefaultImage {
             cxt.getSharedPreferences("ContactsColor", Context.MODE_PRIVATE)
         val contactsColorPosition = sharedPreferencesContactsColor.getInt("contactsColor", 0)
 
-        Log.i("getPicture", "multiColor : $multiColor")
-        Log.i("getPicture", "contactsColorPosition : $contactsColorPosition")
-
         return if (multiColor == 0) {
             when (avatarId) {
                 0 -> R.drawable.ic_user_purple

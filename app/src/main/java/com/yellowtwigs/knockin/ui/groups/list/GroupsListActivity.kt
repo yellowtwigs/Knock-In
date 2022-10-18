@@ -21,11 +21,13 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionAdapter
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListAdapter
+import com.yellowtwigs.knockin.ui.groups.create.AddNewGroupActivity
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,16 +48,7 @@ class GroupsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkTheme(this)
 
         val binding = ActivityGroupsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -64,6 +57,7 @@ class GroupsListActivity : AppCompatActivity() {
         setupDrawerLayout(binding)
         setupBottomNavigationView(binding)
         setupGroupsList(binding)
+        setupFloatingButtons(binding)
 
         //region ======================================= Listeners ==========================================
 
@@ -106,10 +100,6 @@ class GroupsListActivity : AppCompatActivity() {
 ////            }
 //            monoChannelMailClick(listOfMailContactSelected)
 //        }
-//        group_manager_FloatingButtonAddNewGroup?.setOnClickListener {
-//            val intent = Intent(this@GroupsListActivity, AddNewGroupActivity::class.java)
-//            startActivity(intent)
-//        }
 //
 //        touchHelper = ItemTouchHelper(object :
 //            ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
@@ -130,6 +120,14 @@ class GroupsListActivity : AppCompatActivity() {
 //        touchHelper!!.attachToRecyclerView(group_manager_RecyclerView!!)
 
         //endregion
+    }
+
+    private fun setupFloatingButtons(binding: ActivityGroupsListBinding) {
+        binding.addNewGroup.setOnClickListener {
+            val intent = Intent(this@GroupsListActivity, AddNewGroupActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     //region =========================================== TOOLBAR ============================================

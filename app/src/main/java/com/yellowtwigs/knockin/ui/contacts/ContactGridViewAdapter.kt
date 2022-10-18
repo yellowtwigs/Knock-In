@@ -16,11 +16,6 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 
-/**
- * La Classe qui permet de remplir la convertView avec les bon éléments
- *
- * @author Florian Striebel, Kenzy Suon, Ryan Granet
- */
 class ContactGridViewAdapter(
     private val context: Context,
     private val len: Int
@@ -256,11 +251,9 @@ class ContactGridViewAdapter(
         selectMenu = null
     }
 
-    /**
-     * Ferme le menu qui est ouvert
-     */
     fun closeMenu() {
-        if (selectMenu != null) selectMenu!!.close(true)
+        if (selectMenu != null)
+            selectMenu?.close(true)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -283,5 +276,4 @@ class ContactGridViewAdapter(
     fun multiSelectMode(): Boolean {
         return modeMultiSelect
     }
-
 }

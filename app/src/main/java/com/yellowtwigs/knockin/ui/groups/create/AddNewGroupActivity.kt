@@ -21,10 +21,6 @@ import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 
-/**
- * Activité qui nous permet de créer un groupe
- * @author Florian Striebel
- */
 class AddNewGroupActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
@@ -33,8 +29,6 @@ class AddNewGroupActivity : AppCompatActivity() {
     private var addNewGroupListView: ListView? = null
     private var createGroupAdapter: AddContactToGroupAdapter? = null
     private var addNewGroupName: TextView? = null
-
-//    private var listOfItemSelected: ArrayList<ContactWithAllInformation> = ArrayList()
 
     private var main_GridView: RecyclerView? = null
     private var gridViewAdapter: CreateGroupGridViewAdapter? = null
@@ -63,18 +57,18 @@ class AddNewGroupActivity : AppCompatActivity() {
         //endregion
 
         setContentView(R.layout.activity_add_new_group)
-        addNewGroupListView = findViewById(R.id.add_new_group_list_view)
+//        addNewGroupListView = findViewById(R.id.add_new_group_list_view)
         addNewGroupName = findViewById(R.id.add_new_group_name)
         contactsDatabase = ContactsDatabase.getDatabase(this)
 
         //region ========================================= Toolbar ==========================================
 
-        val toolbar = findViewById<Toolbar>(R.id.add_new_group_toolbar)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        actionbar!!.setDisplayHomeAsUpEnabled(true)
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
-        actionbar.title = ""
+//        val toolbar = findViewById<Toolbar>(R.id.add_new_group_toolbar)
+//        setSupportActionBar(toolbar)
+//        val actionbar = supportActionBar
+//        actionbar!!.setDisplayHomeAsUpEnabled(true)
+//        actionbar.setHomeAsUpIndicator(R.drawable.ic_close)
+//        actionbar.title = ""
 
         val position = intent.getIntExtra("position", 0)
         //endregion

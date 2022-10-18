@@ -140,18 +140,18 @@
         <!--            app:layout_constraintEnd_toEndOf="parent"-->
         <!--            tools:targetApi="P" />-->
 
-        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--            android:id="@+id/group_manager_floating_button_add"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="bottom|end"-->
-        <!--            android:layout_marginEnd="@dimen/floating_button_margin"-->
-        <!--            android:layout_marginBottom="80dp"-->
-        <!--            android:background="@color/colorPrimary"-->
-        <!--            android:src="@drawable/ic_add"-->
-        <!--            app:backgroundTint="@color/colorPrimary"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent" />-->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add_new_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="@dimen/floating_button_margin"
+                    android:layout_marginBottom="80dp"
+                    android:background="@color/colorPrimary"
+                    android:src="@drawable/ic_add"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -160,7 +160,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
-        android:visibility="gone"
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"

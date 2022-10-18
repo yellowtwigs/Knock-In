@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.add_edit_contact.edit_contact
+package com.yellowtwigs.knockin.ui.add_edit_contact.edit
 
 import androidx.lifecycle.ViewModel
 import com.yellowtwigs.knockin.model.database.data.ContactDB

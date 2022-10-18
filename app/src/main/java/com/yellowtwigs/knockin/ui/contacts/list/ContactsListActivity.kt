@@ -10,6 +10,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,12 +30,14 @@ import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
+import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,16 +51,7 @@ class ContactsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
-
-        //endregion
+        checkTheme(this)
 
         val binding = ActivityContactsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -261,25 +256,50 @@ class ContactsListActivity : AppCompatActivity() {
     //region =========================================== SETUP UI ===========================================
 
     private fun setupRecyclerView(binding: ActivityContactsListBinding) {
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val nbGrid = sharedPreferences.getInt("gridview", 1)
+
         val contactsListAdapter = ContactsListAdapter(this) { id ->
             hideKeyboard()
             startActivity(Intent(this, EditContactActivity::class.java).putExtra("contactId", id))
         }
 
-        binding.recyclerView.apply {
-            contactsListViewModel.getAllContacts().observe(this@ContactsListActivity) { contacts ->
-                contactsListAdapter.submitList(null)
-                contactsListAdapter.submitList(contacts)
+        if (nbGrid == 1) {
+            binding.recyclerView.apply {
+                contactsListViewModel.getAllContacts()
+                    .observe(this@ContactsListActivity) { contacts ->
+                        contactsListAdapter.submitList(null)
+                        contactsListAdapter.submitList(contacts)
+                    }
+                adapter = contactsListAdapter
+                layoutManager = LinearLayoutManager(context)
+                LinearLayoutManager(context).scrollToPositionWithOffset(0, 0);
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        contactsListAdapter.setIsScrolling(true)
+                        super.onScrollStateChanged(recyclerView, newState)
+                    }
+                })
             }
-            adapter = contactsListAdapter
-            layoutManager = LinearLayoutManager(context)
-            LinearLayoutManager(context).scrollToPositionWithOffset(0, 0);
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    contactsListAdapter.setIsScrolling(true)
-                    super.onScrollStateChanged(recyclerView, newState)
+        } else {
+            binding.recyclerView.apply {
+                val contactsGridAdapter = ContactsGridAdapter(this@ContactsListActivity) { id ->
+                    hideKeyboard()
+                    startActivity(
+                        Intent(
+                            this@ContactsListActivity,
+                            ContactSelectedWithAppsActivity::class.java
+                        ).putExtra("contactId", id)
+                    )
                 }
-            })
+                contactsListViewModel.getAllContacts()
+                    .observe(this@ContactsListActivity) { contacts ->
+                        contactsGridAdapter.submitList(null)
+                        contactsGridAdapter.submitList(contacts)
+                    }
+                adapter = contactsGridAdapter
+                layoutManager = GridLayoutManager(context, nbGrid)
+            }
         }
     }
 
