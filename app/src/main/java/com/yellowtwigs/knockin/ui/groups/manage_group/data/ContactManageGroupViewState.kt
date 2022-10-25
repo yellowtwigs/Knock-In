@@ -1,4 +1,10 @@
-package com.yellowtwigs.knockin.ui.groups.manage_group
+package com.yellowtwigs.knockin.ui.groups.manage_group.data
 
-class ContactManageGroupViewState {
+data class ContactManageGroupViewState(
+    val id: Int,
+    val firstName: String,
+    var lastName: String,
+    val profilePicture: Int,
+    val profilePicture64: String
+) {
 }

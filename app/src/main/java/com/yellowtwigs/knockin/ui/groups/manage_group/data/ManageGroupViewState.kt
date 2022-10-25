@@ -1,11 +1,9 @@
-package com.yellowtwigs.knockin.ui.groups.manage_group
+package com.yellowtwigs.knockin.ui.groups.manage_group.data
 
 data class ManageGroupViewState(
     val id: Int,
-    val firstName: String,
-    var lastName: String,
-    val profilePicture: Int,
-    val profilePicture64: String,
+    val groupName: String,
     val section_color: Int,
-    val listOfContactsData: List<String>
+    val listOfContacts: List<ContactManageGroupViewState>,
+    val listOfIds: List<String>
 )
