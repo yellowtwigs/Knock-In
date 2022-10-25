@@ -1,44 +1,38 @@
 package com.yellowtwigs.knockin.ui.groups.list
 
 import android.content.Context
-import android.provider.SyncStateContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.SectionIndexer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactListBinding
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
-import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
-import com.yellowtwigs.knockin.utils.ContactGesture.isMessengerInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.isSignalInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.isTelegramInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.openMailApp
-import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
 import com.yellowtwigs.knockin.utils.ContactGesture.openSms
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
-import java.util.*
 import kotlin.collections.ArrayList
 
 class GroupsListAdapter(private val cxt: Context, private val onClickedCallback: (Int) -> Unit) :
-    ListAdapter<GroupsListViewState, GroupsListAdapter.ViewHolder>(
+    ListAdapter<ContactInGroupViewState, GroupsListAdapter.ViewHolder>(
         GroupsListViewStateComparator()
     ) {
 
     private var modeMultiSelect = false
     private var isScrolling = false
-    var listOfItemSelected = ArrayList<GroupsListViewState>()
+    var listOfItemSelected = ArrayList<ContactInGroupViewState>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -57,7 +51,7 @@ class GroupsListAdapter(private val cxt: Context, private val onClickedCallback:
     inner class ViewHolder(private val binding: ItemContactListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(contact: GroupsListViewState) {
+        fun onBind(contact: ContactInGroupViewState) {
             binding.apply {
                 val sp = cxt.getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
                 val appsSupportBought = sp.getBoolean("Apps_Support_Bought", false)
@@ -184,17 +178,17 @@ class GroupsListAdapter(private val cxt: Context, private val onClickedCallback:
         }
     }
 
-    class GroupsListViewStateComparator : DiffUtil.ItemCallback<GroupsListViewState>() {
+    class GroupsListViewStateComparator : DiffUtil.ItemCallback<ContactInGroupViewState>() {
         override fun areItemsTheSame(
-            oldItem: GroupsListViewState,
-            newItem: GroupsListViewState
+            oldItem: ContactInGroupViewState,
+            newItem: ContactInGroupViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: GroupsListViewState,
-            newItem: GroupsListViewState
+            oldItem: ContactInGroupViewState,
+            newItem: ContactInGroupViewState
         ): Boolean {
             return oldItem.firstName == newItem.firstName &&
                     oldItem.lastName == newItem.lastName &&

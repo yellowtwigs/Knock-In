@@ -1,14 +1,12 @@
-package com.yellowtwigs.knockin.ui.contacts.list
+package com.yellowtwigs.knockin.ui.groups.list
 
 import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,13 +14,14 @@ import com.yellowtwigs.knockin.databinding.ItemContactGridBinding
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
-class ContactsGridAdapter(
-    private val cxt: Context,
-    private val onClickedCallback: (Int) -> Unit
-) :
-    ListAdapter<ContactsListViewState, ContactsGridAdapter.ViewHolder>(
-        ContactsListViewStateComparator()
+class GroupsGridAdapter(private val cxt: Context, private val onClickedCallback: (Int) -> Unit) :
+    ListAdapter<ContactInGroupViewState, GroupsGridAdapter.ViewHolder>(
+        GroupsListViewStateComparator()
     ) {
+
+    private var modeMultiSelect = false
+    private var isScrolling = false
+    var listOfItemSelected = ArrayList<ContactInGroupViewState>()
 
     private var imageHeight = 0
 
@@ -43,7 +42,7 @@ class ContactsGridAdapter(
     inner class ViewHolder(private val binding: ItemContactGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(contact: ContactsListViewState) {
+        fun onBind(contact: ContactInGroupViewState) {
             binding.apply {
                 contactPriorityBorder(contact.priority, civ, cxt)
                 contactProfilePicture(contact.profilePicture64, contact.profilePicture, civ, cxt)
@@ -104,8 +103,6 @@ class ContactsGridAdapter(
 
                 name.text = contact.firstName + " " + contact.lastName
 
-                favoriteIcon.isVisible = contact.isFavorite
-
                 root.setOnClickListener {
                     onClickedCallback(contact.id)
                 }
@@ -113,30 +110,24 @@ class ContactsGridAdapter(
         }
     }
 
-    class ContactsListViewStateComparator : DiffUtil.ItemCallback<ContactsListViewState>() {
+    class GroupsListViewStateComparator : DiffUtil.ItemCallback<ContactInGroupViewState>() {
         override fun areItemsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactInGroupViewState,
+            newItem: ContactInGroupViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactInGroupViewState,
+            newItem: ContactInGroupViewState
         ): Boolean {
             return oldItem.firstName == newItem.firstName &&
                     oldItem.lastName == newItem.lastName &&
                     oldItem.profilePicture == newItem.profilePicture &&
                     oldItem.profilePicture64 == newItem.profilePicture64 &&
                     oldItem.listOfPhoneNumbers == newItem.listOfPhoneNumbers &&
-                    oldItem.listOfMails == newItem.listOfMails &&
-                    oldItem.priority == newItem.priority &&
-                    oldItem.isFavorite == newItem.isFavorite &&
-                    oldItem.messengerId == newItem.messengerId &&
-                    oldItem.hasWhatsapp == newItem.hasWhatsapp &&
-                    oldItem.hasTelegram == newItem.hasTelegram &&
-                    oldItem.hasSignal == newItem.hasSignal
+                    oldItem.listOfMails == newItem.listOfMails
         }
     }
 }

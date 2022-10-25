@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.contacts.list
+package com.yellowtwigs.knockin.ui.groups.manage_group
 
 import android.content.Context
 import android.text.Spannable
@@ -8,20 +8,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactGridBinding
-import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
-import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
+import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
+import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
+import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter
+import com.yellowtwigs.knockin.utils.RandomDefaultImage
 
-class ContactsGridAdapter(
+class ContactManageGroupGripAdapter(
     private val cxt: Context,
-    private val onClickedCallback: (Int) -> Unit
+    private val listOfItemSelected: ArrayList<String>,
+    private val onClickedCallback: (String) -> Unit
 ) :
-    ListAdapter<ContactsListViewState, ContactsGridAdapter.ViewHolder>(
-        ContactsListViewStateComparator()
+    ListAdapter<ContactManageGroupViewState, ContactManageGroupGripAdapter.ViewHolder>(
+        ContactManageGroupViewStateComparator()
     ) {
 
     private var imageHeight = 0
@@ -43,10 +48,15 @@ class ContactsGridAdapter(
     inner class ViewHolder(private val binding: ItemContactGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(contact: ContactsListViewState) {
+        fun onBind(contact: ContactManageGroupViewState) {
             binding.apply {
-                contactPriorityBorder(contact.priority, civ, cxt)
-                contactProfilePicture(contact.profilePicture64, contact.profilePicture, civ, cxt)
+                InitContactsForListAdapter.InitContactAdapter.contactProfilePicture(
+                    contact.profilePicture64,
+                    contact.profilePicture,
+                    civ,
+                    cxt
+                )
+
                 var firstname = contact.firstName
                 var lastName = contact.lastName
 
@@ -102,41 +112,58 @@ class ContactsGridAdapter(
                     name.text = span
                 }
 
-                name.text = contact.firstName + " " + contact.lastName
-
-                favoriteIcon.isVisible = contact.isFavorite
+                itemSelected(contact.id, civ, contact)
 
                 root.setOnClickListener {
-                    onClickedCallback(contact.id)
+                    onClickedCallback(contact.id.toString())
+                    itemSelected(contact.id, civ, contact)
                 }
             }
         }
     }
 
-    class ContactsListViewStateComparator : DiffUtil.ItemCallback<ContactsListViewState>() {
+    class ContactManageGroupViewStateComparator :
+        DiffUtil.ItemCallback<ContactManageGroupViewState>() {
         override fun areItemsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactManageGroupViewState,
+            newItem: ContactManageGroupViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactManageGroupViewState,
+            newItem: ContactManageGroupViewState
         ): Boolean {
             return oldItem.firstName == newItem.firstName &&
                     oldItem.lastName == newItem.lastName &&
                     oldItem.profilePicture == newItem.profilePicture &&
-                    oldItem.profilePicture64 == newItem.profilePicture64 &&
-                    oldItem.listOfPhoneNumbers == newItem.listOfPhoneNumbers &&
-                    oldItem.listOfMails == newItem.listOfMails &&
-                    oldItem.priority == newItem.priority &&
-                    oldItem.isFavorite == newItem.isFavorite &&
-                    oldItem.messengerId == newItem.messengerId &&
-                    oldItem.hasWhatsapp == newItem.hasWhatsapp &&
-                    oldItem.hasTelegram == newItem.hasTelegram &&
-                    oldItem.hasSignal == newItem.hasSignal
+                    oldItem.profilePicture64 == newItem.profilePicture64
         }
+    }
+
+    private fun itemSelected(
+        id: Int,
+        image: CircularImageView,
+        contact: ContactManageGroupViewState
+    ) {
+        if (listOfItemSelected.contains(id.toString())) {
+            image.setImageResource(R.drawable.ic_item_selected)
+        } else {
+            if (contact.profilePicture64 != "") {
+                val bitmap = Converter.base64ToBitmap(contact.profilePicture64)
+                image.setImageBitmap(bitmap)
+            } else {
+                image.setImageResource(
+                    RandomDefaultImage.randomDefaultImage(
+                        contact.profilePicture, cxt
+                    )
+                )
+            }
+        }
+    }
+
+    fun itemDeselected() {
+        listOfItemSelected.clear()
     }
 }

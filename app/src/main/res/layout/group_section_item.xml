@@ -22,7 +22,7 @@
             android:layout_margin="5dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/darkColor"
+            android:textColor="@color/lightColor"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,8 +75,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/section_sms"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/section_sms"
         app:srcCompat="@drawable/ic_toolbar_menu" />
 
     <androidx.recyclerview.widget.RecyclerView

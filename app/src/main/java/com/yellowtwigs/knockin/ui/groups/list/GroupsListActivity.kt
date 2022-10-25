@@ -12,7 +12,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.databinding.ActivityGroupsListBinding
@@ -20,8 +19,7 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionAdapter
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
-import com.yellowtwigs.knockin.ui.contacts.list.ContactsListAdapter
-import com.yellowtwigs.knockin.ui.groups.create.AddNewGroupActivity
+import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
@@ -29,6 +27,9 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GroupsListActivity : AppCompatActivity() {
@@ -124,7 +125,7 @@ class GroupsListActivity : AppCompatActivity() {
 
     private fun setupFloatingButtons(binding: ActivityGroupsListBinding) {
         binding.addNewGroup.setOnClickListener {
-            val intent = Intent(this@GroupsListActivity, AddNewGroupActivity::class.java)
+            val intent = Intent(this@GroupsListActivity, ManageGroupActivity::class.java)
             startActivity(intent)
         }
 
@@ -255,7 +256,11 @@ class GroupsListActivity : AppCompatActivity() {
     }
 
     private fun setupGroupsList(binding: ActivityGroupsListBinding) {
-        val sectionGroupsListAdapter = SectionGroupsListAdapter(this)
+        val sectionGroupsListAdapter = SectionGroupsListAdapter(this) { id ->
+            CoroutineScope(Dispatchers.IO).launch {
+                groupsListViewModel.deleteGroupById(id)
+            }
+        }
 
         binding.recyclerView.apply {
             groupsListViewModel.getAllGroups().observe(this@GroupsListActivity) { groups ->

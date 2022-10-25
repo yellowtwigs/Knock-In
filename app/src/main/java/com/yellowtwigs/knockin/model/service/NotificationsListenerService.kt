@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.model.service
 
+import android.app.KeyguardManager
 import android.content.*
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
@@ -8,14 +9,12 @@ import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.text.TextUtils
 import android.util.DisplayMetrics
-import android.util.Log
-import android.util.Patterns
 import android.view.*
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
@@ -23,6 +22,8 @@ import com.yellowtwigs.knockin.domain.notifications.NotificationsListenerUseCase
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
+import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.cancelWhatsappNotification
+import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.vipNotificationWithLockscreen
 import com.yellowtwigs.knockin.utils.ContactGesture.isPhoneNumber
 import com.yellowtwigs.knockin.utils.ContactGesture.isValidEmail
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToEndTime
@@ -81,86 +82,40 @@ class NotificationsListenerService : NotificationListenerService() {
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
 //            val app = convertPackageToString(sbp.appNotifier!!, this)
 
-//            Log.i("notification_platform", "name : $name")
-//            Log.i("notification_platform", "message : $message")
-//            Log.i("notification_platform", "name != null : ${name != null}")
-//            Log.i("notification_platform", "message != null : ${message != null}")
-
-                if (name != "" && message != "" && name != "null" && message != "null") {
-                    if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
-                        if (message.contains("call") || message.contains("Incoming") || message.contains(
-                                "Incoming Call"
-                            ) ||
-                            message.contains("Appel entrant") || message.contains("appel entrant")
-                        ) {
-                        } else {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                notificationsListenerUseCases.apply {
-                                    val contact = when {
-                                        isPhoneNumber(name) -> {
-                                            getContactByPhoneNumber.invoke(name)
-                                        }
-                                        isValidEmail(name) -> {
-                                            getContactByMail.invoke(name)
-                                        }
-                                        else -> {
-                                            getContactByName.invoke(name)
-                                        }
-                                    }
-
-//                                Log.i("notification_platform", "name : $name")
-//                                Log.i("notification_platform", "message : $message")
-//                                Log.i(
-//                                    "notification_platform",
-//                                    "sbp.appNotifier : ${sbp.appNotifier!!}"
-//                                )
-//                                Log.i("notification_platform", "contact : ${contact}")
-
-                                    val notification = if (contact != null) {
-                                        NotificationDB(
-                                            0,
-                                            sbp.tickerText.toString(),
-                                            sbp.statusBarNotificationInfo["android.title"].toString(),
-                                            sbp.statusBarNotificationInfo["android.text"].toString(),
-                                            sbp.appNotifier!!,
-                                            System.currentTimeMillis(),
-                                            0,
-                                            contact.id,
-                                            contact.priority
-                                        )
-                                    } else {
-                                        NotificationDB(
-                                            0,
-                                            sbp.tickerText.toString(),
-                                            sbp.statusBarNotificationInfo["android.title"].toString(),
-                                            sbp.statusBarNotificationInfo["android.text"].toString(),
-                                            sbp.appNotifier!!,
-                                            System.currentTimeMillis(),
-                                            0,
-                                            0,
-                                            0
-                                        )
-                                    }
-
-//                                    && notificationNotDouble(notification)
-                                    if (sbp.appNotifier != "com.samsung.android.incallui") {
-                                        saveNotification.invoke(notification)
-                                        cancelWhatsappNotification(sbn)
-                                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                                            if (contact != null) {
-                                                displayNotificationWithContact(sbp, sbn, contact)
-                                            } else {
-//                                        displayNotificationWithoutContact(sbp, sbn)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+            if (name != "" && message != "" && name != "null" && message != "null") {
+                if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
+                    if (message.contains("call") || message.contains("Incoming") || message.contains(
+                            "Incoming Call"
+                        ) ||
+                        message.contains("Appel entrant") || message.contains("appel entrant")
+                    ) {
                     } else {
                         CoroutineScope(Dispatchers.IO).launch {
                             notificationsListenerUseCases.apply {
-                                saveNotification.invoke(
+                                val contact = when {
+                                    isPhoneNumber(name) -> {
+                                        getContactByPhoneNumber.invoke(name)
+                                    }
+                                    isValidEmail(name) -> {
+                                        getContactByMail.invoke(name)
+                                    }
+                                    else -> {
+                                        getContactByName.invoke(name)
+                                    }
+                                }
+                                val notification = if (contact != null) {
+                                    NotificationDB(
+                                        0,
+                                        sbp.tickerText.toString(),
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        sbp.statusBarNotificationInfo["android.text"].toString(),
+                                        sbp.appNotifier!!,
+                                        System.currentTimeMillis(),
+                                        0,
+                                        contact.id,
+                                        contact.priority
+                                    )
+                                } else {
                                     NotificationDB(
                                         0,
                                         sbp.tickerText.toString(),
@@ -172,11 +127,43 @@ class NotificationsListenerService : NotificationListenerService() {
                                         0,
                                         0
                                     )
-                                )
+                                }
+
+//                                    && notificationNotDouble(notification)
+                                if (sbp.appNotifier != "com.samsung.android.incallui") {
+                                    saveNotification.invoke(notification)
+                                    cancelWhatsappNotification(sbn, this@NotificationsListenerService)
+                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                                        if (contact != null) {
+                                            displayNotificationWithContact(sbp, sbn, contact)
+                                        } else {
+                                            displayNotificationWithoutContact(sbp, sbn)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        notificationsListenerUseCases.apply {
+                            saveNotification.invoke(
+                                NotificationDB(
+                                    0,
+                                    sbp.tickerText.toString(),
+                                    sbp.statusBarNotificationInfo["android.title"].toString(),
+                                    sbp.statusBarNotificationInfo["android.text"].toString(),
+                                    sbp.appNotifier!!,
+                                    System.currentTimeMillis(),
+                                    0,
+                                    0,
+                                    0
+                                )
+                            )
+                        }
+                    }
                 }
+            }
         }
     }
 
@@ -209,6 +196,9 @@ class NotificationsListenerService : NotificationListenerService() {
                     val minutesEnd = convertTimeToMinutes(endTime)
 
                     vipNotificationsDeployment(sbp, sbn, contact)
+
+
+                    val screenListener = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
 //                    when (vipSchedule) {
 //                        1 -> vipNotificationsDeployment(sbp, sbn, contact)
@@ -323,92 +313,116 @@ class NotificationsListenerService : NotificationListenerService() {
                 }
                 0 -> {
                     this@NotificationsListenerService.cancelAllNotifications()
-                    cancelWhatsappNotification(sbn)
+                    cancelWhatsappNotification(sbn, this@NotificationsListenerService)
                 }
             }
         }
     }
 
-//    private fun displayNotificationWithoutContact(
-//        sbp: StatusBarParcelable,
-//        sbn: StatusBarNotification
-//    ) {
-//        if (sbn.key.contains("whatsapp")) {
-//            cancelWhatsappNotification(sbn)
-//        } else {
-//            if (sbn.packageName == OUTLOOK_PACKAGE || sbn.packageName == GMAIL_PACKAGE) {
+    private fun displayNotificationWithoutContact(
+        sbp: StatusBarParcelable,
+        sbn: StatusBarNotification
+    ) {
+//        sbp.appNotifier?.let {
+//            if (convertPackageToString(it, this) == "WhatsApp") {
+//                cancelWhatsappNotification(sbn)
+//            } else if (convertPackageToString(it, this) != "Outlook" &&
+//                convertPackageToString(it, this) != "Gmail" &&
+//                isMessagingApp(it, this)
+//            ) {
+//                val date = DateFormat.getTimeInstance().calendar.time
+//                val cal = Calendar.getInstance()
+//                cal.time = date
+//                val hours = cal.get(Calendar.HOUR_OF_DAY)
+//                val minutes = cal.get(Calendar.MINUTE)
+//                val today = cal.get(Calendar.DAY_OF_WEEK)
 //
-//            } else {
-//                if (sbn.packageName == MESSAGE_PACKAGE || sbn.packageName == MESSAGE_SAMSUNG_PACKAGE || sbn.packageName == XIAOMI_MESSAGE_PACKAGE || sbn.packageName == WHATSAPP_SERVICE) {
-//                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-//                        var i = 0
-//                        val vipNotif = VipNotificationsDB(
-//                            null,
-//                            sbp.id,
-//                            sbp.appNotifier!!,
-//                            sbp.tailleList,
-//                            sbp.tickerText!!
-//                        )
-//                        val notifId =
-//                            database!!.VipNotificationsDao()
-//                                .insert(vipNotif)
-//                        while (i < sbp.key.size) {
-//                            if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
-//                                val VipSbn = VipSbnDB(
-//                                    null,
-//                                    notifId!!.toInt(),
-//                                    sbp.key[i],
-//                                    sbp.statusBarNotificationInfo[sbp.key[i]].toString()
-//                                )
-//                                database!!.VipSbnDao()
-//                                    .insert(VipSbn)
+//                val startTime = convertTimeToStartTime(hourLimitForNotification)
+//                val hourStart = convertTimeToHour(startTime)
+//                val minutesStart = convertTimeToMinutes(startTime)
+//                val endTime = convertTimeToEndTime(hourLimitForNotification)
+//                val hourEnd = convertTimeToHour(endTime)
+//                val minutesEnd = convertTimeToMinutes(endTime)
+//
+//                val vipScheduleValueSharedPreferences =
+//                    getSharedPreferences(
+//                        "VipScheduleValue",
+//                        Context.MODE_PRIVATE
+//                    )
+//
+//                if (vipScheduleValueSharedPreferences.getBoolean(
+//                        "VipScheduleValue",
+//                        false
+//                    )
+//                ) {
+//                    if (today == 5 || today == 6) {
+//                        val notificationsHour =
+//                            getSharedPreferences(
+//                                "TeleworkingReminder",
+//                                Context.MODE_PRIVATE
+//                            ).getString(
+//                                "TeleworkingReminder",
+//                                ""
+//                            )
+//
+//                        if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
+//                            if (hourStart.toInt() == hours) {
+//                                if (minutes >= minutesStart.toInt()) {
+//                                    if (hourEnd.toInt() == hours) {
+//                                        if (minutes <= minutesEnd.toInt()) {
+//                                            vipNotificationsDeployment(sbp, sbn)
+//                                        }
+//                                    } else {
+//                                        vipNotificationsDeployment(sbp, sbn)
+//                                    }
+//                                }
+//                            } else if (hourEnd.toInt() == hours) {
+//                                if (minutes <= minutesEnd.toInt()) {
+//                                    vipNotificationsDeployment(sbp, sbn)
+//                                }
+//                            } else {
+//                                vipNotificationsDeployment(sbp, sbn)
 //                            }
-//                            i++
 //                        }
 //                    }
-//                    val screenListener: KeyguardManager =
-//                        this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-//                    if (screenListener.isKeyguardLocked) {
-//                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-//                            this.cancelNotification(sbn.key)
-//                            cancelWhatsappNotif(sbn)
-//                            displayLayoutWithSharedPreferences(
-//                                sbp,
-//                                null
-//                            )
-//                        } else {
-//                            val i = Intent(
-//                                this@NotificationsListener,
-//                                NotificationAlarmActivity::class.java
-//                            )
-//                            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                            i.putExtra("notification", sbp)
-//                            this.cancelNotification(sbn.key)
-//                            cancelWhatsappNotif(sbn)
-//                            startActivity(i)
-//                        }
-//                    } else {
-//                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-//                            this.cancelNotification(sbn.key)
-//                            cancelWhatsappNotif(sbn)
-//                        }
+//                } else {
+//                    vipNotificationsDeployment(sbp, sbn)
+//                }
+//
+//                vipNotificationsDeployment(sbp, sbn)
+//
+//                val screenListener = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+//                if (screenListener.isKeyguardLocked) {
+//                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+//                        this.cancelNotification(sbn.key)
+//                        cancelWhatsappNotification(sbn)
 //                        displayLayoutWithSharedPreferences(
 //                            sbp,
 //                            null
 //                        )
+//                    } else {
+//                        val i = Intent(
+//                            this@NotificationsListenerService,
+//                            NotificationAlarmActivity::class.java
+//                        )
+//                        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                        i.putExtra("notification", sbp)
+//                        this.cancelNotification(sbn.key)
+//                        cancelWhatsappNotification(sbn)
+//                        startActivity(i)
 //                    }
+//                } else {
+//                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+//                        this.cancelNotification(sbn.key)
+//                        cancelWhatsappNotification(sbn)
+//                    }
+//                    displayLayoutWithSharedPreferences(
+//                        sbp,
+//                        null
+//                    )
 //                }
 //            }
 //        }
-//
-//    }
-
-    private fun cancelWhatsappNotification(sbn: StatusBarNotification) {
-        this.activeNotifications.forEach {
-            if (it.key.contains("whatsapp") && sbn.key.takeLast(6) == it.key.takeLast(6)) {
-                this.cancelNotification(it.key)
-            }
-        }
     }
 
 //    private fun notificationNotDouble(notification: NotificationDB): Boolean {
@@ -446,75 +460,102 @@ class NotificationsListenerService : NotificationListenerService() {
                 or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
     }
 
-    private fun vipNotificationsDeployment(
+
+
+//    private fun vipNotificationsDeploymentWithoutContact(
+//        sbp: StatusBarParcelable, sbn: StatusBarNotification
+//    ) {
+////        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+////            var i = 0
+////            val vipNotif = VipNotificationsDB(
+////                null,
+////                sbp.id,
+////                sbp.appNotifier!!,
+////                sbp.tailleList,
+////                sbp.tickerText!!
+////            )
+////            val notifId =
+////                database?.VipNotificationsDao()?.insert(vipNotif)
+////            while (i < sbp.key.size) {
+////                if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
+////                    val vipSbn = VipSbnDB(
+////                        null,
+////                        notifId!!.toInt(),
+////                        sbp.key[i],
+////                        sbp.statusBarNotificationInfo[sbp.key[i]].toString()
+////                    )
+////                    database!!.VipSbnDao()
+////                        .insert(vipSbn)
+////                }
+////                i++
+////            }
+////        }
+////        val screenListener =
+////            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+////        if (screenListener.isKeyguardLocked) {
+////            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+////                val i = Intent(
+////                    this@NotificationListener,
+////                    NotificationAlarmActivity::class.java
+////                )
+////                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+////                i.putExtra("notification", sbp)
+////                this.cancelNotification(sbn.key)
+////                cancelWhatsappNotif(sbn)
+////                startActivity(i)
+////            } else {
+////                val i = Intent(
+////                    this@NotificationListener,
+////                    NotificationAlarmActivity::class.java
+////                )
+////                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+////                i.putExtra("notification", sbp)
+////                this.cancelNotification(sbn.key)
+////                cancelWhatsappNotif(sbn)
+////                startActivity(i)
+////            }
+////        } else {
+////            this.cancelNotification(sbn.key)
+////            cancelWhatsappNotif(sbn)
+////            displayLayoutWithSharedPreferences(
+////                sbp,
+////                contact
+////            )
+////        }
+//
+//        this.cancelNotification(sbn.key)
+////        cancelWhatsappNotif(sbn)
+//        displayLayoutWithSharedPreferences(
+//            sbp
+//        )
+//    }
+
+
+
+    fun vipNotificationsDeployment(
         sbp: StatusBarParcelable, sbn: StatusBarNotification,
         contact: ContactDB
     ) {
-//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-//            var i = 0
-//            val vipNotif = VipNotificationsDB(
-//                null,
-//                sbp.id,
-//                sbp.appNotifier!!,
-//                sbp.tailleList,
-//                sbp.tickerText!!
-//            )
-//            val notifId =
-//                database?.VipNotificationsDao()?.insert(vipNotif)
-//            while (i < sbp.key.size) {
-//                if (sbp.key[i] == "android.title" || sbp.key[i] == "android.text" || sbp.key[i] == "android.largeIcon") {
-//                    val vipSbn = VipSbnDB(
-//                        null,
-//                        notifId!!.toInt(),
-//                        sbp.key[i],
-//                        sbp.statusBarNotificationInfo[sbp.key[i]].toString()
-//                    )
-//                    database!!.VipSbnDao()
-//                        .insert(vipSbn)
-//                }
-//                i++
-//            }
-//        }
-//        val screenListener =
-//            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-//        if (screenListener.isKeyguardLocked) {
-//            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-//                val i = Intent(
-//                    this@NotificationListener,
-//                    NotificationAlarmActivity::class.java
-//                )
-//                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                i.putExtra("notification", sbp)
-//                this.cancelNotification(sbn.key)
-//                cancelWhatsappNotif(sbn)
-//                startActivity(i)
-//            } else {
-//                val i = Intent(
-//                    this@NotificationListener,
-//                    NotificationAlarmActivity::class.java
-//                )
-//                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                i.putExtra("notification", sbp)
-//                this.cancelNotification(sbn.key)
-//                cancelWhatsappNotif(sbn)
-//                startActivity(i)
-//            }
-//        } else {
-//            this.cancelNotification(sbn.key)
-//            cancelWhatsappNotif(sbn)
-//            displayLayoutWithSharedPreferences(
-//                sbp,
-//                contact
-//            )
-//        }
+        val screenListener = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        if (screenListener.isKeyguardLocked) {
+            vipNotificationWithLockscreen(sbp, sbn, this)
+        } else {
+            cancelNotification(sbn.key)
+            cancelWhatsappNotification(sbn, this)
+            displayLayoutWithSharedPreferences(
+                sbp,
+                contact
+            )
+        }
 
-        this.cancelNotification(sbn.key)
-//        cancelWhatsappNotif(sbn)
+        cancelNotification(sbn.key)
+        cancelWhatsappNotification(sbn, this)
         displayLayoutWithSharedPreferences(
             sbp,
             contact
         )
     }
+
 
     private fun displayLayoutWithSharedPreferences(
         sbp: StatusBarParcelable,
@@ -546,6 +587,7 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
+
     private fun displayLayout(
         sbp: StatusBarParcelable,
         contactDB: ContactDB?
@@ -562,11 +604,12 @@ class NotificationsListenerService : NotificationListenerService() {
         )
         parameters.gravity = Gravity.RIGHT or Gravity.TOP
         parameters.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
-        val popupDropable = popupView?.findViewById<ConstraintLayout>(R.id.notification_dropable)
+        val popupDropable =
+            popupView?.findViewById<ConstraintLayout>(R.id.notification_dropable)
         val popupContainer =
             popupView?.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
 
@@ -631,7 +674,13 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    private fun positionXIntoScreen(popupX: Float, deplacementX: Float, popupSizeX: Float): Float {
+
+
+    private fun positionXIntoScreen(
+        popupX: Float,
+        deplacementX: Float,
+        popupSizeX: Float
+    ): Float {
         val metrics = DisplayMetrics()
         windowManager!!.defaultDisplay.getMetrics(metrics)
         return if (popupX + deplacementX < 0) {
@@ -643,7 +692,11 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    private fun positionYIntoScreen(popupY: Float, deplacementY: Float, popupSizeY: Float): Float {
+    private fun positionYIntoScreen(
+        popupY: Float,
+        deplacementY: Float,
+        popupSizeY: Float
+    ): Float {
         val metrics = DisplayMetrics()
         windowManager?.defaultDisplay?.getMetrics(metrics)
         return when {
@@ -665,7 +718,8 @@ class NotificationsListenerService : NotificationListenerService() {
     ) {
         val notifications: ArrayList<StatusBarParcelable> = ArrayList()
         notifications.add(sbp)
-        notificationPopupRecyclerView = view?.findViewById(R.id.notification_popup_recycler_view)
+        notificationPopupRecyclerView =
+            view?.findViewById(R.id.notification_popup_recycler_view)
         notificationPopupRecyclerView?.layoutManager = LinearLayoutManager(applicationContext)
 //        adapterNotification = NotifPopupRecyclerViewAdapter(
 //            applicationContext,
@@ -694,7 +748,8 @@ class NotificationsListenerService : NotificationListenerService() {
 //            alarmSound?.stop()
 //        }
 
-        val imgClose = view?.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
+        val imgClose =
+            view?.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE
         imgClose.setOnClickListener {
             windowManager?.removeView(view)

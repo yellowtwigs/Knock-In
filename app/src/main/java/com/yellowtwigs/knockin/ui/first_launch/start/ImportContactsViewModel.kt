@@ -8,11 +8,10 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.repositories.groups.create.CreateGroupRepository
+import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ImportContactsViewModel @Inject constructor(
     private val createContactUseCase: CreateContactUseCase,
-    private val createGroupRepository: CreateGroupRepository,
+    private val manageGroupRepository: ManageGroupRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -543,7 +542,7 @@ class ImportContactsViewModel @Inject constructor(
                         contactsInGroup,
                         1
                     )
-                    createGroupRepository.insertGroup(group)
+                    manageGroupRepository.insertGroup(group)
                     contactsInGroup.clear()
                 }
             }

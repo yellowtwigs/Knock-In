@@ -38,6 +38,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -206,7 +207,7 @@ class ContactsListActivity : AppCompatActivity() {
             menu.findItem(R.id.nav_home).isChecked = true
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
-                hideKeyboard()
+                hideKeyboard(this@ContactsListActivity)
                 closeDrawers()
 
                 val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
@@ -260,7 +261,7 @@ class ContactsListActivity : AppCompatActivity() {
         val nbGrid = sharedPreferences.getInt("gridview", 1)
 
         val contactsListAdapter = ContactsListAdapter(this) { id ->
-            hideKeyboard()
+            hideKeyboard(this)
             startActivity(Intent(this, EditContactActivity::class.java).putExtra("contactId", id))
         }
 
@@ -284,7 +285,7 @@ class ContactsListActivity : AppCompatActivity() {
         } else {
             binding.recyclerView.apply {
                 val contactsGridAdapter = ContactsGridAdapter(this@ContactsListActivity) { id ->
-                    hideKeyboard()
+                    hideKeyboard(this@ContactsListActivity)
                     startActivity(
                         Intent(
                             this@ContactsListActivity,
@@ -382,12 +383,4 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     //endregion
-
-    private fun hideKeyboard() {
-        val view = this.currentFocus
-        view?.let { v ->
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(v.windowToken, 0)
-        }
-    }
 }

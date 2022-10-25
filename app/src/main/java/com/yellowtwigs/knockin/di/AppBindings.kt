@@ -6,8 +6,8 @@ import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepositoryImpl
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepositoryImpl
-import com.yellowtwigs.knockin.repositories.groups.create.CreateGroupRepository
-import com.yellowtwigs.knockin.repositories.groups.create.CreateGroupRepositoryImpl
+import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
+import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepositoryImpl
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepositoryImpl
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
@@ -40,7 +40,7 @@ abstract class AppBindings {
 
     @Binds
     @Singleton
-    abstract fun bindCreateGroupRepository(impl: CreateGroupRepositoryImpl): CreateGroupRepository
+    abstract fun bindCreateGroupRepository(impl: ManageGroupRepositoryImpl): ManageGroupRepository
 
     @Binds
     @Singleton

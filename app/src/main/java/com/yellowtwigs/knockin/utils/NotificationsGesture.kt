@@ -11,6 +11,7 @@ import android.provider.Telephony
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -250,7 +251,7 @@ object NotificationsGesture {
         }
     }
 
-    private fun openGmail(context: Context) {
+    fun openGmail(context: Context) {
         val intent = context.packageManager.getLaunchIntentForPackage("com.google.android.gm")
         intent?.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
@@ -264,14 +265,14 @@ object NotificationsGesture {
         }
     }
 
-    fun phoneCall(cxt: Activity, phoneNumber: String, requestCode: Int) {
+    fun phoneCall(cxt: Context, phoneNumber: String, requestCode: Int) {
         if (ContextCompat.checkSelfPermission(
                 cxt,
                 Manifest.permission.CALL_PHONE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                cxt,
+                cxt as CockpitActivity,
                 arrayOf(Manifest.permission.CALL_PHONE),
                 requestCode
             )

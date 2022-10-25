@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.text.TextUtils
@@ -160,12 +161,18 @@ object ContactGesture {
 
     //region ============================================ PHONE =============================================
 
-    fun openSms(phoneNumber: String, context: Activity) {
+    fun openSms(phoneNumber: String, context: Context) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
         context.startActivity(intent)
-//        context.finish()
+    }
+
+    fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String, context: Context) {
+        val message = "smsto:$phoneNumber"
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(message))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent.putExtra("sms_body", msg))
     }
 
     fun callPhone(phoneNumber: String, context: Context) {
@@ -280,6 +287,19 @@ object ContactGesture {
         }
     }
 
+    fun sendMail(mail: String, subject: String, msg: String, context: Context) {
+        val intent = Intent(Intent.ACTION_SEND)
+        val mailSubject = "RE: $subject"
+        intent.putExtra(Intent.EXTRA_EMAIL, mail)
+        intent.data = Uri.parse("mailto:")
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, msg)
+        intent.putExtra(Intent.EXTRA_SUBJECT, mailSubject)
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
+
+        context.startActivity(intent)
+    }
+
     //endregion
 
     //region ============================================ OTHERS ============================================
@@ -297,7 +317,6 @@ object ContactGesture {
 //            )
 //        }
 //    }
-
 
 
     //endregion

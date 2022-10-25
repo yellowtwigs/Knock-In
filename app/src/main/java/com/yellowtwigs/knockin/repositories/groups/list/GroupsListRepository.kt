@@ -6,4 +6,6 @@ import com.yellowtwigs.knockin.model.database.data.GroupDB
 interface GroupsListRepository {
 
     fun getAllGroups(): LiveData<List<GroupDB>>
+
+    fun getGroupById(id: Int): LiveData<GroupDB>
 }

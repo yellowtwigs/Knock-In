@@ -25,7 +25,7 @@ package com.yellowtwigs.knockin.ui.groups.list.section//package com.yellowtwigs.
 //import com.yellowtwigs.knockin.model.database.ContactsDatabase
 //import com.yellowtwigs.knockin.model.database.ContactsDatabase.Companion.getDatabase
 //import com.yellowtwigs.knockin.ui.groups.DeleteContactFromGroupActivity
-//import com.yellowtwigs.knockin.ui.groups.create.AddContactToGroupActivity
+//import com.yellowtwigs.knockin.ui.groups.AddContactToGroupActivity
 //import java.util.*
 //
 //class SectionGroupAdapter(private val mContext: Context,

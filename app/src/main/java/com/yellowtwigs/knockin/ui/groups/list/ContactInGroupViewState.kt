@@ -1,6 +1,6 @@
 package com.yellowtwigs.knockin.ui.groups.list
 
-data class GroupsListViewState(
+data class ContactInGroupViewState(
     val id: Int,
     val firstName: String,
     var lastName: String,
