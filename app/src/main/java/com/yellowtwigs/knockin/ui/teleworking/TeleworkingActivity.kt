@@ -195,6 +195,7 @@ class TeleworkingActivity : AppCompatActivity() {
     private fun setupDrawerLayout() {
         binding.apply {
             navView.setNavigationItemSelectedListener { menuItem ->
+
                 drawerLayout.closeDrawers()
                 when (menuItem.itemId) {
                     R.id.nav_home -> startActivity(
