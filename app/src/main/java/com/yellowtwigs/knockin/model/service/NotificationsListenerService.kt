@@ -2,39 +2,33 @@ package com.yellowtwigs.knockin.model.service
 
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
-import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.databinding.LayoutNotificationPopUpBinding
 import com.yellowtwigs.knockin.domain.notifications.NotificationsListenerUseCases
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.addNotificationViewStateToList
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.appNotifiable
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.cancelWhatsappNotification
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.messagesNotUseless
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionXIntoScreen
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionYIntoScreen
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.vipNotificationWithLockscreen
-import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
-import com.yellowtwigs.knockin.ui.notifications.history.SwipeToDeleteCallback
 import com.yellowtwigs.knockin.utils.ContactGesture.isPhoneNumber
 import com.yellowtwigs.knockin.utils.ContactGesture.isValidEmail
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToEndTime
@@ -49,7 +43,6 @@ import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 @SuppressLint("OverrideAbstract")
@@ -63,7 +56,7 @@ class NotificationsListenerService : NotificationListenerService() {
     private lateinit var durationPreferences: SharedPreferences
 
     private var popupView: View? = null
-    var adapterNotifications: PopupNotificationsListAdapter? = null
+    var adapterNotifications: NotifPopupRecyclerViewAdapter? = null
     private val popupNotificationViewStates = arrayListOf<PopupNotificationViewState>()
     private var recyclerView: RecyclerView? = null
 
@@ -109,63 +102,64 @@ class NotificationsListenerService : NotificationListenerService() {
                         message.contains("Appel entrant") || message.contains("appel entrant")
                     ) {
                     } else {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            notificationsListenerUseCases.apply {
-                                val contact = when {
-                                    isPhoneNumber(name) -> {
-                                        getContactByPhoneNumber.invoke(name)
-                                    }
-                                    isValidEmail(name) -> {
-                                        getContactByMail.invoke(name)
-                                    }
-                                    else -> {
-                                        getContactByName.invoke(name)
-                                    }
+                        notificationsListenerUseCases.apply {
+                            val contact = when {
+                                isPhoneNumber(name) -> {
+                                    getContactByPhoneNumber.invoke(name)
                                 }
-                                val notification = if (contact != null) {
-                                    NotificationDB(
-                                        0,
-                                        sbp.tickerText.toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.text"].toString(),
-                                        sbp.appNotifier!!,
-                                        System.currentTimeMillis(),
-                                        0,
-                                        contact.id,
-                                        contact.priority
-                                    )
-                                } else {
-                                    NotificationDB(
-                                        0,
-                                        sbp.tickerText.toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.text"].toString(),
-                                        sbp.appNotifier!!,
-                                        System.currentTimeMillis(),
-                                        0,
-                                        0,
-                                        0
-                                    )
+                                isValidEmail(name) -> {
+                                    getContactByMail.invoke(name)
                                 }
+                                else -> {
+                                    getContactByName.invoke(name)
+                                }
+                            }
+                            val notification = if (contact != null) {
+                                NotificationDB(
+                                    0,
+                                    sbp.tickerText.toString(),
+                                    sbp.statusBarNotificationInfo["android.title"].toString(),
+                                    sbp.statusBarNotificationInfo["android.text"].toString(),
+                                    sbp.appNotifier!!,
+                                    System.currentTimeMillis(),
+                                    0,
+                                    contact.id,
+                                    contact.priority
+                                )
+                            } else {
+                                NotificationDB(
+                                    0,
+                                    sbp.tickerText.toString(),
+                                    sbp.statusBarNotificationInfo["android.title"].toString(),
+                                    sbp.statusBarNotificationInfo["android.text"].toString(),
+                                    sbp.appNotifier!!,
+                                    System.currentTimeMillis(),
+                                    0,
+                                    0,
+                                    0
+                                )
+                            }
 
 //                                    && notificationNotDouble(notification)
-                                if (sbp.appNotifier != "com.samsung.android.incallui") {
+                            if (sbp.appNotifier != "com.samsung.android.incallui") {
+                                CoroutineScope(Dispatchers.IO).launch {
                                     saveNotification.invoke(notification)
-                                    cancelWhatsappNotification(
-                                        sbn,
-                                        this@NotificationsListenerService
-                                    )
-                                    if (contact != null) {
-                                        displayLayout(sbp, contact)
-//                                        displayNotificationWithContact(sbp, sbn, contact)
-                                    } else {
-                                        displayNotificationWithoutContact(sbp, sbn)
-                                    }
-
                                 }
+                                cancelWhatsappNotification(
+                                    sbn,
+                                    this@NotificationsListenerService
+                                )
+                                if (contact != null) {
+//                                        displayLayout(sbp, contact)
+                                    displayNotificationWithContact(sbp, sbn, contact)
+                                } else {
+                                    displayNotificationWithoutContact(sbp, sbn)
+                                }
+
                             }
                         }
                     }
+
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         notificationsListenerUseCases.apply {
@@ -580,21 +574,24 @@ class NotificationsListenerService : NotificationListenerService() {
                 edit.apply()
                 displayLayout(sbp, contactDB)
             } else {
-                adapterNotifications?.addNotification(
-                    PopupNotificationViewState(
-                        sbp.id,
-                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                        sbp.statusBarNotificationInfo["android.text"].toString(),
-                        "platform",
-                        "name",
-                        "phoneNumber",
-                        "messengerId",
-                        "email"
-                    )
-                )
+                adapterNotifications?.addNotification(sbp)
+
+//                adapterNotifications?.addNotification(
+//                    PopupNotificationViewState(
+//                        sbp.id,
+//                        sbp.statusBarNotificationInfo["android.title"].toString(),
+//                        sbp.statusBarNotificationInfo["android.text"].toString(),
+//                        "platform",
+//                        "name",
+//                        "phoneNumber",
+//                        "messengerId",
+//                        "email"
+//                    )
+//                )
             }
         }
     }
+
 
     private fun displayLayout(
         sbp: StatusBarParcelable,
@@ -616,124 +613,107 @@ class NotificationsListenerService : NotificationListenerService() {
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
+
         val popupDropable = popupView?.findViewById<ConstraintLayout>(R.id.notification_dropable)
-        val container = popupView?.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
+        val popupContainer =
+            popupView?.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
 
-        notificationsRecyclerViewDisplay(sbp, popupView!!, contactDB)
-        try {
-            Log.i("PopupNotifications", "popupView : $popupView")
-            windowManager?.addView(popupView, parameters)
-        } finally {
-            Log.i("PopupNotifications", "popupView : $popupView")
-            windowManager?.updateViewLayout(popupView, parameters)
-        }
-        popupDropable?.setOnTouchListener { view, event ->
-            val metrics = DisplayMetrics()
-            windowManager?.defaultDisplay?.getMetrics(metrics)
-            when (event.action and MotionEvent.ACTION_MASK) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            notifLayout(sbp, popupView, contactDB)
+            windowManager?.addView(popupView, parameters) // affichage de la popupview
+            popupDropable?.setOnTouchListener { view, event ->
+                val metrics = DisplayMetrics()
+                windowManager?.defaultDisplay?.getMetrics(metrics)
+                when (event.action and MotionEvent.ACTION_MASK) {
 
-                MotionEvent.ACTION_DOWN -> {
-                    oldPosX = event.x
-                    oldPosY = event.y
+                    MotionEvent.ACTION_DOWN -> {
+                        oldPosX = event.x
+                        oldPosY = event.y
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                    }
+                    MotionEvent.ACTION_POINTER_DOWN -> {
+                    }
+                    MotionEvent.ACTION_POINTER_UP -> {
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val x = event.x
+                        val y = event.y
+
+                        val deplacementX = x - oldPosX
+                        val deplacementY = y - oldPosY
+
+                        popupContainer?.x = positionXIntoScreen(
+                            popupContainer?.x!!,
+                            deplacementX,
+                            popupContainer?.width?.toFloat()
+                        )
+                        oldPosX = x - deplacementX
+
+                        popupContainer?.y = positionYIntoScreen(
+                            popupContainer?.y,
+                            deplacementY,
+                            popupContainer?.height?.toFloat()
+                        )
+                        oldPosY = y - deplacementY
+                    }
                 }
-
-                MotionEvent.ACTION_UP -> {
-                }
-                MotionEvent.ACTION_POINTER_DOWN -> {
-                }
-                MotionEvent.ACTION_POINTER_UP -> {
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val x = event.x
-                    val y = event.y
-
-                    val deplacementX = x - oldPosX
-                    val deplacementY = y - oldPosY
-
-                    container?.x = positionXIntoScreen(
-                        container?.x!!,
-                        deplacementX,
-                        container?.width?.toFloat(),
-                        windowManager!!
-                    )
-                    oldPosX = x - deplacementX
-
-                    container?.y = positionYIntoScreen(
-                        container?.y,
-                        deplacementY,
-                        container?.height?.toFloat(),
-                        windowManager!!
-                    )
-                    oldPosY = y - deplacementY
-                }
+                return@setOnTouchListener true
             }
-            return@setOnTouchListener true
-        }
-
-        if (sharedPreferences.getBoolean("first_notif", true)) {
-            val view = inflater.inflate(R.layout.layout_notification_pop_up, null)
-            popupNotificationViewStates.add(
-                PopupNotificationViewState(
-                    sbp.id,
-                    sbp.statusBarNotificationInfo["android.title"].toString(),
-                    sbp.statusBarNotificationInfo["android.text"].toString(),
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
+        } else {
+            if (sharedPreferences.getBoolean("first_notif", true)) {
+                val view = inflater.inflate(R.layout.layout_notification_pop_up, null)
+                val notifications: ArrayList<StatusBarParcelable> = ArrayList()
+                notifications.add(sbp)
+                adapterNotifications = NotifPopupRecyclerViewAdapter(
+                    applicationContext,
+                    notifications,
+                    windowManager!!,
+                    view
                 )
-            )
-
-            adapterNotifications = PopupNotificationsListAdapter(
-                applicationContext,
-                popupNotificationViewStates,
-                windowManager!!,
-                view
-            )
-            val edit = sharedPreferences.edit()
-            edit.putBoolean("first_notif", false)
-            edit.apply()
+                val edit = sharedPreferences.edit()
+                edit.putBoolean("first_notif", false)
+                edit.apply()
+            }
         }
     }
 
-    private fun notificationsRecyclerViewDisplay(
-        sbp: StatusBarParcelable,
-        view: View,
+    private fun notifLayout(
+        sbp: StatusBarParcelable, view: View?,
         contactDB: ContactDB?
     ) {
-        contactDB?.let {
-            addNotificationViewStateToList(
-                popupNotificationViewStates,
-                it,
-                sbp,
-                applicationContext
-            )
-        }
+        val notifications: ArrayList<StatusBarParcelable> = ArrayList()
+        notifications.add(sbp)
+        recyclerView = view?.findViewById(R.id.notification_popup_recycler_view)
 
-        recyclerView = view.findViewById(R.id.notification_popup_recycler_view)
         recyclerView?.layoutManager = LinearLayoutManager(applicationContext)
-
-        adapterNotifications = PopupNotificationsListAdapter(
+        adapterNotifications = NotifPopupRecyclerViewAdapter(
             applicationContext,
-            popupNotificationViewStates,
+            notifications,
             windowManager!!,
-            view
+            view!!
         )
         recyclerView?.adapter = adapterNotifications
 
-        Log.i("PopupNotifications", "adapterNotifications : $adapterNotifications")
-
 //        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotifications))
-//        itemTouchHelper.attachToRecyclerView(recyclerView)
+//        itemTouchHelper.attachToRecyclerView(adapterNotifications)
 
-        if (popupNotificationViewStates.size == 0) {
+        if (contactDB != null) {
+            if (contactDB.isCustomSound == 1) {
+                alertCustomNotificationTone(contactDB.notificationTone)
+            } else {
+                alertNotificationTone(contactDB.notificationSound)
+            }
+        }
+
+        if (notifications.size == 0) {
             alarmSound?.stop()
         }
 
-//        if (adapterNotification?.isClose == true) {
-//            alarmSound?.stop()
-//        }
+        if (adapterNotifications?.isClose == true) {
+            alarmSound?.stop()
+        }
 
         val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE
@@ -741,13 +721,197 @@ class NotificationsListenerService : NotificationListenerService() {
             windowManager?.removeView(view)
             popupView = null
             alarmSound?.stop()
-            popupNotificationViewStates.clear()
 
             val edit = sharedPreferences.edit()
             edit.putBoolean("view", false)
             edit.apply()
         }
     }
+
+    private fun positionXIntoScreen(popupX: Float, deplacementX: Float, popupSizeX: Float): Float {
+        val metrics = DisplayMetrics()
+        windowManager!!.defaultDisplay.getMetrics(metrics)
+        return when {
+            popupX + deplacementX < 0 -> {
+                0.0f
+            }
+            popupX + deplacementX + popupSizeX < metrics.widthPixels -> {
+                popupX + deplacementX
+            }
+            else -> {
+                metrics.widthPixels.toFloat() - popupSizeX
+            }
+        }
+    }
+
+    private fun positionYIntoScreen(popupY: Float, deplacementY: Float, popupSizeY: Float): Float {
+        val metrics = DisplayMetrics()
+        windowManager?.defaultDisplay?.getMetrics(metrics)
+        return when {
+            popupY + deplacementY < 0 -> {
+                0.0f
+            }
+            popupY + deplacementY + popupSizeY < metrics.heightPixels -> {
+                popupY + deplacementY
+            }
+            else -> {
+                metrics.heightPixels.toFloat() - popupSizeY
+            }
+        }
+    }
+
+//    private fun displayLayout_2(
+//        sbp: StatusBarParcelable,
+//        contactDB: ContactDB?
+//    ) {
+//        val flag = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+//            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+//        } else {
+//            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+//        }
+//        val parameters = WindowManager.LayoutParams(
+//            flag,
+//            WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+//            PixelFormat.TRANSLUCENT
+//        )
+//        parameters.gravity = Gravity.RIGHT or Gravity.TOP
+//        parameters.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+//        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+//        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//
+//        popupView = inflater.inflate(R.layout.layout_notification_pop_up, null)
+//        val popupDropable = popupView?.findViewById<ConstraintLayout>(R.id.notification_dropable)
+//        val container = popupView?.findViewById<LinearLayout>(R.id.notification_popup_main_layout)
+//
+//        notificationsRecyclerViewDisplay(sbp, popupView!!, contactDB)
+//        try {
+//            Log.i("PopupNotifications", "popupView : $popupView")
+//            windowManager?.addView(popupView, parameters)
+//        } finally {
+//            Log.i("PopupNotifications", "popupView : $popupView")
+//            windowManager?.updateViewLayout(popupView, parameters)
+//        }
+//        popupDropable?.setOnTouchListener { view, event ->
+//            val metrics = DisplayMetrics()
+//            windowManager?.defaultDisplay?.getMetrics(metrics)
+//            when (event.action and MotionEvent.ACTION_MASK) {
+//
+//                MotionEvent.ACTION_DOWN -> {
+//                    oldPosX = event.x
+//                    oldPosY = event.y
+//                }
+//
+//                MotionEvent.ACTION_UP -> {
+//                }
+//                MotionEvent.ACTION_POINTER_DOWN -> {
+//                }
+//                MotionEvent.ACTION_POINTER_UP -> {
+//                }
+//                MotionEvent.ACTION_MOVE -> {
+//                    val x = event.x
+//                    val y = event.y
+//
+//                    val deplacementX = x - oldPosX
+//                    val deplacementY = y - oldPosY
+//
+//                    container?.x = positionXIntoScreen(
+//                        container?.x!!,
+//                        deplacementX,
+//                        container?.width?.toFloat(),
+//                        windowManager!!
+//                    )
+//                    oldPosX = x - deplacementX
+//
+//                    container?.y = positionYIntoScreen(
+//                        container?.y,
+//                        deplacementY,
+//                        container?.height?.toFloat(),
+//                        windowManager!!
+//                    )
+//                    oldPosY = y - deplacementY
+//                }
+//            }
+//            return@setOnTouchListener true
+//        }
+//
+//        if (sharedPreferences.getBoolean("first_notif", true)) {
+//            val view = inflater.inflate(R.layout.layout_notification_pop_up, null)
+//            popupNotificationViewStates.add(
+//                PopupNotificationViewState(
+//                    sbp.id,
+//                    sbp.statusBarNotificationInfo["android.title"].toString(),
+//                    sbp.statusBarNotificationInfo["android.text"].toString(),
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    ""
+//                )
+//            )
+//
+//            adapterNotifications = PopupNotificationsListAdapter(
+//                applicationContext,
+//                popupNotificationViewStates,
+//                windowManager!!,
+//                view
+//            )
+//            val edit = sharedPreferences.edit()
+//            edit.putBoolean("first_notif", false)
+//            edit.apply()
+//        }
+//    }
+
+//    private fun notificationsRecyclerViewDisplay(
+//        sbp: StatusBarParcelable,
+//        view: View,
+//        contactDB: ContactDB?
+//    ) {
+//        contactDB?.let {
+//            addNotificationViewStateToList(
+//                popupNotificationViewStates,
+//                it,
+//                sbp,
+//                applicationContext
+//            )
+//        }
+//
+//        recyclerView = view.findViewById(R.id.notification_popup_recycler_view)
+//        recyclerView?.layoutManager = LinearLayoutManager(applicationContext)
+//
+//        adapterNotifications = PopupNotificationsListAdapter(
+//            applicationContext,
+//            popupNotificationViewStates,
+//            windowManager!!,
+//            view
+//        )
+//        recyclerView?.adapter = adapterNotifications
+//
+//        Log.i("PopupNotifications", "adapterNotifications : $adapterNotifications")
+//
+////        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapterNotifications))
+////        itemTouchHelper.attachToRecyclerView(recyclerView)
+//
+//        if (popupNotificationViewStates.size == 0) {
+//            alarmSound?.stop()
+//        }
+//
+////        if (adapterNotification?.isClose == true) {
+////            alarmSound?.stop()
+////        }
+//
+//        val imgClose = view.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
+//        imgClose.visibility = View.VISIBLE
+//        imgClose.setOnClickListener {
+//            windowManager?.removeView(view)
+//            popupView = null
+//            alarmSound?.stop()
+//            popupNotificationViewStates.clear()
+//
+//            val edit = sharedPreferences.edit()
+//            edit.putBoolean("view", false)
+//            edit.apply()
+//        }
+//    }
 
     private fun alertNotificationTone(sound: Int) {
         alarmSound?.stop()

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.contacts
+package com.yellowtwigs.knockin.ui.contacts.multi_channel
 
 import android.content.Context
 import android.content.Intent
@@ -6,14 +6,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
-import android.widget.ListView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityMultiChannelBinding
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,16 +22,6 @@ import java.net.URLEncoder
 
 @AndroidEntryPoint
 class MultiChannelActivity : AppCompatActivity() {
-
-    //region ========================================== Val or Var ==========================================
-
-    private var appsListView: ListView? = null
-
-//    private var listOfContactSelected = arrayListOf<ContactWithAllInformation?>()
-
-    private lateinit var viewAdapter: ContactListViewAdapter
-    private lateinit var sendMessageEditText: AppCompatEditText
-    private lateinit var sendMessageButton: AppCompatImageView
 
     private var twoChannels = false
     private var tripleChannels = false
@@ -41,127 +32,131 @@ class MultiChannelActivity : AppCompatActivity() {
     private var openMail = false
     private var openWhatsapp = false
 
-    //endregion
+    private var listOfPhoneNumbers = arrayListOf<Pair<Int, String>>()
+    private var listOfMails = arrayListOf<Pair<Int, String>>()
+    private var listOfHasWhatsapp = arrayListOf<Pair<Int, String>>()
+
+    private val multiChannelViewModel: MultiChannelViewModel by viewModels()
+    private lateinit var binding: ActivityMultiChannelBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         checkTheme(this)
 
-        val binding = ActivityMultiChannelBinding.inflate(layoutInflater)
+        binding = ActivityMultiChannelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupToolbar(binding)
-
-        val listOfContactSelected = intent.getIntegerArrayListExtra("contacts")
-
-        listOfContactSelected
-
-//        contactManager = ContactManager(this.applicationContext)
-//        contactManager.sortContactByFirstNameAZ()
-
-        val iterator = (0 until intent_listOfContactSelected.size).iterator()
-
-        for (i in iterator) {
-//            listOfContactSelected.add(contactManager.getContactById(intent_listOfContactSelected[i]))
-        }
-
-        //endregion
-
-        //region ================================== ContactListViewAdapter ==================================
-
-//        viewAdapter = ContactListViewAdapter(this, listOfContactSelected)
-        appsListView?.adapter = viewAdapter
-
-        //endregion
-
-        //region ======================================== Listeners =========================================
-
-        sendMessageButton.setOnClickListener {
-            val hasSms = viewAdapter.listOfNumberSelected?.size != 0
-            val hasWhatsapp = viewAdapter.listOfWhatsappSelected?.size != 0
-            val hasEmail = viewAdapter.listOfMailSelected?.size != 0
-
-            if (sendMessageEditText.text.toString() != "") {
-                if (!hasSms && !hasWhatsapp && !hasEmail) {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.multi_channel_list_of_channel_selected_empty),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    sendValidate = false
-                } else {
-                    // Mono Channel
-                    if (hasSms && !hasWhatsapp && !hasEmail) {
-                        multiChannelSendMessage(
-                            viewAdapter.listOfNumberSelected,
-                            sendMessageEditText.text.toString()
-                        )
-                        sendValidate = true
-                    } // Validate
-                    if (hasWhatsapp && !hasSms && !hasEmail) {
-                        multiChannelSendMessageWhatsapp(sendMessageEditText.text.toString())
-                        sendValidate = true
-                    } // Validate
-                    if (hasEmail && !hasSms && !hasWhatsapp) {
-                        multiChannelMailClick(
-                            viewAdapter.listOfMailSelected,
-                            sendMessageEditText.text.toString()
-                        )
-                        sendValidate = true
-                    } // Validate
-
-                    // Two Channels
-                    if (hasSms && hasWhatsapp && !hasEmail) {
-                        multiChannelSendMessage(
-                            viewAdapter.listOfNumberSelected,
-                            sendMessageEditText.text.toString()
-                        )
-                        openWhatsapp = true
-                        twoChannels = true
-                    } // Validate
-                    if (hasSms && hasEmail && !hasWhatsapp) {
-                        multiChannelSendMessage(
-                            viewAdapter.listOfNumberSelected,
-                            sendMessageEditText.text.toString()
-                        )
-                        openMail = true
-                        twoChannels = true
-                    } // Validate
-                    if (hasWhatsapp && hasEmail && !hasSms) {
-                        multiChannelSendMessageWhatsapp(sendMessageEditText.text.toString())
-                        openMail = true
-                        twoChannels = true
-                    } // Validate
-
-                    if (hasSms && hasWhatsapp && hasEmail) {
-                        multiChannelSendMessage(
-                            viewAdapter.listOfNumberSelected,
-                            sendMessageEditText.text.toString()
-                        )
-
-                        openWhatsapp = true
-                        openMail = false
-                        tripleChannels = true
-                    }
-                }
-
-                hideKeyboard()
-
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.multi_channel_empty_field),
-                    Toast.LENGTH_SHORT
-                ).show()
-                hideKeyboard()
-            }
-        }
-
-        //endregion
+        setupToolbar()
+        setupListOfContacts(multiChannelViewModel)
+        sendMessageClick()
     }
 
-    private fun setupToolbar(binding: ActivityMultiChannelBinding) {
+    private fun sendMessageClick() {
+        binding.apply {
+            sendMessage.setOnClickListener {
+                val hasSms = listOfPhoneNumbers.size != 0
+                val hasWhatsapp = listOfHasWhatsapp.size != 0
+                val hasEmail = listOfMails.size != 0
+
+                if (messageEditText.text.toString() != "") {
+                    if (!hasSms && !hasWhatsapp && !hasEmail) {
+                        Toast.makeText(
+                            this@MultiChannelActivity,
+                            getString(R.string.multi_channel_list_of_channel_selected_empty),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        sendValidate = false
+                    } else {
+                        if (hasSms && !hasWhatsapp && !hasEmail) {
+                            val numbers = arrayListOf<String>()
+                            listOfPhoneNumbers.forEach {
+                                numbers.add(it.second)
+                            }
+                            multiChannelSendMessage(
+                                numbers,
+                                messageEditText.text.toString()
+                            )
+                            sendValidate = true
+                        }
+                        if (hasWhatsapp && !hasSms && !hasEmail) {
+                            multiChannelSendMessageWhatsapp(messageEditText.text.toString())
+                            sendValidate = true
+                        }
+                        if (hasEmail && !hasSms && !hasWhatsapp) {
+                            val mails = arrayListOf<String>()
+                            listOfMails.forEach {
+                                mails.add(it.second)
+                            }
+                            multiChannelMailClick(
+                                mails,
+                                messageEditText.text.toString()
+                            )
+                            sendValidate = true
+                        } // Validate
+
+                        // Two Channels
+                        if (hasSms && hasWhatsapp && !hasEmail) {
+                            val numbers = arrayListOf<String>()
+                            listOfPhoneNumbers.forEach {
+                                numbers.add(it.second)
+                            }
+                            multiChannelSendMessage(
+                                numbers,
+                                messageEditText.text.toString()
+                            )
+                            openWhatsapp = true
+                            twoChannels = true
+                        } // Validate
+                        if (hasSms && hasEmail && !hasWhatsapp) {
+                            val numbers = arrayListOf<String>()
+                            listOfPhoneNumbers.forEach {
+                                numbers.add(it.second)
+                            }
+                            multiChannelSendMessage(
+                                numbers,
+                                messageEditText.text.toString()
+                            )
+                            openMail = true
+                            twoChannels = true
+                        } // Validate
+                        if (hasWhatsapp && hasEmail && !hasSms) {
+                            multiChannelSendMessageWhatsapp(messageEditText.text.toString())
+                            openMail = true
+                            twoChannels = true
+                        } // Validate
+
+                        if (hasSms && hasWhatsapp && hasEmail) {
+                            val numbers = arrayListOf<String>()
+                            listOfPhoneNumbers.forEach {
+                                numbers.add(it.second)
+                            }
+                            multiChannelSendMessage(
+                                numbers,
+                                messageEditText.text.toString()
+                            )
+
+                            openWhatsapp = true
+                            openMail = false
+                            tripleChannels = true
+                        }
+                    }
+
+                    hideKeyboard()
+
+                } else {
+                    Toast.makeText(
+                        this@MultiChannelActivity,
+                        getString(R.string.multi_channel_empty_field),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    hideKeyboard()
+                }
+            }
+        }
+    }
+
+    private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         val actionbar = supportActionBar
         actionbar?.let {
@@ -171,22 +166,114 @@ class MultiChannelActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupListOfContacts(
+        multiChannelViewModel: MultiChannelViewModel
+    ) {
+        val listOfContactSelected = intent.getIntegerArrayListExtra("contacts")
+
+        listOfContactSelected?.let {
+            multiChannelViewModel.getContactsByIds(it)
+                .observe(this@MultiChannelActivity) { contacts ->
+                    val multiChannelListAdapter =
+                        MultiChannelListAdapter(this@MultiChannelActivity,
+                            { id, image, phoneNumber ->
+                                itemSelectedPhoneNumber(id, image, phoneNumber)
+                            }, { id, image, mail ->
+                                itemSelectedMail(id, image, mail)
+                            }, { id, image, phoneNumber ->
+                                itemSelectedWhatsapp(id, image, phoneNumber)
+                            })
+
+                    binding.recyclerView.apply {
+                        multiChannelListAdapter.submitList(null)
+                        multiChannelListAdapter.submitList(contacts)
+                        adapter = multiChannelListAdapter
+                        layoutManager = LinearLayoutManager(context)
+                        setItemViewCacheSize(500)
+                    }
+                }
+        }
+    }
+
+    private fun itemSelectedPhoneNumber(
+        id: Int,
+        image: AppCompatImageView,
+        phoneNumber: String,
+    ) {
+        if (listOfPhoneNumbers.contains(Pair(id, phoneNumber))) {
+            listOfPhoneNumbers.remove(Pair(id, phoneNumber))
+
+            image.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_sms_pressed,
+                    null
+                )
+            )
+        } else {
+            listOfPhoneNumbers.add(Pair(id, phoneNumber))
+            image.setImageResource(R.drawable.ic_item_selected)
+        }
+    }
+
+    private fun itemSelectedMail(
+        id: Int,
+        image: AppCompatImageView,
+        email: String
+    ) {
+        if (listOfMails.contains(Pair(id, email))) {
+            listOfMails.remove(Pair(id, email))
+
+            image.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_circular_gmail,
+                    null
+                )
+            )
+        } else {
+            listOfMails.add(Pair(id, email))
+            image.setImageResource(R.drawable.ic_item_selected)
+        }
+    }
+
+    private fun itemSelectedWhatsapp(
+        id: Int,
+        image: AppCompatImageView,
+        phoneNumber: String
+    ) {
+        if (listOfHasWhatsapp.contains(Pair(id, phoneNumber))) {
+            listOfHasWhatsapp.remove(Pair(id, phoneNumber))
+
+            image.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_circular_whatsapp,
+                    null
+                )
+            )
+        } else {
+            listOfHasWhatsapp.add(Pair(id, phoneNumber))
+            image.setImageResource(R.drawable.ic_item_selected)
+        }
+    }
+
     //region ======================================= Functions ==============================================
 
     private fun refreshActivity() {
         if (intent.getBooleanExtra("fromMainToMultiChannel", false)) {
-//            startActivity(
-//                Intent(this@MultiChannelActivity, Main2Activity::class.java).addFlags(
-//                    Intent.FLAG_ACTIVITY_NO_ANIMATION
-//                )
-//            )
+            startActivity(
+                Intent(this@MultiChannelActivity, ContactsListActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_NO_ANIMATION
+                )
+            )
             hideKeyboard()
             finish()
         } else {
             startActivity(
                 Intent(
                     this@MultiChannelActivity,
-                    GroupsListActivity::class.java
+                    ContactsListActivity::class.java
                 ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             )
             hideKeyboard()
@@ -285,9 +372,7 @@ class MultiChannelActivity : AppCompatActivity() {
     }
 
     private fun hideKeyboard() {
-        val view = this.currentFocus
-
-        view?.let { v ->
+        this.currentFocus?.let { v ->
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
@@ -305,16 +390,18 @@ class MultiChannelActivity : AppCompatActivity() {
         }
 
         if (openWhatsapp) {
-            multiChannelSendMessageWhatsapp(sendMessageEditText.text.toString())
+            multiChannelSendMessageWhatsapp(binding.messageEditText.text.toString())
         }
 
         if (openMail) {
-            viewAdapter.listOfMailSelected?.let {
-                multiChannelMailClick(
-                    it,
-                    sendMessageEditText.text.toString()
-                )
+            val mails = arrayListOf<String>()
+            listOfMails.forEach {
+                mails.add(it.second)
             }
+            multiChannelMailClick(
+                mails,
+                binding.messageEditText.text.toString()
+            )
         }
     }
 

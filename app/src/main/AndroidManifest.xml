@@ -59,7 +59,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -77,7 +76,6 @@
         <activity android:name=".ui.groups.list.GroupsListActivity" />
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
 
-
         <activity android:name=".ui.contacts.list.ContactsListActivity" />
 
         <activity android:name=".ui.notifications.history.NotificationsHistoryActivity" />
@@ -92,30 +90,7 @@
         <activity
             android:name="com.yellowtwigs.knockin.ui.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
-<!--        <activity-->
-<!--            android:name="com.facebook.FacebookActivity"-->
-<!--            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
-<!--            android:label="@string/app_name" />-->
-<!--        <activity-->
-<!--            android:name="com.facebook.CustomTabActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-
-<!--                <data-->
-<!--                    android:scheme="@string/fb_login_protocol_scheme"-->
-<!--                    tools:ignore="ManifestResource" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
         <activity android:name=".ui.in_app.PremiumActivity" />
-
-<!--        <meta-data-->
-<!--            android:name="com.facebook.sdk.ApplicationId"-->
-<!--            android:value="@string/facebook_app_id" />-->
-
         <receiver android:name=".ui.notifications.NotificationSender" />
         <receiver android:name=".ui.notifications.NotificationMessageSender" />
 
