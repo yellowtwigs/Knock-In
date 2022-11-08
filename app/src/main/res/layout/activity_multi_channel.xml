@@ -5,10 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
-    tools:context=".ui.contacts.MultiChannelActivity">
+    tools:context=".ui.contacts.multi_channel.MultiChannelActivity">
 
-    <ListView
-        android:id="@+id/multi_channel_list_of_contacts_selected"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/transparentColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="?attr/textColor" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -16,7 +27,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/multi_channel_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <RelativeLayout
         android:id="@+id/multi_channel_layout_message"
@@ -29,13 +40,13 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/multi_channel_chatbox"
+            android:id="@+id/message_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="25dp"
-            android:layout_toStartOf="@+id/multi_channel_chatbox_send"
+            android:layout_toStartOf="@+id/send_message"
             android:background="@android:color/transparent"
             android:hint="@string/multi_channel_message_edit_text_hint"
             android:imeOptions="actionDone"
@@ -50,7 +61,7 @@
             android:textSize="18sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/multi_channel_chatbox_send"
+            android:id="@+id/send_message"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
@@ -60,15 +71,4 @@
             android:focusable="true"
             android:src="@drawable/ic_right_arrow" />
     </RelativeLayout>
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/multi_channel_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginBottom="8dp"
-        android:background="?attr/transparentColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="?attr/textColor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

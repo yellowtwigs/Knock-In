@@ -20,7 +20,6 @@ import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 class FirstVipSelectionAdapter(
     private val cxt: Activity,
     private val listOfItemSelected: ArrayList<Int>,
-    private val contactUnlimited: Boolean,
     private val onClicked: (Int) -> Unit
 ) :
     ListAdapter<FirstVipSelectionViewState, FirstVipSelectionAdapter.ViewHolder>(

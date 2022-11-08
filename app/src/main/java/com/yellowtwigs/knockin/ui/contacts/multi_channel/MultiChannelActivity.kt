@@ -13,21 +13,21 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.databinding.ActivityMultiChannelBinding
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLEncoder
 
-
+@AndroidEntryPoint
 class MultiChannelActivity : AppCompatActivity() {
 
     //region ========================================== Val or Var ==========================================
 
     private var appsListView: ListView? = null
 
-    private var intent_listOfContactSelected: ArrayList<Int> = ArrayList()
-
 //    private var listOfContactSelected = arrayListOf<ContactWithAllInformation?>()
 
-//    private lateinit var contactManager: ContactManager
     private lateinit var viewAdapter: ContactListViewAdapter
     private lateinit var sendMessageEditText: AppCompatEditText
     private lateinit var sendMessageButton: AppCompatImageView
@@ -46,44 +46,16 @@ class MultiChannelActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
+        checkTheme(this)
 
-        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
-            setTheme(R.style.AppThemeDark)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
+        val binding = ActivityMultiChannelBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        //endregion
+        setupToolbar(binding)
 
-        setContentView(R.layout.activity_multi_channel)
+        val listOfContactSelected = intent.getIntegerArrayListExtra("contacts")
 
-        //region ========================================== Toolbar =========================================
-
-        val toolbar = findViewById<Toolbar>(R.id.multi_channel_toolbar)
-        setSupportActionBar(toolbar)
-        val actionbar = supportActionBar
-        actionbar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
-            it.title = "Multi Channel"
-        }
-
-        //endregion
-
-        //region ======================================= FindViewById =======================================
-
-        appsListView = findViewById(R.id.multi_channel_list_of_contacts_selected)
-        sendMessageEditText = findViewById(R.id.multi_channel_chatbox)
-        sendMessageButton = findViewById(R.id.multi_channel_chatbox_send)
-
-        //endregion
-
-        //region ================================= GetContactByIdFromIntent =================================
-
-        intent_listOfContactSelected =
-            intent.getIntegerArrayListExtra("ListContactsSelected") as ArrayList<Int>
+        listOfContactSelected
 
 //        contactManager = ContactManager(this.applicationContext)
 //        contactManager.sortContactByFirstNameAZ()
@@ -187,6 +159,16 @@ class MultiChannelActivity : AppCompatActivity() {
         }
 
         //endregion
+    }
+
+    private fun setupToolbar(binding: ActivityMultiChannelBinding) {
+        setSupportActionBar(binding.toolbar)
+        val actionbar = supportActionBar
+        actionbar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setHomeAsUpIndicator(R.drawable.ic_left_arrow)
+            it.title = "Multi Channel"
+        }
     }
 
     //region ======================================= Functions ==============================================

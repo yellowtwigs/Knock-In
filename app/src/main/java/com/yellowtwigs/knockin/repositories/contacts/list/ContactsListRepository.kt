@@ -6,9 +6,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface ContactsListRepository {
 
-    fun getAllContacts(): LiveData<List<ContactDB>>
+    fun getAllContacts(): Flow<List<ContactDB>>
+
+    fun getNumbersOfContactsVip(): Int
 
     suspend fun updateContactPriorityById(id: Int, priority: Int)
 
     suspend fun deleteContact(contact: ContactDB)
+    suspend fun deleteContactById(id: Int)
 }

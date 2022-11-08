@@ -69,9 +69,7 @@
 
         <activity android:name=".FirstLaunchActivity" />
         <activity android:name=".ui.groups.manage_group.ManageGroupActivity" />
-        <activity android:name=".ui.groups.DeleteContactFromGroupActivity" />
-        <activity android:name=".ui.groups.AddContactToGroupActivity" />
-        <activity android:name=".ui.contacts.MultiChannelActivity" />
+        <activity android:name=".ui.contacts.multi_channel.MultiChannelActivity" />
         <activity
             android:name=".ui.notifications.NotificationAlarmActivity"
             android:turnScreenOn="false"
@@ -92,36 +90,31 @@
             android:name="com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactDetailsActivity"
+            android:name="com.yellowtwigs.knockin.ui.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
-        <!--        <activity-->
-        <!--            android:name=".ui.contacts.Main2Activity"-->
-        <!--            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
-        <!--            android:label="@string/app_name"-->
-        <!--            android:windowSoftInputMode="stateHidden" />-->
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+<!--        <activity-->
+<!--            android:name="com.facebook.FacebookActivity"-->
+<!--            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"-->
+<!--            android:label="@string/app_name" />-->
+<!--        <activity-->
+<!--            android:name="com.facebook.CustomTabActivity"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data
-                    android:scheme="@string/fb_login_protocol_scheme"
-                    tools:ignore="ManifestResource" />
-            </intent-filter>
-        </activity>
+<!--                <data-->
+<!--                    android:scheme="@string/fb_login_protocol_scheme"-->
+<!--                    tools:ignore="ManifestResource" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity android:name=".ui.in_app.PremiumActivity" />
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+<!--        <meta-data-->
+<!--            android:name="com.facebook.sdk.ApplicationId"-->
+<!--            android:value="@string/facebook_app_id" />-->
 
         <receiver android:name=".ui.notifications.NotificationSender" />
         <receiver android:name=".ui.notifications.NotificationMessageSender" />

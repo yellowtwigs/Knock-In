@@ -35,11 +35,8 @@ import kotlinx.coroutines.launch
 class GroupsListActivity : AppCompatActivity() {
 
     private var firstClick: Boolean = true
-
-    //    private var sectionAdapter: SectionGroupAdapter? = null
     private lateinit var firstVipSelectionAdapter: FirstVipSelectionAdapter
 
-    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
     private var recyclerLen: Int = 1
 
     var touchHelper: ItemTouchHelper? = null

@@ -105,7 +105,11 @@ class GroupsListAdapter(private val cxt: Context, private val onClickedCallback:
                 val listener = View.OnClickListener { v: View ->
                     when (v.id) {
                         smsLayout.id -> {
-                            openSms(contact.listOfPhoneNumbers[0], cxt as ContactsListActivity)
+                            if (cxt is ContactsListActivity) {
+                                openSms(contact.listOfPhoneNumbers[0], cxt)
+                            } else {
+                                openSms(contact.listOfPhoneNumbers[0], cxt as GroupsListActivity)
+                            }
                         }
                         callLayout.id -> {
                             callPhone(contact.listOfPhoneNumbers[0], cxt)

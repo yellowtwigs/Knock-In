@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GroupsListViewModel @Inject constructor(
     groupsListRepository: GroupsListRepository,
-    contactsListRepository: ContactsListRepository,
+    getAllContactsUseCase: GetAllContactsUseCase,
     private val manageGroupRepository: ManageGroupRepository
 ) :
     ViewModel() {
@@ -27,7 +29,7 @@ class GroupsListViewModel @Inject constructor(
 
     init {
         val allGroups = groupsListRepository.getAllGroups()
-        val allContacts = contactsListRepository.getAllContacts()
+        val allContacts = getAllContactsUseCase.contactsListViewStateLiveData
 
         viewStateLiveData.addSource(allGroups) { groups ->
             combine(groups, allContacts.value)
@@ -38,7 +40,7 @@ class GroupsListViewModel @Inject constructor(
         }
     }
 
-    private fun combine(allGroups: List<GroupDB>?, allContacts: List<ContactDB>?) {
+    private fun combine(allGroups: List<GroupDB>?, allContacts: List<ContactsListViewState>?) {
         val listOfSections = arrayListOf<SectionViewState>()
 
         if (allGroups != null && allContacts != null) {
@@ -73,9 +75,9 @@ class GroupsListViewModel @Inject constructor(
                                 contact.listOfPhoneNumbers,
                                 contact.listOfMails,
                                 contact.priority,
-                                contact.listOfMessagingApps.contains("com.whatsapp"),
-                                contact.listOfMessagingApps.contains("org.telegram.messenger"),
-                                contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
+                                contact.hasWhatsapp,
+                                contact.hasTelegram,
+                                contact.hasSignal
                             )
                         )
                     }

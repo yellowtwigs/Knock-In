@@ -81,11 +81,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.yellowtwigs.knockin.ui.CircularImageView
-            android:id="@+id/image"
+            android:id="@+id/contact_image"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:src="@drawable/ic_app_image"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

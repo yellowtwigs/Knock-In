@@ -10,8 +10,10 @@ data class ContactDB(
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "first_name") val firstName: String,
     @ColumnInfo(name = "last_name") var lastName: String,
+
     @ColumnInfo(name = "profile_picture") val profilePicture: Int,
     @ColumnInfo(name = "profile_picture_str") val profilePicture64: String,
+
     @ColumnInfo(name = "listOfPhoneNumbers") val listOfPhoneNumbers: List<String>,
     @ColumnInfo(name = "listOfMails") val listOfMails: List<String>,
 

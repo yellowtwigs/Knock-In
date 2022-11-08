@@ -186,11 +186,6 @@ class NotificationsSettingsActivity : AppCompatActivity() {
     //endregion
 
     private fun openOverlaySettings() {
-        val sharedPreferences = getSharedPreferences("Overlay_Preferences", Context.MODE_PRIVATE)
-        val edit: SharedPreferences.Editor = sharedPreferences.edit()
-        edit.putBoolean("Overlay_Preferences", true)
-        edit.apply()
-
         val intent = Intent(
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
             Uri.parse("package:$packageName")

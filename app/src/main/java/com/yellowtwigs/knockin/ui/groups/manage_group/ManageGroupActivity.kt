@@ -18,6 +18,7 @@ import com.yellowtwigs.knockin.databinding.ActivityManageGroupBinding
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
+import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,13 +47,19 @@ class ManageGroupActivity : AppCompatActivity() {
 
         groupId = intent.getIntExtra("GroupId", -1)
 
+        Log.i("MultiSelectGroup", "${intent.getIntegerArrayListExtra("contacts")}")
+        intent.getIntegerArrayListExtra("contacts")?.forEach { id ->
+            id?.let {
+                listOfItemSelected.add(it.toString())
+            }
+        }
+
         if (groupId != -1) {
             viewModel.setGroupById(groupId)
         }
 
         setupToolbar()
         setupRecyclerView()
-        setupSectionColorSelection()
     }
 
     //region =========================================== SETUP UI ===========================================
@@ -80,6 +87,8 @@ class ManageGroupActivity : AppCompatActivity() {
                     .observe(this@ManageGroupActivity) { manageGroupViewState ->
                         currentGroup = manageGroupViewState
                         currentColor = manageGroupViewState.section_color
+
+                        setupSectionColorSelection()
 
                         binding.groupName.setText(manageGroupViewState.groupName)
                         listOfItemSelected.addAll(manageGroupViewState.listOfIds)
@@ -111,6 +120,8 @@ class ManageGroupActivity : AppCompatActivity() {
                         currentGroup = manageGroupViewState
                         currentColor = manageGroupViewState.section_color
 
+                        setupSectionColorSelection()
+
                         binding.groupName.setText(manageGroupViewState.groupName)
                         listOfItemSelected.addAll(manageGroupViewState.listOfIds)
 
@@ -138,13 +149,6 @@ class ManageGroupActivity : AppCompatActivity() {
     }
 
     private fun setupSectionColorSelection() {
-        Log.i("sectionColor", "R.color.blue_tag_group : ${R.color.blue_tag_group}")
-        Log.i("sectionColor", "R.color.red_tag_group : ${R.color.red_tag_group}")
-        Log.i("sectionColor", "R.color.green_tag_group : ${R.color.green_tag_group}")
-        Log.i("sectionColor", "R.color.orange_tag_group : ${R.color.orange_tag_group}")
-        Log.i("sectionColor", "R.color.purple_tag_group : ${R.color.purple_tag_group}")
-        Log.i("sectionColor", "R.color.yellow_tag_group : ${R.color.yellow_tag_group}")
-
         binding.apply {
             selectColorSeparator.setOnClickListener {
                 selectColorLayout.isVisible = !selectColorLayout.isVisible

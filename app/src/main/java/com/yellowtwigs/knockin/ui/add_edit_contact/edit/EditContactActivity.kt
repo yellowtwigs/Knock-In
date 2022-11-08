@@ -13,6 +13,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -87,7 +88,7 @@ class EditContactActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-        val id = intent.getIntExtra("contactId", 1)
+        val id = intent.getIntExtra("ContactId", 1)
         bindingAllDataFromUserId(id)
         actionOnClickListener()
     }
@@ -108,6 +109,7 @@ class EditContactActivity : AppCompatActivity() {
                             )
                         )
                     } else {
+                        contactImageString = contact.profilePicture64
                         contactImage.setImageBitmap(base64ToBitmap(contact.profilePicture64))
                     }
 
@@ -248,7 +250,6 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun actionOnClickListener() {
         binding.apply {
-            // Toolbar
             returnIcon.setOnClickListener {
                 onBackPressed()
             }
@@ -341,6 +342,9 @@ class EditContactActivity : AppCompatActivity() {
     //region ============================================ UPDATE ============================================
 
     private suspend fun updateUser() {
+        Log.i("ContactImageUpdate", "currentContact.profilePicture : ${currentContact.profilePicture}")
+        Log.i("ContactImageUpdate", "contactImageString : ${contactImageString}")
+
         editContactViewModel.updateContact(
             ContactDB(
                 currentContact.id,

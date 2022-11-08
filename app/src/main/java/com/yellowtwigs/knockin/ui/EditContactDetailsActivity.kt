@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.ui.add_edit_contact.edit
+package com.yellowtwigs.knockin.ui
 
 import androidx.appcompat.app.AppCompatActivity
 

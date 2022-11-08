@@ -122,7 +122,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(binding: ActivityFirstVipSelectionBinding) {
         firstVipSelectionAdapter =
-            FirstVipSelectionAdapter(this, listOfItemSelected, contactsUnlimitedBought) { id ->
+            FirstVipSelectionAdapter(this, listOfItemSelected) { id ->
                 if (listOfItemSelected.isEmpty() && firstClick) {
                     listOfItemSelected.add(id)
                     firstClick = false

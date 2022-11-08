@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactListBinding
+import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -23,19 +25,21 @@ import com.yellowtwigs.knockin.utils.ContactGesture.openMailApp
 import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
 import com.yellowtwigs.knockin.utils.ContactGesture.openSms
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
+import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ContactsListAdapter(private val cxt: Context, private val onClickedCallback: (Int) -> Unit) :
+class ContactsListAdapter(
+    private val cxt: Context,
+    private val onClickedCallback: (Int) -> Unit,
+    private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactsListViewState) -> Unit
+) :
     ListAdapter<ContactsListViewState, ContactsListAdapter.ViewHolder>(
         ContactsListViewStateComparator()
     ), SectionIndexer {
-
-    private var modeMultiSelect = false
-    private var isScrolling = false
-    var listOfItemSelected = ArrayList<ContactsListViewState>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -68,13 +72,13 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
 
                 favoriteIcon.isVisible = contact.isFavorite
 
-                if (contact.listOfMails.isNotEmpty() && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
+                if (contact.listOfMails[0] != "" && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
                     cpt += 1
                     mailLayout.visibility = View.VISIBLE
                 } else {
                     mailLayout.visibility = View.GONE
                 }
-                if (contact.listOfPhoneNumbers.isNotEmpty()) {
+                if (contact.listOfPhoneNumbers[0] != "") {
                     cpt += 2
                     callLayout.visibility = View.VISIBLE
                     smsLayout.visibility = View.VISIBLE
@@ -155,17 +159,26 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 editLayout.setOnClickListener(listener)
 
                 itemLayout.setOnClickListener {
-                    if (listContactItemMenu.visibility == View.GONE) {
-                        val slideUp = AnimationUtils.loadAnimation(cxt, R.anim.slide_up)
-                        listContactItemMenu.startAnimation(slideUp)
-                        listContactItemMenu.visibility = View.VISIBLE
-                    } else {
+                    if ((cxt as ContactsListActivity).modeMultiSelect) {
+                        onClickedCallbackMultiSelect(contact.id, civ, contact)
                         listContactItemMenu.visibility = View.GONE
+                    } else {
+                        if (listContactItemMenu.visibility == View.GONE) {
+                            val slideUp = AnimationUtils.loadAnimation(cxt, R.anim.slide_up)
+                            listContactItemMenu.startAnimation(slideUp)
+                            listContactItemMenu.visibility = View.VISIBLE
+                        } else {
+                            listContactItemMenu.visibility = View.GONE
+                        }
                     }
                 }
 
-                if (isScrolling) {
+                itemLayout.setOnLongClickListener {
+                    onClickedCallbackMultiSelect(contact.id, civ, contact)
+
                     listContactItemMenu.visibility = View.GONE
+
+                    true
                 }
 
                 val param = listContactItemMenu.layoutParams as ViewGroup.MarginLayoutParams
@@ -193,10 +206,6 @@ class ContactsListAdapter(private val cxt: Context, private val onClickedCallbac
                 }
             }
         }
-    }
-
-    fun setIsScrolling(scroll: Boolean) {
-        isScrolling = scroll
     }
 
     class ContactsListViewStateComparator : DiffUtil.ItemCallback<ContactsListViewState>() {

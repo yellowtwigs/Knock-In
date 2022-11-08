@@ -1,11 +1,13 @@
 package com.yellowtwigs.knockin.ui.groups.manage_group
 
 import androidx.lifecycle.*
+import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ManageGroupViewModel @Inject constructor(
-    contactsListRepository: ContactsListRepository,
+    getAllContactsUseCase: GetAllContactsUseCase,
     private val manageGroupRepository: ManageGroupRepository,
     private val groupsListRepository: GroupsListRepository
 ) :
@@ -29,7 +31,7 @@ class ManageGroupViewModel @Inject constructor(
     private val listOfContactsInGroupLiveData = MutableLiveData<List<String>>()
 
     init {
-        val allContacts = contactsListRepository.getAllContacts()
+        val allContacts = getAllContactsUseCase.contactsListViewStateLiveData
 
         val groupById = Transformations.switchMap(groupIdLiveData) { id ->
             return@switchMap groupsListRepository.getGroupById(id)
@@ -44,7 +46,7 @@ class ManageGroupViewModel @Inject constructor(
         }
     }
 
-    private fun combine(allContacts: List<ContactDB>?, group: GroupDB?) {
+    private fun combine(allContacts: List<ContactsListViewState>?, group: GroupDB?) {
         CoroutineScope(Dispatchers.IO).launch {
             if (allContacts?.isNotEmpty() == true) {
                 if (group != null) {
@@ -88,7 +90,7 @@ class ManageGroupViewModel @Inject constructor(
     }
 
     private fun contactsToContactsManageGroupViewState(
-        contacts: List<ContactDB>
+        contacts: List<ContactsListViewState>
     ): ArrayList<ContactManageGroupViewState> {
         val listOfContactManageGroupViewState = arrayListOf<ContactManageGroupViewState>()
 

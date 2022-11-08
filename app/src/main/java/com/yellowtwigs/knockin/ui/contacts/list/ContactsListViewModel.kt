@@ -1,23 +1,25 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.model.database.data.ContactDB
-import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
+import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase
+import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
+import com.yellowtwigs.knockin.domain.contact.GetNumbersContactsVipUseCase
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.toList
+import java.nio.channels.Channel
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 @HiltViewModel
-class ContactsListViewModel @Inject constructor(contactsListRepository: ContactsListRepository) :
+class ContactsListViewModel @Inject constructor(
+    getAllContactsUseCase: GetAllContactsUseCase,
+    private val getNumbersContactsVipUseCase: GetNumbersContactsVipUseCase,
+    private val deleteContactUseCase: DeleteContactUseCase
+) :
     ViewModel() {
 
     private val viewStateLiveData = MediatorLiveData<List<ContactsListViewState>>()
@@ -27,7 +29,7 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
     private val filterByLiveData = MutableLiveData<Int>()
 
     init {
-        val allContacts = contactsListRepository.getAllContacts()
+        val allContacts = getAllContactsUseCase.contactsListViewStateLiveData
 
         viewStateLiveData.addSource(allContacts) { contacts ->
             combine(
@@ -52,36 +54,38 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
     }
 
     private fun combine(
-        allContacts: List<ContactDB>?,
+        allContacts: List<ContactsListViewState>?,
         input: String?,
         sortedBy: Int?,
         filterBy: Int?
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val listOfContacts = arrayListOf<ContactsListViewState>()
-
-            if (allContacts?.isNotEmpty() == true) {
-                for (contact in allContacts) {
-                    addContactInList(listOfContacts, contact)
+        if (allContacts != null && allContacts.isNotEmpty()) {
+            CoroutineScope(Dispatchers.Default).launch {
+                val listOfDeferred: Deferred<List<ContactsListViewState>> = coroutineScope {
+                    async {
+                        sortedContactsList(
+                            sortedBy,
+                            filterBy,
+                            input,
+                            allContacts
+                        )
+                    }
                 }
 
-                withContext(Dispatchers.Main) {
-                    viewStateLiveData.value = sortedContactsList(
-                        sortedBy,
-                        filterBy,
-                        input,
-                        listOfContacts
-                    )
-                }
+                viewStateLiveData.postValue(listOfDeferred.await())
             }
         }
+    }
+
+    fun getAllContacts(): LiveData<List<ContactsListViewState>> {
+        return viewStateLiveData
     }
 
     private fun sortedContactsList(
         sortedBy: Int?,
         filterBy: Int?,
         input: String?,
-        listOfContacts: ArrayList<ContactsListViewState>
+        listOfContacts: List<ContactsListViewState>
     ): List<ContactsListViewState> {
         if (sortedBy != null) {
             when (sortedBy) {
@@ -137,7 +141,7 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
     private fun filterWithInput(
         filterBy: Int?,
         input: String?,
-        listOfContacts: ArrayList<ContactsListViewState>
+        listOfContacts: List<ContactsListViewState>
     ): List<ContactsListViewState> {
         return if (input != null) {
             filterContactsList(filterBy, listOfContacts.filter { contact ->
@@ -185,30 +189,6 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
         }
     }
 
-    private fun addContactInList(contacts: ArrayList<ContactsListViewState>, contact: ContactDB) {
-        contacts.add(
-            ContactsListViewState(
-                contact.id,
-                contact.firstName,
-                contact.lastName,
-                contact.profilePicture,
-                contact.profilePicture64,
-                contact.listOfPhoneNumbers,
-                contact.listOfMails,
-                contact.priority,
-                contact.isFavorite == 1,
-                contact.messengerId,
-                contact.listOfMessagingApps.contains("com.whatsapp"),
-                contact.listOfMessagingApps.contains("org.telegram.messenger"),
-                contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
-            )
-        )
-    }
-
-    fun getAllContacts(): LiveData<List<ContactsListViewState>> {
-        return viewStateLiveData
-    }
-
     fun setSearchTextChanged(text: String) {
         searchBarTextLiveData.value = text
     }
@@ -219,5 +199,15 @@ class ContactsListViewModel @Inject constructor(contactsListRepository: Contacts
 
     fun setFilterBy(filterBy: Int) {
         filterByLiveData.value = filterBy
+    }
+
+    fun getNumbersContactsVip() = getNumbersContactsVipUseCase.getNumbersOfContactsVip()
+
+    suspend fun deleteContactsSelected(listOfContacts: List<Int>) {
+        Log.i("DeleteContactsSelected", "listOfContacts : $listOfContacts")
+        listOfContacts.map {
+            deleteContactUseCase.deleteContactById(it)
+        }
+
     }
 }

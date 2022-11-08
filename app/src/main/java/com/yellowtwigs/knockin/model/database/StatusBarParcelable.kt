@@ -34,9 +34,8 @@ class StatusBarParcelable : Parcelable {
         } else {
             tickerText = ""
             val ticker = sbn.notification.tickerText
-            Log.i(TAG, " $ticker est null")
         }
-        for (keySbn in sbn.notification.extras.keySet()) {//Extraction des clés de la sbn vers notre notre classe
+        for (keySbn in sbn.notification.extras.keySet()) {
             key.add(keySbn)
             if (sbn.notification.extras.get(keySbn) != null) {
                 statusBarNotificationInfo[keySbn] = sbn.notification.extras.get(keySbn)
@@ -86,7 +85,6 @@ class StatusBarParcelable : Parcelable {
         appNotifier = `in`.readString()
         tailleList = `in`.readInt()
         tickerText = `in`.readString()
-        Log.i(TAG, "posted by:$appNotifier taille list $tailleList and write by $tickerText")
         for (i in 0 until tailleList) {
             val keysbn = `in`.readString()
             val value = `in`.readString()
@@ -140,5 +138,4 @@ class StatusBarParcelable : Parcelable {
     }
 
     var TAG = StatusBarParcelable::class.java.simpleName
-
 }

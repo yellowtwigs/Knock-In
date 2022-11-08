@@ -5,89 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_background"
-    tools:context=".ui.notifications.NotificationAlarmActivity"
-    tools:ignore="PrivateResource">
+    tools:context=".ui.notifications.NotificationAlarmActivity">
 
-    <!-- android:background="@drawable/space_background" -->
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/receive_message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="70dp"
+        android:layout_margin="8dp"
         android:background="@drawable/custom_shape_popup_with_border"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:id="@+id/notification_alarm_receive_message_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/notification_alarm_Knockin_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/background_layout_selector"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:id="@+id/notification_alarm_receive_message_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/notification_alarm_receive_message_image"
-                android:text="2 nouveaux messages VIP"
-                android:textColor="@color/lightColor"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/notification_alarm_receive_message_sender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/notification_alarm_receive_message_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/notification_alarm_receive_message_image"
-                android:text="de 0065606"
-                android:textColor="@color/lightColor"
-                android:textSize="16sp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/notification_alarm_receive_message_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_sms" />
-        </RelativeLayout>
-
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/notification_alarm_Knockin_logo"
+            android:id="@+id/icon"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_app_image" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/message_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/message_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/message_content"
+            app:srcCompat="@drawable/ic_sms" />
 
-    </RelativeLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/message_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/lightColor"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/message_image"
+            app:layout_constraintTop_toBottomOf="@+id/icon"
+            tools:text="Special variation of ViewManager.removeView(View) that immediately invokes the given view hierarchy's View.onDetachedFromWindow() methods before returning. " />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/notification_alarm_shut_down"
+        android:id="@+id/shut_down"
         android:layout_width="120dp"
         android:layout_height="50dp"
-        android:text="Ok"
+        android:text="@string/start_activity_go_edition_positive_button"
         android:tint="@color/lightColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintTop_toBottomOf="@+id/receive_message_layout"
         tools:ignore="RelativeOverlap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

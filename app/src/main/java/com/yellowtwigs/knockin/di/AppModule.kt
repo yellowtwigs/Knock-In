@@ -2,6 +2,10 @@ package com.yellowtwigs.knockin.di
 
 import android.content.Context
 import androidx.room.Room
+import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase
+import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
+import com.yellowtwigs.knockin.domain.contact.GetNumbersContactsVipUseCase
+import com.yellowtwigs.knockin.domain.contact.UpdateContactPriorityByIdUseCase
 import com.yellowtwigs.knockin.domain.notifications.*
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.dao.ContactsDao
@@ -42,6 +46,22 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGroupsDao(database: ContactsDatabase) = database.groupsDao()
+
+    @Provides
+    @Singleton
+    fun provideGetAllContactsUseCase(contactsListRepository: ContactsListRepository) = GetAllContactsUseCase(contactsListRepository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateContactPriorityByIdUseCase(contactsListRepository: ContactsListRepository) = UpdateContactPriorityByIdUseCase(contactsListRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetNumbersContactsVipUseCase(contactsListRepository: ContactsListRepository) = GetNumbersContactsVipUseCase(contactsListRepository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteContactUseCase(contactsListRepository: ContactsListRepository) = DeleteContactUseCase(contactsListRepository)
 
     @Singleton
     @Provides

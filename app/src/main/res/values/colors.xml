@@ -50,11 +50,14 @@
 
     <!-- region Custom Shape Top Bar Notif Adapter Colors -->
 
-    <color name="custom_shape_top_bar_notif_adapter_facebook">#3b5998</color>
-    <color name="custom_shape_top_bar_notif_adapter_messenger">#0084FF</color>
-    <color name="custom_shape_top_bar_notif_adapter_whatsapp">#25D366</color>
-    <color name="custom_shape_top_bar_notif_adapter_gmail">#b45a5a</color>
-    <color name="custom_shape_top_bar_notif_adapter_message">#b45a5a</color>
+    <color name="custom_shape_top_bar_facebook">#3b5998</color>
+    <color name="custom_shape_top_bar_messenger">#0084FF</color>
+    <color name="custom_shape_top_bar_telegram">#61A8DE</color>
+    <color name="custom_shape_top_bar_signal">#3a76f0</color>
+    <color name="custom_shape_top_bar_sms">#EE315BC8</color>
+    <color name="custom_shape_top_bar_whatsapp">#25D366</color>
+    <color name="custom_shape_top_bar_gmail">#b45a5a</color>
+    <color name="custom_shape_top_bar_message">#b45a5a</color>
 
     <!-- endregion -->
 

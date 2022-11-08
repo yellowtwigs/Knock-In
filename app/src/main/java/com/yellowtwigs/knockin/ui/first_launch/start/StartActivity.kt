@@ -418,6 +418,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                 checkRadioButton(binding.radioButton2.id)
                 binding.viewPager.currentItem = 1
+                contactsAreImported = true
             }
         }
     }

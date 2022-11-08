@@ -18,6 +18,9 @@ interface ContactsDao {
     @Query("SELECT * FROM contacts_table WHERE id = :id")
     fun getContact(id: Int): Flow<ContactDB>
 
+    @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 2")
+    fun getNumbersOfContactsVip(): Int
+
     //endregion
 
     //region ============================================ INSERT ============================================
@@ -47,6 +50,9 @@ interface ContactsDao {
 
     @Delete
     suspend fun deleteContact(contact: ContactDB)
+
+    @Query("DELETE from contacts_table WHERE id = :id")
+    suspend fun deleteContactById(id: Int)
 
     //endregion
 }

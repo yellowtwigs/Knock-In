@@ -14,7 +14,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context="com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactDetailsActivity">
+        tools:context="com.yellowtwigs.knockin.ui.EditContactDetailsActivity">
 
         <RelativeLayout
             android:id="@+id/edit_contact_toolbar"

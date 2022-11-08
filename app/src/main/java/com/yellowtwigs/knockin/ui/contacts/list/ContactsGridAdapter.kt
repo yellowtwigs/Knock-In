@@ -6,6 +6,7 @@ import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -13,12 +14,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.ItemContactGridBinding
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
 class ContactsGridAdapter(
     private val cxt: Context,
-    private val onClickedCallback: (Int) -> Unit
+    private val onClickedCallback: (Int) -> Unit,
+    private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactsListViewState) -> Unit
 ) :
     ListAdapter<ContactsListViewState, ContactsGridAdapter.ViewHolder>(
         ContactsListViewStateComparator()
@@ -107,7 +110,17 @@ class ContactsGridAdapter(
                 favoriteIcon.isVisible = contact.isFavorite
 
                 root.setOnClickListener {
-                    onClickedCallback(contact.id)
+                    if ((cxt as ContactsListActivity).modeMultiSelect) {
+                        onClickedCallbackMultiSelect(contact.id, civ, contact)
+                    } else {
+                        onClickedCallback(contact.id)
+                    }
+                }
+
+                root.setOnLongClickListener {
+                    onClickedCallbackMultiSelect(contact.id, civ, contact)
+
+                    true
                 }
             }
         }
