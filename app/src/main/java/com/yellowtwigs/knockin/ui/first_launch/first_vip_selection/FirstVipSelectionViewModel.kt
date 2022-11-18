@@ -29,7 +29,6 @@ class FirstVipSelectionViewModel @Inject constructor(
     }
 
     private fun combine(allContacts: List<FirstVipSelectionViewState>) {
-
         if (allContacts.isNotEmpty()) {
             viewStateLiveData.postValue(
                 allContacts.sortedBy {

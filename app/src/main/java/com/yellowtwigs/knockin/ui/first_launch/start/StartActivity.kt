@@ -423,6 +423,10 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
+    companion object {
+        const val REQUEST_CODE_READ_CONTACT = 2
+    }
+
     override fun onBackPressed() {
     }
 
@@ -430,10 +434,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.yellowtwigs.Knockin.notificationExemple")
-    }
-
-    companion object {
-        const val REQUEST_CODE_READ_CONTACT = 2
     }
 
     private fun isNotificationServiceEnabled(): Boolean {

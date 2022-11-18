@@ -54,8 +54,7 @@
     <string name="search_hint">Ricerca</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="sort_by">Filtra per:</string>
-    <string name="sort_by_first_name">Nome</string>
-    <string name="sort_by_last_name">Cognome</string>
+    <string name="sort_by_full_name">Nome e cognome</string>
     <string name="sort_by_priority">Priorita\’</string>
     <string name="sort_by_favorite">Preferiti</string>
     <string name="main_tri_par_groupe">Gruppo</string>
@@ -357,7 +356,6 @@
     <!-- endregion -->
     <!-- region GroupManager -->
     <string name="group_manager_toolbar_title">Gruppo Manager</string>
-    <string name="group_manager_search_hint">Ricerca</string>
     <string name="menu_group_edit_group">Modifica il gruppo</string>
     <string name="menu_group_add_contacts">Aggiungi contatti</string>
     <string name="menu_group_delete_contacts">Rimuovi contatti dal gruppo </string>
@@ -374,7 +372,6 @@
     <string name="delete_contact_from_group_alert_dialog_message">Stai per rimuovere %1s dal gruppo %2s</string>
     <!-- endregion-->
     <!-- region Add a contact to a Group -->
-    <string name="group_search_hint">Ricerca</string>
     <string name="add_contact_to_group_toolbar_title">Scegli un contatto da aggiungere </string>
     <string name="add_contact_to_group_alert_dialog_title">Attenzione</string>
     <string name="add_contact_to_group_alert_dialog_message">Non si possono aggiungere 0 contatti a un gruppo</string>
@@ -490,5 +487,7 @@
     <string name="modify">Modificare</string>
     <string name="work_schedule_title">Orario di lavoro (lunedì - venerdì)</string>
     <string name="edit_reminder_hour_title">Tempo di promemoria giornaliero per le notifiche non VIP:</string>
-    <string name="remove_filter">Rimuovere il filtro</string>
+    <string name="remove_filter">No filtro</string>
+    <string name="allow_phone_call">Non hai permesso la telefonata</string>
+    <string name="daily_reminder_time">Tempo di promemoria giornaliero</string>
 </resources>

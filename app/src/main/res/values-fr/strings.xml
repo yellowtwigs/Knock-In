@@ -55,8 +55,7 @@
     <string name="search_hint">Rechercher</string>
     <string name="main_change_format_phone_book">Aide</string>
     <string name="sort_by">Trier par :</string>
-    <string name="sort_by_first_name">Prénom</string>
-    <string name="sort_by_last_name">Nom de famille</string>
+    <string name="sort_by_full_name">Nom Complet</string>
     <string name="sort_by_priority">Priorité</string>
     <string name="sort_by_favorite">Favoris</string>
     <string name="main_tri_par_groupe">Groupe</string>
@@ -490,5 +489,7 @@
     <string name="modify">Modifier</string>
     <string name="work_schedule_title">Horaire de travail (du lundi au vendredi)</string>
     <string name="edit_reminder_hour_title">Heure de rappel quotidienne pour les notifications non VIP :</string>
-    <string name="remove_filter">Supprimer le filtre</string>
+    <string name="remove_filter">Sans filtre</string>
+    <string name="allow_phone_call">Vous n\'avez pas autorisé les appels téléphoniques</string>
+    <string name="daily_reminder_time">Heure de rappel quotidienne</string>
 </resources>

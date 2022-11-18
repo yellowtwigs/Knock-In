@@ -9,14 +9,23 @@ interface ContactsDao {
 
     //region ============================================= GET ==============================================
 
-    @Query("SELECT * FROM contacts_table ORDER BY id ASC")
+    @Query("SELECT * FROM contacts_table ORDER BY priority ASC")
     fun getAllContacts(): Flow<List<ContactDB>>
+
+    @Query("SELECT * FROM contacts_table ORDER BY full_name ASC")
+    fun getAllContactsByFullName(): Flow<List<ContactDB>>
+
+    @Query("SELECT * FROM contacts_table ORDER BY is_favorite ASC")
+    fun getAllContactsByFavorite(): Flow<List<ContactDB>>
 
     @Query("SELECT * FROM contacts_table")
     fun getAllContactsForNotificationsListener(): List<ContactDB>
 
     @Query("SELECT * FROM contacts_table WHERE id = :id")
     fun getContact(id: Int): Flow<ContactDB>
+
+    @Query("SELECT * FROM contacts_table WHERE priority = 2")
+    fun getAllContactsVIP(): Flow<List<ContactDB>>
 
     @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 2")
     fun getNumbersOfContactsVip(): Int

@@ -16,6 +16,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.databinding.ActivityFirstVipSelectionBinding
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +44,9 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        checkTheme(this)
+
         val binding = ActivityFirstVipSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -54,15 +59,10 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             Context.MODE_PRIVATE
         ).getBoolean("Contacts_Unlimited_Bought", false)
 
-        contactsUnlimitedBought = false
-
-
         //endregion
 
         setupToolbar(binding)
         setupRecyclerView(binding)
-
-//        alreadyVip()
 
         binding.multiSelectTextView.text = String.format(
             applicationContext.resources.getString(R.string.multi_select_nb_contact),
@@ -167,9 +167,9 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                         )
                     }
 
-//                val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
-//                edit.putInt("nb_Contacts_VIP", listItemSelect.size)
-//                edit.apply()
+                val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
+                edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
+                edit.apply()
                 }
             }
         binding.multiSelectRecyclerView.apply {
@@ -186,15 +186,6 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     }
 
     //endregion
-
-//    private fun alreadyVip() {
-//        for (contact in contactManager?.contactList!!) {
-//            if (contact.contactDB?.contactPriority == 2) {
-//                listItemSelect.add(contact)
-//                multiSelectAdapter.listContactSelect.add(contact)
-//            }
-//        }
-//    }
 
     private fun setPriorityList() {
         CoroutineScope(Dispatchers.IO).launch {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:checkableBehavior="none">
+    <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_home"
+            android:checked="false"
             android:icon="@drawable/ic_home"
             android:title="@string/left_drawer_home" />
         <item
@@ -14,11 +14,11 @@
             android:id="@+id/nav_messenger"
             android:icon="@drawable/ic_chat"
             android:title="@string/left_drawer_chat"
-            android:visible="false"/>
+            android:visible="false" />
         <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notification"
-            android:title="@string/left_drawer_notif_config"/>
+            android:title="@string/left_drawer_notif_config" />
         <item
             android:id="@+id/nav_manage_screen"
             android:icon="@drawable/ic_grid"
@@ -34,8 +34,8 @@
             android:visible="false" />
         <item
             android:id="@+id/nav_invite_friend"
-            android:title="@string/settings_invite_friend_text"
             android:icon="@drawable/ic_invite_friend"
+            android:title="@string/settings_invite_friend_text"
             android:visible="false" />
     </group>
 </menu>

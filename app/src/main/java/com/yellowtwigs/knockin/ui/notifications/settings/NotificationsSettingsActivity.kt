@@ -29,6 +29,9 @@ import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -49,11 +52,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //region ======================================== Theme Dark ========================================
-
-        sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
-
-        //endregion
+        checkTheme(this)
 
         binding = ActivityNotificationsSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -88,8 +87,9 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         val navItem = menu.findItem(R.id.nav_notifications)
         navItem.isChecked = true
 
+        setupTeleworkingItem(navigationView, this)
+
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
             binding.drawerLayout.closeDrawers()
 
             if (settings_NotificationMessagesAlarmSound != null) {

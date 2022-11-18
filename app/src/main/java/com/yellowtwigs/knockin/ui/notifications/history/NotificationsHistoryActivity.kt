@@ -31,7 +31,9 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -276,6 +278,8 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     //region ======================================== DRAWER LAYOUT =========================================
 
     private fun setupDrawerLayout() {
+        setupTeleworkingItem(binding.navView, this)
+
         binding.navView.apply {
             val navItem = menu.findItem(R.id.nav_manage_screen)
             navItem.isChecked = true
@@ -283,21 +287,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             setNavigationItemSelectedListener { menuItem ->
                 menuItem.isChecked = true
                 binding.drawerLayout.closeDrawers()
-
-                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-                itemText.text =
-                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-                itemLayout.setOnClickListener {
-                    startActivity(
-                        Intent(
-                            this@NotificationsHistoryActivity,
-                            TeleworkingActivity::class.java
-                        )
-                    )
-                }
 
                 when (menuItem.itemId) {
                     R.id.nav_notifications -> startActivity(
@@ -390,7 +379,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@NotificationsHistoryActivity)
             recycledViewPool.setMaxRecycledViews(0, 0)
 //            setItemViewCacheSize(50)
-            val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(notificationsAdapter))
+            val itemTouchHelper = ItemTouchHelper(SwipeDeleteHistory(notificationsAdapter))
             itemTouchHelper.attachToRecyclerView(this)
         }
     }

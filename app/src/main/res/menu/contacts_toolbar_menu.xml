@@ -8,15 +8,10 @@
         android:title="@string/sort_by"
         app:showAsAction="ifRoom">
         <menu>
-            <group
-                android:checkableBehavior="single">
+            <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/sort_by_first_name"
-                    android:title="@string/sort_by_first_name"
-                    app:showAsAction="collapseActionView" />
-                <item
-                    android:id="@+id/sort_by_last_name"
-                    android:title="@string/sort_by_last_name"
+                    android:id="@+id/sort_by_full_name"
+                    android:title="@string/sort_by_full_name"
                     app:showAsAction="collapseActionView" />
                 <item
                     android:id="@+id/sort_by_priority"
@@ -39,6 +34,7 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/empty_filter"
+                    android:checked="true"
                     android:title="@string/remove_filter"
                     app:showAsAction="collapseActionView" />
                 <item

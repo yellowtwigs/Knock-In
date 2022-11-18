@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity.Companion.PHONE_CALL_REQUEST_CODE
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import java.sql.DriverManager
 import java.util.*
@@ -39,12 +40,14 @@ object ContactGesture {
         val url = "https://api.whatsapp.com/send?phone=$contact"
 
         val i = Intent(Intent.ACTION_VIEW)
+        i.flags = FLAG_ACTIVITY_NEW_TASK
         i.data = Uri.parse(url)
         context.startActivity(i)
     }
 
     fun openWhatsapp(context: Context) {
         val i = context.packageManager.getLaunchIntentForPackage("com.whatsapp")
+        i?.flags = FLAG_ACTIVITY_NEW_TASK
         try {
             context.startActivity(i)
         } catch (e: ActivityNotFoundException) {
@@ -57,13 +60,13 @@ object ContactGesture {
         }
     }
 
-    fun sendMessageWithWhatsapp(phoneNumber: String, msg: String, activity: Activity) {
+    fun sendMessageWithWhatsapp(phoneNumber: String, msg: String, context: Context) {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
         val message = "phone=" + converter06To33(phoneNumber)
         intent.data = Uri.parse("http://api.whatsapp.com/send?phone=$message&text=$msg")
 
-        activity.startActivity(intent)
+        context.startActivity(intent)
     }
 
     //endregion
@@ -97,7 +100,7 @@ object ContactGesture {
             )
         }
         try {
-            appIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            appIntent.flags = FLAG_ACTIVITY_NEW_TASK
             appIntent.setPackage("org.telegram.messenger")
             context.startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
@@ -113,7 +116,7 @@ object ContactGesture {
     fun goToTelegram(context: Context) {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
         try {
-            appIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            appIntent.flags = FLAG_ACTIVITY_NEW_TASK
             appIntent.putExtra("", "")
             appIntent.setPackage("org.telegram.messenger")
             context.startActivity(appIntent)
@@ -163,7 +166,7 @@ object ContactGesture {
 
     fun openSms(phoneNumber: String, context: Context) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
 
         context.startActivity(intent)
     }
@@ -171,23 +174,20 @@ object ContactGesture {
     fun sendMessageWithAndroidMessage(phoneNumber: String, msg: String, context: Context) {
         val message = "smsto:$phoneNumber"
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(message))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent.putExtra("sms_body", msg))
     }
 
     fun callPhone(phoneNumber: String, context: Context) {
-        var numberForPermission = ""
-
         if (ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.CALL_PHONE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            val PERMISSION_CALL_RESULT = 1
             ActivityCompat.requestPermissions(
                 (context as Activity),
                 arrayOf(Manifest.permission.CALL_PHONE),
-                PERMISSION_CALL_RESULT
+                PHONE_CALL_REQUEST_CODE
             )
         } else {
             context.startActivity(
@@ -230,7 +230,7 @@ object ContactGesture {
             } else {
                 Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))
             }
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$id"))

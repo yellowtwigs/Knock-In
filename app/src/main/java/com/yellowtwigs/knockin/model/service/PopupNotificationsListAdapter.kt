@@ -1,37 +1,53 @@
 package com.yellowtwigs.knockin.model.service
 
+import android.Manifest
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemPopupNotificationBinding
+import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
-import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
+import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
+import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.utils.ContactGesture.sendMail
+import com.yellowtwigs.knockin.utils.ContactGesture.sendMessageWithAndroidMessage
+import com.yellowtwigs.knockin.utils.ContactGesture.sendMessageWithWhatsapp
+import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
 
 class PopupNotificationsListAdapter(
     private val cxt: Context,
-    private val notifications: ArrayList<PopupNotificationViewState>,
     private val windowManager: WindowManager,
-    private val view: View
-) : RecyclerView.Adapter<PopupNotificationsListAdapter.ViewHolder>() {
+    private val popupView: View
+) : ListAdapter<PopupNotificationViewState, PopupNotificationsListAdapter.ViewHolder>(
+    PopupNotificationViewStateComparator()
+) {
 
     private lateinit var thisParent: ViewGroup
     var newMessage = false
-    private val listOfText = mutableListOf<String>()
 
     private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private var numberForPermission = ""
@@ -40,12 +56,7 @@ class PopupNotificationsListAdapter(
     private var lastChanged: Long = 0
     private var lastChangedPosition = 0
 
-    override fun getItemCount(): Int {
-        return notifications.size
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.i("PopupNotifications", "Passe par là : 1")
         thisParent = parent
         val binding = ItemPopupNotificationBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -55,12 +66,13 @@ class PopupNotificationsListAdapter(
         return ViewHolder(binding)
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    fun deleteItem(position: Int) {
+        NotificationsListenerService.deleteItem(position)
+        notifyItemRemoved(position)
 
-    fun getItem(position: Int): PopupNotificationViewState {
-        return notifications[position]
+        if (NotificationsListenerService.popupNotificationViewStates.size == 0) {
+            closeNotificationPopup()
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -70,18 +82,9 @@ class PopupNotificationsListAdapter(
     inner class ViewHolder(private val binding: ItemPopupNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(
-            popup: PopupNotificationViewState
-        ) {
-
+        fun onBind(popup: PopupNotificationViewState) {
             binding.apply {
-                if (listOfText.isEmpty()) {
-                    for (i in 1..notifications.size) {
-                        listOfText.add("")
-                    }
-                } else if (listOfText.size != notifications.size) {
-                    listOfText.add(0, "")
-                }
+                messageToSend.isEnabled = true
 
                 val unwrappedDrawable =
                     AppCompatResources.getDrawable(cxt, R.drawable.item_notif_adapter_top_bar)
@@ -89,7 +92,7 @@ class PopupNotificationsListAdapter(
 
                 platform.text = popup.platform
 
-                when (convertPackageToString(popup.platform, cxt)) {
+                when (popup.platform) {
                     "Gmail" -> {
                         callButton.visibility = View.INVISIBLE
 
@@ -178,10 +181,22 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
+                    "WhatsApp" -> {
+                        callButton.visibility = View.VISIBLE
+                        buttonSend.visibility = View.VISIBLE
+                        messageToSend.visibility = View.VISIBLE
+
+                        if (wrappedDrawable != null) {
+                            setupIconAndColor(
+                                platformImage,
+                                wrappedDrawable,
+                                R.drawable.ic_circular_whatsapp,
+                                R.color.custom_shape_top_bar_whatsapp,
+                                cxt
+                            )
+                        }
+                    }
                 }
-
-
-                content.text = listOfText[position]
 
                 if (newMessage && System.currentTimeMillis() - getLastChangeMillis() <= 10000) {
                     (thisParent as RecyclerView).post {
@@ -226,23 +241,21 @@ class PopupNotificationsListAdapter(
                             closeNotificationPopup()
                         }
                         "Messenger" -> {
-//                            contact?.getMessengerID()
-//                            if (contact?.getMessengerID() != "") {
-//                                contact?.getMessengerID()
-//                                    ?.let { it1 -> openMessenger(it1, context) }
-//                            } else {
-//                                val intent =
-//                                    Intent(
-//                                        Intent.ACTION_VIEW,
-//                                        Uri.parse("https://www.messenger.com/t/")
-//                                    )
-//                                intent.flags = FLAG_ACTIVITY_NEW_TASK
-//                                cxt.startActivity(intent)
-//                            }
+                            if (popup.messengerId != "") {
+                                openMessenger(popup.messengerId, cxt)
+                            } else {
+                                val intent =
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://www.messenger.com/t/")
+                                    )
+                                intent.flags = FLAG_ACTIVITY_NEW_TASK
+                                cxt.startActivity(intent)
+                            }
                             closeNotificationPopup()
                         }
                         "WhatsApp" -> {
-//                            openWhatsapp(contact!!.getFirstPhoneNumber())
+                            openWhatsapp(popup.phoneNumber, cxt)
                         }
                         "Gmail" -> {
                             val appIntent = Intent(Intent.ACTION_VIEW)
@@ -264,153 +277,51 @@ class PopupNotificationsListAdapter(
                             closeNotificationPopup()
                         }
                         "Message" -> {
-//                            if (contact != null) {
-//                                openSms(contact.getFirstPhoneNumber(), "")
-//                            } else {
-//                                openSms(
-//                                    sbp.statusBarNotificationInfo["android.title"].toString(),
-//                                    ""
-//                                )
-//                            }
+                            binding.messageToSend.text?.toString()?.let { message ->
+                                sendMessageWithAndroidMessage(
+                                    popup.phoneNumber,
+                                    message,
+                                    cxt
+                                )
+                            }
                             closeNotificationPopup()
                         }
                         "Signal" -> {
                             goToSignal(cxt)
                         }
                         "Telegram" -> {
-//                            if (contact != null) {
-//                                Log.i(
-//                                    "openuTeleguramu",
-//                                    "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}"
-//                                )
-//                        goToTelegram(
-//                            context,
-//                            "${contact.contactDB?.firstName} ${contact.contactDB?.lastName}"
-//                        )
-//                            } else {
-//                                goToTelegram(context, "")
-//                            }
+                            goToTelegram(cxt, popup.phoneNumber)
                         }
                     }
                 }
 
                 callButton.setOnClickListener {
-//                    NotificationListener.alarmSound?.stop()
-//                    when (holder.appPlatform!!.text) {
-//                        "WhatsApp" -> {
-//                            phoneCall(contact!!.getFirstPhoneNumber())
-//                            closeNotificationPopup()
-//                        }
-//                        "Message" -> {
-//                            if (contact != null) {
-//                                phoneCall(contact.getFirstPhoneNumber())
-//                            } else {
-//                                phoneCall(sbp.statusBarNotificationInfo["android.title"].toString())
-//                            }
-//                            closeNotificationPopup()
-//                        }
-//                    }
+                    NotificationsListenerService.alarmSound?.stop()
+                    phoneCall(popup.phoneNumber)
                 }
 
                 buttonSend.setOnClickListener {
-//                    NotificationListener.alarmSound?.stop()
-//                    if (holder.messageToSendEditText!!.text.toString() == "") {
-//                        Toast.makeText(context, R.string.notif_adapter, Toast.LENGTH_SHORT).show()
-//                    } else {
-//
-//                        when (convertPackageToString(sbp.appNotifier!!, context)) {
-//                            "WhatsApp" -> {
-//                                contact?.let {
-//                                    sendMessageWithWhatsapp(
-//                                        it.getFirstPhoneNumber(),
-//                                        holder.messageToSendEditText?.text.toString()
-//                                    )
-//                                }
-//                                closeNotificationPopup()
-//                            }
-//                            "Gmail" -> {
-//                                closeNotificationPopup()
-//
-//                                if (contact != null) {
-//                                    sendMail(
-//                                        contact.getFirstMail(),
-//                                        sbp.statusBarNotificationInfo["android.text"].toString(),
-//                                        holder.messageToSendEditText?.text.toString()
-//                                    )
-//                                } else {
-//                                    sendMail(
-//                                        "",
-//                                        sbp.statusBarNotificationInfo["android.text"].toString(),
-//                                        holder.messageToSendEditText?.text.toString()
-//                                    )
-//                                }
-//                            }
-//                            "Message" -> {
-//                                if (contact != null) {
-//                                    sendMessageWithAndroidMessage(
-//                                        contact.getFirstPhoneNumber(),
-//                                        holder.messageToSendEditText!!.text.toString()
-//                                    )
-//                                } else {
-//                                    sendMessageWithAndroidMessage(
-//                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-//                                        holder.messageToSendEditText!!.text.toString()
-//                                    )
-//                                }
-//                                closeNotificationPopup()
-////                        } else {
-////                            //TODO In english
-////                            Toast.makeText(context, "Vous n'avez pas autorisé l'envoi de SMS via Knockin", Toast.LENGTH_LONG).show()
-////
-////                            if (contact != null) {
-////                                openSms(contact.getFirstPhoneNumber(), holder.messageToSendEditText!!.text.toString())
-////                            } else {
-////                                openSms(sbp.statusBarNotificationInfo["android.title"].toString(), holder.messageToSendEditText!!.text.toString())
-////                            }
-////                        }
-//                            }
-//                        }
-//                        holder.messageToSendEditText?.setText("")
-//                        if (notifications.size > 1) {
-//                            notifications.removeAt(position)
-//                        } else {
-//                            closeNotificationPopup()
-//                        }
-//                    }
+                    NotificationsListenerService.alarmSound?.stop()
+                    if (messageToSend.text.toString() == "") {
+                        Toast.makeText(cxt, R.string.notif_adapter, Toast.LENGTH_SHORT).show()
+                    } else {
+                        val message = messageToSend.text.toString()
+                        when (popup.platform) {
+                            "WhatsApp" -> {
+                                sendMessageWithWhatsapp(popup.phoneNumber, message, cxt)
+                                closeNotificationPopup()
+                            }
+                            "Gmail" -> {
+                                sendMail(popup.email, "", message, cxt)
+                                closeNotificationPopup()
+                            }
+                            "Message" -> {
+                                sendMessageWithAndroidMessage(popup.phoneNumber, message, cxt)
+                                closeNotificationPopup()
+                            }
+                        }
+                    }
                 }
-
-                messageToSend.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                    }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        lastChanged = System.currentTimeMillis()
-                        lastChangedPosition = position
-                        listOfText.removeAt(position)
-//                        listOfText.add(position, holder.messageToSendEditText!!.text.toString())
-//                        NotificationListener.alarmSound?.stop()
-                    }
-                })
-//                try {
-//                    val pckManager = context.packageManager
-//                    val icon = pckManager.getApplicationIcon(sbp.appNotifier!!)
-//                    holder.appImageView!!.setImageDrawable(icon)
-//                } catch (e: PackageManager.NameNotFoundException) {
-//                    e.printStackTrace()
-//                }
             }
         }
 
@@ -431,44 +342,64 @@ class PopupNotificationsListAdapter(
             )
         }
 
-        private fun getLastChangePos(): Int {
-            return lastChangedPosition
-        }
-
         private fun getLastChangeMillis(): Long {
             return lastChanged
         }
+    }
 
-        private fun closeNotificationPopup() {
-            windowManager.removeView(view)
-            val sharedPreferences =
-                cxt.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
-            val edit = sharedPreferences.edit()
-            edit.putBoolean("view", false)
-            edit.apply()
+    private fun phoneCall(phoneNumber: String) {
+        if (ContextCompat.checkSelfPermission(
+                cxt,
+                Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(cxt, cxt.getString(R.string.allow_phone_call), Toast.LENGTH_SHORT).show()
+            numberForPermission = phoneNumber
+        } else {
+            closeNotificationPopup()
+            val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
+            intent.flags = FLAG_ACTIVITY_NEW_TASK
+            if (numberForPermission.isEmpty()) {
+                cxt.startActivity(intent)
+            } else {
+                cxt.startActivity(intent)
+                numberForPermission = ""
+            }
         }
     }
 
-    fun addNotification(sbp: PopupNotificationViewState) {
-        if (!notifications.contains(sbp)) {
-            notifications.add(0, sbp)
-            newMessage = true
-        }
+    private fun closeNotificationPopup() {
+        NotificationsListenerService.alarmSound?.stop()
+        windowManager.removeView(popupView)
+        val sharedPreferences =
+            cxt.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        val edit = sharedPreferences.edit()
+        edit.putBoolean("view", false)
+        edit.apply()
     }
 
-    fun deleteItem(position: Int) {
-//        val mRecentlyDeletedItem = notifications[position]
-//        val contactsDatabase = ContactsRoomDatabase.getDatabase(context)
-//        contactsDatabase?.VipNotificationsDao()
-//            ?.deleteVipNotificationsWithId(notifications[position].id.toString())
-//        contactsDatabase?.VipSbnDao()?.deleteSbnWithNotifId(notifications[position].id.toString())
-//        notifications.remove(mRecentlyDeletedItem)
-//        notifyItemRemoved(position)
-//
-//        NotificationListener.alarmSound?.stop()
-//
-//        if (notifications.size == 0) {
-//            closeNotificationPopup()
-//        }
+    class PopupNotificationViewStateComparator :
+        DiffUtil.ItemCallback<PopupNotificationViewState>() {
+        override fun areItemsTheSame(
+            oldItem: PopupNotificationViewState,
+            newItem: PopupNotificationViewState
+        ): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(
+            oldItem: PopupNotificationViewState,
+            newItem: PopupNotificationViewState
+        ): Boolean {
+            return oldItem.id == newItem.id &&
+                    oldItem.title == newItem.title &&
+                    oldItem.description == newItem.description &&
+                    oldItem.platform == newItem.platform &&
+                    oldItem.contactName == newItem.contactName &&
+                    oldItem.phoneNumber == newItem.phoneNumber &&
+                    oldItem.messengerId == newItem.messengerId &&
+                    oldItem.email == newItem.email
+        }
+
     }
 }

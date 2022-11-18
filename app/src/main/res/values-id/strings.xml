@@ -54,8 +54,7 @@
     <string name="search_hint">Mencari</string>
     <string name="main_change_format_phone_book">Menbantu</string>
     <string name="sort_by">Filter oleh:</string>
-    <string name="sort_by_first_name">Nama depan</string>
-    <string name="sort_by_last_name">Nama</string>
+    <string name="sort_by_full_name">Nama lengkap</string>
     <string name="sort_by_priority">Pengutamaan</string>
     <string name="sort_by_favorite">Kecintaan</string>
     <string name="main_tri_par_groupe">Kelompok</string>
@@ -493,4 +492,6 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="work_schedule_title">Jadwal kerja (Senin - Jumat)</string>
     <string name="edit_reminder_hour_title">Waktu pengingat harian untuk notifikasi non-VIP :</string>
     <string name="remove_filter">Hapus filter</string>
+    <string name="allow_phone_call">Anda belum mengizinkan panggilan telepon</string>
+    <string name="daily_reminder_time">Waktu pengingat harian</string>
 </resources>

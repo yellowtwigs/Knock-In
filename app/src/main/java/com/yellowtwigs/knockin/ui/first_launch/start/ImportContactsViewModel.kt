@@ -345,9 +345,9 @@ class ImportContactsViewModel @Inject constructor(
                             }
 
                             val secondName = if (fullName.second.second == "") {
-                                ""
+                                " "
                             } else {
-                                " ${fullName.second.second}"
+                                " ${fullName.second.second} "
                             }
 
                             val listOfPhoneNumbers = mutableListOf<String>()
@@ -365,6 +365,7 @@ class ImportContactsViewModel @Inject constructor(
                             createContactUseCase.invoke(
                                 ContactDB(
                                     0,
+                                    fullName.second.first + secondName + fullName.second.third,
                                     fullName.second.first + secondName,
                                     fullName.second.third,
                                     randomDefaultImage(0, context, "Create"),

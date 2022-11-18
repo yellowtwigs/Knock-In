@@ -3,9 +3,8 @@ package com.yellowtwigs.knockin.ui.contacts.list
 import android.util.Log
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
-import com.yellowtwigs.knockin.domain.contact.GetNumbersContactsVipUseCase
+import com.yellowtwigs.knockin.domain.contact.*
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -16,141 +15,184 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactsListViewModel @Inject constructor(
-    getAllContactsUseCase: GetAllContactsUseCase,
+    private val getAllContactsUseCase: GetAllContactsUseCase,
+    private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
+    private val getAllContactsSortByFavoriteUseCase: GetAllContactsSortByFavoriteUseCase,
     private val getNumbersContactsVipUseCase: GetNumbersContactsVipUseCase,
     private val deleteContactUseCase: DeleteContactUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val viewStateLiveData = MediatorLiveData<List<ContactsListViewState>>()
+    private var contactsListViewStateLiveData: LiveData<List<ContactsListViewState>>
+    private var contactsListViewStateLiveDataSortByFullName: LiveData<List<ContactsListViewState>>
+    private var contactsListViewStateLiveDataSortByFavorite: LiveData<List<ContactsListViewState>>
 
-    private val searchBarTextLiveData = MutableLiveData<String>()
-    private val sortedByLiveData = MutableLiveData<Int>()
-    private val filterByLiveData = MutableLiveData<Int>()
+    private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
+        return ContactsListViewState(
+            contact.id,
+            contact.firstName,
+            contact.lastName,
+            contact.profilePicture,
+            contact.profilePicture64,
+            contact.listOfPhoneNumbers,
+            contact.listOfMails,
+            contact.priority,
+            contact.isFavorite == 1,
+            contact.messengerId,
+            contact.listOfMessagingApps.contains("com.whatsapp"),
+            contact.listOfMessagingApps.contains("org.telegram.messenger"),
+            contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
+        )
+    }
+
+    val viewStateLiveData = MediatorLiveData<List<ContactsListViewState>>()
+
+    private val searchBarTextLiveData = MutableLiveData("")
+    private val sortedByLiveData = MutableLiveData(R.id.sort_by_priority)
+    private val filterByLiveData = MutableLiveData(R.id.empty_filter)
 
     init {
-        val allContacts = getAllContactsUseCase.contactsListViewStateLiveData
+        contactsListViewStateLiveData = liveData(Dispatchers.IO) {
 
-        viewStateLiveData.addSource(allContacts) { contacts ->
-            combine(
-                contacts,
-                searchBarTextLiveData.value,
-                sortedByLiveData.value,
-                filterByLiveData.value
-            )
+            getAllContactsUseCase.invoke().collect { contacts ->
+                emit(contacts.map {
+                    transformContactDbToContactsListViewState(it)
+                })
+            }
+        }
+        contactsListViewStateLiveDataSortByFullName = liveData(Dispatchers.IO) {
+            getAllContactsSortByFullNameUseCase.invoke().collect { contacts ->
+                emit(contacts.map {
+                    transformContactDbToContactsListViewState(it)
+                })
+            }
+        }
+        contactsListViewStateLiveDataSortByFavorite = liveData(Dispatchers.IO) {
+            getAllContactsSortByFavoriteUseCase.invoke().collect { contacts ->
+                emit(contacts.map {
+                    transformContactDbToContactsListViewState(it)
+                })
+            }
         }
 
-        viewStateLiveData.addSource(searchBarTextLiveData) { input ->
-            combine(allContacts.value, input, sortedByLiveData.value, filterByLiveData.value)
-        }
-
-        viewStateLiveData.addSource(sortedByLiveData) {
-            combine(allContacts.value, searchBarTextLiveData.value, it, filterByLiveData.value)
-        }
-
-        viewStateLiveData.addSource(filterByLiveData) {
-            combine(allContacts.value, searchBarTextLiveData.value, sortedByLiveData.value, it)
+        viewStateLiveData.apply {
+            addSource(contactsListViewStateLiveData) {
+                combine(
+                    it,
+                    contactsListViewStateLiveDataSortByFullName.value,
+                    contactsListViewStateLiveDataSortByFavorite.value,
+                    searchBarTextLiveData.value,
+                    sortedByLiveData.value,
+                    filterByLiveData.value,
+                )
+            }
+            addSource(contactsListViewStateLiveDataSortByFullName) {
+                combine(
+                    contactsListViewStateLiveData.value,
+                    it,
+                    contactsListViewStateLiveDataSortByFavorite.value,
+                    searchBarTextLiveData.value,
+                    sortedByLiveData.value,
+                    filterByLiveData.value,
+                )
+            }
+            addSource(contactsListViewStateLiveDataSortByFavorite) {
+                combine(
+                    contactsListViewStateLiveData.value,
+                    contactsListViewStateLiveDataSortByFullName.value,
+                    it,
+                    searchBarTextLiveData.value,
+                    sortedByLiveData.value,
+                    filterByLiveData.value,
+                )
+            }
+            addSource(searchBarTextLiveData) {
+                combine(
+                    contactsListViewStateLiveData.value,
+                    contactsListViewStateLiveDataSortByFullName.value,
+                    contactsListViewStateLiveDataSortByFavorite.value,
+                    it,
+                    sortedByLiveData.value,
+                    filterByLiveData.value,
+                )
+            }
+            addSource(sortedByLiveData) {
+                combine(
+                    contactsListViewStateLiveData.value,
+                    contactsListViewStateLiveDataSortByFullName.value,
+                    contactsListViewStateLiveDataSortByFavorite.value,
+                    searchBarTextLiveData.value,
+                    it,
+                    filterByLiveData.value,
+                )
+            }
+            addSource(filterByLiveData) {
+                combine(
+                    contactsListViewStateLiveData.value,
+                    contactsListViewStateLiveDataSortByFullName.value,
+                    contactsListViewStateLiveDataSortByFavorite.value,
+                    searchBarTextLiveData.value,
+                    sortedByLiveData.value,
+                    it,
+                )
+            }
         }
     }
 
     private fun combine(
         allContacts: List<ContactsListViewState>?,
+        allContactsSortByFullName: List<ContactsListViewState>?,
+        allContactsSortByFavorite: List<ContactsListViewState>?,
         input: String?,
         sortedBy: Int?,
         filterBy: Int?
     ) {
-        if (allContacts != null && allContacts.isNotEmpty()) {
-            CoroutineScope(Dispatchers.Default).launch {
-                val listOfDeferred: Deferred<List<ContactsListViewState>> = coroutineScope {
-                    async {
-                        sortedContactsList(
-                            sortedBy,
-                            filterBy,
-                            input,
-                            allContacts
-                        )
-                    }
-                }
+        val listOfContacts = arrayListOf<ContactsListViewState>()
 
-                viewStateLiveData.postValue(listOfDeferred.await())
-            }
-        }
-    }
-
-    fun getAllContacts(): LiveData<List<ContactsListViewState>> {
-        return viewStateLiveData
-    }
-
-    private fun sortedContactsList(
-        sortedBy: Int?,
-        filterBy: Int?,
-        input: String?,
-        listOfContacts: List<ContactsListViewState>
-    ): List<ContactsListViewState> {
-        if (sortedBy != null) {
+        if (sortedBy != null && input != null && filterBy != null) {
             when (sortedBy) {
-                R.id.sort_by_first_name -> {
-                    return filterWithInput(filterBy, input, listOfContacts).sortedBy {
-                        if (it.firstName == "" || it.firstName == " " || it.firstName.isBlank() || it.firstName.isEmpty()) {
-                            it.lastName
+                R.id.sort_by_full_name -> {
+                    allContactsSortByFullName?.let {
+                        if (input == "" || input == " " || input.isBlank()) {
+                            listOfContacts.addAll(it)
                         } else {
-                            it.firstName
-                        }
-                    }
-                }
-                R.id.sort_by_last_name -> {
-                    return filterWithInput(filterBy, input, listOfContacts).sortedBy {
-                        if (it.lastName == "" || it.lastName == " " || it.lastName.isBlank() || it.lastName.isEmpty()) {
-                            it.firstName
-                        } else {
-                            it.lastName
+                            listOfContacts.addAll(filterWithInput(input, it))
                         }
                     }
                 }
                 R.id.sort_by_priority -> {
-                    return filterWithInput(filterBy, input, listOfContacts)
-                        .sortedBy {
-                            it.firstName.uppercase().unAccent() + it.lastName.uppercase()
-                                .unAccent()
-                        }.sortedByDescending { it.priority }
+                    allContacts?.let {
+                        if (input == "" || input == " " || input.isBlank()) {
+                            listOfContacts.addAll(it)
+                        } else {
+                            listOfContacts.addAll(filterWithInput(input, it))
+                        }
+                    }
                 }
                 R.id.sort_by_favorite -> {
-                    return filterWithInput(
-                        filterBy,
-                        input,
-                        listOfContacts
-                    ).sortedBy {
-                        it.firstName.uppercase().unAccent() + it.lastName.uppercase()
-                            .unAccent()
-                    }.sortedByDescending { it.isFavorite }
-
-                }
-                else -> {
-                    return filterWithInput(filterBy, input, listOfContacts).sortedBy {
-                        it.firstName.uppercase().unAccent() + it.lastName.uppercase().unAccent()
+                    allContactsSortByFavorite?.let {
+                        if (input == "" || input == " " || input.isBlank()) {
+                            listOfContacts.addAll(it)
+                        } else {
+                            listOfContacts.addAll(filterWithInput(input, it))
+                        }
                     }
                 }
             }
-        } else {
-            return filterWithInput(filterBy, input, listOfContacts).sortedBy {
-                it.firstName.uppercase().unAccent() + it.lastName.uppercase().unAccent()
-            }
+
+            filterContactsList(filterBy, listOfContacts)
         }
+
+        viewStateLiveData.value = listOfContacts
     }
 
     private fun filterWithInput(
-        filterBy: Int?,
-        input: String?,
+        input: String,
         listOfContacts: List<ContactsListViewState>
     ): List<ContactsListViewState> {
-        return if (input != null) {
-            filterContactsList(filterBy, listOfContacts.filter { contact ->
-                val name = contact.firstName + " " + contact.lastName
-                name.contains(input) || name.uppercase().contains(input.uppercase()) ||
-                        name.lowercase().contains(input.lowercase())
-            })
-        } else {
-            filterContactsList(filterBy, listOfContacts)
+        return listOfContacts.filter { contact ->
+            val name = contact.firstName + " " + contact.lastName
+            name.contains(input) || name.uppercase().contains(input.uppercase()) ||
+                    name.lowercase().contains(input.lowercase())
         }
     }
 
@@ -204,7 +246,6 @@ class ContactsListViewModel @Inject constructor(
     fun getNumbersContactsVip() = getNumbersContactsVipUseCase.getNumbersOfContactsVip()
 
     suspend fun deleteContactsSelected(listOfContacts: List<Int>) {
-        Log.i("DeleteContactsSelected", "listOfContacts : $listOfContacts")
         listOfContacts.map {
             deleteContactUseCase.deleteContactById(it)
         }

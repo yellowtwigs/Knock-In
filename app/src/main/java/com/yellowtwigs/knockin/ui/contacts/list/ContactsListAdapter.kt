@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.HorizontalScrollView
 import android.widget.SectionIndexer
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -40,6 +41,8 @@ class ContactsListAdapter(
     ListAdapter<ContactsListViewState, ContactsListAdapter.ViewHolder>(
         ContactsListViewStateComparator()
     ), SectionIndexer {
+
+    private var lastSelectMenuLen1: HorizontalScrollView? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -126,7 +129,7 @@ class ContactsListAdapter(
                             openSms(contact.listOfPhoneNumbers[0], cxt as ContactsListActivity)
                         }
                         callLayout.id -> {
-                            callPhone(contact.listOfPhoneNumbers[0], cxt)
+                            (cxt as ContactsListActivity).callPhone(contact.listOfPhoneNumbers[0])
                         }
                         mailLayout.id -> {
                             openMailApp(contact.listOfMails[0], cxt)
@@ -167,8 +170,11 @@ class ContactsListAdapter(
                             val slideUp = AnimationUtils.loadAnimation(cxt, R.anim.slide_up)
                             listContactItemMenu.startAnimation(slideUp)
                             listContactItemMenu.visibility = View.VISIBLE
+                            if (lastSelectMenuLen1 != null) lastSelectMenuLen1?.visibility = View.GONE
+                            lastSelectMenuLen1 = listContactItemMenu
                         } else {
                             listContactItemMenu.visibility = View.GONE
+                            lastSelectMenuLen1 = null
                         }
                     }
                 }

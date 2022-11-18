@@ -54,8 +54,7 @@
     <string name="search_hint">Procurar</string>
     <string name="main_change_format_phone_book">Ajuda</string>
     <string name="sort_by">Filtrado por:</string>
-    <string name="sort_by_first_name">Primeiro nome</string>
-    <string name="sort_by_last_name">Nome</string>
+    <string name="sort_by_full_name">Nome completo</string>
     <string name="sort_by_priority">Prioridade</string>
     <string name="sort_by_favorite">Favorito</string>
     <string name="main_tri_par_groupe">Grupo</string>
@@ -357,7 +356,6 @@
     <!-- endregion -->
     <!-- region GroupManager -->
     <string name="group_manager_toolbar_title">Gerente de Grupo</string>
-    <string name="group_manager_search_hint">Procurar</string>
     <string name="menu_group_edit_group">Edite o grupo</string>
     <string name="menu_group_add_contacts">Adicione contatos</string>
     <string name="menu_group_delete_contacts">Remova contatos do grupo</string>
@@ -374,7 +372,6 @@
     <string name="delete_contact_from_group_alert_dialog_message">Você vai remover %1s do grupo %2s</string>
     <!-- endregion-->
     <!-- region Add a contact to a Group -->
-    <string name="group_search_hint">Procurar</string>
     <string name="add_contact_to_group_toolbar_title">Escolha um contato para adicionar</string>
     <string name="add_contact_to_group_alert_dialog_title">Aviso</string>
     <string name="add_contact_to_group_alert_dialog_message">Você não pode adicionar contato 0 a um grupo</string>
@@ -490,5 +487,7 @@
     <string name="modify">Modificar</string>
     <string name="work_schedule_title">Horário de trabalho (segunda a sexta)</string>
     <string name="edit_reminder_hour_title">Tempo de lembrete diário para notificações não VIP:</string>
-    <string name="remove_filter">Remove filter</string>
+    <string name="remove_filter">No filter</string>
+    <string name="allow_phone_call">Você não permitiu chamadas telefônicas</string>
+    <string name="daily_reminder_time">Hora do lembrete diário</string>
 </resources>

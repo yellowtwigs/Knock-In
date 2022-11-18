@@ -138,7 +138,8 @@ class ContactsGridAdapter(
             oldItem: ContactsListViewState,
             newItem: ContactsListViewState
         ): Boolean {
-            return oldItem.firstName == newItem.firstName &&
+            return oldItem.id == newItem.id &&
+                    oldItem.firstName == newItem.firstName &&
                     oldItem.lastName == newItem.lastName &&
                     oldItem.profilePicture == newItem.profilePicture &&
                     oldItem.profilePicture64 == newItem.profilePicture64 &&

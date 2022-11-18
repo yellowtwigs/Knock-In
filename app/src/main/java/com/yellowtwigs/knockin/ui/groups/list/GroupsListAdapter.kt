@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactListBinding
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
@@ -63,13 +64,13 @@ class GroupsListAdapter(private val cxt: Context, private val onClickedCallback:
 
                 var cpt = 1
 
-                if (contact.listOfMails.isNotEmpty() && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
+                if (contact.listOfMails[0] != "" && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
                     cpt += 1
                     mailLayout.visibility = View.VISIBLE
                 } else {
                     mailLayout.visibility = View.GONE
                 }
-                if (contact.listOfPhoneNumbers.isNotEmpty()) {
+                if (contact.listOfPhoneNumbers[0] != "") {
                     cpt += 2
                     callLayout.visibility = View.VISIBLE
                     smsLayout.visibility = View.VISIBLE
@@ -82,6 +83,15 @@ class GroupsListAdapter(private val cxt: Context, private val onClickedCallback:
                     whatsappLayout.visibility = View.VISIBLE
                 } else {
                     whatsappLayout.visibility = View.GONE
+                }
+                if (ContactGesture.isMessengerInstalled(cxt) && contact.messengerId != "") {
+                    cpt += 1
+                    if (!appsSupportBought) {
+                        messengerIcon.setImageResource(R.drawable.ic_messenger_disable)
+                    }
+                    messengerLayout.visibility = View.VISIBLE
+                } else {
+                    messengerLayout.visibility = View.GONE
                 }
                 if (isTelegramInstalled(cxt) && contact.hasTelegram) {
                     cpt += 1

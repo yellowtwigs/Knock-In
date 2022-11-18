@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 object EveryActivityUtils {
 
@@ -35,6 +39,21 @@ object EveryActivityUtils {
         view?.let { v ->
             val imm = cxt.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+    }
+
+    fun setupTeleworkingItem(navView: NavigationView, cxt: Activity) {
+        val menu = navView.menu
+        menu.findItem(R.id.nav_home).isChecked = true
+
+        val itemLayout = cxt.findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = cxt.findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+
+        itemText.text =
+            "${cxt.getString(R.string.teleworking)} ${cxt.getString(R.string.left_drawer_settings)}"
+
+        itemLayout.setOnClickListener {
+            cxt.startActivity(Intent(cxt, TeleworkingActivity::class.java))
         }
     }
 }

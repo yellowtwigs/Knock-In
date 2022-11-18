@@ -15,9 +15,10 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactGridBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
-import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 
 class ContactManageGroupGripAdapter(
@@ -50,12 +51,8 @@ class ContactManageGroupGripAdapter(
 
         fun onBind(contact: ContactManageGroupViewState) {
             binding.apply {
-                InitContactsForListAdapter.InitContactAdapter.contactProfilePicture(
-                    contact.profilePicture64,
-                    contact.profilePicture,
-                    civ,
-                    cxt
-                )
+                contactPriorityBorder(contact.priority, civ, cxt)
+                contactProfilePicture(contact.profilePicture64, contact.profilePicture, civ, cxt)
 
                 var firstname = contact.firstName
                 var lastName = contact.lastName

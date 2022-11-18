@@ -3,26 +3,22 @@ package com.yellowtwigs.knockin.ui.settings
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityManageMyScreenBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
@@ -30,12 +26,10 @@ import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 
 class ManageMyScreenActivity : AppCompatActivity() {
-
-    private var manageMyScreenButtonSelectColorLayout: HorizontalScrollView? = null
 
     private lateinit var binding: ActivityManageMyScreenBinding
 
@@ -46,6 +40,10 @@ class ManageMyScreenActivity : AppCompatActivity() {
         binding = ActivityManageMyScreenBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        if (intent.getBooleanExtra("ChangeTheme", false)) {
+            buildMaterialAlertDialogBuilder()
+        }
 
         setupToolbar()
         setupDrawerLayout()
@@ -61,16 +59,14 @@ class ManageMyScreenActivity : AppCompatActivity() {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
         }
-
     }
 
     private fun setupDrawerLayout() {
-        val menu = binding.navigationView.menu
-        val navItem = menu.findItem(R.id.nav_manage_screen)
-        navItem.isChecked = true
+        binding.navigationView.menu.findItem(R.id.nav_manage_screen).isChecked = true
+
+        setupTeleworkingItem(binding.navigationView, this)
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
             binding.drawerLayout.closeDrawers()
 
             val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
@@ -580,8 +576,11 @@ class ManageMyScreenActivity : AppCompatActivity() {
     }
 
     private fun refreshActivity() {
-        val i = Intent(applicationContext, ManageMyScreenActivity::class.java)
-        startActivity(i)
+        startActivity(
+            Intent(this@ManageMyScreenActivity, ManageMyScreenActivity::class.java).addFlags(
+                Intent.FLAG_ACTIVITY_NO_ANIMATION
+            ).putExtra("ChangeTheme", true)
+        )
         finish()
     }
 
@@ -603,7 +602,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
     private fun buildMaterialAlertDialogBuilder() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title)) // getString(R.string.main_alert_dialog_delete_contact_title)
+            .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title))
             .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 startActivity(Intent(this@ManageMyScreenActivity, ContactsListActivity::class.java))

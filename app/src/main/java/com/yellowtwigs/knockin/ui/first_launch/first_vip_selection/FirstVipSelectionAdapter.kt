@@ -15,6 +15,8 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemFirstVipSelectionBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter
+import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 
 class FirstVipSelectionAdapter(
@@ -42,6 +44,8 @@ class FirstVipSelectionAdapter(
 
         fun onBind(contact: FirstVipSelectionViewState) {
             binding.apply {
+                contactPriorityBorder(contact.priority, contactImage, cxt)
+
                 val spanFistName = SpannableString(contact.firstName)
                 val spanLastName = SpannableString(contact.lastName)
 
@@ -66,23 +70,13 @@ class FirstVipSelectionAdapter(
                 root.setOnClickListener {
                     onClicked(contact.id)
                     itemSelected(contact.id, contactImage, contact)
-
-//                    if (cxt is Main2Activity || cxt is GroupManagerActivity) {
-//                        if (listContactSelect.contains(contactWithAllInformation)) {
-//                            contactImage.setImageResource(R.drawable.ic_item_selected)
-//                        } else {
-//                        }
-//                    }
                 }
 
-//                if (contact?.contactPriority == 2) {
-//                    setBorderColor(contactImage, R.color.priorityTwoColor)
-//                }
+                if (contact.priority == 2) {
+                    listOfItemSelected.add(contact.id)
+                    itemSelected(contact.id, contactImage, contact)
+                }
             }
-        }
-
-        private fun setBorderColor(cv: CircularImageView, res: Int) {
-            cv.setBorderColor(ResourcesCompat.getColor(cxt.resources, res, null))
         }
     }
 
@@ -103,11 +97,16 @@ class FirstVipSelectionAdapter(
                     oldItem.firstName == newItem.firstName &&
                     oldItem.lastName == newItem.lastName &&
                     oldItem.profilePicture == newItem.profilePicture &&
-                    oldItem.profilePicture64 == newItem.profilePicture64
+                    oldItem.profilePicture64 == newItem.profilePicture64 &&
+                    oldItem.priority == newItem.priority
         }
     }
 
-    private fun itemSelected(id: Int, image: CircularImageView, contact: FirstVipSelectionViewState) {
+    private fun itemSelected(
+        id: Int,
+        image: CircularImageView,
+        contact: FirstVipSelectionViewState
+    ) {
         if (listOfItemSelected.contains(id)) {
             image.setImageResource(R.drawable.ic_item_selected)
         } else {
@@ -121,8 +120,6 @@ class FirstVipSelectionAdapter(
                     )
                 )
             }
-//            if (listOfItemSelected.size < 5 || contactUnlimited) {
-//            }
         }
     }
 

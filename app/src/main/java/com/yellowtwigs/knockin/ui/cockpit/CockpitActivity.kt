@@ -28,9 +28,11 @@ import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActi
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
 
@@ -205,24 +207,11 @@ class CockpitActivity : AppCompatActivity() {
         val menu = binding.navView.menu
         menu.findItem(R.id.nav_home).isChecked = true
 
+        setupTeleworkingItem(binding.navView, this)
+
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             binding.drawerLayout.closeDrawers()
-
-            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-            itemText.text =
-                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-            itemLayout.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@CockpitActivity,
-                        TeleworkingActivity::class.java
-                    )
-                )
-            }
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {

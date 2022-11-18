@@ -12,11 +12,14 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -55,6 +58,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private var isChanged = false
     private var editInAndroid = false
     private var editInGoogle = false
+    private var isRetroFit = false
 
     private var numberOfContactsVIP = 0
     private var contactsUnlimitedIsBought = false
@@ -69,6 +73,7 @@ class AddNewContactActivity : AppCompatActivity() {
     private val IMAGE_CAPTURE_CODE = 1001
 
     private var isFavorite = 0
+    private var contact: ContactDB? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -228,17 +233,52 @@ class AddNewContactActivity : AppCompatActivity() {
             }
             validate.setOnClickListener {
                 hideKeyboard(this@AddNewContactActivity)
+                contact = ContactDB(
+                    0,
+                    "${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}",
+                    binding.firstNameInput.editText?.text.toString(),
+                    binding.lastNameInput.editText?.text.toString(),
+                    avatar,
+                    contactImageString,
+                    arrayListOf(
+                        binding.phoneNumberInput.editText?.text.toString(),
+                        binding.phoneNumberFixInput.editText?.text.toString()
+                    ),
+                    arrayListOf(binding.mailInput.editText?.text.toString()),
+                    binding.mailIdInput.editText?.text.toString(),
+                    binding.prioritySpinner.selectedItemPosition,
+                    isFavorite,
+                    binding.messengerIdInput.editText?.text.toString(),
+                    arrayListOf(),
+                    "",
+                    R.raw.sms_ring,
+                    1,
+                    0,
+                    "",
+                    ""
+                )
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    addNewUser()
-
-                    withContext(Dispatchers.Main) {
-                        goToContactsListActivity()
+                CoroutineScope(Dispatchers.Default).launch {
+                    if (editContactViewModel.checkDuplicateContact(contact!!)) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@AddNewContactActivity,
+                                getString(R.string.add_new_contact_alert_dialog_message),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        if (isFavorite != 0) {
+                            updateFavorite()
+                        }
+                        withContext(Dispatchers.Main) {
+                            Log.i("ContactDuplicate", "1")
+                            addNewUserToAndroidContacts()
+                        }
                     }
                 }
             }
 
-            // Helper
             mailIdHelp.setOnClickListener {
                 MaterialAlertDialogBuilder(this@AddNewContactActivity, R.style.AlertDialog)
                     .setTitle(getString(R.string.add_new_contact_mail_identifier))
@@ -254,7 +294,6 @@ class AddNewContactActivity : AppCompatActivity() {
                     .show()
             }
 
-            // Contact Data
             contactImage.setOnClickListener {
                 selectImage()
             }
@@ -268,32 +307,61 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //region ============================================ UPDATE ============================================
 
-    private suspend fun addNewUser() {
-        editContactViewModel.addNewContact(
-            ContactDB(
-                0,
-                binding.firstNameInput.editText?.text.toString(),
-                binding.lastNameInput.editText?.text.toString(),
-                avatar,
-                contactImageString,
-                arrayListOf(
-                    binding.phoneNumberInput.editText?.text.toString(),
+    private suspend fun updateFavorite() {
+        editContactViewModel.updateFavorite("${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}")
+    }
+
+    private fun addNewUserToAndroidContacts() {
+        Log.i("ContactDuplicate", "2")
+        val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+            type = ContactsContract.RawContacts.CONTENT_TYPE
+        }
+        binding.apply {
+            intent.apply {
+//                putExtra(ContactsContract.Contacts.Photo.PHOTO, contactImageString)
+//                putExtra(ContactsContract.Contacts.Photo.PHOTO, imageUri)
+//                putExtra(ContactsContract.Contacts.Photo.DISPLAY_PHOTO, contactImageString)
+//                putExtra(ContactsContract.Contacts.Photo.DISPLAY_PHOTO, imageUri)
+//                putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, contactImageString)
+                Log.i("PHOTO_URI", "$imageUri")
+                putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, imageUri)
+//                putExtra(ContactsContract.Contacts.Photo.PHOTO_THUMBNAIL_URI, contactImageString)
+//                putExtra(ContactsContract.Contacts.Photo.PHOTO_THUMBNAIL_URI, imageUri)
+
+                putExtra(
+                    ContactsContract.Intents.Insert.NAME,
+                    binding.firstNameInput.editText?.text.toString() + " " +
+                            binding.lastNameInput.editText?.text.toString(),
+                )
+
+                putExtra(
+                    ContactsContract.Intents.Insert.EMAIL,
+                    binding.mailInput.editText?.text.toString()
+                )
+                putExtra(
+                    ContactsContract.Intents.Insert.EMAIL_TYPE,
+                    ContactsContract.CommonDataKinds.Email.TYPE_WORK
+                )
+                putExtra(
+                    ContactsContract.Intents.Insert.PHONE,
+                    binding.phoneNumberInput.editText?.text.toString()
+                )
+                putExtra(
+                    ContactsContract.Intents.Insert.PHONE_TYPE,
+                    ContactsContract.CommonDataKinds.Phone.TYPE_HOME
+                )
+                putExtra(
+                    ContactsContract.Intents.Insert.SECONDARY_PHONE,
                     binding.phoneNumberFixInput.editText?.text.toString()
-                ),
-                arrayListOf(binding.mailInput.editText?.text.toString()),
-                binding.mailIdInput.editText?.text.toString(),
-                binding.prioritySpinner.selectedItemPosition,
-                isFavorite,
-                binding.messengerIdInput.editText?.text.toString(),
-                arrayListOf(),
-                "",
-                R.raw.sms_ring,
-                1,
-                0,
-                "",
-                ""
-            )
-        )
+                )
+                putExtra(
+                    ContactsContract.Intents.Insert.EXTRA_DATA_SET,
+                    binding.messengerIdInput.editText?.text.toString()
+                )
+            }
+            isRetroFit = true
+            startActivity(intent)
+        }
     }
 
     //endregion
@@ -454,7 +522,6 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
-
     private fun exifToDegrees(exifOrientation: Int): Int {
         return when (exifOrientation) {
             ExifInterface.ORIENTATION_ROTATE_90 -> 90
@@ -465,6 +532,7 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     fun addContactIcon(bitmap: Bitmap) {
+        Log.i("PHOTO_URI", "bitmap : $bitmap")
         binding.contactImage.setImageBitmap(bitmap)
         contactImageString = bitmapToBase64(bitmap)
         contactImageStringIsChanged = true
@@ -476,6 +544,8 @@ class AddNewContactActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMAGE_CAPTURE_CODE) {
+                Log.i("PHOTO_URI", "IMAGE_CAPTURE_CODE")
+
                 val matrix = Matrix()
                 val exif = ExifInterface(getRealPathFromUri(this, imageUri!!))
                 val rotation = exif.getAttributeInt(
@@ -494,6 +564,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 contactImageString = bitmapToBase64(bitmap)
                 contactImageStringIsChanged = true
             } else if (requestCode == SELECT_FILE) {
+                Log.i("PHOTO_URI", "SELECT_FILE")
                 val matrix = Matrix()
                 val selectedImageUri = data!!.data
                 val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
@@ -511,6 +582,16 @@ class AddNewContactActivity : AppCompatActivity() {
                 binding.contactImage.setImageBitmap(bitmap)
                 contactImageString = bitmapToBase64(bitmap)
             }
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (isRetroFit) {
+            CoroutineScope(Dispatchers.Default).launch {
+                editContactViewModel.addNewContact(contact!!)
+            }
+            goToContactsListActivity()
         }
     }
 }

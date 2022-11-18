@@ -8,6 +8,11 @@ class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDa
     ContactsListRepository {
 
     override fun getAllContacts() = dao.getAllContacts()
+    override fun getAllContactsByFavorite() = dao.getAllContactsByFavorite()
+    override fun getAllContactsByFullName() = dao.getAllContactsByFullName()
+    override fun getAllContactsDB() = dao.getAllContactsForNotificationsListener()
+
+    override fun getAllContactsVIP() = dao.getAllContactsVIP()
 
     override fun getNumbersOfContactsVip() = dao.getNumbersOfContactsVip()
 

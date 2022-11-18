@@ -13,23 +13,10 @@ import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class GetAllContactsUseCase @Inject constructor(
-    contactsListRepository: ContactsListRepository
+    private val contactsListRepository: ContactsListRepository
 ) {
 
-    val contactsListViewStateLiveData: LiveData<List<ContactsListViewState>> = liveData(Dispatchers.IO) {
-        contactsListRepository.getAllContacts().collect { contacts ->
-            val listOfDeferred: List<Deferred<ContactsListViewState>> = coroutineScope {
-                contacts.map {
-                    async {
-                        transformContactDbToContactsListViewState(it)
-                    }
-                }
-            }
-            val results: List<ContactsListViewState> = listOfDeferred.awaitAll()
-
-            emit(results)
-        }
-    }
+    fun invoke() = contactsListRepository.getAllContacts()
 
     private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
         return ContactsListViewState(
@@ -49,21 +36,21 @@ class GetAllContactsUseCase @Inject constructor(
         )
     }
 
-
-    val firstVipSelectionViewStateLiveData: LiveData<List<FirstVipSelectionViewState>> = liveData(Dispatchers.IO) {
-        contactsListRepository.getAllContacts().collect { contacts ->
-            val listOfDeferred: List<Deferred<FirstVipSelectionViewState>> = coroutineScope {
-                contacts.map {
-                    async {
-                        transformContactDbToFirstVipSelectionViewState(it)
+    val firstVipSelectionViewStateLiveData: LiveData<List<FirstVipSelectionViewState>> =
+        liveData(Dispatchers.IO) {
+            contactsListRepository.getAllContacts().collect { contacts ->
+                val listOfDeferred: List<Deferred<FirstVipSelectionViewState>> = coroutineScope {
+                    contacts.map {
+                        async {
+                            transformContactDbToFirstVipSelectionViewState(it)
+                        }
                     }
                 }
-            }
-            val results: List<FirstVipSelectionViewState> = listOfDeferred.awaitAll()
+                val results: List<FirstVipSelectionViewState> = listOfDeferred.awaitAll()
 
-            emit(results)
+                emit(results)
+            }
         }
-    }
 
     private fun transformContactDbToFirstVipSelectionViewState(contact: ContactDB): FirstVipSelectionViewState {
         return FirstVipSelectionViewState(
@@ -71,6 +58,8 @@ class GetAllContactsUseCase @Inject constructor(
             contact.firstName,
             contact.lastName,
             contact.profilePicture,
-            contact.profilePicture64)
+            contact.profilePicture64,
+            contact.priority
+        )
     }
 }

@@ -11,6 +11,7 @@ data class ContactInGroupViewState(
     val priority: Int,
     val hasWhatsapp: Boolean,
     val hasTelegram: Boolean,
-    val hasSignal: Boolean
+    val hasSignal: Boolean,
+    val messengerId: String
 ) {
 }

@@ -57,8 +57,7 @@
     <string name="search_hint">Search</string>
     <string name="main_change_format_phone_book">Help</string>
     <string name="sort_by">Sort by:</string>
-    <string name="sort_by_first_name">Firstname</string>
-    <string name="sort_by_last_name">Lastname</string>
+    <string name="sort_by_full_name">Full Name</string>
     <string name="sort_by_priority">Priority</string>
     <string name="sort_by_favorite">Favorite</string>
     <string name="main_tri_par_groupe">Group</string>
@@ -496,7 +495,7 @@
     <string name="modify">Modify</string>
     <string name="work_schedule_title">Work schedule (Monday - Friday)</string>
     <string name="edit_reminder_hour_title">Daily reminder time for non-VIP notifications :</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="remove_filter">Remove filter</string>
+    <string name="remove_filter">No filter</string>
+    <string name="allow_phone_call">You have not allow phone call</string>
+    <string name="daily_reminder_time">Daily reminder time</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
+import android.Manifest
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -18,6 +20,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -42,8 +46,10 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -55,6 +61,8 @@ class ContactsListActivity : AppCompatActivity() {
     private val contactsListViewModel: ContactsListViewModel by viewModels()
 
     private lateinit var sortByPreferences: SharedPreferences
+    private lateinit var filterByPreferences: SharedPreferences
+    private lateinit var binding: ActivityContactsListBinding
 
     private var listOfItemSelected = arrayListOf<Int>()
 
@@ -67,12 +75,14 @@ class ContactsListActivity : AppCompatActivity() {
     private var listOfHasWhatsapp = arrayListOf<Boolean>()
     var modeMultiSelect = false
 
+    private var phoneNumber = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         checkTheme(this)
 
-        val binding = ActivityContactsListBinding.inflate(layoutInflater)
+        binding = ActivityContactsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if (isNotificationServiceEnabled()) {
@@ -80,6 +90,7 @@ class ContactsListActivity : AppCompatActivity() {
         }
 
         sortByPreferences = getSharedPreferences("Sort_By_Preferences", Context.MODE_PRIVATE)
+        filterByPreferences = getSharedPreferences("Filter_By_Preferences", Context.MODE_PRIVATE)
 
         setupToolbar(binding)
         setupRecyclerView(binding)
@@ -87,6 +98,14 @@ class ContactsListActivity : AppCompatActivity() {
         setupDrawerLayout(binding)
         floatingButtonsClick(binding)
         multiSelectToolbarClick(binding)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val editFilterBy = filterByPreferences.edit()
+        editFilterBy.putInt("Filter_By_Preferences", R.id.empty_filter)
+        editFilterBy.apply()
     }
 
     //region =========================================== TOOLBAR ============================================
@@ -114,25 +133,17 @@ class ContactsListActivity : AppCompatActivity() {
         inflater.inflate(R.menu.contacts_toolbar_menu, menu)
 
         when (sortByPreferences.getInt("Sort_By_Preferences", R.id.sort_by_priority)) {
-            R.id.sort_by_first_name -> {
-                menu.findItem(R.id.sort_by_first_name).isChecked = true
-                contactsListViewModel.setSortedBy(R.id.sort_by_first_name)
-            }
-            R.id.sort_by_last_name -> {
-                menu.findItem(R.id.sort_by_last_name).isChecked = true
-                contactsListViewModel.setSortedBy(R.id.sort_by_last_name)
+            R.id.sort_by_full_name -> {
+                menu.findItem(R.id.sort_by_full_name).isChecked = true
             }
             R.id.sort_by_priority -> {
                 menu.findItem(R.id.sort_by_priority).isChecked = true
-                contactsListViewModel.setSortedBy(R.id.sort_by_priority)
             }
             R.id.sort_by_favorite -> {
                 menu.findItem(R.id.sort_by_favorite).isChecked = true
-                contactsListViewModel.setSortedBy(R.id.sort_by_favorite)
             }
             else -> {
                 menu.findItem(R.id.sort_by_priority).isChecked = true
-                contactsListViewModel.setSortedBy(R.id.sort_by_priority)
             }
         }
 
@@ -141,72 +152,104 @@ class ContactsListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.sort_by_first_name -> {
+            R.id.sort_by_full_name -> {
                 val editSortBy = sortByPreferences.edit()
-                editSortBy.putInt("Sort_By_Preferences", R.id.sort_by_first_name)
+                editSortBy.putInt("Sort_By_Preferences", R.id.sort_by_full_name)
                 editSortBy.apply()
 
+                contactsListViewModel.setSortedBy(R.id.sort_by_full_name)
+
                 item.isChecked = !item.isChecked
-                contactsListViewModel.setSortedBy(R.id.sort_by_first_name)
-                return true
-            }
-            R.id.sort_by_last_name -> {
-                val editSortBy = sortByPreferences.edit()
-                editSortBy.putInt("Sort_By_Preferences", R.id.sort_by_last_name)
-                editSortBy.apply()
-                item.isChecked = !item.isChecked
-                contactsListViewModel.setSortedBy(R.id.sort_by_last_name)
                 return true
             }
             R.id.sort_by_priority -> {
                 val editSortBy = sortByPreferences.edit()
                 editSortBy.putInt("Sort_By_Preferences", R.id.sort_by_priority)
                 editSortBy.apply()
-                item.isChecked = !item.isChecked
+
                 contactsListViewModel.setSortedBy(R.id.sort_by_priority)
+
+                item.isChecked = !item.isChecked
                 return true
             }
             R.id.sort_by_favorite -> {
                 val editSortBy = sortByPreferences.edit()
                 editSortBy.putInt("Sort_By_Preferences", R.id.sort_by_favorite)
                 editSortBy.apply()
-                item.isChecked = !item.isChecked
+
                 contactsListViewModel.setSortedBy(R.id.sort_by_favorite)
-                return true
-            }
-            R.id.sms_filter -> {
+
                 item.isChecked = !item.isChecked
-                contactsListViewModel.setFilterBy(R.id.sms_filter)
                 return true
             }
             R.id.empty_filter -> {
-                item.isChecked = !item.isChecked
+                val editFilterBy = filterByPreferences.edit()
+                editFilterBy.putInt("Filter_By_Preferences", R.id.empty_filter)
+                editFilterBy.apply()
+
                 contactsListViewModel.setFilterBy(R.id.empty_filter)
+
+                item.isChecked = !item.isChecked
+                return true
+            }
+            R.id.sms_filter -> {
+                val editFilterBy = filterByPreferences.edit()
+                editFilterBy.putInt("Filter_By_Preferences", R.id.sms_filter)
+                editFilterBy.apply()
+
+                contactsListViewModel.setFilterBy(R.id.sms_filter)
+
+                item.isChecked = !item.isChecked
                 return true
             }
             R.id.mail_filter -> {
+                val editFilterBy = filterByPreferences.edit()
+                editFilterBy.putInt("Filter_By_Preferences", R.id.mail_filter)
+                editFilterBy.apply()
+
+                contactsListViewModel.setSortedBy(R.id.mail_filter)
+
                 item.isChecked = !item.isChecked
-                contactsListViewModel.setFilterBy(R.id.mail_filter)
                 return true
             }
             R.id.whatsapp_filter -> {
+                val editFilterBy = filterByPreferences.edit()
+                editFilterBy.putInt("Filter_By_Preferences", R.id.whatsapp_filter)
+                editFilterBy.apply()
+
+                contactsListViewModel.setSortedBy(R.id.whatsapp_filter)
+
                 item.isChecked = !item.isChecked
-                contactsListViewModel.setFilterBy(R.id.whatsapp_filter)
                 return true
             }
             R.id.messenger_filter -> {
-                item.isChecked = !item.isChecked
+                val editFilterBy = filterByPreferences.edit()
+                editFilterBy.putInt("Filter_By_Preferences", R.id.messenger_filter)
+                editFilterBy.apply()
+
                 contactsListViewModel.setFilterBy(R.id.messenger_filter)
+
+                item.isChecked = !item.isChecked
                 return true
             }
             R.id.signal_filter -> {
-                item.isChecked = !item.isChecked
+                val editFilterBy = filterByPreferences.edit()
+                editFilterBy.putInt("Filter_By_Preferences", R.id.signal_filter)
+                editFilterBy.apply()
+
                 contactsListViewModel.setFilterBy(R.id.signal_filter)
+
+                item.isChecked = !item.isChecked
                 return true
             }
             R.id.telegram_filter -> {
-                item.isChecked = !item.isChecked
+                val editFilterBy = filterByPreferences.edit()
+                editFilterBy.putInt("Filter_By_Preferences", R.id.telegram_filter)
+                editFilterBy.apply()
+
                 contactsListViewModel.setFilterBy(R.id.telegram_filter)
+
+                item.isChecked = !item.isChecked
                 return true
             }
             else -> {
@@ -225,24 +268,18 @@ class ContactsListActivity : AppCompatActivity() {
             val menu = binding.navView.menu
             menu.findItem(R.id.nav_home).isChecked = true
 
+            val navSyncContact = menu.findItem(R.id.nav_sync_contact)
+            navSyncContact.isVisible = true
+
+            val navInviteFriend = menu.findItem(R.id.nav_invite_friend)
+            navInviteFriend.isVisible = true
+
+            setupTeleworkingItem(binding.navView, this@ContactsListActivity)
+
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 hideKeyboard(this@ContactsListActivity)
                 closeDrawers()
 
-                val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-                val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-                itemText.text =
-                    "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-                itemLayout.setOnClickListener {
-                    startActivity(
-                        Intent(
-                            this@ContactsListActivity,
-                            TeleworkingActivity::class.java
-                        )
-                    )
-                }
                 when (menuItem.itemId) {
                     R.id.nav_notifications -> startActivity(
                         Intent(this@ContactsListActivity, NotificationsSettingsActivity::class.java)
@@ -256,6 +293,8 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_help -> startActivity(
                         Intent(this@ContactsListActivity, HelpActivity::class.java)
                     )
+                    R.id.nav_sync_contact -> {}
+                    R.id.nav_invite_friend -> {}
                 }
 
                 true
@@ -294,9 +333,6 @@ class ContactsListActivity : AppCompatActivity() {
             listOfHasEmail.clear()
             listOfHasWhatsapp.clear()
         }
-
-//        startActivity(Intent(this@ContactsListActivity, ContactsListActivity::class.java))
-//        finish()
     }
 
     private fun setupMultiSelectToolbar(binding: ActivityContactsListBinding, isVisible: Boolean) {
@@ -504,11 +540,10 @@ class ContactsListActivity : AppCompatActivity() {
 
         if (nbGrid == 1) {
             binding.recyclerView.apply {
-                contactsListViewModel.getAllContacts()
-                    .observe(this@ContactsListActivity) { contacts ->
-                        contactsListAdapter.submitList(null)
-                        contactsListAdapter.submitList(contacts)
-                    }
+                contactsListViewModel.viewStateLiveData.observe(this@ContactsListActivity) { contacts ->
+                    contactsListAdapter.submitList(null)
+                    contactsListAdapter.submitList(contacts)
+                }
                 adapter = contactsListAdapter
                 layoutManager = LinearLayoutManager(context)
                 setItemViewCacheSize(500)
@@ -519,7 +554,10 @@ class ContactsListActivity : AppCompatActivity() {
                     hideKeyboard(this@ContactsListActivity)
 
                     startActivity(
-                        Intent(this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java).putExtra(
+                        Intent(
+                            this@ContactsListActivity,
+                            ContactSelectedWithAppsActivity::class.java
+                        ).putExtra(
                             "ContactId",
                             id
                         )
@@ -532,11 +570,10 @@ class ContactsListActivity : AppCompatActivity() {
 
                     setupMultiSelectToolbar(binding, modeMultiSelect)
                 })
-                contactsListViewModel.getAllContacts()
-                    .observe(this@ContactsListActivity) { contacts ->
-                        contactsGridAdapter.submitList(null)
-                        contactsGridAdapter.submitList(contacts)
-                    }
+                contactsListViewModel.viewStateLiveData.observe(this@ContactsListActivity) { contacts ->
+                    contactsGridAdapter.submitList(null)
+                    contactsGridAdapter.submitList(contacts)
+                }
                 adapter = contactsGridAdapter
                 layoutManager = GridLayoutManager(context, nbGrid)
                 setItemViewCacheSize(500)
@@ -617,4 +654,47 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     //endregion
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == PHONE_CALL_REQUEST_CODE) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_CALL,
+                    Uri.fromParts("tel", phoneNumber, null)
+                )
+            )
+        }
+    }
+
+    fun callPhone(phoneNumber: String) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            this.phoneNumber = phoneNumber
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CALL_PHONE),
+                PHONE_CALL_REQUEST_CODE
+            )
+        } else {
+            startActivity(
+                Intent(
+                    Intent.ACTION_CALL,
+                    Uri.fromParts("tel", phoneNumber, null)
+                )
+            )
+        }
+    }
+
+    companion object {
+        const val PHONE_CALL_REQUEST_CODE = 1
+    }
 }
