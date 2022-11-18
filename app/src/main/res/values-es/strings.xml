@@ -503,4 +503,6 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="teleworking_help">En esta pantalla puedes configurar tu entorno de Teletrabajo</string>
     <string name="teleworking_alert_dialog_title">Cambiar el modo de teletrabajo</string>
     <string name="teleworking_alert_dialog_subtitle">Acabas de cambiar el modo de teletrabajo, ¿quieres volver a la pantalla de Contactos?</string>
+    <string name="rate_this_app_title">Califica esta aplicación</string>
+    <string name="rate_this_app_message">Si te gusta esta aplicación, tómate unos segundos para calificarla, nos ayudaría mucho. Gracias</string>
 </resources>

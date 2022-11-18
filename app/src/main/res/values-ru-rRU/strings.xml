@@ -498,4 +498,6 @@
     <string name="teleworking_help">На этом экране вы можете настроить среду удаленной работы.</string>
     <string name="teleworking_alert_dialog_title">Изменение режима удаленной работы</string>
     <string name="teleworking_alert_dialog_subtitle">Вы только что изменили режим удаленной работы, хотите вернуться к экрану контактов?</string>
+    <string name="rate_this_app_title">Оцени это приложение</string>
+    <string name="rate_this_app_message">Если вам нравится это приложение, потратьте несколько секунд, чтобы оценить его, это нам очень поможет. Спасибо</string>
 </resources>

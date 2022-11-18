@@ -498,4 +498,6 @@
     <string name="teleworking_help">في هذه الشاشة ، يمكنك تكوين بيئة العمل عن بعد الخاصة بك</string>
     <string name="teleworking_alert_dialog_title">تغيير وضع العمل عن بعد</string>
     <string name="teleworking_alert_dialog_subtitle">لقد قمت للتو بتغيير وضع العمل عن بعد ، هل تريد العودة إلى شاشة جهات الاتصال؟</string>
+    <string name="rate_this_app_title">قيم هذا التطبيق</string>
+    <string name="rate_this_app_message">إذا أعجبك هذا التطبيق ، فيرجى أخذ بضع ثوان لتقييمه ، فسيساعدنا كثيرًا. شكرًا</string>
 </resources>

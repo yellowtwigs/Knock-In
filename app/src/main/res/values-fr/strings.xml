@@ -498,4 +498,6 @@
     <string name="teleworking_help">Dans cet écran, vous pouvez paramétrer votre environnement de Téléworking</string>
     <string name="teleworking_alert_dialog_title">Changer le mode de télétravail</string>
     <string name="teleworking_alert_dialog_subtitle">Vous venez de changer de mode télétravail, vous souhaitez revenir à l\'écran Contacts ?</string>
+    <string name="rate_this_app_title">Noter l\'application</string>
+    <string name="rate_this_app_message">Si vous aimez cette application, veuillez prendre quelques secondes pour la noter, cela nous aiderait beaucoup. Merci</string>
 </resources>

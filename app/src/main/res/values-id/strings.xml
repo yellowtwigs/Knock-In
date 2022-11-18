@@ -501,4 +501,6 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="teleworking_help">Di layar ini, Anda dapat mengonfigurasi lingkungan Teleworking Anda</string>
     <string name="teleworking_alert_dialog_title">Mengubah mode teleworking</string>
     <string name="teleworking_alert_dialog_subtitle">Anda baru saja mengubah mode teleworking, apakah Anda ingin kembali ke layar Kontak?</string>
+    <string name="rate_this_app_title">Nilai aplikasi ini</string>
+    <string name="rate_this_app_message">Jika Anda menyukai aplikasi ini, luangkan beberapa detik untuk menilainya, itu akan sangat membantu kami. terima kasih</string>
 </resources>

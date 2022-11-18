@@ -497,4 +497,6 @@
     <string name="teleworking_help">Bu ekranda Teleworking ortamınızı yapılandırabilirsiniz</string>
     <string name="teleworking_alert_dialog_title">Uzaktan çalışma modunu değiştirme</string>
     <string name="teleworking_alert_dialog_subtitle">Uzaktan çalışma modunu yeni değiştirdiniz, Kişiler ekranına dönmek istiyor musunuz?</string>
+    <string name="rate_this_app_title">Bu uygulamayı oyla</string>
+    <string name="rate_this_app_message">Bu uygulamayı beğendiyseniz, lütfen derecelendirmek için birkaç saniye ayırın, bize çok yardımcı olacaktır. teşekkürler</string>
 </resources>

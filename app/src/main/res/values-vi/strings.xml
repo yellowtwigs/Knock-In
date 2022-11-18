@@ -499,4 +499,6 @@
     <string name="teleworking_help">Trong màn hình này, bạn có thể định cấu hình môi trường Làm việc từ xa của mình</string>
     <string name="teleworking_alert_dialog_title">Thay đổi chế độ teleworking</string>
     <string name="teleworking_alert_dialog_subtitle">Bạn vừa thay đổi chế độ teleworking, bạn có muốn quay lại màn hình Danh bạ không?</string>
+    <string name="rate_this_app_title">Đánh giá ứng dụng này</string>
+    <string name="rate_this_app_message">Nếu bạn thích ứng dụng này, vui lòng dành vài giây để đánh giá nó, nó sẽ giúp chúng tôi rất nhiều. Cảm ơn</string>
 </resources>

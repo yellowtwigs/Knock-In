@@ -497,4 +497,6 @@
     <string name="teleworking_help">In diesem Bildschirm können Sie Ihre Telearbeitsumgebung konfigurieren</string>
     <string name="teleworking_alert_dialog_title">Ändern des Telearbeitsmodus</string>
     <string name="teleworking_alert_dialog_subtitle">Sie haben gerade den Telearbeitsmodus geändert, möchten Sie zum Bildschirm Kontakte zurückkehren?</string>
+    <string name="rate_this_app_title">Bewerte diese App</string>
+    <string name="rate_this_app_message">Wenn Ihnen diese App gefällt, nehmen Sie sich bitte ein paar Sekunden Zeit, um sie zu bewerten, es würde uns sehr helfen. Vielen Dank</string>
 </resources>

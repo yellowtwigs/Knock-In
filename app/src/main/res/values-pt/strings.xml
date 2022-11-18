@@ -497,4 +497,6 @@
     <string name="teleworking_help">Nesta tela, você pode configurar seu ambiente de Teletrabalho</string>
     <string name="teleworking_alert_dialog_title">Alterar o modo de teletrabalho</string>
     <string name="teleworking_alert_dialog_subtitle">Você acabou de alterar o modo de teletrabalho, deseja retornar à tela de Contatos?</string>
+    <string name="rate_this_app_title">Avalie este aplicativo</string>
+    <string name="rate_this_app_message">Se você gosta deste aplicativo, por favor, reserve alguns segundos para avaliá-lo, isso nos ajudaria muito. Obrigado</string>
 </resources>

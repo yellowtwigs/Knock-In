@@ -2,14 +2,10 @@ package com.yellowtwigs.knockin.ui.contacts
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.Point
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -206,13 +202,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
         sharedShowPopup = getSharedPreferences("sharedShowPopup", Context.MODE_PRIVATE)
-        val fromSplashScreen = sharedFromSplashScreen.getBoolean("fromSplashScreen", false)
-        val showPopup = sharedShowPopup.getBoolean("sharedShowPopup", true)
+        val fromSplashScreen = sharedFromSplashScreen.getBoolean("fromSplashScreen", true)
 
-        if (showPopup) {
-            if (fromSplashScreen) {
-                customOptionVipPopupAd()
-            }
+        if (fromSplashScreen) {
+            rateThisAppPopup()
         }
 
         //endregion
@@ -1769,25 +1762,38 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         refreshActivity()
     }
 
-    private fun customOptionVipPopupAd() {
-        val edit = sharedFromSplashScreen.edit()
-        edit.putBoolean("fromSplashScreen", false)
-        edit.apply()
-
+    private fun rateThisAppPopup() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setView(R.layout.custom_alert_dialog_vip_notif_ad)
-            .setPositiveButton(R.string.show_popup_positive_button) { alertDialog, _ ->
-                val edit1 = sharedShowPopup.edit()
-                edit1.putBoolean("sharedShowPopup", false)
-                edit1.apply()
+            .setTitle(getString(R.string.rate_this_app_title))
+            .setMessage(getString(R.string.rate_this_app_message))
+            .setPositiveButton(R.string.start_activity_go_edition_positive_button) { alertDialog, _ ->
+                val edit = sharedFromSplashScreen.edit()
+                edit.putBoolean("fromSplashScreen", false)
+                edit.apply()
+                try {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=$packageName")
+                        )
+                    )
+                } catch (e: ActivityNotFoundException) {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                        )
+                    )
+                }
                 alertDialog.dismiss()
                 alertDialog.cancel()
-            }.setNegativeButton(R.string.alert_dialog_close) { alertDialog, _ ->
+            }
+            .setNegativeButton(R.string.alert_dialog_later) { alertDialog, _ ->
                 alertDialog.dismiss()
                 alertDialog.cancel()
             }
             .show()
     }
 
-//endregion
+    //endregion
 }

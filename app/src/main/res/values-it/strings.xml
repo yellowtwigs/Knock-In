@@ -497,4 +497,6 @@
     <string name="teleworking_help">In questa schermata puoi configurare il tuo ambiente di telelavoro</string>
     <string name="teleworking_alert_dialog_title">Modifica della modalità di telelavoro</string>
     <string name="teleworking_alert_dialog_subtitle">Hai appena cambiato la modalità di telelavoro, vuoi tornare alla schermata Contatti?</string>
+    <string name="rate_this_app_title">Valuta questa applicazione</string>
+    <string name="rate_this_app_message">Se ti piace questa app, ti preghiamo di dedicare qualche secondo a valutarla, ci aiuterebbe molto. Grazie</string>
 </resources>
