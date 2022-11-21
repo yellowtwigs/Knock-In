@@ -19,7 +19,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -35,6 +34,7 @@ import com.yellowtwigs.knockin.databinding.ActivityEditContactBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.add_edit_contact.IconAdapter
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
@@ -55,6 +55,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private val editContactViewModel: EditContactViewModel by viewModels()
 
+    private var fromGroups = false
     private var isChanged = false
     private var editInAndroid = false
     private var editInGoogle = false
@@ -92,6 +93,7 @@ class EditContactActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         val id = intent.getIntExtra("ContactId", 1)
+        fromGroups = intent.getBooleanExtra("FromGroups", false)
         bindingAllDataFromUserId(id)
         actionOnClickListener()
     }
@@ -272,7 +274,7 @@ class EditContactActivity : AppCompatActivity() {
                                     edit.putInt("nb_Contacts_VIP", numberOfContactsVIP - 1)
                                     edit.apply()
                                 }
-                                goToContactsListActivity()
+                                goToContactsOrGroups()
                             }
                         }
                     }
@@ -303,16 +305,7 @@ class EditContactActivity : AppCompatActivity() {
             }
             validate.setOnClickListener {
                 hideKeyboard(this@EditContactActivity)
-
-                CoroutineScope(Dispatchers.Default).launch {
-                    updateUser()
-                    if (isFavorite != currentContact.isFavorite) {
-                        updateFavorite()
-                    }
-//                    addNewUserToAndroidContacts()
-                }
-
-                goToContactsListActivity()
+                retrofitMaterialDialog()
             }
 
             // Helper
@@ -342,10 +335,6 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     //endregion
-
-    private suspend fun updateFavorite() {
-        editContactViewModel.updateFavorite(currentContact.id.toString())
-    }
 
     //region ============================================ UPDATE ============================================
 
@@ -385,6 +374,10 @@ class EditContactActivity : AppCompatActivity() {
 //        }
     }
 
+    private suspend fun updateFavorite() {
+        editContactViewModel.updateFavorite(currentContact.id.toString())
+    }
+
     private fun retrofitMaterialDialog() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
             .setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
@@ -393,25 +386,23 @@ class EditContactActivity : AppCompatActivity() {
                 editInAndroid = true
                 editInGoogle = true
 
-                addNewUserToAndroidContacts()
+                CoroutineScope(Dispatchers.IO).launch {
+                    updateUser()
+                    if (isFavorite != currentContact.isFavorite) {
+                        updateFavorite()
+                    }
+                    addNewUserToAndroidContacts()
+                }
             }
             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-//                editContactValidation()
-//                if (fromGroupActivity) {
-//                    startActivity(
-//                        Intent(
-//                            this@EditContactDetailsActivity,
-//                            GroupManagerActivity::class.java
-//                        )
-//                    )
-//                    finish()
-//                } else {
-//
-//                }
-                startActivity(
-                    Intent(this@EditContactActivity, ContactsListActivity::class.java)
-                )
-                finish()
+                CoroutineScope(Dispatchers.IO).launch {
+                    updateUser()
+                    if (isFavorite != currentContact.isFavorite) {
+                        updateFavorite()
+                    }
+                }
+
+                goToContactsOrGroups()
             }
             .show()
     }
@@ -422,15 +413,7 @@ class EditContactActivity : AppCompatActivity() {
         }
         binding.apply {
             intent.apply {
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO, contactImageString)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO, imageUri)
-//                putExtra(ContactsContract.Contacts.Photo.DISPLAY_PHOTO, contactImageString)
-//                putExtra(ContactsContract.Contacts.Photo.DISPLAY_PHOTO, imageUri)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, contactImageString)
-                Log.i("PHOTO_URI", "$imageUri")
                 putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, imageUri)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO_THUMBNAIL_URI, contactImageString)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO_THUMBNAIL_URI, imageUri)
 
                 putExtra(
                     ContactsContract.Intents.Insert.NAME,
@@ -472,8 +455,12 @@ class EditContactActivity : AppCompatActivity() {
 
     //region ============================================ UTILS =============================================
 
-    private fun goToContactsListActivity() {
-        startActivity(Intent(this@EditContactActivity, ContactsListActivity::class.java))
+    private fun goToContactsOrGroups() {
+        if (fromGroups) {
+            startActivity(Intent(this@EditContactActivity, GroupsListActivity::class.java))
+        } else {
+            startActivity(Intent(this@EditContactActivity, ContactsListActivity::class.java))
+        }
         finish()
     }
 
@@ -504,13 +491,13 @@ class EditContactActivity : AppCompatActivity() {
                     )
                 )
                 .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                    goToContactsListActivity()
+                    goToContactsOrGroups()
                 }
                 .setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
                 }
                 .show()
         } else {
-            goToContactsListActivity()
+            goToContactsOrGroups()
         }
     }
 
@@ -671,7 +658,7 @@ class EditContactActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         if (isRetroFit) {
-            goToContactsListActivity()
+            goToContactsOrGroups()
         }
     }
 }
