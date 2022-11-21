@@ -15,6 +15,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
@@ -36,6 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.ContactManager
 import com.yellowtwigs.knockin.model.ContactsRoomDatabase
@@ -52,6 +54,8 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -115,7 +119,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
     private var idGroup: Long = 0
 
-    private lateinit var sharedFromSplashScreen: SharedPreferences
+    private lateinit var firstTime: SharedPreferences
+    private lateinit var rateThisAppSharedPreferences: SharedPreferences
     private lateinit var sharedShowPopup: SharedPreferences
 
     private val mOnNavigationItemSelectedListener =
@@ -200,12 +205,55 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //region ======================================== Mobile Ads ========================================
 
-        sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
-        sharedShowPopup = getSharedPreferences("sharedShowPopup", Context.MODE_PRIVATE)
-        val fromSplashScreen = sharedFromSplashScreen.getBoolean("fromSplashScreen", true)
+        rateThisAppSharedPreferences = getSharedPreferences("RateThisApp", Context.MODE_PRIVATE)
+        firstTime = getSharedPreferences("FirstTimeInTheApp", Context.MODE_PRIVATE)
+        val fromSplashScreen = rateThisAppSharedPreferences.getBoolean("RateThisApp", true)
 
-        if (fromSplashScreen) {
+        sharedShowPopup = getSharedPreferences("sharedShowPopup", Context.MODE_PRIVATE)
+
+        val calendar = Calendar.getInstance()
+
+        if (firstTime.getBoolean("FirstTimeInTheApp", true)) {
+            val editFirstTime = firstTime.edit()
+            editFirstTime.putBoolean("FirstTimeInTheApp", false)
+            editFirstTime.apply()
+
             rateThisAppPopup()
+        } else {
+            if (fromSplashScreen) {
+                val set = sharedShowPopup.getStringSet(
+                    "sharedShowPopup", setOf(
+                        calendar.get(Calendar.YEAR).toString(),
+                        calendar.get(Calendar.MONTH).toString(),
+                        calendar.get(Calendar.DAY_OF_MONTH).toString()
+                    )
+                )
+                set?.let {
+                    it.forEachIndexed { index, s ->
+                        Log.i("RateThisApp", "$index")
+                        Log.i("RateThisApp", s)
+                        when (index) {
+                            0 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) > s.toInt()) {
+                                    rateThisAppPopup()
+                                }
+                            }
+                            1 -> {
+
+                                if (calendar.get(Calendar.YEAR) > s.toInt()) {
+                                    rateThisAppPopup()
+                                }
+                            }
+                            2 -> {
+
+                                if (calendar.get(Calendar.MONTH) > s.toInt()) {
+                                    rateThisAppPopup()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         //endregion
@@ -1762,38 +1810,50 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         refreshActivity()
     }
 
+    //endregion
+
     private fun rateThisAppPopup() {
+        val manager = ReviewManagerFactory.create(this)
+        val request = manager.requestReviewFlow()
         MaterialAlertDialogBuilder(this, R.style.AlertDialog)
             .setTitle(getString(R.string.rate_this_app_title))
             .setMessage(getString(R.string.rate_this_app_message))
             .setPositiveButton(R.string.start_activity_go_edition_positive_button) { alertDialog, _ ->
-                val edit = sharedFromSplashScreen.edit()
-                edit.putBoolean("fromSplashScreen", false)
+                val edit = rateThisAppSharedPreferences.edit()
+                edit.putBoolean("RateThisApp", false)
                 edit.apply()
-                try {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("market://details?id=$packageName")
-                        )
-                    )
-                } catch (e: ActivityNotFoundException) {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-                        )
-                    )
+                request.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val reviewInfo = task.result
+                        val flow = manager.launchReviewFlow(this, reviewInfo)
+                        flow.addOnCompleteListener { _ ->
+                        }
+                    } else {
+                    }
                 }
                 alertDialog.dismiss()
                 alertDialog.cancel()
             }
             .setNegativeButton(R.string.alert_dialog_later) { alertDialog, _ ->
+                val calendar = Calendar.getInstance()
+
+                Log.i("RateThisApp", "calendar.get(Calendar.YEAR) : ${calendar.get(Calendar.YEAR)}")
+                Log.i("RateThisApp", "calendar.get(Calendar.MONTH) : ${calendar.get(Calendar.MONTH)}")
+                Log.i("RateThisApp", "calendar.get(Calendar.DAY_OF_MONTH) : ${calendar.get(Calendar.DAY_OF_MONTH)}")
+
+                val editShowPopup = sharedShowPopup.edit()
+                editShowPopup.putStringSet(
+                    "sharedShowPopup", setOf(
+                        calendar.get(Calendar.YEAR).toString(), // 2022
+                        calendar.get(Calendar.MONTH).toString(), // 11
+                        calendar.get(Calendar.DAY_OF_MONTH).toString() // 21
+                    )
+                )
+                editShowPopup.apply()
+
                 alertDialog.dismiss()
                 alertDialog.cancel()
             }
             .show()
     }
-
-    //endregion
 }

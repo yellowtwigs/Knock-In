@@ -69,6 +69,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         //endregion
 
+        val firstTime = getSharedPreferences("FirstTimeInTheApp", Context.MODE_PRIVATE)
+        val editFirstTime = firstTime.edit()
+        editFirstTime.putBoolean("FirstTimeInTheApp", true)
+        editFirstTime.apply()
+
         if (checkIfGoEdition()) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setBackground(getDrawable(R.color.backgroundColor))

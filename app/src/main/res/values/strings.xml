@@ -505,5 +505,5 @@
     <string name="teleworking_alert_dialog_title">Changing the teleworking mode</string>
     <string name="teleworking_alert_dialog_subtitle">You have just changed the teleworking mode, do you want to return to the Contacts screen?</string>
     <string name="rate_this_app_title">Rate this app</string>
-    <string name="rate_this_app_message">If you like this app, please take some seconds to rate it, it would help us a lot. Thanks</string>
+    <string name="rate_this_app_message">If you like this app, please take some seconds to rate it, it will help us a lot. Thanks</string>
 </resources>

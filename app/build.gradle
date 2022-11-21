@@ -12,9 +12,9 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 31
-        versionCode 176
+        versionCode 177
 //        versionName "2.2.8"
-        versionName "2.4.1"
+        versionName "2.4.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -111,6 +111,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
 
+    implementation "com.google.android.play:review:2.0.1"
+    implementation "com.google.android.play:review-ktx:2.0.1"
+
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
@@ -130,7 +133,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
     implementation 'com.facebook.android:facebook-login:13.0.0'
 
-    def billing_version = "5.0.0"
+    def billing_version = "5.1.0"
     implementation("com.android.billingclient:billing-ktx:$billing_version")
 }
 
