@@ -309,8 +309,10 @@ class EditContactActivity : AppCompatActivity() {
                     if (isFavorite != currentContact.isFavorite) {
                         updateFavorite()
                     }
-                    addNewUserToAndroidContacts()
+//                    addNewUserToAndroidContacts()
                 }
+
+                goToContactsListActivity()
             }
 
             // Helper
@@ -373,15 +375,49 @@ class EditContactActivity : AppCompatActivity() {
             currentContact.audioFileName
         )
 
-        if (editContactViewModel.checkDuplicateContact(contact)) {
-            Toast.makeText(this@EditContactActivity, getString(R.string.add_new_contact_alert_dialog_message), Toast.LENGTH_LONG).show()
-        } else {
-            editContactViewModel.updateContact(contact)
-        }
+        editContactViewModel.updateContact(contact)
+
+//        if (editContactViewModel.checkDuplicateContact(contact)) {
+//            withContext(Dispatchers.Main){
+//                Toast.makeText(this@EditContactActivity, getString(R.string.add_new_contact_alert_dialog_message), Toast.LENGTH_LONG).show()
+//            }
+//        } else {
+//        }
+    }
+
+    private fun retrofitMaterialDialog() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+            .setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
+            .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message)
+            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                editInAndroid = true
+                editInGoogle = true
+
+                addNewUserToAndroidContacts()
+            }
+            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+//                editContactValidation()
+//                if (fromGroupActivity) {
+//                    startActivity(
+//                        Intent(
+//                            this@EditContactDetailsActivity,
+//                            GroupManagerActivity::class.java
+//                        )
+//                    )
+//                    finish()
+//                } else {
+//
+//                }
+                startActivity(
+                    Intent(this@EditContactActivity, ContactsListActivity::class.java)
+                )
+                finish()
+            }
+            .show()
     }
 
     private fun addNewUserToAndroidContacts() {
-        val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+        val intent = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
             type = ContactsContract.RawContacts.CONTENT_TYPE
         }
         binding.apply {

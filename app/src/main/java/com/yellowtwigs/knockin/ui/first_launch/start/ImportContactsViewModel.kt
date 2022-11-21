@@ -13,6 +13,7 @@ import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
+import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -344,10 +346,32 @@ class ImportContactsViewModel @Inject constructor(
                                 }
                             }
 
-                            val secondName = if (fullName.second.second == "") {
-                                " "
-                            } else {
+                            val secondName = if (fullName.second.second != "") {
                                 " ${fullName.second.second} "
+                            } else {
+                                ""
+                            }
+
+                            val fullFullName = if (fullName.second.second == "") {
+                                if (fullName.second.first == "") {
+                                    fullName.second.third
+                                } else {
+                                    if (fullName.second.third == "") {
+                                        fullName.second.first
+                                    } else {
+                                        fullName.second.first + " " + fullName.second.third
+                                    }
+                                }
+                            } else {
+                                if (fullName.second.first == "") {
+                                    "${fullName.second.second} " + fullName.second.third
+                                } else {
+                                    if (fullName.second.third == "") {
+                                        fullName.second.first + " ${fullName.second.second}"
+                                    } else {
+                                        fullName.second.first + " ${fullName.second.second} " + fullName.second.third
+                                    }
+                                }
                             }
 
                             val listOfPhoneNumbers = mutableListOf<String>()
@@ -365,7 +389,7 @@ class ImportContactsViewModel @Inject constructor(
                             createContactUseCase.invoke(
                                 ContactDB(
                                     0,
-                                    fullName.second.first + secondName + fullName.second.third,
+                                    fullFullName.uppercase().unAccent().replace("\\s".toRegex(), ""),
                                     fullName.second.first + secondName,
                                     fullName.second.third,
                                     randomDefaultImage(0, context, "Create"),
@@ -518,7 +542,6 @@ class ImportContactsViewModel @Inject constructor(
             var groupIsDone = false
 
             contactGroup.forEachIndexed { index, triple ->
-
                 // Index : 1
                 // Importés le 28/06/2022
 

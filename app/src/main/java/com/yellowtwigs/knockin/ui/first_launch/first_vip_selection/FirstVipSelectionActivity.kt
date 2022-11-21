@@ -98,7 +98,8 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                val intent = Intent(this@FirstVipSelectionActivity, ContactsListActivity::class.java)
+                val intent =
+                    Intent(this@FirstVipSelectionActivity, ContactsListActivity::class.java)
                 intent.putExtra("fromStartActivity", true)
                 startActivity(intent)
                 finish()
@@ -167,15 +168,15 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                         )
                     }
 
-                val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
-                edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
-                edit.apply()
+                    val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
+                    edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
+                    edit.apply()
                 }
             }
         binding.multiSelectRecyclerView.apply {
             adapter = firstVipSelectionAdapter
 
-            viewModel.getAllContacts().observe(this@FirstVipSelectionActivity) { contacts ->
+            viewModel.contactsListViewStateLiveDataSortByFullName.observe(this@FirstVipSelectionActivity) { contacts ->
                 firstVipSelectionAdapter.submitList(contacts)
             }
 

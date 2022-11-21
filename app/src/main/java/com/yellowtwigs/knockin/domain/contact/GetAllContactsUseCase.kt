@@ -17,49 +17,4 @@ class GetAllContactsUseCase @Inject constructor(
 ) {
 
     fun invoke() = contactsListRepository.getAllContacts()
-
-    private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
-        return ContactsListViewState(
-            contact.id,
-            contact.firstName,
-            contact.lastName,
-            contact.profilePicture,
-            contact.profilePicture64,
-            contact.listOfPhoneNumbers,
-            contact.listOfMails,
-            contact.priority,
-            contact.isFavorite == 1,
-            contact.messengerId,
-            contact.listOfMessagingApps.contains("com.whatsapp"),
-            contact.listOfMessagingApps.contains("org.telegram.messenger"),
-            contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
-        )
-    }
-
-    val firstVipSelectionViewStateLiveData: LiveData<List<FirstVipSelectionViewState>> =
-        liveData(Dispatchers.IO) {
-            contactsListRepository.getAllContacts().collect { contacts ->
-                val listOfDeferred: List<Deferred<FirstVipSelectionViewState>> = coroutineScope {
-                    contacts.map {
-                        async {
-                            transformContactDbToFirstVipSelectionViewState(it)
-                        }
-                    }
-                }
-                val results: List<FirstVipSelectionViewState> = listOfDeferred.awaitAll()
-
-                emit(results)
-            }
-        }
-
-    private fun transformContactDbToFirstVipSelectionViewState(contact: ContactDB): FirstVipSelectionViewState {
-        return FirstVipSelectionViewState(
-            contact.id,
-            contact.firstName,
-            contact.lastName,
-            contact.profilePicture,
-            contact.profilePicture64,
-            contact.priority
-        )
-    }
 }
