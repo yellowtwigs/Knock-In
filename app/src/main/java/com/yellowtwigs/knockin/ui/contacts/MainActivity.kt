@@ -54,7 +54,6 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.settings.ManageNotificationActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 import java.util.concurrent.Callable
@@ -234,18 +233,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         Log.i("RateThisApp", s)
                         when (index) {
                             0 -> {
-                                if (calendar.get(Calendar.DAY_OF_MONTH) > s.toInt()) {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) > s.toInt() + 1) {
                                     rateThisAppPopup()
                                 }
                             }
                             1 -> {
-
                                 if (calendar.get(Calendar.YEAR) > s.toInt()) {
                                     rateThisAppPopup()
                                 }
                             }
                             2 -> {
-
                                 if (calendar.get(Calendar.MONTH) > s.toInt()) {
                                     rateThisAppPopup()
                                 }
@@ -1836,10 +1833,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             }
             .setNegativeButton(R.string.alert_dialog_later) { alertDialog, _ ->
                 val calendar = Calendar.getInstance()
-
-                Log.i("RateThisApp", "calendar.get(Calendar.YEAR) : ${calendar.get(Calendar.YEAR)}")
-                Log.i("RateThisApp", "calendar.get(Calendar.MONTH) : ${calendar.get(Calendar.MONTH)}")
-                Log.i("RateThisApp", "calendar.get(Calendar.DAY_OF_MONTH) : ${calendar.get(Calendar.DAY_OF_MONTH)}")
 
                 val editShowPopup = sharedShowPopup.edit()
                 editShowPopup.putStringSet(
