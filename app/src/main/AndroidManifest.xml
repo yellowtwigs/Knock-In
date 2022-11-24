@@ -76,7 +76,9 @@
         <activity android:name=".ui.groups.list.GroupsListActivity" />
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
 
-        <activity android:name=".ui.contacts.list.ContactsListActivity" />
+        <activity android:name=".ui.contacts.list.ContactsListActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
 
         <activity android:name=".ui.notifications.history.NotificationsHistoryActivity" />
 

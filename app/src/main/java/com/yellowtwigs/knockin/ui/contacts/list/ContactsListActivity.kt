@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
@@ -16,6 +17,7 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
@@ -91,6 +93,8 @@ class ContactsListActivity : AppCompatActivity() {
 
         sortByPreferences = getSharedPreferences("Sort_By_Preferences", Context.MODE_PRIVATE)
         filterByPreferences = getSharedPreferences("Filter_By_Preferences", Context.MODE_PRIVATE)
+
+        binding.toolbarSearch.isEnabled = false
 
         setupToolbar(binding)
         setupRecyclerView(binding)
@@ -431,7 +435,6 @@ class ContactsListActivity : AppCompatActivity() {
             }
 
             modeMenu.setOnClickListener {
-
             }
         }
     }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -135,29 +136,20 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                             firstClick = true
                     } else {
                         if (listOfItemSelected.size == 5) {
-                            tooMuch = true
+                            if (contactsUnlimitedBought) {
+                                listOfItemSelected.add(id)
+                            } else {
+                                tooMuch = true
+                            }
                         } else {
                             listOfItemSelected.add(id)
                         }
                     }
                 }
 
-                if (tooMuch && !contactsUnlimitedBought) {
-                    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                        .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
-                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
-                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                            startActivity(
-                                Intent(
-                                    this@FirstVipSelectionActivity,
-                                    PremiumActivity::class.java
-                                ).putExtra("fromMultiSelectActivity", true)
-                            )
-                        }
-                        .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                        }
-                        .show()
-                } else {
+                Log.i("contactsUnlimitedBought", "$contactsUnlimitedBought")
+
+                if (contactsUnlimitedBought) {
                     if (Resources.getSystem().configuration.locale.language == "ar") {
                         binding.multiSelectTextView.text =
                             "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
@@ -171,6 +163,37 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                     val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
                     edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
                     edit.apply()
+                } else {
+                    if (tooMuch) {
+                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+                            .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
+                            .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
+                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                                startActivity(
+                                    Intent(
+                                        this@FirstVipSelectionActivity,
+                                        PremiumActivity::class.java
+                                    ).putExtra("fromMultiSelectActivity", true)
+                                )
+                            }
+                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                            }
+                            .show()
+                    } else {
+                        if (Resources.getSystem().configuration.locale.language == "ar") {
+                            binding.multiSelectTextView.text =
+                                "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
+                        } else {
+                            binding.multiSelectTextView.text = String.format(
+                                applicationContext.resources.getString(R.string.multi_select_nb_contact),
+                                listOfItemSelected.size
+                            )
+                        }
+
+                        val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
+                        edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
+                        edit.apply()
+                    }
                 }
             }
         binding.multiSelectRecyclerView.apply {

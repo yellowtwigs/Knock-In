@@ -93,8 +93,8 @@ class GetContactByName @Inject constructor(private val contactsDao: ContactsDao)
                             }
 
                             if (firstname == firstLetter + lastLetter ||
-                                firstname == firstLetter.toLowerCase() + lastLetter.toLowerCase() ||
-                                firstname == firstLetter + lastLetter.toLowerCase()
+                                firstname == firstLetter.lowercase() + lastLetter.lowercase() ||
+                                firstname == firstLetter + lastLetter.lowercase()
                             ) {
                                 contactDB = contact
                             }

@@ -268,13 +268,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             ).show()
                         }
                     } else {
-                        if (isFavorite != 0) {
-                            updateFavorite()
-                        }
-                        withContext(Dispatchers.Main) {
-                            Log.i("ContactDuplicate", "1")
-                            addNewUserToAndroidContacts()
-                        }
+                        retrofitMaterialDialog()
                     }
                 }
             }
@@ -311,22 +305,42 @@ class AddNewContactActivity : AppCompatActivity() {
         editContactViewModel.updateFavorite("${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}")
     }
 
+    private fun retrofitMaterialDialog() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+            .setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
+            .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message)
+            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                editInAndroid = true
+                editInGoogle = true
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    editContactViewModel.addNewContact(contact!!)
+
+                    if (isFavorite != 0) {
+                        updateFavorite()
+                    }
+                    withContext(Dispatchers.Main) {
+                        addNewUserToAndroidContacts()
+                    }
+                }
+            }
+            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    editContactViewModel.addNewContact(contact!!)
+                }
+
+                goToContactsListActivity()
+            }
+            .show()
+    }
+
     private fun addNewUserToAndroidContacts() {
-        Log.i("ContactDuplicate", "2")
-        val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+        val intent = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
             type = ContactsContract.RawContacts.CONTENT_TYPE
         }
         binding.apply {
             intent.apply {
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO, contactImageString)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO, imageUri)
-//                putExtra(ContactsContract.Contacts.Photo.DISPLAY_PHOTO, contactImageString)
-//                putExtra(ContactsContract.Contacts.Photo.DISPLAY_PHOTO, imageUri)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, contactImageString)
-                Log.i("PHOTO_URI", "$imageUri")
                 putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, imageUri)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO_THUMBNAIL_URI, contactImageString)
-//                putExtra(ContactsContract.Contacts.Photo.PHOTO_THUMBNAIL_URI, imageUri)
 
                 putExtra(
                     ContactsContract.Intents.Insert.NAME,
@@ -359,9 +373,9 @@ class AddNewContactActivity : AppCompatActivity() {
                     binding.messengerIdInput.editText?.text.toString()
                 )
             }
-            isRetroFit = true
-            startActivity(intent)
         }
+        isRetroFit = true
+        startActivity(intent)
     }
 
     //endregion
@@ -588,9 +602,6 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         if (isRetroFit) {
-            CoroutineScope(Dispatchers.Default).launch {
-                editContactViewModel.addNewContact(contact!!)
-            }
             goToContactsListActivity()
         }
     }

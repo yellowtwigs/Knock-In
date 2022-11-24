@@ -22,7 +22,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/custom_shadow_background"
+            android:clickable="true"
             android:elevation="10dp"
+            android:focusable="true"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView

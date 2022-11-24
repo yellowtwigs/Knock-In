@@ -51,12 +51,12 @@ class ContactsGridAdapter(
                 contactPriorityBorder(contact.priority, civ, cxt)
                 contactProfilePicture(contact.profilePicture64, contact.profilePicture, civ, cxt)
                 var firstname = contact.firstName
-                var lastName = contact.lastName
+                var lastname = contact.lastName
 
                 val len = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     .getInt("gridview", 4)
 
-                val layoutParamsTV = name.layoutParams as ConstraintLayout.LayoutParams
+                val layoutParamsTV = firstName.layoutParams as ConstraintLayout.LayoutParams
                 val layoutParamsIV = civ.layoutParams as ConstraintLayout.LayoutParams
 
                 if (len == 4) {
@@ -69,18 +69,27 @@ class ContactsGridAdapter(
                         firstname = contact.firstName.substring(0, 10) + ".."
 
                     if (contact.lastName.length > 12)
-                        lastName = contact.lastName.substring(0, 10) + ".."
+                        lastname = contact.lastName.substring(0, 10) + ".."
 
-                    val size = "$firstname $lastName"
-                    val span = SpannableString("$firstname $lastName")
-                    span.setSpan(
+                    val sizeFirstName = "$firstname"
+                    val spanFirstName = SpannableString("$firstname")
+                    spanFirstName.setSpan(
                         RelativeSizeSpan(0.9f),
                         0,
-                        size.length - 1,
+                        sizeFirstName.length - 1,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    val sizeLastName = "$lastName"
+                    val spanLastName = SpannableString("$lastName")
+                    spanLastName.setSpan(
+                        RelativeSizeSpan(0.9f),
+                        0,
+                        sizeLastName.length - 1,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
 
-                    name.text = span
+                    firstName.text = spanFirstName
+                    lastName.text = spanLastName
                 } else if (len == 5) {
                     civ.layoutParams.height = (imageHeight - imageHeight * 0.40).toInt()
                     civ.layoutParams.width = (imageHeight - imageHeight * 0.40).toInt()
@@ -90,22 +99,29 @@ class ContactsGridAdapter(
                     if (contact.firstName.length > 11)
                         firstname = contact.firstName.substring(0, 9) + ".."
 
-                    if (contact.lastName.length > 11)
-                        lastName = contact.lastName.substring(0, 9) + ".."
-
-                    val size = "$firstname $lastName"
-                    val span = SpannableString("$firstname $lastName")
-                    span.setSpan(
+                    val sizeFirstName = "$firstname"
+                    val spanFirstName = SpannableString("$firstname")
+                    spanFirstName.setSpan(
                         RelativeSizeSpan(0.9f),
                         0,
-                        size.length - 1,
+                        sizeFirstName.length - 1,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    val sizeLastName = "$lastName"
+                    val spanLastName = SpannableString("$lastName")
+                    spanLastName.setSpan(
+                        RelativeSizeSpan(0.9f),
+                        0,
+                        sizeLastName.length - 1,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
 
-                    name.text = span
+                    firstName.text = spanFirstName
+                    lastName.text = spanLastName
                 }
 
-                name.text = contact.firstName + " " + contact.lastName
+                firstName.text = firstname
+                lastName.text = lastname
 
                 favoriteIcon.isVisible = contact.isFavorite
 
@@ -119,7 +135,6 @@ class ContactsGridAdapter(
 
                 root.setOnLongClickListener {
                     onClickedCallbackMultiSelect(contact.id, civ, contact)
-
                     true
                 }
             }
@@ -131,26 +146,14 @@ class ContactsGridAdapter(
             oldItem: ContactsListViewState,
             newItem: ContactsListViewState
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
             oldItem: ContactsListViewState,
             newItem: ContactsListViewState
         ): Boolean {
-            return oldItem.id == newItem.id &&
-                    oldItem.firstName == newItem.firstName &&
-                    oldItem.lastName == newItem.lastName &&
-                    oldItem.profilePicture == newItem.profilePicture &&
-                    oldItem.profilePicture64 == newItem.profilePicture64 &&
-                    oldItem.listOfPhoneNumbers == newItem.listOfPhoneNumbers &&
-                    oldItem.listOfMails == newItem.listOfMails &&
-                    oldItem.priority == newItem.priority &&
-                    oldItem.isFavorite == newItem.isFavorite &&
-                    oldItem.messengerId == newItem.messengerId &&
-                    oldItem.hasWhatsapp == newItem.hasWhatsapp &&
-                    oldItem.hasTelegram == newItem.hasTelegram &&
-                    oldItem.hasSignal == newItem.hasSignal
+            return oldItem == newItem
         }
     }
 }
