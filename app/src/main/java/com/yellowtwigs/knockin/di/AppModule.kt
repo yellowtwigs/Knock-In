@@ -8,6 +8,7 @@ import com.yellowtwigs.knockin.domain.notifications.*
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.dao.ContactsDao
 import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
+import com.yellowtwigs.knockin.model.service.CheckDuplicateNotificationUseCase
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
@@ -100,7 +101,8 @@ class AppModule {
             getContactByName = GetContactByName(contactsDao),
             getContactByMail = GetContactByMail(contactsDao),
             getContactByPhoneNumber = GetContactByPhoneNumber(contactsDao),
-            saveNotification = SaveNotification(notificationsRepository)
+            saveNotification = SaveNotification(notificationsRepository),
+            checkDuplicateNotificationUseCase = CheckDuplicateNotificationUseCase(notificationsRepository)
         )
     }
 }

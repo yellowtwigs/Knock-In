@@ -58,6 +58,20 @@
             app:srcCompat="@drawable/ic_star_no_shine" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/favorite_contact_2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="?attr/actionBarItemBackground"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/validate"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_star_shine" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/validate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -430,7 +444,6 @@
                     android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/messenger_id_icon"
                     android:backgroundTint="?attr/backgroundColor"
-                    android:hint="Messenger ID"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor">
 
@@ -439,7 +452,8 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edit_text"
                         android:backgroundTint="?attr/backgroundColor"
-                        android:inputType="text"
+                        android:inputType="number"
+                        android:hint="Messenger ID"
                         android:maxLines="1"
                         android:textColor="?attr/textColor"
                         android:textColorHint="?attr/textColor" />

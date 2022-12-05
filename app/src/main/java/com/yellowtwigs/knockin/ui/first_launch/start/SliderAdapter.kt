@@ -1,11 +1,8 @@
 package com.yellowtwigs.knockin.ui.first_launch.start
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.yellowtwigs.knockin.databinding.SlideItemContainerBinding
 

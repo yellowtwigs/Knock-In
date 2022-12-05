@@ -33,11 +33,14 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityEditContactBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.add_edit_contact.IconAdapter
+import com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsActivity
+import com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsViewState
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
+import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
@@ -55,8 +58,9 @@ class EditContactActivity : AppCompatActivity() {
 
     private val editContactViewModel: EditContactViewModel by viewModels()
 
-    private var fromGroups = false
     private var isChanged = false
+
+    private var fromGroups = false
     private var editInAndroid = false
     private var editInGoogle = false
     private var isRetroFit = false
@@ -74,6 +78,17 @@ class EditContactActivity : AppCompatActivity() {
     private var contactImageStringIsChanged = false
 
     private lateinit var currentContact: ContactDB
+    private lateinit var currentViewState: VipSettingsViewState
+
+    private var fromVipSettings = false
+
+    private var notificationTone = ""
+    private var notificationSound = R.raw.sms_ring
+    private var isCustomSound = 0
+    private var vipScheduleValue = 1
+    private var hourLimit = ""
+    private var audioFileName = ""
+    private var fromVipSettingsDataChanged = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +108,9 @@ class EditContactActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         val id = intent.getIntExtra("ContactId", 1)
+
+        fromVipSettings = intent.getBooleanExtra("fromVipSettings", false)
+
         fromGroups = intent.getBooleanExtra("FromGroups", false)
         bindingAllDataFromUserId(id)
         actionOnClickListener()
@@ -120,8 +138,8 @@ class EditContactActivity : AppCompatActivity() {
 
                     contactPriorityBorder(it.priority, contactImage, this@EditContactActivity)
 
-                    firstNameInput.editText?.setText(it.firstName)
 
+                    firstNameInput.editText?.setText(it.firstName)
                     lastNameInput.editText?.setText(it.lastName)
 
                     if (it.listOfPhoneNumbers.isNotEmpty()) {
@@ -131,8 +149,7 @@ class EditContactActivity : AppCompatActivity() {
                             phoneNumberFixInput.editText?.setText(contact.listOfPhoneNumbers[1])
                         }
                     }
-
-                    if (it.listOfPhoneNumbers.isNotEmpty()) {
+                    if (it.listOfMails.isNotEmpty()) {
                         mailInput.editText?.setText(contact.listOfMails[0])
                     }
 
@@ -143,16 +160,52 @@ class EditContactActivity : AppCompatActivity() {
 
                     isFavorite = it.isFavorite
                     if (it.isFavorite == 1) {
-                        favoriteContact.setImageDrawable(
-                            ResourcesCompat.getDrawable(
-                                resources,
-                                R.drawable.ic_star_shine,
-                                null
-                            )
-                        )
+                        isFavorite = 1
+                        favoriteContact.visibility = View.INVISIBLE
+                        favoriteContact2.visibility = View.VISIBLE
+                    } else {
+                        isFavorite = 0
+                        favoriteContact.visibility = View.VISIBLE
+                        favoriteContact2.visibility = View.GONE
                     }
-
                 }
+            }
+
+            if (intent.getBooleanExtra("hasChanged", false)) {
+                binding.apply {
+                    firstNameInput.editText?.setText(intent.getStringExtra("FirstName"))
+                    lastNameInput.editText?.setText(intent.getStringExtra("Lastname"))
+                    phoneNumberInput.editText?.setText(intent.getStringExtra("PhoneNumber"))
+                    phoneNumberFixInput.editText?.setText(intent.getStringExtra("FixNumber"))
+
+                    mailInput.editText?.setText(intent.getStringExtra("Mail"))
+                    mailIdInput.editText?.setText(intent.getStringExtra("MailId"))
+                    messengerIdInput.editText?.setText(intent.getStringExtra("MessengerId"))
+
+                    if (intent.getIntExtra("isFavorite", 0) == 1) {
+                        isFavorite = 1
+                        favoriteContact.visibility = View.INVISIBLE
+                        favoriteContact2.visibility = View.VISIBLE
+                    } else {
+                        isFavorite = 0
+                        favoriteContact.visibility = View.VISIBLE
+                        favoriteContact2.visibility = View.GONE
+                    }
+                    intent.putExtra("isFavorite", intent.getBooleanExtra("isFavorite", false))
+
+                    setupPriority(2)
+                }
+            }
+            if (fromVipSettings) {
+                notificationSound = intent.getIntExtra("notification_Sound", 0)
+                notificationTone = intent.getStringExtra("notificationTone").toString()
+                isCustomSound = intent.getIntExtra("isCustomSound", 0)
+                vipScheduleValue = intent.getIntExtra("vipScheduleValue", 1)
+                hourLimit = intent.getStringExtra("hourLimit").toString()
+                audioFileName = intent.getStringExtra("audioFileName").toString()
+                fromVipSettingsDataChanged = intent.getBooleanExtra("vipSettingsHasChanged", false)
+
+                Log.i("fromVipSettings", "notificationSound : $notificationSound")
             }
         }
     }
@@ -285,27 +338,42 @@ class EditContactActivity : AppCompatActivity() {
             favoriteContact.setOnClickListener {
                 if (isFavorite == 1) {
                     isFavorite = 0
-                    favoriteContact.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.ic_star_selector,
-                            null
-                        )
-                    )
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
                 } else {
                     isFavorite = 1
-                    favoriteContact.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.ic_star_shine,
-                            null
-                        )
-                    )
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
+                }
+            }
+            favoriteContact2.setOnClickListener {
+                if (isFavorite == 1) {
+                    isFavorite = 0
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
+                } else {
+                    isFavorite = 1
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
                 }
             }
             validate.setOnClickListener {
                 hideKeyboard(this@EditContactActivity)
-                retrofitMaterialDialog()
+                if (checkIfADataWasChanged()) {
+                    retrofitMaterialDialog()
+                } else {
+                    if (fromVipSettingsDataChanged) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            updateUser()
+                            if (isFavorite != currentContact.isFavorite) {
+                                updateFavorite()
+                            }
+                        }
+                        goToContactsOrGroups()
+                    } else {
+                        goToContactsOrGroups()
+                    }
+                }
             }
 
             // Helper
@@ -330,7 +398,32 @@ class EditContactActivity : AppCompatActivity() {
             }
 
             // Settings
-
+            vipSettingsIcon.setOnClickListener {
+                if (checkIfADataWasChanged()) {
+                    val intentToVipSettings =
+                        Intent(this@EditContactActivity, VipSettingsActivity::class.java)
+                    intentToVipSettings.apply {
+                        putExtra("ContactId", currentContact.id)
+                        putExtra("hasChanged", true)
+                        putExtra("FirstName", firstNameInput.editText?.text.toString())
+                        putExtra("Lastname", lastNameInput.editText?.text.toString())
+                        putExtra("PhoneNumber", phoneNumberInput.editText?.text.toString())
+                        putExtra("FixNumber", phoneNumberFixInput.editText?.text.toString())
+                        putExtra("Mail", mailInput.editText?.text.toString())
+                        putExtra("MailId", mailIdInput.editText?.text.toString())
+                        putExtra("MessengerId", messengerIdInput.editText?.text.toString())
+                        putExtra("Priority", prioritySpinner.selectedItemPosition)
+                        putExtra("isFavorite", isFavorite)
+                    }
+                    startActivity(intentToVipSettings)
+                } else {
+                    val intentToVipSettings =
+                        Intent(this@EditContactActivity, VipSettingsActivity::class.java)
+                    intentToVipSettings.putExtra("ContactId", currentContact.id)
+                    intentToVipSettings.putExtra("hasChanged", false)
+                    startActivity(intentToVipSettings)
+                }
+            }
         }
     }
 
@@ -339,9 +432,19 @@ class EditContactActivity : AppCompatActivity() {
     //region ============================================ UPDATE ============================================
 
     private suspend fun updateUser() {
+        val fullName = if (isStringTotallyEmpty(binding.firstNameInput.editText?.text.toString())) {
+            binding.lastNameInput.editText?.text.toString()
+        } else {
+            if (isStringTotallyEmpty(binding.lastNameInput.editText?.text.toString())) {
+                binding.firstNameInput.editText?.text.toString()
+            } else {
+                "${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}"
+            }
+        }
+
         val contact = ContactDB(
             currentContact.id,
-            "${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}",
+            fullName,
             binding.firstNameInput.editText?.text.toString(),
             binding.lastNameInput.editText?.text.toString(),
             currentContact.profilePicture,
@@ -356,12 +459,12 @@ class EditContactActivity : AppCompatActivity() {
             isFavorite,
             binding.messengerIdInput.editText?.text.toString(),
             currentContact.listOfMessagingApps,
-            currentContact.notificationTone,
-            currentContact.notificationSound,
-            currentContact.isCustomSound,
-            currentContact.vipSchedule,
-            currentContact.hourLimitForNotification,
-            currentContact.audioFileName
+            notificationTone,
+            notificationSound,
+            isCustomSound,
+            vipScheduleValue,
+            hourLimit,
+            audioFileName
         )
 
         editContactViewModel.updateContact(contact)
@@ -372,6 +475,10 @@ class EditContactActivity : AppCompatActivity() {
 //            }
 //        } else {
 //        }
+    }
+
+    private fun isStringTotallyEmpty(value: String): Boolean {
+        return value.isEmpty() || value.isBlank() || value == ""
     }
 
     private suspend fun updateFavorite() {
@@ -386,12 +493,12 @@ class EditContactActivity : AppCompatActivity() {
                 editInAndroid = true
                 editInGoogle = true
 
+                addNewUserToAndroidContacts()
                 CoroutineScope(Dispatchers.IO).launch {
                     updateUser()
                     if (isFavorite != currentContact.isFavorite) {
                         updateFavorite()
                     }
-                    addNewUserToAndroidContacts()
                 }
             }
             .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
@@ -408,47 +515,46 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     private fun addNewUserToAndroidContacts() {
-        val intent = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
-            type = ContactsContract.RawContacts.CONTENT_TYPE
-        }
-        binding.apply {
-            intent.apply {
-                putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, imageUri)
+        val intentInsertEdit = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
+            type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
 
-                putExtra(
-                    ContactsContract.Intents.Insert.NAME,
-                    binding.firstNameInput.editText?.text.toString() + " " +
-                            binding.lastNameInput.editText?.text.toString(),
-                )
+            putExtra(
+                ContactsContract.Intents.Insert.NAME,
+                binding.firstNameInput.editText?.text.toString() + " " +
+                        binding.lastNameInput.editText?.text.toString(),
+            )
 
-                putExtra(
-                    ContactsContract.Intents.Insert.EMAIL,
-                    binding.mailInput.editText?.text.toString()
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.EMAIL_TYPE,
-                    ContactsContract.CommonDataKinds.Email.TYPE_WORK
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.PHONE,
-                    binding.phoneNumberInput.editText?.text.toString()
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.PHONE_TYPE,
-                    ContactsContract.CommonDataKinds.Phone.TYPE_HOME
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.SECONDARY_PHONE,
-                    binding.phoneNumberFixInput.editText?.text.toString()
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.EXTRA_DATA_SET,
-                    binding.messengerIdInput.editText?.text.toString()
-                )
-            }
+            putExtra(
+                ContactsContract.Intents.Insert.EMAIL,
+                binding.mailInput.editText?.text.toString()
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.EMAIL_TYPE,
+                ContactsContract.CommonDataKinds.Email.TYPE_WORK
+            )
+            putExtra(
+                ContactsContract.Contacts.Photo.PHOTO,
+                contactImageString
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.PHONE,
+                binding.phoneNumberInput.editText?.text.toString()
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.PHONE_TYPE,
+                ContactsContract.CommonDataKinds.Phone.TYPE_HOME
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.SECONDARY_PHONE,
+                binding.phoneNumberFixInput.editText?.text.toString()
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.EXTRA_DATA_SET,
+                binding.messengerIdInput.editText?.text.toString()
+            )
         }
         isRetroFit = true
-        startActivity(intent)
+        startActivity(intentInsertEdit)
     }
 
     //endregion
@@ -479,7 +585,7 @@ class EditContactActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         hideKeyboard(this)
-        if (checkIfADataWasChanged()) {
+        if (checkIfADataWasChanged() || isChanged || fromVipSettingsDataChanged) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog)
                 .setTitle(R.string.edit_contact_alert_dialog_cancel_title)
                 .setMessage(R.string.edit_contact_alert_dialog_cancel_message)

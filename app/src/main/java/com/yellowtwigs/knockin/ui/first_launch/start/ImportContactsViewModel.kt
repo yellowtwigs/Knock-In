@@ -352,21 +352,21 @@ class ImportContactsViewModel @Inject constructor(
                                 ""
                             }
 
-                            val fullFullName = if (fullName.second.second == "") {
-                                if (fullName.second.first == "") {
+                            val fullFullName = if (isStringTotallyEmpty(fullName.second.second)) {
+                                if (isStringTotallyEmpty(fullName.second.first)) {
                                     fullName.second.third
                                 } else {
-                                    if (fullName.second.third == "") {
+                                    if (isStringTotallyEmpty(fullName.second.third)) {
                                         fullName.second.first
                                     } else {
                                         fullName.second.first + " " + fullName.second.third
                                     }
                                 }
                             } else {
-                                if (fullName.second.first == "") {
+                                if (isStringTotallyEmpty(fullName.second.first)) {
                                     "${fullName.second.second} " + fullName.second.third
                                 } else {
-                                    if (fullName.second.third == "") {
+                                    if (isStringTotallyEmpty(fullName.second.third)) {
                                         fullName.second.first + " ${fullName.second.second}"
                                     } else {
                                         fullName.second.first + " ${fullName.second.second} " + fullName.second.third
@@ -386,10 +386,18 @@ class ImportContactsViewModel @Inject constructor(
                             } else {
                             }
 
+                            Log.i(
+                                "FullFullName", "${
+                                    fullFullName.uppercase().unAccent().replace("\\s".toRegex(), "")
+                                        .toCharArray().toString()
+                                }"
+                            )
+
                             createContactUseCase.invoke(
                                 ContactDB(
                                     0,
-                                    fullFullName.uppercase().unAccent().replace("\\s".toRegex(), ""),
+                                    fullFullName.uppercase().unAccent()
+                                        .replace("\\s".toRegex(), ""),
                                     fullName.second.first + secondName,
                                     fullName.second.third,
                                     randomDefaultImage(0, context, "Create"),
@@ -571,6 +579,10 @@ class ImportContactsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun isStringTotallyEmpty(value: String): Boolean {
+        return value.isEmpty() || value.isBlank() || value == ""
     }
 
     //region ============================================ GROUP =============================================

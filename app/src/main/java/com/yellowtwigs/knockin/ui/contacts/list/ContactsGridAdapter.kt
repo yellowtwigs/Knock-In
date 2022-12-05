@@ -99,25 +99,29 @@ class ContactsGridAdapter(
                     if (contact.firstName.length > 11)
                         firstname = contact.firstName.substring(0, 9) + ".."
 
-                    val sizeFirstName = "$firstname"
-                    val spanFirstName = SpannableString("$firstname")
-                    spanFirstName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeFirstName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    val sizeLastName = "$lastName"
-                    val spanLastName = SpannableString("$lastName")
-                    spanLastName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeLastName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                    if (firstname != "") {
+                        val sizeFirstName = "$firstname"
+                        val spanFirstName = SpannableString("$firstname")
+                        spanFirstName.setSpan(
+                            RelativeSizeSpan(0.9f),
+                            0,
+                            sizeFirstName.length - 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        firstName.text = spanFirstName
+                    }
+                    if (lastname != "") {
+                        val sizeLastName = "$lastName"
+                        val spanLastName = SpannableString("$lastName")
+                        spanLastName.setSpan(
+                            RelativeSizeSpan(0.9f),
+                            0,
+                            sizeLastName.length - 1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
 
-                    firstName.text = spanFirstName
-                    lastName.text = spanLastName
+                        lastName.text = spanLastName
+                    }
                 }
 
                 firstName.text = firstname

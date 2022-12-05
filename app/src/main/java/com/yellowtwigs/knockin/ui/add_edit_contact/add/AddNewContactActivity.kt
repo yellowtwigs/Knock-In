@@ -213,22 +213,23 @@ class AddNewContactActivity : AppCompatActivity() {
             favoriteContact.setOnClickListener {
                 if (isFavorite == 1) {
                     isFavorite = 0
-                    favoriteContact.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.ic_star_selector,
-                            null
-                        )
-                    )
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
                 } else {
                     isFavorite = 1
-                    favoriteContact.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.ic_star_shine,
-                            null
-                        )
-                    )
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
+                }
+            }
+            favoriteContact2.setOnClickListener {
+                if (isFavorite == 1) {
+                    isFavorite = 0
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
+                } else {
+                    isFavorite = 1
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
                 }
             }
             validate.setOnClickListener {
@@ -268,7 +269,9 @@ class AddNewContactActivity : AppCompatActivity() {
                             ).show()
                         }
                     } else {
-                        retrofitMaterialDialog()
+                        withContext(Dispatchers.Main) {
+                            retrofitMaterialDialog()
+                        }
                     }
                 }
             }
@@ -313,14 +316,13 @@ class AddNewContactActivity : AppCompatActivity() {
                 editInAndroid = true
                 editInGoogle = true
 
+                addNewUserToAndroidContacts()
+
                 CoroutineScope(Dispatchers.IO).launch {
                     editContactViewModel.addNewContact(contact!!)
 
                     if (isFavorite != 0) {
                         updateFavorite()
-                    }
-                    withContext(Dispatchers.Main) {
-                        addNewUserToAndroidContacts()
                     }
                 }
             }
@@ -336,44 +338,44 @@ class AddNewContactActivity : AppCompatActivity() {
 
     private fun addNewUserToAndroidContacts() {
         val intent = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
-            type = ContactsContract.RawContacts.CONTENT_TYPE
-        }
-        binding.apply {
-            intent.apply {
-                putExtra(ContactsContract.Contacts.Photo.PHOTO_URI, imageUri)
+            type = ContactsContract.RawContacts.CONTENT_ITEM_TYPE
 
-                putExtra(
-                    ContactsContract.Intents.Insert.NAME,
-                    binding.firstNameInput.editText?.text.toString() + " " +
-                            binding.lastNameInput.editText?.text.toString(),
-                )
+            putExtra(
+                ContactsContract.Intents.Insert.NAME,
+                binding.firstNameInput.editText?.text.toString() + " " +
+                        binding.lastNameInput.editText?.text.toString(),
+            )
 
-                putExtra(
-                    ContactsContract.Intents.Insert.EMAIL,
-                    binding.mailInput.editText?.text.toString()
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.EMAIL_TYPE,
-                    ContactsContract.CommonDataKinds.Email.TYPE_WORK
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.PHONE,
-                    binding.phoneNumberInput.editText?.text.toString()
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.PHONE_TYPE,
-                    ContactsContract.CommonDataKinds.Phone.TYPE_HOME
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.SECONDARY_PHONE,
-                    binding.phoneNumberFixInput.editText?.text.toString()
-                )
-                putExtra(
-                    ContactsContract.Intents.Insert.EXTRA_DATA_SET,
-                    binding.messengerIdInput.editText?.text.toString()
-                )
-            }
+            putExtra(
+                ContactsContract.Intents.Insert.EMAIL,
+                binding.mailInput.editText?.text.toString()
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.EMAIL_TYPE,
+                ContactsContract.CommonDataKinds.Email.TYPE_WORK
+            )
+            putExtra(
+                ContactsContract.Contacts.Photo.PHOTO,
+                contactImageString
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.PHONE,
+                binding.phoneNumberInput.editText?.text.toString()
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.PHONE_TYPE,
+                ContactsContract.CommonDataKinds.Phone.TYPE_HOME
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.SECONDARY_PHONE,
+                binding.phoneNumberFixInput.editText?.text.toString()
+            )
+            putExtra(
+                ContactsContract.Intents.Insert.EXTRA_DATA_SET,
+                binding.messengerIdInput.editText?.text.toString()
+            )
         }
+
         isRetroFit = true
         startActivity(intent)
     }

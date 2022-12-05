@@ -94,8 +94,6 @@ class ContactsListActivity : AppCompatActivity() {
         sortByPreferences = getSharedPreferences("Sort_By_Preferences", Context.MODE_PRIVATE)
         filterByPreferences = getSharedPreferences("Filter_By_Preferences", Context.MODE_PRIVATE)
 
-        binding.toolbarSearch.isEnabled = false
-
         setupToolbar(binding)
         setupRecyclerView(binding)
         setupBottomNavigationView(binding)
@@ -139,15 +137,19 @@ class ContactsListActivity : AppCompatActivity() {
         when (sortByPreferences.getInt("Sort_By_Preferences", R.id.sort_by_priority)) {
             R.id.sort_by_full_name -> {
                 menu.findItem(R.id.sort_by_full_name).isChecked = true
+                contactsListViewModel.setSortedBy(R.id.sort_by_full_name)
             }
             R.id.sort_by_priority -> {
                 menu.findItem(R.id.sort_by_priority).isChecked = true
+                contactsListViewModel.setSortedBy(R.id.sort_by_priority)
             }
             R.id.sort_by_favorite -> {
                 menu.findItem(R.id.sort_by_favorite).isChecked = true
+                contactsListViewModel.setSortedBy(R.id.sort_by_favorite)
             }
             else -> {
                 menu.findItem(R.id.sort_by_priority).isChecked = true
+                contactsListViewModel.setSortedBy(R.id.sort_by_priority)
             }
         }
 
@@ -211,7 +213,7 @@ class ContactsListActivity : AppCompatActivity() {
                 editFilterBy.putInt("Filter_By_Preferences", R.id.mail_filter)
                 editFilterBy.apply()
 
-                contactsListViewModel.setSortedBy(R.id.mail_filter)
+                contactsListViewModel.setFilterBy(R.id.mail_filter)
 
                 item.isChecked = !item.isChecked
                 return true
@@ -221,7 +223,7 @@ class ContactsListActivity : AppCompatActivity() {
                 editFilterBy.putInt("Filter_By_Preferences", R.id.whatsapp_filter)
                 editFilterBy.apply()
 
-                contactsListViewModel.setSortedBy(R.id.whatsapp_filter)
+                contactsListViewModel.setFilterBy(R.id.whatsapp_filter)
 
                 item.isChecked = !item.isChecked
                 return true

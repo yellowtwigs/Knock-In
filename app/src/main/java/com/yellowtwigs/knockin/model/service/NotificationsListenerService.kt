@@ -167,19 +167,33 @@ class NotificationsListenerService : NotificationListenerService() {
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         notificationsListenerUseCases.apply {
-                            saveNotification.invoke(
-                                NotificationDB(
-                                    0,
-                                    sbp.tickerText.toString(),
-                                    sbp.statusBarNotificationInfo["android.title"].toString(),
-                                    sbp.statusBarNotificationInfo["android.text"].toString(),
-                                    sbp.appNotifier!!,
-                                    System.currentTimeMillis(),
-                                    0,
-                                    0,
-                                    0
+                            if(!checkDuplicateNotificationUseCase.invoke(
+                                    NotificationDB(
+                                        0,
+                                        sbp.tickerText.toString(),
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        sbp.statusBarNotificationInfo["android.text"].toString(),
+                                        sbp.appNotifier!!,
+                                        System.currentTimeMillis(),
+                                        0,
+                                        0,
+                                        0
+                                    )
+                                )){
+                                saveNotification.invoke(
+                                    NotificationDB(
+                                        0,
+                                        sbp.tickerText.toString(),
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        sbp.statusBarNotificationInfo["android.text"].toString(),
+                                        sbp.appNotifier!!,
+                                        System.currentTimeMillis(),
+                                        0,
+                                        0,
+                                        0
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
