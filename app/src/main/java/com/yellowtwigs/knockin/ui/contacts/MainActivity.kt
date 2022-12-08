@@ -130,8 +130,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.navigation_groups -> {
                     startActivity(
                         Intent(
-                            this@MainActivity,
-                            GroupManagerActivity::class.java
+                            this@MainActivity, GroupManagerActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -139,8 +138,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.navigation_notifcations -> {
                     startActivity(
                         Intent(
-                            this@MainActivity,
-                            NotificationHistoryActivity::class.java
+                            this@MainActivity, NotificationHistoryActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -213,11 +211,151 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val calendar = Calendar.getInstance()
 
         if (firstTime.getBoolean("FirstTimeInTheApp", true)) {
-            val editFirstTime = firstTime.edit()
-            editFirstTime.putBoolean("FirstTimeInTheApp", false)
-            editFirstTime.apply()
+            val oneWeekSharedPreferences = getSharedPreferences("OneWeek", Context.MODE_PRIVATE)
 
-            rateThisAppPopup()
+            val set = oneWeekSharedPreferences.getStringSet(
+                "OneWeek", setOf(
+                    calendar.get(Calendar.YEAR).toString(),
+                    calendar.get(Calendar.MONTH).toString(),
+                    calendar.get(Calendar.DAY_OF_MONTH).toString()
+                )
+            )
+
+            set?.let {
+                var day = 0
+                var month = 0
+                var year = 0
+                it.forEachIndexed { index, s ->
+                    with(s) {
+                        when {
+                            contains("DAY") -> {
+                                day = s.split(":")[1].toInt()
+                            }
+                            contains("MONTH") -> {
+                                month = s.split(":")[1].toInt()
+                            }
+                            contains("YEAR") -> {
+                                year = s.split(":")[1].toInt()
+                            }
+                            else -> {
+
+                            }
+                        }
+                    }
+                }
+
+                Log.i("OneWeek", "day : $day")
+                Log.i("OneWeek", "month : $month")
+                Log.i("OneWeek", "year : $year")
+
+                Log.i("OneWeek", "calendar.get(Calendar.DAY_OF_MONTH) : ${calendar.get(Calendar.DAY_OF_MONTH)}")
+                Log.i("OneWeek", "calendar.get(Calendar.MONTH) : ${calendar.get(Calendar.MONTH)}")
+                Log.i("OneWeek", "calendar.get(Calendar.YEAR) : ${calendar.get(Calendar.YEAR)}")
+
+                if (calendar.get(Calendar.DAY_OF_MONTH) >= day + 7) {
+                    val editFirstTime = firstTime.edit()
+                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                    editFirstTime.apply()
+                    rateThisAppPopup()
+                } else if (calendar.get(Calendar.MONTH) > month) {
+                    when (day) {
+                        1 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        2 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        25 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        26 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 2) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        27 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 3) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        28 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 4) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        29 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 5) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        30 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 6) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        31 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 7) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                    }
+                } else if (calendar.get(Calendar.YEAR) > year) {
+                    val editFirstTime = firstTime.edit()
+                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                    editFirstTime.apply()
+                }
+            }
         } else {
             if (fromSplashScreen) {
                 val set = sharedShowPopup.getStringSet(
@@ -229,8 +367,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 )
                 set?.let {
                     it.forEachIndexed { index, s ->
-                        Log.i("RateThisApp", "$index")
-                        Log.i("RateThisApp", s)
                         when (index) {
                             0 -> {
                                 if (calendar.get(Calendar.DAY_OF_MONTH) > s.toInt() + 1) {
@@ -367,8 +503,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         itemLayout.setOnClickListener {
             startActivity(
                 Intent(
-                    this@MainActivity,
-                    TeleworkingActivity::class.java
+                    this@MainActivity, TeleworkingActivity::class.java
                 )
             )
         }
@@ -379,8 +514,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 R.id.nav_home -> startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 R.id.nav_notifications -> startActivity(
                     Intent(
-                        this@MainActivity,
-                        ManageNotificationActivity::class.java
+                        this@MainActivity, ManageNotificationActivity::class.java
                     )
                 )
 //                R.id.nav_go_to_kin -> {
@@ -390,14 +524,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 //                }
                 R.id.nav_in_app -> startActivity(
                     Intent(
-                        this@MainActivity,
-                        PremiumActivity::class.java
+                        this@MainActivity, PremiumActivity::class.java
                     )
                 )
                 R.id.nav_manage_screen -> startActivity(
                     Intent(
-                        this@MainActivity,
-                        ManageMyScreenActivity::class.java
+                        this@MainActivity, ManageMyScreenActivity::class.java
                     )
                 )
                 R.id.nav_help -> startActivity(Intent(this@MainActivity, HelpActivity::class.java))
@@ -431,20 +563,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         when {
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "lastname" -> gestionnaireContacts!!.sortContactByLastname()
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "nom" -> gestionnaireContacts!!.sortContactByFirstNameAZ()
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "priorite" -> gestionnaireContacts!!.sortContactByPriority()
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "favoris" -> gestionnaireContacts!!.sortContactByFavorite()
             else -> gestionnaireContacts!!.sortContactByFavorite()
         }
@@ -534,19 +662,15 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             //check les permissions
             val sync = Runnable {
                 if (ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.READ_CONTACTS
+                        this, Manifest.permission.READ_CONTACTS
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.READ_CONTACTS),
-                        PERMISSION_READ_CONTACT
+                        this, arrayOf(Manifest.permission.READ_CONTACTS), PERMISSION_READ_CONTACT
                     )
                 }
                 if (ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.READ_CONTACTS
+                        this, Manifest.permission.READ_CONTACTS
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     val displayLoading = Runnable {
@@ -560,13 +684,14 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1
                     var stringSet = listOf<String>()
-                    if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet =
-                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                    if (sharedPreferencesSync.getStringSet(
+                            index.toString(), null
+                        ) != null
+                    ) stringSet =
+                        sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     val changedContactList = arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(
-                            index.toString(),
-                            null
+                            index.toString(), null
                         ) != null && stringSet.isNotEmpty()
                     ) {
                         stringSet =
@@ -578,8 +703,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     index = 1
                     val edit: SharedPreferences.Editor = sharedPreferencesSync.edit()
                     while (sharedPreferencesSync.getStringSet(
-                            index.toString(),
-                            null
+                            index.toString(), null
                         ) != null && stringSet.isNotEmpty()
                     ) {
                         stringSet =
@@ -589,13 +713,13 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     }
                     edit.apply()
                     val sharedPrefe = applicationContext.getSharedPreferences(
-                        "Gridview_column",
-                        Context.MODE_PRIVATE
+                        "Gridview_column", Context.MODE_PRIVATE
                     )
-                    if (sharedPrefe.getString("tri", "") == "priorite")
-                        gestionnaireContacts?.sortContactByPriority()
-                    else
-                        gestionnaireContacts?.sortContactByFirstNameAZ()
+                    if (sharedPrefe.getString(
+                            "tri", ""
+                        ) == "priorite"
+                    ) gestionnaireContacts?.sortContactByPriority()
+                    else gestionnaireContacts?.sortContactByFirstNameAZ()
 
                     val displaySync = Runnable {
                         main_loadingPanel?.visibility = View.GONE
@@ -651,8 +775,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 startActivity(browserIntent)
             } else {
                 val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.yellowtwigs.com/help-contacts")
+                    Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-contacts")
                 )
                 startActivity(browserIntent)
             }
@@ -713,35 +836,32 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 val contact = listOfItemSelected[0].contactDB
                 suppressWarning += contact!!.firstName + " " + contact.lastName
             }
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
-                .setMessage(
-                    String.format(
-                        resources.getString(R.string.main_alert_dialog_delete_contact_message),
-                        suppressWarning
-                    )
+            MaterialAlertDialogBuilder(
+                this, R.style.AlertDialog
+            ).setTitle(getString(R.string.main_alert_dialog_delete_contact_title)).setMessage(
+                String.format(
+                    resources.getString(R.string.main_alert_dialog_delete_contact_message),
+                    suppressWarning
                 )
-                .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
+            ).setPositiveButton(R.string.edit_contact_validate) { _, _ ->
 
-                    val nbVIPTT = nb_Contacts_VIP - nbVIP
+                val nbVIPTT = nb_Contacts_VIP - nbVIP
 
-                    val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
-                    edit.putInt("nb_Contacts_VIP", nbVIPTT)
-                    edit.apply()
+                val edit: SharedPreferences.Editor = sharedNumberOfContactsVIPPreferences.edit()
+                edit.putInt("nb_Contacts_VIP", nbVIPTT)
+                edit.apply()
 
-                    listOfItemSelected.forEach {
-                        main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
-                    }
-                    listOfItemSelected.clear()
-                    switchMultiSelectToNormalMode()
-                    refreshActivity()
-                    finish()
-                    overridePendingTransition(0, 0)
-                    startActivity(getIntent())
-                    overridePendingTransition(0, 0)
+                listOfItemSelected.forEach {
+                    main_ContactsDatabase!!.contactsDao().deleteContactById(it.contactDB!!.id!!)
                 }
-                .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
-                .show()
+                listOfItemSelected.clear()
+                switchMultiSelectToNormalMode()
+                refreshActivity()
+                finish()
+                overridePendingTransition(0, 0)
+                startActivity(getIntent())
+                overridePendingTransition(0, 0)
+            }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
 
         }
 
@@ -749,16 +869,12 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             override fun afterTextChanged(s: Editable) {}
 
             override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
+                s: CharSequence, start: Int, count: Int, after: Int
             ) {
             }
 
             override fun onTextChanged(
-                charSequence: CharSequence,
-                start: Int,
-                before: Int,
-                count: Int
+                charSequence: CharSequence, start: Int, before: Int, count: Int
             ) {
                 if (gridViewAdapter != null) {
                     gridViewAdapter!!.closeMenu()
@@ -770,8 +886,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 val length = sharedPref.getInt("gridview", 1)
 
                 val filteredList = gestionnaireContacts!!.getContactConcernByFilter(
-                    main_filter,
-                    main_search_bar_value
+                    main_filter, main_search_bar_value
                 )
                 val contactListDb = ContactManager(this@MainActivity)
 
@@ -792,9 +907,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                     main_GridView!!.adapter = gridViewAdapter
                 } else {
                     recyclerViewAdapter = ContactRecyclerViewAdapter(
-                        this@MainActivity,
-                        gestionnaireContacts!!,
-                        length
+                        this@MainActivity, gestionnaireContacts!!, length
                     )
                     main_RecyclerView!!.adapter = recyclerViewAdapter
                 }
@@ -818,8 +931,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 listOfIdContactSelected.add(listOfItemSelected[i].getContactId())
             }
             intentToMultiChannelActivity.putIntegerArrayListExtra(
-                "ListContactsSelected",
-                listOfIdContactSelected
+                "ListContactsSelected", listOfIdContactSelected
             )
 
             refreshActivity()
@@ -904,9 +1016,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         main_GridView?.visibility = View.VISIBLE
                     } else {
                         recyclerViewAdapter = ContactRecyclerViewAdapter(
-                            this@MainActivity,
-                            gestionnaireContacts!!,
-                            len
+                            this@MainActivity, gestionnaireContacts!!, len
                         )
                         main_RecyclerView?.adapter = recyclerViewAdapter
                         main_RecyclerView?.visibility = View.VISIBLE
@@ -922,24 +1032,22 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val shared_popup_response = sharedpopup_shop.getBoolean("popup_response", true)
         val edit: SharedPreferences.Editor = sharedpopup_shop.edit()
         val actual_timestamp = System.currentTimeMillis() / 1000
-        val popup_shop = MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setPositiveButton(R.string.popup_shop_yes) { _, _ ->
-                edit.putBoolean("popup_response", true)
-                edit.apply()
-                startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
-            }
-            .setNeutralButton(R.string.popup_shop_never) { _, _ ->
-                edit.putBoolean("popup_response", false)
-                edit.apply()
-            }
-            .setNegativeButton(R.string.popup_shop_later) { _, _ ->
-                edit.putBoolean("popup_response", true)
-                edit.apply()
-            }
+        val popup_shop = MaterialAlertDialogBuilder(
+            this, R.style.AlertDialog
+        ).setPositiveButton(R.string.popup_shop_yes) { _, _ ->
+            edit.putBoolean("popup_response", true)
+            edit.apply()
+            startActivity(Intent(this@MainActivity, PremiumActivity::class.java))
+        }.setNeutralButton(R.string.popup_shop_never) { _, _ ->
+            edit.putBoolean("popup_response", false)
+            edit.apply()
+        }.setNegativeButton(R.string.popup_shop_later) { _, _ ->
+            edit.putBoolean("popup_response", true)
+            edit.apply()
+        }
         if (shared_timestamp == 0L) {
 //            popup_shop.show()
-            val timestamp =
-                System.currentTimeMillis() / 1000 + 300
+            val timestamp = System.currentTimeMillis() / 1000 + 300
             edit.putLong("popup_timestamp", timestamp)
             edit.apply()
         } else {
@@ -1101,14 +1209,10 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val pm = packageManager
         val cmpName = ComponentName(this, NotificationListener::class.java)
         pm.setComponentEnabledSetting(
-            cmpName,
-            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-            PackageManager.DONT_KILL_APP
+            cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
         )
         pm.setComponentEnabledSetting(
-            cmpName,
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-            PackageManager.DONT_KILL_APP
+            cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
         )
     }
 
@@ -1350,8 +1454,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(
-            Intent.EXTRA_EMAIL,
-            contact
+            Intent.EXTRA_EMAIL, contact
         )/*listOfMail.toArray(new String[listOfMail.size()]*/
         intent.data = Uri.parse("mailto:")
         intent.type = "message/rfc822"
@@ -1472,8 +1575,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
         //endregion
 
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setView(alertView)
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setView(alertView)
             .setPositiveButton(R.string.alert_dialog_validate) { _, _ ->
                 if (mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites" || mainCreateGroupAlertDialogEditText.text!!.toString() == "Favorites") {
                     hideKeyboard()
@@ -1562,11 +1664,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         .updateGroupSectionColorById(idGroup.toInt(), color)
                     startActivity(Intent(this, GroupManagerActivity::class.java))
                 }
-            }
-            .setNegativeButton(R.string.alert_dialog_cancel) { _, _ ->
+            }.setNegativeButton(R.string.alert_dialog_cancel) { _, _ ->
                 hideKeyboard()
-            }
-            .show()
+            }.show()
     }
 
     override fun onRestart() {
@@ -1586,9 +1686,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
      * @param grantResults [IntArray]
      */
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -1599,9 +1697,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                         callPhone(gridViewAdapter?.phonePermission.toString(), this)
                     } else {
                         Toast.makeText(
-                            this,
-                            "Can't do anything until you permit me !",
-                            Toast.LENGTH_SHORT
+                            this, "Can't do anything until you permit me !", Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -1629,14 +1725,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private fun importWhatsappContacts(listContact: List<ContactDB>) {
         val cr = contentResolver
         val contactCursor = cr.query(
-            ContactsContract.RawContacts.CONTENT_URI,
-            arrayOf(
-                ContactsContract.RawContacts._ID,
-                ContactsContract.RawContacts.CONTACT_ID
-            ),
-            ContactsContract.RawContacts.ACCOUNT_TYPE + "= ?",
-            arrayOf("com.whatsapp"),
-            null
+            ContactsContract.RawContacts.CONTENT_URI, arrayOf(
+                ContactsContract.RawContacts._ID, ContactsContract.RawContacts.CONTACT_ID
+            ), ContactsContract.RawContacts.ACCOUNT_TYPE + "= ?", arrayOf("com.whatsapp"), null
         )
 
         val myWhatsappContacts = ArrayList<String>()
@@ -1646,12 +1737,11 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 if (contactCursor.moveToFirst()) {
                     try {
                         do {
-                            val whatsappContactId =
-                                contactCursor.getString(
-                                    contactCursor.getColumnIndexOrThrow(
-                                        ContactsContract.RawContacts.CONTACT_ID
-                                    )
+                            val whatsappContactId = contactCursor.getString(
+                                contactCursor.getColumnIndexOrThrow(
+                                    ContactsContract.RawContacts.CONTACT_ID
                                 )
+                            )
 
                             if (whatsappContactId != null) {
                                 val whatsAppContactCursor = cr.query(
@@ -1662,7 +1752,8 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
                                     ),
                                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                                    arrayOf(whatsappContactId), null
+                                    arrayOf(whatsappContactId),
+                                    null
                                 );
 
                                 if (whatsAppContactCursor != null) {
@@ -1686,12 +1777,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                                                 .setHasWhatsapp(main_ContactsDatabase)
 
                                             val detail = ContactDetailDB(
-                                                null,
-                                                contact.id,
-                                                number,
-                                                "phone",
-                                                "",
-                                                0
+                                                null, contact.id, number, "phone", "", 0
                                             )
                                             main_ContactsDatabase!!.contactDetailsDao()
                                                 .insert(detail)
@@ -1717,20 +1803,16 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
             gestionnaireContacts!!.getContactConcernByFilter(main_filter, main_search_bar_value)
         when {
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "prenom" -> contactListDb.sortContactByFirstNameAZ()
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "lastname" -> contactListDb.sortContactByLastname()
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "priorite" -> contactListDb.sortContactByPriority()
             sharedPreferences.getString(
-                "tri",
-                "nom"
+                "tri", "nom"
             ) == "favoris" -> contactListDb.sortContactByFavorite()
             else -> contactListDb.sortContactByGroup()
         }
@@ -1812,8 +1894,9 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
     private fun rateThisAppPopup() {
         val manager = ReviewManagerFactory.create(this)
         val request = manager.requestReviewFlow()
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle(getString(R.string.rate_this_app_title))
+        MaterialAlertDialogBuilder(
+            this, R.style.AlertDialog
+        ).setTitle(getString(R.string.rate_this_app_title))
             .setMessage(getString(R.string.rate_this_app_message))
             .setPositiveButton(R.string.start_activity_go_edition_positive_button) { alertDialog, _ ->
                 val edit = rateThisAppSharedPreferences.edit()
@@ -1830,8 +1913,7 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
                 }
                 alertDialog.dismiss()
                 alertDialog.cancel()
-            }
-            .setNegativeButton(R.string.alert_dialog_later) { alertDialog, _ ->
+            }.setNegativeButton(R.string.alert_dialog_later) { alertDialog, _ ->
                 val calendar = Calendar.getInstance()
 
                 val editShowPopup = sharedShowPopup.edit()
@@ -1846,7 +1928,6 @@ class MainActivity : AppCompatActivity(), DrawerLayout.DrawerListener {
 
                 alertDialog.dismiss()
                 alertDialog.cancel()
-            }
-            .show()
+            }.show()
     }
 }

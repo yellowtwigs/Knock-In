@@ -32,6 +32,8 @@ import com.yellowtwigs.knockin.ui.contacts.MainActivity
 import com.yellowtwigs.knockin.ui.first_launch.MultiSelectActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import kotlinx.coroutines.*
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 /**
@@ -62,6 +64,19 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         setupBillingClient()
         setSliderContainer()
 
+        val calendar = Calendar.getInstance()
+        val oneWeekSharedPreferences = getSharedPreferences("OneWeek", Context.MODE_PRIVATE)
+        val edit = oneWeekSharedPreferences.edit()
+
+        edit.putStringSet(
+            "OneWeek", setOf(
+                "DAY :${calendar.get(Calendar.DAY_OF_MONTH)}", // 29
+                "MONTH :${calendar.get(Calendar.MONTH)}", // 11
+                "YEAR :${calendar.get(Calendar.YEAR)}" // 2022
+            )
+        )
+        edit.apply()
+
         //region ======================================= WorkerThread =======================================
 
         workerThread = DbWorkerThread("dbWorkerThread")
@@ -75,12 +90,12 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         editFirstTime.apply()
 
         if (checkIfGoEdition()) {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setBackground(getDrawable(R.color.backgroundColor))
+            MaterialAlertDialogBuilder(
+                this, R.style.AlertDialog
+            ).setBackground(getDrawable(R.color.backgroundColor))
                 .setMessage(getString(R.string.start_activity_go_edition_message))
                 .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                }
-                .show()
+                }.show()
         }
 
         val importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
@@ -118,8 +133,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     }
                     3 -> {
                         if (checkIfGoEdition()) {
-                            val intent =
-                                Intent(this@StartActivity, MainActivity::class.java)
+                            val intent = Intent(this@StartActivity, MainActivity::class.java)
                             intent.putExtra("fromStartActivity", true)
                             startActivity(intent)
                             finish()
@@ -250,8 +264,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     radioButton4.visibility = View.GONE
 
                                     title.text =
-                                        "${getString(R.string.notif_adapter_show_message_button)} " +
-                                                "${getString(R.string.left_drawer_home)}"
+                                        "${getString(R.string.notif_adapter_show_message_button)} " + "${
+                                            getString(R.string.left_drawer_home)
+                                        }"
 
                                     subtitle.visibility = View.GONE
                                     activateButton.setText(R.string.start_activity_next)
@@ -289,17 +304,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (isClickable) {
             binding.activateButton.setBackgroundColor(
                 ResourcesCompat.getColor(
-                    resources,
-                    R.color.colorPrimary,
-                    null
+                    resources, R.color.colorPrimary, null
                 )
             )
         } else {
             binding.activateButton.setBackgroundColor(
                 ResourcesCompat.getColor(
-                    resources,
-                    R.color.greyColor,
-                    null
+                    resources, R.color.greyColor, null
                 )
             )
         }
@@ -307,8 +318,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private fun openOverlaySettings() {
         val intent = Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:$packageName")
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")
         )
         startActivity(intent)
     }
@@ -323,10 +333,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region =========================================== BILLING ============================================
 
     private fun setupBillingClient() {
-        val billingClient = BillingClient.newBuilder(this)
-            .setListener(this)
-            .enablePendingPurchases()
-            .build()
+        val billingClient =
+            BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
         connectToGooglePlayBilling(billingClient)
     }
 
@@ -354,9 +362,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_relaxation_theme")
         skuList.add("additional_applications_support")
 
-        val params = SkuDetailsParams.newBuilder()
-            .setSkusList(skuList)
-            .setType(BillingClient.SkuType.INAPP)
+        val params =
+            SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
 
         billingClient.querySkuDetailsAsync(
             params.build()
@@ -412,9 +419,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
@@ -436,13 +441,14 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         getSharedPreferences("save_last_sync", Context.MODE_PRIVATE)
                     var index = 1
                     var stringSet = listOf<String>()
-                    if (sharedPreferencesSync.getStringSet(index.toString(), null) != null)
-                        stringSet =
-                            sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
+                    if (sharedPreferencesSync.getStringSet(
+                            index.toString(), null
+                        ) != null
+                    ) stringSet =
+                        sharedPreferencesSync.getStringSet(index.toString(), null)!!.sorted()
                     arrayListOf<Pair<ContactDB, List<ContactDetailDB>>>()
                     while (sharedPreferencesSync.getStringSet(
-                            index.toString(),
-                            null
+                            index.toString(), null
                         ) != null && stringSet.isNotEmpty()
                     ) {
                         stringSet =
