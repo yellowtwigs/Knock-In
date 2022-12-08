@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.databinding.ActivityFirstVipSelectionBinding
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,10 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     private var tooMuch = false
 
     private var listOfItemSelected = arrayListOf<Int>()
+    private var listOfPairSelected = arrayListOf<Pair<Int, Int>>()
     private val viewModel: FirstVipSelectionViewModel by viewModels()
+
+    private var fromSettings = false
 
     //endregion
 
@@ -59,6 +63,8 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             "Contacts_Unlimited_Bought",
             Context.MODE_PRIVATE
         ).getBoolean("Contacts_Unlimited_Bought", false)
+
+        fromSettings = intent.getBooleanExtra("fromSettings", false)
 
         //endregion
 
@@ -99,20 +105,41 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_skip -> {
-                val intent =
-                    Intent(this@FirstVipSelectionActivity, ContactsListActivity::class.java)
-                intent.putExtra("fromStartActivity", true)
-                startActivity(intent)
-                finish()
+                if (fromSettings) {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity,
+                            NotificationsSettingsActivity::class.java
+                        )
+                    )
+                    finish()
+                } else {
+                    val intent =
+                        Intent(this@FirstVipSelectionActivity, ContactsListActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
+                    finish()
+                }
             }
             R.id.nav_validate -> {
                 setPriorityList()
-                startActivity(
-                    Intent(
-                        this@FirstVipSelectionActivity, ContactsListActivity::class.java
-                    ).putExtra("fromStartActivity", true)
-                )
-                finish()
+
+                if (fromSettings) {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity,
+                            NotificationsSettingsActivity::class.java
+                        )
+                    )
+                    finish()
+                } else {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity, ContactsListActivity::class.java
+                        ).putExtra("fromStartActivity", true)
+                    )
+                    finish()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -127,10 +154,13 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             FirstVipSelectionAdapter(this, listOfItemSelected) { id ->
                 if (listOfItemSelected.isEmpty() && firstClick) {
                     listOfItemSelected.add(id)
+                    listOfPairSelected.add(Pair(id, 2))
                     firstClick = false
                 } else {
                     if (listOfItemSelected.contains(id)) {
                         listOfItemSelected.remove(id)
+                        listOfPairSelected.remove(Pair(id, 2))
+                        listOfPairSelected.add(Pair(id, 1))
                         tooMuch = false
                         if (listOfItemSelected.isEmpty())
                             firstClick = true
@@ -138,16 +168,16 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                         if (listOfItemSelected.size == 5) {
                             if (contactsUnlimitedBought) {
                                 listOfItemSelected.add(id)
+                                listOfPairSelected.add(Pair(id, 2))
                             } else {
                                 tooMuch = true
                             }
                         } else {
                             listOfItemSelected.add(id)
+                            listOfPairSelected.add(Pair(id, 2))
                         }
                     }
                 }
-
-                Log.i("contactsUnlimitedBought", "$contactsUnlimitedBought")
 
                 if (contactsUnlimitedBought) {
                     if (Resources.getSystem().configuration.locale.language == "ar") {
@@ -212,12 +242,22 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     //endregion
 
     private fun setPriorityList() {
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.updateContact(listOfItemSelected)
+        viewModel.updateContact(listOfPairSelected)
+    }
+
+    private fun goBackToSettings() {
+        if (fromSettings) {
+            startActivity(
+                Intent(
+                    this@FirstVipSelectionActivity,
+                    NotificationsSettingsActivity::class.java
+                )
+            )
+            finish()
         }
     }
 
     override fun onBackPressed() {
-
+        goBackToSettings()
     }
 }

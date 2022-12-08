@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
@@ -64,9 +65,12 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         setupCheckBoxes()
         setupReminderAlarm()
 
+        activateButtonIsClickable(!Settings.canDrawOverlays(this@NotificationsSettingsActivity), binding.activateOverlay)
         binding.activateOverlay.setOnClickListener {
             openOverlaySettings()
         }
+
+        activateButtonIsClickable(!isNotificationServiceEnabled(), binding.activateNotification)
         binding.activateNotification.setOnClickListener {
             activateNotificationsClick()
         }
@@ -185,6 +189,28 @@ class NotificationsSettingsActivity : AppCompatActivity() {
 
     //endregion
 
+    private fun activateButtonIsClickable(isClickable: Boolean, button: AppCompatButton) {
+        button.isEnabled = isClickable
+
+        if (isClickable) {
+            button.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.colorPrimary,
+                    null
+                )
+            )
+        } else {
+            button.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.greyColor,
+                    null
+                )
+            )
+        }
+    }
+
     private fun openOverlaySettings() {
         val intent = Intent(
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -225,7 +251,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                 Intent(
                     this@NotificationsSettingsActivity,
                     FirstVipSelectionActivity::class.java
-                )
+                ).putExtra("fromSettings", true)
             )
         }
     }
@@ -249,23 +275,22 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private val isNotificationServiceEnabled: Boolean
-        get() {
-            val pkgName = packageName
-            val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-            if (!TextUtils.isEmpty(str)) {
-                val names = str.split(":")
-                for (i in names.indices) {
-                    val cn = ComponentName.unflattenFromString(names[i])
-                    if (cn != null) {
-                        if (TextUtils.equals(pkgName, cn.packageName)) {
-                            return true
-                        }
+    private fun isNotificationServiceEnabled(): Boolean {
+        val pkgName = packageName
+        val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        if (!TextUtils.isEmpty(str)) {
+            val names = str.split(":")
+            for (i in names.indices) {
+                val cn = ComponentName.unflattenFromString(names[i])
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.packageName)) {
+                        return true
                     }
                 }
             }
-            return false
         }
+        return false
+    }
 
     private fun hourGetString(hour: Int, minute: Int): String {
         var textRemind = ""

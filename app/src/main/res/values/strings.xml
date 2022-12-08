@@ -56,7 +56,7 @@
     <string name="filter_mail">Email</string>
     <string name="search_hint">Search</string>
     <string name="main_change_format_phone_book">Help</string>
-    <string name="sort_by">Sort by:</string>
+    <string name="sort_by">Sort by :</string>
     <string name="sort_by_full_name">Full Name</string>
     <string name="sort_by_priority">Priority</string>
     <string name="sort_by_favorite">Favorite</string>

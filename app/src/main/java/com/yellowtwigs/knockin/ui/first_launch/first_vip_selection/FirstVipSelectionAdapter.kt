@@ -44,8 +44,6 @@ class FirstVipSelectionAdapter(
 
         fun onBind(contact: FirstVipSelectionViewState) {
             binding.apply {
-                contactPriorityBorder(contact.priority, contactImage, cxt)
-
                 val spanFistName = SpannableString(contact.firstName)
                 val spanLastName = SpannableString(contact.lastName)
 

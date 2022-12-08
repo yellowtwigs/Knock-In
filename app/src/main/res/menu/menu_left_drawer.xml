@@ -3,7 +3,6 @@
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_home"
-            android:checked="false"
             android:icon="@drawable/ic_home"
             android:title="@string/left_drawer_home" />
         <item

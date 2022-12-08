@@ -8,6 +8,7 @@ import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,10 +39,14 @@ class FirstVipSelectionViewModel @Inject constructor(
         )
     }
 
-    fun updateContact(ids: ArrayList<Int>) =
-        viewModelScope.launch {
-            for (id in ids) {
-                updateContactPriorityByIdUseCase.updateContactPriorityById(id, 2)
+    fun updateContact(ids: ArrayList<Pair<Int, Int>>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            ids.forEach { pair ->
+                val id = pair.first
+                val priority = pair.second
+
+                updateContactPriorityByIdUseCase.updateContactPriorityById(id, priority)
             }
         }
+    }
 }

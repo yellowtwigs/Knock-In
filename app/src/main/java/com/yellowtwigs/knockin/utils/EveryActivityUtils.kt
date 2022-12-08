@@ -44,7 +44,6 @@ object EveryActivityUtils {
 
     fun setupTeleworkingItem(navView: NavigationView, cxt: Activity) {
         val menu = navView.menu
-        menu.findItem(R.id.nav_home).isChecked = true
 
         val itemLayout = cxt.findViewById<ConstraintLayout>(R.id.teleworking_item)
         val itemText = cxt.findViewById<AppCompatTextView>(R.id.teleworking_item_text)
