@@ -2,17 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 20,
-    "identityHash": "59c9147f54a2da27afe7b2bd330e3c7c",
+    "identityHash": "5d7e2c20a1b9fbf73f87852da3f05918",
     "entities": [
       {
         "tableName": "contacts_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `full_name` TEXT NOT NULL, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL, `listOfPhoneNumbers` TEXT NOT NULL, `listOfMails` TEXT NOT NULL, `mail_name` TEXT NOT NULL, `priority` INTEGER NOT NULL, `is_favorite` INTEGER NOT NULL, `messenger_id` TEXT NOT NULL, `listOfMessagingApps` TEXT NOT NULL, `notification_tone` TEXT NOT NULL, `notification_Sound` INTEGER NOT NULL, `is_custom_sound` INTEGER NOT NULL, `vip_schedule` INTEGER NOT NULL, `hour_limit_for_notification` TEXT NOT NULL, `audio_file_name` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `android_id` INTEGER, `full_name` TEXT NOT NULL, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `profile_picture` INTEGER NOT NULL, `profile_picture_str` TEXT NOT NULL, `listOfPhoneNumbers` TEXT NOT NULL, `listOfMails` TEXT NOT NULL, `mail_name` TEXT NOT NULL, `priority` INTEGER NOT NULL, `is_favorite` INTEGER NOT NULL, `messenger_id` TEXT NOT NULL, `listOfMessagingApps` TEXT NOT NULL, `notification_tone` TEXT NOT NULL, `notification_Sound` INTEGER NOT NULL, `is_custom_sound` INTEGER NOT NULL, `vip_schedule` INTEGER NOT NULL, `hour_limit_for_notification` TEXT NOT NULL, `audio_file_name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "androidId",
+            "columnName": "android_id",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "fullName",
@@ -292,7 +298,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59c9147f54a2da27afe7b2bd330e3c7c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d7e2c20a1b9fbf73f87852da3f05918')"
     ]
   }
 }

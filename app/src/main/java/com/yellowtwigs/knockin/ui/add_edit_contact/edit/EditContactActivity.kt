@@ -444,6 +444,7 @@ class EditContactActivity : AppCompatActivity() {
 
         val contact = ContactDB(
             currentContact.id,
+            currentContact.androidId,
             fullName,
             binding.firstNameInput.editText?.text.toString(),
             binding.lastNameInput.editText?.text.toString(),
@@ -764,6 +765,13 @@ class EditContactActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         if (isRetroFit) {
+            goToContactsOrGroups()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (editInGoogle) {
             goToContactsOrGroups()
         }
     }

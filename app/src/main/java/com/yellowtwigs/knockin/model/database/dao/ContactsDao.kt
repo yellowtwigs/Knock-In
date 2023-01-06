@@ -30,6 +30,9 @@ interface ContactsDao {
     @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 2")
     fun getNumbersOfContactsVip(): Int
 
+    @Query("SELECT android_id FROM contacts_table")
+    fun getAllAndroidIds(): List<Int>
+
     //endregion
 
     //region ============================================ INSERT ============================================

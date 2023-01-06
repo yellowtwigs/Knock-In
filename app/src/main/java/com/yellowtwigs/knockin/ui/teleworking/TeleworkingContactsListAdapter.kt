@@ -63,10 +63,10 @@ class TeleworkingContactsListAdapter(
                 val layoutParamsIV = civ.layoutParams as ConstraintLayout.LayoutParams
 
                 if (len == 4) {
-                    civ.layoutParams.height = (imageHeight - imageHeight * 0.25).toInt()
-                    civ.layoutParams.width = (imageHeight - imageHeight * 0.25).toInt()
-                    layoutParamsTV.topMargin = 10
-                    layoutParamsIV.topMargin = 10
+                    civ.layoutParams.height = (imageHeight - imageHeight * 0.32).toInt()
+                    civ.layoutParams.width = (imageHeight - imageHeight * 0.32).toInt()
+                    layoutParamsTV.topMargin = 8
+                    layoutParamsIV.topMargin = 8
 
                     if (contact.firstName.length > 12)
                         firstname = contact.firstName.substring(0, 10) + ".."

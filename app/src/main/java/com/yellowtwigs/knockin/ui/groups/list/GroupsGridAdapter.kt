@@ -14,7 +14,11 @@ import com.yellowtwigs.knockin.databinding.ItemContactGridBinding
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
-class GroupsGridAdapter(private val cxt: Context, private val onClickedCallback: (Int) -> Unit) :
+class GroupsGridAdapter(
+    private val cxt: Context,
+    private val isMultiSelect: Boolean,
+    private val onClickedCallback: (Int) -> Unit
+) :
     ListAdapter<ContactInGroupViewState, GroupsGridAdapter.ViewHolder>(
         GroupsListViewStateComparator()
     ) {

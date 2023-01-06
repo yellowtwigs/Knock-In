@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -19,10 +20,13 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
+@AndroidEntryPoint
 class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //region ========================================= Var or Val ===========================================
@@ -45,6 +49,8 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var billingClient: BillingClient
     private lateinit var myProductAdapter: MyProductAdapter
     private lateinit var params: SkuDetailsParams.Builder
+
+    private val importContactsViewModel: ImportContactsViewModel by viewModels()
 
     //endregion
 
@@ -145,10 +151,30 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     R.id.nav_help -> {
                         startActivity(Intent(this@PremiumActivity, HelpActivity::class.java))
                     }
+                    R.id.nav_sync_contact -> {
+                        importContacts()
+                    }
+                    R.id.nav_invite_friend -> {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        val messageString =
+                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                                R.string.location_on_playstore
+                            )
+                        intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                        intent.type = "text/plain"
+                        val messageIntent = Intent.createChooser(intent, null)
+                        startActivity(messageIntent)
+                    }
                 }
 
                 true
             }
+        }
+    }
+
+    private fun importContacts() {
+        CoroutineScope(Dispatchers.Default).launch {
+            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }
 

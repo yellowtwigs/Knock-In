@@ -4,7 +4,7 @@ data class ContactInGroupViewState(
     val id: Int,
     val firstName: String,
     var lastName: String,
-    val profilePicture: Int,
+    var profilePicture: Int,
     val profilePicture64: String,
     val listOfPhoneNumbers: List<String>,
     val listOfMails: List<String>,
@@ -12,6 +12,6 @@ data class ContactInGroupViewState(
     val hasWhatsapp: Boolean,
     val hasTelegram: Boolean,
     val hasSignal: Boolean,
-    val messengerId: String
-) {
-}
+    val messengerId: String,
+    val pictureMultiSelect: Int = 0
+)

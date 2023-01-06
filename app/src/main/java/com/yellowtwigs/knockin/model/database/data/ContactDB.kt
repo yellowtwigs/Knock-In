@@ -7,6 +7,7 @@ import com.yellowtwigs.knockin.R
 data class ContactDB(
     // Basic fields
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo(name = "android_id") val androidId: Int?,
     @ColumnInfo(name = "full_name") val fullName: String,
     @ColumnInfo(name = "first_name") val firstName: String,
     @ColumnInfo(name = "last_name") var lastName: String,

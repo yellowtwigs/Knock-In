@@ -17,6 +17,7 @@ import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.RelativeLayout
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
@@ -27,13 +28,18 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@AndroidEntryPoint
 class HelpActivity : AppCompatActivity(), SensorEventListener {
 
     //region ========================================== Val or Var ==========================================
@@ -50,11 +56,12 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     private var helpActivityLayout: ConstraintLayout? = null
     private var helpActivityWebView: WebView? = null
 
+    private val importContactsViewModel: ImportContactsViewModel by viewModels()
+
     val webViewClient: WebViewClient = object : WebViewClient() {
 
     }
 
-    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
     //endregion
 
     @SuppressLint("IntentReset")
@@ -172,6 +179,20 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                         PremiumActivity::class.java
                     )
                 )
+                R.id.nav_sync_contact -> {
+                    importContacts()
+                }
+                R.id.nav_invite_friend -> {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    val messageString =
+                        resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
+                    intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                    intent.type = "text/plain"
+                    val messageIntent = Intent.createChooser(intent, null)
+                    startActivity(messageIntent)
+                }
             }
 
             help_activity_DrawerLayout?.closeDrawer(GravityCompat.START)
@@ -237,6 +258,12 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
 
         //endregion
+    }
+
+    private fun importContacts() {
+        CoroutineScope(Dispatchers.Default).launch {
+            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+        }
     }
 
     //region ========================================== Override ============================================

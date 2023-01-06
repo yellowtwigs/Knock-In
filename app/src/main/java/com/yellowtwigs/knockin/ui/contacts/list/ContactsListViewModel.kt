@@ -115,9 +115,7 @@ class ContactsListViewModel @Inject constructor(
     }
 
     private fun combine(
-        allContacts: List<ContactsListViewState>?,
-        input: String?,
-        filterBy: Int?
+        allContacts: List<ContactsListViewState>?, input: String?, filterBy: Int?
     ) {
         val listOfContacts = arrayListOf<ContactsListViewState>()
 
@@ -132,8 +130,7 @@ class ContactsListViewModel @Inject constructor(
                 if (filterBy != null) {
                     listOfContacts.addAll(
                         filterContactsList(
-                            filterBy,
-                            filterWithInput(input, allContacts)
+                            filterBy, filterWithInput(input, allContacts)
                         )
                     )
                 } else {
@@ -146,19 +143,17 @@ class ContactsListViewModel @Inject constructor(
     }
 
     private fun filterWithInput(
-        input: String,
-        listOfContacts: List<ContactsListViewState>
+        input: String, listOfContacts: List<ContactsListViewState>
     ): List<ContactsListViewState> {
         return listOfContacts.filter { contact ->
             val name = contact.firstName + " " + contact.lastName
-            name.contains(input) || name.uppercase().contains(input.uppercase()) ||
-                    name.lowercase().contains(input.lowercase())
+            name.contains(input) || name.uppercase().contains(input.uppercase()) || name.lowercase()
+                .contains(input.lowercase())
         }
     }
 
     private fun filterContactsList(
-        filterBy: Int,
-        listOfContacts: List<ContactsListViewState>
+        filterBy: Int, listOfContacts: List<ContactsListViewState>
     ): List<ContactsListViewState> {
         when (filterBy) {
             R.id.sms_filter -> {
@@ -205,6 +200,5 @@ class ContactsListViewModel @Inject constructor(
         listOfContacts.map {
             deleteContactUseCase.deleteContactById(it)
         }
-
     }
 }

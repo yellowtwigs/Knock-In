@@ -39,9 +39,7 @@ import com.yellowtwigs.knockin.utils.ContactGesture.sendMessageWithWhatsapp
 import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
 
 class PopupNotificationsListAdapter(
-    private val cxt: Context,
-    private val windowManager: WindowManager,
-    private val popupView: View
+    private val cxt: Context, private val windowManager: WindowManager, private val popupView: View
 ) : ListAdapter<PopupNotificationViewState, PopupNotificationsListAdapter.ViewHolder>(
     PopupNotificationViewStateComparator()
 ) {
@@ -59,9 +57,7 @@ class PopupNotificationsListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         thisParent = parent
         val binding = ItemPopupNotificationBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding)
     }
@@ -233,8 +229,7 @@ class PopupNotificationsListAdapter(
                             } catch (e: ActivityNotFoundException) {
                                 cxt.startActivity(
                                     Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse("http://facebook.com/")
+                                        Intent.ACTION_VIEW, Uri.parse("http://facebook.com/")
                                     )
                                 )
                             }
@@ -244,11 +239,9 @@ class PopupNotificationsListAdapter(
                             if (popup.messengerId != "") {
                                 openMessenger(popup.messengerId, cxt)
                             } else {
-                                val intent =
-                                    Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse("https://www.messenger.com/t/")
-                                    )
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/")
+                                )
                                 intent.flags = FLAG_ACTIVITY_NEW_TASK
                                 cxt.startActivity(intent)
                             }
@@ -269,8 +262,7 @@ class PopupNotificationsListAdapter(
                             } catch (e: ActivityNotFoundException) {
                                 cxt.startActivity(
                                     Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse("https://gmail.com/")
+                                        Intent.ACTION_VIEW, Uri.parse("https://gmail.com/")
                                     )
                                 )
                             }
@@ -279,9 +271,7 @@ class PopupNotificationsListAdapter(
                         "Message" -> {
                             binding.messageToSend.text?.toString()?.let { message ->
                                 sendMessageWithAndroidMessage(
-                                    popup.phoneNumber,
-                                    message,
-                                    cxt
+                                    popup.phoneNumber, message, cxt
                                 )
                             }
                             closeNotificationPopup()
@@ -334,10 +324,8 @@ class PopupNotificationsListAdapter(
         ) {
             platformImage.setImageResource(iconId)
             DrawableCompat.setTint(
-                wrappedDrawable,
-                cxt.resources.getColor(
-                    colorId,
-                    null
+                wrappedDrawable, cxt.resources.getColor(
+                    colorId, null
                 )
             )
         }
@@ -349,8 +337,7 @@ class PopupNotificationsListAdapter(
 
     private fun phoneCall(phoneNumber: String) {
         if (ContextCompat.checkSelfPermission(
-                cxt,
-                Manifest.permission.CALL_PHONE
+                cxt, Manifest.permission.CALL_PHONE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(cxt, cxt.getString(R.string.allow_phone_call), Toast.LENGTH_SHORT).show()
@@ -381,24 +368,15 @@ class PopupNotificationsListAdapter(
     class PopupNotificationViewStateComparator :
         DiffUtil.ItemCallback<PopupNotificationViewState>() {
         override fun areItemsTheSame(
-            oldItem: PopupNotificationViewState,
-            newItem: PopupNotificationViewState
+            oldItem: PopupNotificationViewState, newItem: PopupNotificationViewState
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: PopupNotificationViewState,
-            newItem: PopupNotificationViewState
+            oldItem: PopupNotificationViewState, newItem: PopupNotificationViewState
         ): Boolean {
-            return oldItem.id == newItem.id &&
-                    oldItem.title == newItem.title &&
-                    oldItem.description == newItem.description &&
-                    oldItem.platform == newItem.platform &&
-                    oldItem.contactName == newItem.contactName &&
-                    oldItem.phoneNumber == newItem.phoneNumber &&
-                    oldItem.messengerId == newItem.messengerId &&
-                    oldItem.email == newItem.email
+            return oldItem == newItem
         }
 
     }

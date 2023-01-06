@@ -29,12 +29,10 @@
         <item
             android:id="@+id/nav_sync_contact"
             android:icon="@drawable/ic_import"
-            android:title="@string/left_drawer_import"
-            android:visible="false" />
+            android:title="@string/left_drawer_import" />
         <item
             android:id="@+id/nav_invite_friend"
             android:icon="@drawable/ic_invite_friend"
-            android:title="@string/settings_invite_friend_text"
-            android:visible="false" />
+            android:title="@string/settings_invite_friend_text" />
     </group>
 </menu>

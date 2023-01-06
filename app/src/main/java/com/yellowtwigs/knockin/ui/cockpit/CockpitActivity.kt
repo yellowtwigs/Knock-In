@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +23,7 @@ import com.yellowtwigs.knockin.databinding.ActivityCockpitBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
@@ -35,6 +37,9 @@ import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CockpitActivity : AppCompatActivity() {
 
@@ -46,6 +51,7 @@ class CockpitActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCockpitBinding
     private lateinit var listApp: ArrayList<String>
+    private val importContactsViewModel: ImportContactsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -246,10 +252,30 @@ class CockpitActivity : AppCompatActivity() {
                         HelpActivity::class.java
                     )
                 )
+                R.id.nav_sync_contact -> {
+                    importContacts()
+                }
+                R.id.nav_invite_friend -> {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    val messageString =
+                        resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
+                    intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                    intent.type = "text/plain"
+                    val messageIntent = Intent.createChooser(intent, null)
+                    startActivity(messageIntent)
+                }
             }
 
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
+        }
+    }
+
+    private fun importContacts() {
+        CoroutineScope(Dispatchers.Default).launch {
+            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }
 

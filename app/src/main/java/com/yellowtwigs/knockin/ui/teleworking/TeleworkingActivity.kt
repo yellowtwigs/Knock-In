@@ -36,8 +36,6 @@ import java.util.*
 @AndroidEntryPoint
 class TeleworkingActivity : AppCompatActivity() {
 
-    private lateinit var database: ContactsDatabase
-    private lateinit var dao: NotificationsDao
     private lateinit var binding: ActivityTeleworkingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

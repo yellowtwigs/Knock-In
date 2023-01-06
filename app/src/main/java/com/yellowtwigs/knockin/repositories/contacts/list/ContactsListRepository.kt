@@ -11,6 +11,7 @@ interface ContactsListRepository {
     fun getAllContactsDB(): List<ContactDB>
 
     fun getAllContactsVIP(): Flow<List<ContactDB>>
+    fun getAllAndroidIds(): List<Int>
 
     fun getNumbersOfContactsVip(): Int
 

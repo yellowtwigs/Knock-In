@@ -16,6 +16,7 @@ import com.yellowtwigs.knockin.databinding.ActivityGroupsListBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
@@ -34,6 +35,8 @@ import kotlinx.coroutines.launch
 class GroupsListActivity : AppCompatActivity() {
 
     private val groupsListViewModel: GroupsListViewModel by viewModels()
+    private val importContactsViewModel: ImportContactsViewModel by viewModels()
+    var modeMultiSelect = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +107,20 @@ class GroupsListActivity : AppCompatActivity() {
                     R.id.nav_help -> startActivity(
                         Intent(this@GroupsListActivity, HelpActivity::class.java)
                     )
+                    R.id.nav_sync_contact -> {
+                        importContacts()
+                    }
+                    R.id.nav_invite_friend -> {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        val messageString =
+                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                                R.string.location_on_playstore
+                            )
+                        intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                        intent.type = "text/plain"
+                        val messageIntent = Intent.createChooser(intent, null)
+                        startActivity(messageIntent)
+                    }
                 }
 
                 true
@@ -116,6 +133,12 @@ class GroupsListActivity : AppCompatActivity() {
                     openDrawer(GravityCompat.START)
                 }
             }
+        }
+    }
+
+    private fun importContacts() {
+        CoroutineScope(Dispatchers.Default).launch {
+            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }
 
@@ -167,12 +190,19 @@ class GroupsListActivity : AppCompatActivity() {
                 }
             adapter = sectionGroupsListAdapter
             layoutManager = LinearLayoutManager(context)
+            setItemViewCacheSize(500)
         }
     }
 
     //endregion
 
-    //region ========================================= Functions ============================================
+    //region ========================================= MULTI SELECT =========================================
+
+
+
+    //endregion
+
+    //region ========================================= FUNCTIONS ============================================
 
     fun refreshActivity() {
         startActivity(Intent(this@GroupsListActivity, GroupsListActivity::class.java))

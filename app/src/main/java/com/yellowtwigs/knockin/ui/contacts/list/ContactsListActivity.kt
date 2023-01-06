@@ -14,6 +14,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -40,15 +41,14 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.Converter
-import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
@@ -61,6 +61,7 @@ import java.net.URLEncoder
 class ContactsListActivity : AppCompatActivity() {
 
     private val contactsListViewModel: ContactsListViewModel by viewModels()
+    private val importContactsViewModel: ImportContactsViewModel by viewModels()
 
     private lateinit var sortByPreferences: SharedPreferences
     private lateinit var filterByPreferences: SharedPreferences
@@ -299,8 +300,20 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_help -> startActivity(
                         Intent(this@ContactsListActivity, HelpActivity::class.java)
                     )
-                    R.id.nav_sync_contact -> {}
-                    R.id.nav_invite_friend -> {}
+                    R.id.nav_sync_contact -> {
+                        importContacts()
+                    }
+                    R.id.nav_invite_friend -> {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        val messageString =
+                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                                R.string.location_on_playstore
+                            )
+                        intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                        intent.type = "text/plain"
+                        val messageIntent = Intent.createChooser(intent, null)
+                        startActivity(messageIntent)
+                    }
                 }
 
                 true
@@ -317,6 +330,12 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     //endregion
+
+    private fun importContacts() {
+        CoroutineScope(Dispatchers.Default).launch {
+            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+        }
+    }
 
     //region ========================================= MULTI SELECT =========================================
 
@@ -414,30 +433,27 @@ class ContactsListActivity : AppCompatActivity() {
             }
 
             modeDelete.setOnClickListener {
-                MaterialAlertDialogBuilder(this@ContactsListActivity, R.style.AlertDialog)
-                    .setTitle(getString(R.string.main_alert_dialog_delete_contact_title))
-                    .setMessage(
-                        String.format(
-                            resources.getString(R.string.notification_history_delete_notifications_confirmation)
-                        )
+                MaterialAlertDialogBuilder(this@ContactsListActivity, R.style.AlertDialog).setTitle(
+                    getString(R.string.main_alert_dialog_delete_contact_title)
+                ).setMessage(
+                    String.format(
+                        resources.getString(R.string.notification_history_delete_notifications_confirmation)
                     )
-                    .setPositiveButton(R.string.edit_contact_validate) { _, _ ->
-                        CoroutineScope(Dispatchers.IO).launch {
-                            contactsListViewModel.deleteContactsSelected(listOfItemSelected)
-                            listOfItemSelected.clear()
-                            modeMultiSelect = false
-                            withContext(Dispatchers.Main) {
-                                refreshActivity(binding)
-                                setupRecyclerView(binding)
-                            }
+                ).setPositiveButton(R.string.edit_contact_validate) { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        contactsListViewModel.deleteContactsSelected(listOfItemSelected)
+                        listOfItemSelected.clear()
+                        modeMultiSelect = false
+
+                        withContext(Dispatchers.Main) {
+                            refreshActivity(binding)
+                            setupRecyclerView(binding)
                         }
                     }
-                    .setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }
-                    .show()
+                }.setNegativeButton(R.string.delete_contact_from_group_cancel) { _, _ -> }.show()
             }
 
-            modeMenu.setOnClickListener {
-            }
+            modeMenu.setOnClickListener {}
         }
     }
 
@@ -450,8 +466,7 @@ class ContactsListActivity : AppCompatActivity() {
             groupButton.setOnClickListener {
                 startActivity(
                     Intent(
-                        this@ContactsListActivity,
-                        ManageGroupActivity::class.java
+                        this@ContactsListActivity, ManageGroupActivity::class.java
                     ).putIntegerArrayListExtra(
                         "contacts", listOfItemSelected
                     )
@@ -460,8 +475,7 @@ class ContactsListActivity : AppCompatActivity() {
             buttonMultichannel.setOnClickListener {
                 startActivity(
                     Intent(
-                        this@ContactsListActivity,
-                        MultiChannelActivity::class.java
+                        this@ContactsListActivity, MultiChannelActivity::class.java
                     ).putIntegerArrayListExtra(
                         "contacts", listOfItemSelected
                     )
@@ -492,8 +506,7 @@ class ContactsListActivity : AppCompatActivity() {
         val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(
-            Intent.EXTRA_EMAIL,
-            contact
+            Intent.EXTRA_EMAIL, contact
         )
         intent.data = Uri.parse("mailto:")
         intent.type = "message/rfc822"
@@ -530,8 +543,7 @@ class ContactsListActivity : AppCompatActivity() {
 
             startActivity(
                 Intent(this, EditContactActivity::class.java).putExtra(
-                    "ContactId",
-                    id
+                    "ContactId", id
                 )
             )
         }, { id, civ, contact ->
@@ -560,11 +572,9 @@ class ContactsListActivity : AppCompatActivity() {
 
                     startActivity(
                         Intent(
-                            this@ContactsListActivity,
-                            ContactSelectedWithAppsActivity::class.java
+                            this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
                         ).putExtra(
-                            "ContactId",
-                            id
+                            "ContactId", id
                         )
                     )
                 }, { id, civ, contact ->
@@ -593,8 +603,7 @@ class ContactsListActivity : AppCompatActivity() {
                 R.id.navigation_groups -> {
                     startActivity(
                         Intent(
-                            this@ContactsListActivity,
-                            GroupsListActivity::class.java
+                            this@ContactsListActivity, GroupsListActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -602,8 +611,7 @@ class ContactsListActivity : AppCompatActivity() {
                 R.id.navigation_notifcations -> {
                     startActivity(
                         Intent(
-                            this@ContactsListActivity,
-                            NotificationsHistoryActivity::class.java
+                            this@ContactsListActivity, NotificationsHistoryActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -611,8 +619,7 @@ class ContactsListActivity : AppCompatActivity() {
                 R.id.navigation_cockpit -> {
                     startActivity(
                         Intent(
-                            this@ContactsListActivity,
-                            CockpitActivity::class.java
+                            this@ContactsListActivity, CockpitActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -647,31 +654,24 @@ class ContactsListActivity : AppCompatActivity() {
         val pm = packageManager
         val cmpName = ComponentName(this, NotificationsListenerService::class.java)
         pm.setComponentEnabledSetting(
-            cmpName,
-            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-            PackageManager.DONT_KILL_APP
+            cmpName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
         )
         pm.setComponentEnabledSetting(
-            cmpName,
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-            PackageManager.DONT_KILL_APP
+            cmpName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
         )
     }
 
     //endregion
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == PHONE_CALL_REQUEST_CODE) {
             startActivity(
                 Intent(
-                    Intent.ACTION_CALL,
-                    Uri.fromParts("tel", phoneNumber, null)
+                    Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)
                 )
             )
         }
@@ -679,21 +679,17 @@ class ContactsListActivity : AppCompatActivity() {
 
     fun callPhone(phoneNumber: String) {
         if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CALL_PHONE
+                this, Manifest.permission.CALL_PHONE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             this.phoneNumber = phoneNumber
             ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.CALL_PHONE),
-                PHONE_CALL_REQUEST_CODE
+                this, arrayOf(Manifest.permission.CALL_PHONE), PHONE_CALL_REQUEST_CODE
             )
         } else {
             startActivity(
                 Intent(
-                    Intent.ACTION_CALL,
-                    Uri.fromParts("tel", phoneNumber, null)
+                    Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)
                 )
             )
         }

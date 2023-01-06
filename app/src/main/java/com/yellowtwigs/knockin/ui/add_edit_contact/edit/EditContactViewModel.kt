@@ -1,20 +1,17 @@
 package com.yellowtwigs.knockin.ui.add_edit_contact.edit
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
 import com.yellowtwigs.knockin.domain.group.UpdateFavoriteGroupUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
-import com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class EditContactViewModel @Inject constructor(
     private val editContactRepository: EditContactRepository,
-    private val updateFavoriteGroupUseCase: UpdateFavoriteGroupUseCase,
+//    private val updateFavoriteGroupUseCase: UpdateFavoriteGroupUseCase,
     private val createContactUseCase: CreateContactUseCase
 ) : ViewModel() {
 
@@ -33,6 +30,6 @@ class EditContactViewModel @Inject constructor(
     suspend fun deleteContact(contact: ContactDB) = editContactRepository.deleteContact(contact)
 
     suspend fun updateFavorite(contactId: String) {
-        updateFavoriteGroupUseCase.updateFavoriteGroup(contactId)
+//        updateFavoriteGroupUseCase.updateFavoriteGroup(contactId)
     }
 }

@@ -26,6 +26,7 @@ import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
@@ -35,6 +36,9 @@ import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NotificationsHistoryActivity : AppCompatActivity() {
@@ -51,6 +55,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
     private val notificationsListViewModel: NotificationsListViewModel by viewModels()
+    private val importContactsViewModel: ImportContactsViewModel by viewModels()
 
     //endregion
 
@@ -313,11 +318,31 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                             HelpActivity::class.java
                         )
                     )
+                    R.id.nav_sync_contact -> {
+                        importContacts()
+                    }
+                    R.id.nav_invite_friend -> {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        val messageString =
+                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                                R.string.location_on_playstore
+                            )
+                        intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                        intent.type = "text/plain"
+                        val messageIntent = Intent.createChooser(intent, null)
+                        startActivity(messageIntent)
+                    }
                 }
 
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
                 true
             }
+        }
+    }
+    
+    private fun importContacts() {
+        CoroutineScope(Dispatchers.Default).launch {
+            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }
 

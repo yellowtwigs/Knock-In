@@ -236,6 +236,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 hideKeyboard(this@AddNewContactActivity)
                 contact = ContactDB(
                     0,
+                    null,
                     "${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}",
                     binding.firstNameInput.editText?.text.toString(),
                     binding.lastNameInput.editText?.text.toString(),

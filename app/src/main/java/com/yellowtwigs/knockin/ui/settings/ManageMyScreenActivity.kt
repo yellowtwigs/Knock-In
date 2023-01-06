@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
@@ -23,15 +24,22 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityManageMyScreenBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ManageMyScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManageMyScreenBinding
+    private val importContactsViewModel: ImportContactsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,8 +86,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             itemLayout.setOnClickListener {
                 startActivity(
                     Intent(
-                        this@ManageMyScreenActivity,
-                        TeleworkingActivity::class.java
+                        this@ManageMyScreenActivity, TeleworkingActivity::class.java
                     )
                 )
             }
@@ -88,33 +95,48 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(
                         Intent(
-                            this@ManageMyScreenActivity,
-                            ContactsListActivity::class.java
+                            this@ManageMyScreenActivity, ContactsListActivity::class.java
                         )
                     )
                 }
                 R.id.nav_notifications -> startActivity(
                     Intent(
-                        this@ManageMyScreenActivity,
-                        NotificationsSettingsActivity::class.java
+                        this@ManageMyScreenActivity, NotificationsSettingsActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(
                     Intent(
-                        this@ManageMyScreenActivity,
-                        PremiumActivity::class.java
+                        this@ManageMyScreenActivity, PremiumActivity::class.java
                     )
                 )
                 R.id.nav_help -> startActivity(
                     Intent(
-                        this@ManageMyScreenActivity,
-                        HelpActivity::class.java
+                        this@ManageMyScreenActivity, HelpActivity::class.java
                     )
                 )
+                R.id.nav_sync_contact -> {
+                    importContacts()
+                }
+                R.id.nav_invite_friend -> {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    val messageString =
+                        resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
+                    intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                    intent.type = "text/plain"
+                    val messageIntent = Intent.createChooser(intent, null)
+                    startActivity(messageIntent)
+                }
             }
 
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
+        }
+    }
+    private fun importContacts() {
+        CoroutineScope(Dispatchers.Default).launch {
+            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }
 
@@ -177,20 +199,17 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
             contactByLine1.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    arrayImagesContactByLine1[0]
+                    this@ManageMyScreenActivity, arrayImagesContactByLine1[0]
                 )
             )
             contactByLine4.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    arrayImagesContactByLine4[0]
+                    this@ManageMyScreenActivity, arrayImagesContactByLine4[0]
                 )
             )
             contactByLine5.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    arrayImagesContactByLine5[0]
+                    this@ManageMyScreenActivity, arrayImagesContactByLine5[0]
                 )
             )
 
@@ -308,44 +327,37 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
             blueIndigo.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    R.drawable.ic_user_blue_indigo1
+                    this@ManageMyScreenActivity, R.drawable.ic_user_blue_indigo1
                 )
             )
             greenLime.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    R.drawable.ic_user_green_lime1
+                    this@ManageMyScreenActivity, R.drawable.ic_user_green_lime1
                 )
             )
             purpleGrape.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    R.drawable.ic_user_purple_grape1
+                    this@ManageMyScreenActivity, R.drawable.ic_user_purple_grape1
                 )
             )
             red.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    R.drawable.ic_user_red
+                    this@ManageMyScreenActivity, R.drawable.ic_user_red
                 )
             )
             grey.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    R.drawable.ic_user_grey1
+                    this@ManageMyScreenActivity, R.drawable.ic_user_grey1
                 )
             )
             orange.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    R.drawable.ic_user_orange
+                    this@ManageMyScreenActivity, R.drawable.ic_user_orange
                 )
             )
             cyanTeal.setImageDrawable(
                 AppCompatResources.getDrawable(
-                    this@ManageMyScreenActivity,
-                    R.drawable.ic_user_cyan_teal
+                    this@ManageMyScreenActivity, R.drawable.ic_user_cyan_teal
                 )
             )
 
@@ -354,44 +366,40 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 ArrayAdapter(this@ManageMyScreenActivity, R.layout.spinner_item, colorList)
             spinnerColor.adapter = colorsSpinnerAdapter
             spinnerColor.setSelection(isMultiColor)
-            spinnerColor.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
+            spinnerColor.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
 
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        when (position) {
-                            0 -> {
-                                if (isMultiColor == 1) {
-                                    buildMaterialAlertDialogBuilder()
-                                }
-
-                                val edit: SharedPreferences.Editor =
-                                    sharedPreferencesIsMultiColor.edit()
-                                edit.putInt("IsMultiColor", position)
-                                edit.apply()
-                                isMultiColor = 0
-
-                                binding.changeColorLayout.visibility = View.INVISIBLE
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                ) {
+                    when (position) {
+                        0 -> {
+                            if (isMultiColor == 1) {
+                                buildMaterialAlertDialogBuilder()
                             }
-                            1 -> {
-                                val edit: SharedPreferences.Editor =
-                                    sharedPreferencesIsMultiColor.edit()
-                                edit.putInt("IsMultiColor", position)
-                                edit.apply()
-                                isMultiColor = 1
 
-                                binding.changeColorLayout.visibility = View.VISIBLE
-                            }
+                            val edit: SharedPreferences.Editor =
+                                sharedPreferencesIsMultiColor.edit()
+                            edit.putInt("IsMultiColor", position)
+                            edit.apply()
+                            isMultiColor = 0
+
+                            binding.changeColorLayout.visibility = View.INVISIBLE
+                        }
+                        1 -> {
+                            val edit: SharedPreferences.Editor =
+                                sharedPreferencesIsMultiColor.edit()
+                            edit.putInt("IsMultiColor", position)
+                            edit.apply()
+                            isMultiColor = 1
+
+                            binding.changeColorLayout.visibility = View.VISIBLE
                         }
                     }
                 }
+            }
 
             blueIndigo.setOnClickListener {
                 blueIndigo.setBackgroundResource(R.drawable.border_selected_yellow)
@@ -527,8 +535,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
     private fun changeSwitchCompatColor(switchTheme: SwitchCompat) {
         val states = arrayOf(
-            intArrayOf(-android.R.attr.state_checked),
-            intArrayOf(android.R.attr.state_checked)
+            intArrayOf(-android.R.attr.state_checked), intArrayOf(android.R.attr.state_checked)
         )
 
         lateinit var thumbColors: IntArray
@@ -537,33 +544,27 @@ class ManageMyScreenActivity : AppCompatActivity() {
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             thumbColors = intArrayOf(
-                Color.WHITE,
-                Color.CYAN
+                Color.WHITE, Color.CYAN
             )
 
             trackColors = intArrayOf(
-                Color.LTGRAY,
-                Color.argb(120, 3, 214, 194)
+                Color.LTGRAY, Color.argb(120, 3, 214, 194)
             )
         } else {
             thumbColors = intArrayOf(
-                Color.LTGRAY,
-                Color.CYAN
+                Color.LTGRAY, Color.CYAN
             )
 
             trackColors = intArrayOf(
-                Color.LTGRAY,
-                Color.argb(120, 3, 214, 194)
+                Color.LTGRAY, Color.argb(120, 3, 214, 194)
             )
         }
 
         DrawableCompat.setTintList(
-            DrawableCompat.wrap(switchTheme.thumbDrawable),
-            ColorStateList(states, thumbColors)
+            DrawableCompat.wrap(switchTheme.thumbDrawable), ColorStateList(states, thumbColors)
         )
         DrawableCompat.setTintList(
-            DrawableCompat.wrap(switchTheme.trackDrawable),
-            ColorStateList(states, trackColors)
+            DrawableCompat.wrap(switchTheme.trackDrawable), ColorStateList(states, trackColors)
         )
     }
 
@@ -591,25 +592,23 @@ class ManageMyScreenActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_help -> {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                    .setTitle(R.string.help)
-                    .setMessage(this.resources.getString(R.string.help_manage_screen))
-                    .show()
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.help)
+                    .setMessage(this.resources.getString(R.string.help_manage_screen)).show()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun buildMaterialAlertDialogBuilder() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title))
+        MaterialAlertDialogBuilder(
+            this,
+            R.style.AlertDialog
+        ).setTitle(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_title))
             .setMessage(getString(R.string.manage_my_screen_display_contacts_edit_alert_dialog_message))
             .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 startActivity(Intent(this@ManageMyScreenActivity, ContactsListActivity::class.java))
-            }
-            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-            }
-            .show()
+            }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+            }.show()
     }
 
     //endregion

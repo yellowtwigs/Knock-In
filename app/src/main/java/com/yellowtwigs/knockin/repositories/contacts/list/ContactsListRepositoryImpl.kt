@@ -14,6 +14,8 @@ class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDa
 
     override fun getAllContactsVIP() = dao.getAllContactsVIP()
 
+    override fun getAllAndroidIds() = dao.getAllAndroidIds()
+
     override fun getNumbersOfContactsVip() = dao.getNumbersOfContactsVip()
 
     override suspend fun updateContactPriorityById(id: Int, priority: Int) {

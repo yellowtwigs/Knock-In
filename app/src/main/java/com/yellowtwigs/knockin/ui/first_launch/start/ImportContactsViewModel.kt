@@ -9,6 +9,7 @@ import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
+import com.yellowtwigs.knockin.domain.contact.GetAllAndroidIdsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
@@ -28,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ImportContactsViewModel @Inject constructor(
     private val createContactUseCase: CreateContactUseCase,
+    private val getAllAndroidIdsUseCase: GetAllAndroidIdsUseCase,
     private val manageGroupRepository: ManageGroupRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
@@ -36,6 +38,14 @@ class ImportContactsViewModel @Inject constructor(
     private val ids = arrayListOf<Int>()
 
     suspend fun syncAllContactsInDatabase(contentResolver: ContentResolver) {
+        Log.i("ImportContacts", "ImportContacts 1")
+        Log.i(
+            "ImportContacts",
+            "getAllAndroidIdsUseCase.invoke() : ${getAllAndroidIdsUseCase.invoke()}"
+        )
+        ids.addAll(getAllAndroidIdsUseCase.invoke())
+        Log.i("ImportContacts", "ids : $ids")
+
         val structuredNameSync = getStructuredNameSync(contentResolver)
         val contactDetails = getContactDetailsSync(contentResolver)
         val contactGroup = getContactGroupSync(contentResolver)
@@ -80,17 +90,16 @@ class ImportContactsViewModel @Inject constructor(
                         }
                         if (!isNumeric) {
                             if (firstName != null) {
-                                if (!firstName.contains("Telegram") && !firstName.contains("WhatsApp") &&
-                                    !firstName.contains("com.google") && !firstName.contains("Signal")
+                                if (!firstName.contains("Telegram") && !firstName.contains("WhatsApp") && !firstName.contains(
+                                        "com.google"
+                                    ) && !firstName.contains("Signal")
                                 ) {
 
                                     if (lastName != null) {
                                         if (appsInPhone != "com.google") {
                                             listOfTriple.add(
                                                 Triple(
-                                                    firstName,
-                                                    lastName,
-                                                    appsInPhone
+                                                    firstName, lastName, appsInPhone
                                                 )
                                             )
                                         }
@@ -111,26 +120,19 @@ class ImportContactsViewModel @Inject constructor(
                     }
 
                     if (phoneContactsList.isEmpty() && mimeType == "vnd.android.cursor.item/name") {
-                        if (firstName == null)
-                            firstName = ""
-                        if (middleName == null)
-                            middleName = ""
-                        if (lastName == null)
-                            lastName = ""
+                        if (firstName == null) firstName = ""
+                        if (middleName == null) middleName = ""
+                        if (lastName == null) lastName = ""
                         structName = Triple(firstName, middleName, lastName)
                         idAndName = Pair(phoneId, structName)
                         phoneContactsList.add(idAndName)
                     } else if (!isDuplicate(
-                            phoneId,
-                            phoneContactsList
+                            phoneId, phoneContactsList
                         ) && mimeType == "vnd.android.cursor.item/name"
                     ) {
-                        if (firstName == null)
-                            firstName = ""
-                        if (middleName == null)
-                            middleName = ""
-                        if (lastName == null)
-                            lastName = ""
+                        if (firstName == null) firstName = ""
+                        if (middleName == null) middleName = ""
+                        if (lastName == null) lastName = ""
                         structName = Triple(firstName, middleName, lastName)
                         idAndName = Pair(phoneId, structName)
                         phoneContactsList.add(idAndName)
@@ -181,8 +183,7 @@ class ImportContactsViewModel @Inject constructor(
 
 
                 phonePic = if (phonePic == null || phonePic.contains(
-                        "content://com.android.contactList/contactList/",
-                        ignoreCase = true
+                        "content://com.android.contactList/contactList/", ignoreCase = true
                     )
                 ) {
                     ""
@@ -196,9 +197,7 @@ class ImportContactsViewModel @Inject constructor(
                 }
 
                 contactDetails = mutableMapOf(
-                    1 to phoneId!!.toInt(),
-                    2 to phoneNumber,
-                    3 to phonePic
+                    1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to phonePic
                 )
 
                 if (listOfDetails.isEmpty() || !listOfDetails.contains(contactDetails)) {
@@ -231,7 +230,6 @@ class ImportContactsViewModel @Inject constructor(
 
         return listOfDetails
     }
-
 
 //    fun getContactWithAndroidId(androidId: Int, lastSync: String): ContactWithAllInformation? {
 //        var contact: ContactWithAllInformation? = null
@@ -285,8 +283,7 @@ class ImportContactsViewModel @Inject constructor(
         val allId = sliceLastSync(lastSync)
         var newList = ""
         allId.forEach {
-            if (id != it.first)
-                list.add(Pair(it.first, it.second))
+            if (id != it.first) list.add(Pair(it.first, it.second))
         }
         list.forEach {
             newList += it.first.toString() + ":" + it.second.toString() + "|"
@@ -300,12 +297,14 @@ class ImportContactsViewModel @Inject constructor(
         contactGroup: List<Triple<Int, String?, String?>>
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-
             val contactsInGroup = arrayListOf<String>()
             val groupsName = arrayListOf<String>()
             phoneStructName?.forEachIndexed { _, fullName ->
                 contactDetails.forEach { details ->
                     val id = details[1].toString().toInt()
+
+                    Log.i("ImportContacts", "id : $id")
+                    Log.i("ImportContacts", "!ids.contains(id) : ${!ids.contains(id)}")
 
                     if (!ids.contains(id)) {
                         if (fullName.first == details[1]) {
@@ -315,28 +314,27 @@ class ImportContactsViewModel @Inject constructor(
                             for (triple in listOfTriple) {
                                 if (fullName.second.third != "") {
                                     if (triple.first != "" && triple.second != "") {
-                                        if (fullName.second.third.contains(triple.first) &&
-                                            fullName.second.third.contains(triple.second)
+                                        if (fullName.second.third.contains(triple.first) && fullName.second.third.contains(
+                                                triple.second
+                                            )
                                         ) {
                                             listOfApps.add(triple.third)
                                         }
                                     }
                                 }
-                                if (fullName.second.first == triple.first && fullName.second.third == triple.second
-                                ) {
+                                if (fullName.second.first == triple.first && fullName.second.third == triple.second) {
                                     listOfApps.add(triple.third)
                                 } else if (fullName.second.third != "" && triple.first != "") {
                                     if (fullName.second.third == triple.first) {
                                         listOfApps.add(triple.third)
                                     }
-                                } else if (fullName.second.first == "${triple.first} ${triple.second}" ||
-                                    fullName.second.third == "${triple.first} ${triple.second}"
-                                ) {
+                                } else if (fullName.second.first == "${triple.first} ${triple.second}" || fullName.second.third == "${triple.first} ${triple.second}") {
                                     listOfApps.add(triple.third)
                                 } else if (fullName.second.third != "") {
                                     if (triple.first != "" && triple.second != "") {
-                                        if (fullName.second.third.contains(triple.first) &&
-                                            fullName.second.third.contains(triple.second)
+                                        if (fullName.second.third.contains(triple.first) && fullName.second.third.contains(
+                                                triple.second
+                                            )
                                         ) {
                                             listOfApps.add(triple.third)
                                         }
@@ -396,6 +394,7 @@ class ImportContactsViewModel @Inject constructor(
                             createContactUseCase.invoke(
                                 ContactDB(
                                     0,
+                                    id,
                                     fullFullName.uppercase().unAccent()
                                         .replace("\\s".toRegex(), ""),
                                     fullName.second.first + secondName,
@@ -567,12 +566,7 @@ class ImportContactsViewModel @Inject constructor(
 
                 if (groupIsDone) {
                     val group = GroupDB(
-                        0,
-                        triple.third!!,
-                        "",
-                        -500138,
-                        contactsInGroup,
-                        1
+                        0, triple.third!!, "", -500138, contactsInGroup, 1
                     )
                     manageGroupRepository.insertGroup(group)
                     contactsInGroup.clear()
@@ -608,13 +602,11 @@ class ImportContactsViewModel @Inject constructor(
             if (groupName != "My Contacts") {
                 val groupMembers = getMemberOfGroup(resolver, groupId.toString(), groupName)
                 if (groupMembers.isNotEmpty() && allGroupMembers.isNotEmpty() && !isDuplicateGroup(
-                        allGroupMembers,
-                        groupMembers
+                        allGroupMembers, groupMembers
                     )
                 ) {
                     allGroupMembers = allGroupMembers.union(groupMembers).toList()
-                } else if (allGroupMembers.isEmpty())
-                    allGroupMembers = groupMembers
+                } else if (allGroupMembers.isEmpty()) allGroupMembers = groupMembers
             }
         }
         phoneContact?.close()
@@ -625,9 +617,7 @@ class ImportContactsViewModel @Inject constructor(
     }
 
     private fun getMemberOfGroup(
-        resolver: ContentResolver,
-        groupId: String,
-        groupName: String?
+        resolver: ContentResolver, groupId: String, groupName: String?
     ): List<Triple<Int, String?, String?>> {
         val where = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupId
         val phoneContact = resolver.query(
@@ -659,19 +649,16 @@ class ImportContactsViewModel @Inject constructor(
     //region ========================================= IS DUPLICATE =========================================
 
     private fun isDuplicate(
-        id: Int,
-        phoneNumber: List<Pair<Int, Triple<String, String, String?>>>
+        id: Int, phoneNumber: List<Pair<Int, Triple<String, String, String?>>>
     ): Boolean {
         phoneNumber.forEach {
-            if (it.first == id)
-                return true
+            if (it.first == id) return true
         }
         return false
     }
 
     private fun isDuplicateContacts(
-        allContacts: Pair<Int, Triple<String, String, String>>?,
-        lastSync: String?
+        allContacts: Pair<Int, Triple<String, String, String>>?, lastSync: String?
     ): Boolean {
         if (lastSync != null) {
             val allId = sliceLastSync(lastSync)
@@ -685,8 +672,7 @@ class ImportContactsViewModel @Inject constructor(
     }
 
     private fun isDuplicateNumber(
-        idAndPhoneNumber: Map<Int, Any>,
-        contactPhoneNumber: List<Map<Int, Any>>
+        idAndPhoneNumber: Map<Int, Any>, contactPhoneNumber: List<Map<Int, Any>>
     ): Boolean {
         contactPhoneNumber.forEach {
             if (it[1] == idAndPhoneNumber[1] && it[2].toString()
@@ -705,8 +691,7 @@ class ImportContactsViewModel @Inject constructor(
     ): Boolean {
         groupMembers.forEach { _ ->
             groupMembers.forEachIndexed { index, it ->
-                if (it.third == member[0].third)
-                    return true
+                if (it.third == member[0].third) return true
             }
         }
         return false
