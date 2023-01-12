@@ -126,6 +126,53 @@ object NotificationsGesture {
         }
     }
 
+    fun convertPackageNameToGoToWithContact(packageName: String, contact: String, context: Context) {
+        when (packageName) {
+            FACEBOOK_PACKAGE -> {
+                goToFacebook(context)
+            }
+            MESSENGER_PACKAGE -> {
+                openMessenger(contact, context)
+            }
+            WHATSAPP_PACKAGE -> {
+                openWhatsapp(contact, context)
+            }
+            GMAIL_PACKAGE -> {
+                openGmail(context)
+            }
+            OUTLOOK_PACKAGE -> {
+                goToOutlook(context)
+            }
+            SIGNAL_PACKAGE -> {
+                goToSignal(context)
+            }
+            LINKEDIN_PACKAGE -> {
+                goToLinkedin(context)
+            }
+            SKYPE_PACKAGE -> {
+                goToSkype(context)
+            }
+            TELEGRAM_PACKAGE -> {
+                goToTelegram(context)
+            }
+            INSTAGRAM_PACKAGE -> {
+                goToInstagram(context)
+            }
+            TWITTER_PACKAGE -> {
+                goToTwitter(context)
+            }
+            SNAPCHAT_PACKAGE -> {
+
+            }
+            VIBER_PACKAGE -> {
+
+            }
+            DISCORD_PACKAGE -> {
+                goToDiscord(context)
+            }
+        }
+    }
+
     fun convertPackageNameToGoTo(packageName: String, context: Context) {
         when (packageName) {
             FACEBOOK_PACKAGE -> {
@@ -182,8 +229,7 @@ object NotificationsGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://skype.com/")
+                    Intent.ACTION_VIEW, Uri.parse("https://skype.com/")
                 )
             )
         }
@@ -196,8 +242,7 @@ object NotificationsGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://linkedin.com/")
+                    Intent.ACTION_VIEW, Uri.parse("https://linkedin.com/")
                 )
             )
         }
@@ -211,8 +256,7 @@ object NotificationsGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://twitter.com/")
+                    Intent.ACTION_VIEW, Uri.parse("https://twitter.com/")
                 )
             )
         }
@@ -226,8 +270,7 @@ object NotificationsGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("http://facebook.com/")
+                    Intent.ACTION_VIEW, Uri.parse("http://facebook.com/")
                 )
             )
         }
@@ -244,8 +287,7 @@ object NotificationsGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://instagram.com/")
+                    Intent.ACTION_VIEW, Uri.parse("https://instagram.com/")
                 )
             )
         }
@@ -267,14 +309,11 @@ object NotificationsGesture {
 
     fun phoneCall(cxt: Context, phoneNumber: String, requestCode: Int) {
         if (ContextCompat.checkSelfPermission(
-                cxt,
-                Manifest.permission.CALL_PHONE
+                cxt, Manifest.permission.CALL_PHONE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                cxt as CockpitActivity,
-                arrayOf(Manifest.permission.CALL_PHONE),
-                requestCode
+                cxt as CockpitActivity, arrayOf(Manifest.permission.CALL_PHONE), requestCode
             )
         } else {
             cxt.startActivity(Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)))

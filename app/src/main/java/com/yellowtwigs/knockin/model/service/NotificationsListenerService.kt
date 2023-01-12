@@ -132,7 +132,10 @@ class NotificationsListenerService : NotificationListenerService() {
                                     System.currentTimeMillis(),
                                     0,
                                     contact.id,
-                                    contact.priority
+                                    contact.priority,
+                                    contact.listOfPhoneNumbers[0],
+                                    contact.listOfMails[0],
+                                    contact.messengerId
                                 )
                             } else {
                                 NotificationDB(
@@ -144,11 +147,12 @@ class NotificationsListenerService : NotificationListenerService() {
                                     System.currentTimeMillis(),
                                     0,
                                     0,
-                                    0
+                                    0,
+                                    sbp.statusBarNotificationInfo["android.title"].toString(),
+                                    sbp.statusBarNotificationInfo["android.title"].toString(),
+                                    ""
                                 )
                             }
-
-                            Log.i("PopupNotifications", "${sbp.id} ${sbp.appNotifier} ${sbp.tickerText}")
 
                             if (sbp.appNotifier != "com.samsung.android.incallui") {
                                 CoroutineScope(Dispatchers.IO).launch {
@@ -176,7 +180,10 @@ class NotificationsListenerService : NotificationListenerService() {
                                         System.currentTimeMillis(),
                                         0,
                                         0,
-                                        0
+                                        0,
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        ""
                                     )
                                 )
                             ) {
@@ -190,7 +197,10 @@ class NotificationsListenerService : NotificationListenerService() {
                                         System.currentTimeMillis(),
                                         0,
                                         0,
-                                        0
+                                        0,
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                                        ""
                                     )
                                 )
                             }

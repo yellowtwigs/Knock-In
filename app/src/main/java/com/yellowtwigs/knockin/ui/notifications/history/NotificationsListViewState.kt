@@ -9,4 +9,6 @@ data class NotificationsListViewState(
     val timestamp: Long,
     val idContact: Int,
     val priority: Int,
+    val phoneNumber: String,
+    val mail: String,
 )

@@ -32,9 +32,11 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
+import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -78,13 +80,14 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
         binding.apply {
             floatingActionButton.setOnClickListener {
-                MaterialAlertDialogBuilder(this@NotificationsHistoryActivity, R.style.AlertDialog)
-                    .setTitle(getString(R.string.notification_history_alert_dialog_title))
+                MaterialAlertDialogBuilder(
+                    this@NotificationsHistoryActivity,
+                    R.style.AlertDialog
+                ).setTitle(getString(R.string.notification_history_alert_dialog_title))
                     .setMessage(getString(R.string.notification_history_alert_dialog_text))
                     .setPositiveButton(R.string.notification_history_alert_dialog_delete_button) { _, wich -> deleteAllNotifications() }
                     .setNegativeButton(
-                        R.string.notification_history_alert_dialog_cancel_button,
-                        null
+                        R.string.notification_history_alert_dialog_cancel_button, null
                     )
                     .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button) { _, _ -> deleteAllNotificationsSystem() }
                     .show()
@@ -206,8 +209,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     startActivity(browserIntent)
                 } else {
                     val browserIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.yellowtwigs.com/help-history")
+                        Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-history")
                     )
                     startActivity(browserIntent)
                 }
@@ -302,20 +304,17 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     )
                     R.id.nav_manage_screen -> startActivity(
                         Intent(
-                            this@NotificationsHistoryActivity,
-                            ManageMyScreenActivity::class.java
+                            this@NotificationsHistoryActivity, ManageMyScreenActivity::class.java
                         )
                     )
                     R.id.nav_in_app -> startActivity(
                         Intent(
-                            this@NotificationsHistoryActivity,
-                            PremiumActivity::class.java
+                            this@NotificationsHistoryActivity, PremiumActivity::class.java
                         )
                     )
                     R.id.nav_help -> startActivity(
                         Intent(
-                            this@NotificationsHistoryActivity,
-                            HelpActivity::class.java
+                            this@NotificationsHistoryActivity, HelpActivity::class.java
                         )
                     )
                     R.id.nav_sync_contact -> {
@@ -339,7 +338,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     private fun importContacts() {
         CoroutineScope(Dispatchers.Default).launch {
             importContactsViewModel.syncAllContactsInDatabase(contentResolver)
@@ -357,8 +356,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 R.id.navigation_contacts -> {
                     startActivity(
                         Intent(
-                            this@NotificationsHistoryActivity,
-                            ContactsListActivity::class.java
+                            this@NotificationsHistoryActivity, ContactsListActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -366,8 +364,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 R.id.navigation_groups -> {
                     startActivity(
                         Intent(
-                            this@NotificationsHistoryActivity,
-                            GroupsListActivity::class.java
+                            this@NotificationsHistoryActivity, GroupsListActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -375,8 +372,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 R.id.navigation_cockpit -> {
                     startActivity(
                         Intent(
-                            this@NotificationsHistoryActivity,
-                            CockpitActivity::class.java
+                            this@NotificationsHistoryActivity, CockpitActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -388,7 +384,9 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     }
 
     private fun setupNotificationsList() {
-        notificationsAdapter = NotificationsListAdapter(this)
+        notificationsAdapter = NotificationsListAdapter(this) { phoneNumber, platform ->
+            convertPackageNameToGoToWithContact(platform, phoneNumber, this)
+        }
 
         binding.recyclerView.apply {
             this.adapter = notificationsAdapter
@@ -545,7 +543,10 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 notification.timestamp,
                 0,
                 notification.idContact,
-                notification.priority
+                notification.priority,
+                notification.phoneNumber,
+                notification.mail,
+                "",
             )
         )
     }

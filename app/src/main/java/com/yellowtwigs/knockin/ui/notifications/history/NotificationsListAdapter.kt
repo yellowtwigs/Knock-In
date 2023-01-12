@@ -20,7 +20,10 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Date
 
-class NotificationsListAdapter(private val context: Context) :
+class NotificationsListAdapter(
+    private val context: Context,
+    private val onClickedCallback: (String, String) -> Unit
+) :
     ListAdapter<NotificationsListViewState, NotificationsListAdapter.ViewHolder>(ContactComparator()) {
 
     private lateinit var notification: NotificationsListViewState
@@ -36,7 +39,7 @@ class NotificationsListAdapter(private val context: Context) :
         holder.onBind(getItem(position), context)
     }
 
-    class ViewHolder(private val binding: ItemNotificationBinding) :
+    inner class ViewHolder(private val binding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(notification: NotificationsListViewState, context: Context) {
@@ -90,6 +93,8 @@ class NotificationsListAdapter(private val context: Context) :
                                 lastClick = true
                             }
                         } else {
+                            onClickedCallback(notification.phoneNumber, convertPackageToString(platform, context))
+//                            onClickedCallback
 //                            if (context is NotificationHistoryActivity) {
 //                                context.recyclerSimpleClick(position)
 //                            }
