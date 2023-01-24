@@ -1,6 +1,8 @@
 package com.yellowtwigs.knockin.ui.cockpit
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.Resources
 import android.net.Uri
@@ -12,10 +14,9 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.R
@@ -25,22 +26,26 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
+import com.yellowtwigs.knockin.utils.FirebaseViewModel
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class CockpitActivity : AppCompatActivity() {
 
     //region ========================================== Var or Val ==========================================
@@ -52,6 +57,9 @@ class CockpitActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCockpitBinding
     private lateinit var listApp: ArrayList<String>
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
+
+    private lateinit var userIdPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,8 +100,7 @@ class CockpitActivity : AppCompatActivity() {
                         this@CockpitActivity,
                         R.string.cockpit_toast_phone_number_empty,
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
             }
 
@@ -101,11 +108,9 @@ class CockpitActivity : AppCompatActivity() {
                 if (phoneNumberEditText.text?.isNotEmpty() == true) {
                     startActivity(
                         Intent(
-                            this@CockpitActivity,
-                            AddNewContactActivity::class.java
+                            this@CockpitActivity, AddNewContactActivity::class.java
                         ).putExtra(
-                            "ContactPhoneNumber",
-                            phoneNumberEditText.text.toString()
+                            "ContactPhoneNumber", phoneNumberEditText.text.toString()
                         )
                     )
                 } else {
@@ -113,8 +118,7 @@ class CockpitActivity : AppCompatActivity() {
                         this@CockpitActivity,
                         R.string.cockpit_toast_phone_number_empty,
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
             }
 
@@ -167,8 +171,7 @@ class CockpitActivity : AppCompatActivity() {
             backSpace.setOnClickListener {
                 if (phoneNumberEditText.text?.isNotEmpty() == true) {
                     phoneNumberEditText.text?.delete(
-                        phoneNumberEditText.length() - 1,
-                        phoneNumberEditText.length()
+                        phoneNumberEditText.length() - 1, phoneNumberEditText.length()
                     )
                 }
             }
@@ -176,6 +179,10 @@ class CockpitActivity : AppCompatActivity() {
 
             //endregion
         }
+
+        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the Cockpit")
     }
 
     //region =========================================== TOOLBAR ============================================
@@ -197,8 +204,7 @@ class CockpitActivity : AppCompatActivity() {
                 startActivity(browserIntent)
             } else {
                 val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.yellowtwigs.com/help-cockpit")
+                    Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-cockpit")
                 )
                 startActivity(browserIntent)
             }
@@ -216,40 +222,37 @@ class CockpitActivity : AppCompatActivity() {
         setupTeleworkingItem(binding.navView, this)
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
+            if(menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend){
+                menuItem.isChecked = true
+            }
             binding.drawerLayout.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     startActivity(
                         Intent(
-                            this@CockpitActivity,
-                            ContactsListActivity::class.java
+                            this@CockpitActivity, ContactsListActivity::class.java
                         )
                     )
                 }
                 R.id.nav_notifications -> startActivity(
                     Intent(
-                        this@CockpitActivity,
-                        NotificationsSettingsActivity::class.java
+                        this@CockpitActivity, NotificationsSettingsActivity::class.java
                     )
                 )
                 R.id.nav_in_app -> startActivity(
                     Intent(
-                        this@CockpitActivity,
-                        PremiumActivity::class.java
+                        this@CockpitActivity, PremiumActivity::class.java
                     )
                 )
                 R.id.nav_manage_screen -> startActivity(
                     Intent(
-                        this@CockpitActivity,
-                        ManageMyScreenActivity::class.java
+                        this@CockpitActivity, ManageMyScreenActivity::class.java
                     )
                 )
                 R.id.nav_help -> startActivity(
                     Intent(
-                        this@CockpitActivity,
-                        HelpActivity::class.java
+                        this@CockpitActivity, HelpActivity::class.java
                     )
                 )
                 R.id.nav_sync_contact -> {
@@ -291,8 +294,7 @@ class CockpitActivity : AppCompatActivity() {
                     R.id.navigation_contacts -> {
                         startActivity(
                             Intent(
-                                this@CockpitActivity,
-                                ContactsListActivity::class.java
+                                this@CockpitActivity, ContactsListActivity::class.java
                             ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         )
                         return@OnNavigationItemSelectedListener true
@@ -300,8 +302,7 @@ class CockpitActivity : AppCompatActivity() {
                     R.id.navigation_groups -> {
                         startActivity(
                             Intent(
-                                this@CockpitActivity,
-                                GroupsListActivity::class.java
+                                this@CockpitActivity, GroupsListActivity::class.java
                             ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         )
                         return@OnNavigationItemSelectedListener true
@@ -309,8 +310,7 @@ class CockpitActivity : AppCompatActivity() {
                     R.id.navigation_notifcations -> {
                         startActivity(
                             Intent(
-                                this@CockpitActivity,
-                                NotificationsHistoryActivity::class.java
+                                this@CockpitActivity, NotificationsHistoryActivity::class.java
                             ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         )
                         return@OnNavigationItemSelectedListener true
@@ -327,15 +327,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.FACEBOOK_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_facebook_selector,
-                    NotificationsGesture.FACEBOOK_PACKAGE
+                    R.drawable.ic_facebook_selector, NotificationsGesture.FACEBOOK_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_facebook_disable,
-                    NotificationsGesture.FACEBOOK_PACKAGE
+                    R.drawable.ic_facebook_disable, NotificationsGesture.FACEBOOK_PACKAGE
                 )
             )
         }
@@ -343,15 +341,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.MESSENGER_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_messenger_selector,
-                    NotificationsGesture.MESSENGER_PACKAGE
+                    R.drawable.ic_messenger_selector, NotificationsGesture.MESSENGER_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_messenger_disable,
-                    NotificationsGesture.MESSENGER_PACKAGE
+                    R.drawable.ic_messenger_disable, NotificationsGesture.MESSENGER_PACKAGE
                 )
             )
         }
@@ -359,15 +355,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.WHATSAPP_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_whatsapp,
-                    NotificationsGesture.WHATSAPP_PACKAGE
+                    R.drawable.ic_whatsapp, NotificationsGesture.WHATSAPP_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_whatsapp_disable,
-                    NotificationsGesture.WHATSAPP_PACKAGE
+                    R.drawable.ic_whatsapp_disable, NotificationsGesture.WHATSAPP_PACKAGE
                 )
             )
         }
@@ -375,15 +369,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.GMAIL_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_gmail,
-                    NotificationsGesture.GMAIL_PACKAGE
+                    R.drawable.ic_gmail, NotificationsGesture.GMAIL_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_gmail_disable,
-                    NotificationsGesture.GMAIL_PACKAGE
+                    R.drawable.ic_gmail_disable, NotificationsGesture.GMAIL_PACKAGE
                 )
             )
         }
@@ -391,15 +383,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.OUTLOOK_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_outlook,
-                    NotificationsGesture.OUTLOOK_PACKAGE
+                    R.drawable.ic_outlook, NotificationsGesture.OUTLOOK_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_outlook_disable,
-                    NotificationsGesture.OUTLOOK_PACKAGE
+                    R.drawable.ic_outlook_disable, NotificationsGesture.OUTLOOK_PACKAGE
                 )
             )
         }
@@ -407,15 +397,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.SIGNAL_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_signal,
-                    NotificationsGesture.SIGNAL_PACKAGE
+                    R.drawable.ic_signal, NotificationsGesture.SIGNAL_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_signal_disable,
-                    NotificationsGesture.SIGNAL_PACKAGE
+                    R.drawable.ic_signal_disable, NotificationsGesture.SIGNAL_PACKAGE
                 )
             )
         }
@@ -423,15 +411,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.LINKEDIN_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_linkedin,
-                    NotificationsGesture.LINKEDIN_PACKAGE
+                    R.drawable.ic_linkedin, NotificationsGesture.LINKEDIN_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_linkedin_disable,
-                    NotificationsGesture.LINKEDIN_PACKAGE
+                    R.drawable.ic_linkedin_disable, NotificationsGesture.LINKEDIN_PACKAGE
                 )
             )
         }
@@ -439,15 +425,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.SKYPE_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_skype,
-                    NotificationsGesture.SKYPE_PACKAGE
+                    R.drawable.ic_skype, NotificationsGesture.SKYPE_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_skype_disable,
-                    NotificationsGesture.SKYPE_PACKAGE
+                    R.drawable.ic_skype_disable, NotificationsGesture.SKYPE_PACKAGE
                 )
             )
         }
@@ -455,15 +439,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.TELEGRAM_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_telegram,
-                    NotificationsGesture.TELEGRAM_PACKAGE
+                    R.drawable.ic_telegram, NotificationsGesture.TELEGRAM_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_telegram_disable,
-                    NotificationsGesture.TELEGRAM_PACKAGE
+                    R.drawable.ic_telegram_disable, NotificationsGesture.TELEGRAM_PACKAGE
                 )
             )
         }
@@ -471,15 +453,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.INSTAGRAM_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_instagram,
-                    NotificationsGesture.INSTAGRAM_PACKAGE
+                    R.drawable.ic_instagram, NotificationsGesture.INSTAGRAM_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_instagram_disable,
-                    NotificationsGesture.INSTAGRAM_PACKAGE
+                    R.drawable.ic_instagram_disable, NotificationsGesture.INSTAGRAM_PACKAGE
                 )
             )
         }
@@ -487,15 +467,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.TWITTER_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_twitter,
-                    NotificationsGesture.TWITTER_PACKAGE
+                    R.drawable.ic_twitter, NotificationsGesture.TWITTER_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_twitter_disable,
-                    NotificationsGesture.TWITTER_PACKAGE
+                    R.drawable.ic_twitter_disable, NotificationsGesture.TWITTER_PACKAGE
                 )
             )
         }
@@ -503,15 +481,13 @@ class CockpitActivity : AppCompatActivity() {
         if (listApp.contains(NotificationsGesture.SNAPCHAT_PACKAGE)) {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_snapchat,
-                    NotificationsGesture.SNAPCHAT_PACKAGE
+                    R.drawable.ic_snapchat, NotificationsGesture.SNAPCHAT_PACKAGE
                 )
             )
         } else {
             cockpitViewStateList.add(
                 CockpitViewState(
-                    R.drawable.ic_snapchat_disable,
-                    NotificationsGesture.SNAPCHAT_PACKAGE
+                    R.drawable.ic_snapchat_disable, NotificationsGesture.SNAPCHAT_PACKAGE
                 )
             )
         }
@@ -554,9 +530,7 @@ class CockpitActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 

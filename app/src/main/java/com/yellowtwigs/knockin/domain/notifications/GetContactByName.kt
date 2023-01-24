@@ -9,6 +9,9 @@ class GetContactByName @Inject constructor(private val contactsDao: ContactsDao)
 
     operator fun invoke(name: String): ContactDB? {
         val contacts = contactsDao.getAllContactsForNotificationsListener()
+
+        Log.i("GoToWithContact", "contacts : $contacts")
+
         var contactDB: ContactDB? = null
 
         if (name.contains(" ")) {

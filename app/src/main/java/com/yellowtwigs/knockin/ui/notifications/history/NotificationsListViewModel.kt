@@ -1,12 +1,10 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.provider.Telephony
-import android.util.Log
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseFirestoreRepository
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
@@ -54,10 +52,7 @@ class NotificationsListViewModel @Inject constructor(
     }
 
     private fun combine(
-        allNotifications: List<NotificationDB>?,
-        input: String?,
-        sortedBy: Int?,
-        filterBy: Int?
+        allNotifications: List<NotificationDB>?, input: String?, sortedBy: Int?, filterBy: Int?
 
     ) {
         val notifications = arrayListOf<NotificationsListViewState>()
@@ -108,17 +103,15 @@ class NotificationsListViewModel @Inject constructor(
     }
 
     private fun filterWithInput(
-        filterBy: Int?,
-        input: String?,
-        notifications: ArrayList<NotificationsListViewState>
+        filterBy: Int?, input: String?, notifications: ArrayList<NotificationsListViewState>
     ): List<NotificationsListViewState> {
         return if (input != null) {
             filterNotificationsList(filterBy, notifications.filter { notification ->
                 val notificationText =
                     notification.contactName + " " + notification.title + " " + notification.description
                 notificationText.contains(input) || notificationText.uppercase()
-                    .contains(input.uppercase()) ||
-                        notificationText.lowercase().contains(input.lowercase())
+                    .contains(input.uppercase()) || notificationText.lowercase()
+                    .contains(input.lowercase())
             })
         } else {
             filterNotificationsList(filterBy, notifications)
@@ -126,8 +119,7 @@ class NotificationsListViewModel @Inject constructor(
     }
 
     private fun filterNotificationsList(
-        filterBy: Int?,
-        notifications: List<NotificationsListViewState>
+        filterBy: Int?, notifications: List<NotificationsListViewState>
     ): List<NotificationsListViewState> {
         if (filterBy != null) {
             when (filterBy) {
@@ -140,15 +132,16 @@ class NotificationsListViewModel @Inject constructor(
                 R.id.sms_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform,
-                            context
+                            it.platform, context
                         ) == "Message"
                     }
                 }
                 R.id.mail_filter -> {
                     return notifications.filter {
-                        convertPackageToString(it.platform, context) == "Gmail" ||
-                                convertPackageToString(it.platform, context) == "Outlook"
+                        convertPackageToString(
+                            it.platform,
+                            context
+                        ) == "Gmail" || convertPackageToString(it.platform, context) == "Outlook"
                     }
                 }
                 R.id.whatsapp_filter -> {
@@ -158,31 +151,33 @@ class NotificationsListViewModel @Inject constructor(
                 }
                 R.id.facebook_filter -> {
                     return notifications.filter {
-                        convertPackageToString(it.platform, context) == "Messenger" ||
-                                convertPackageToString(it.platform, context) == "Facebook"
+                        convertPackageToString(
+                            it.platform,
+                            context
+                        ) == "Messenger" || convertPackageToString(
+                            it.platform,
+                            context
+                        ) == "Facebook"
                     }
                 }
                 R.id.signal_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform,
-                            context
+                            it.platform, context
                         ) == "Signal"
                     }
                 }
                 R.id.discord_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform,
-                            context
+                            it.platform, context
                         ) == "Discord"
                     }
                 }
                 R.id.viber_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform,
-                            context
+                            it.platform, context
                         ) == "Viber"
                     }
                 }
@@ -196,8 +191,7 @@ class NotificationsListViewModel @Inject constructor(
     }
 
     private fun addNotificationInList(
-        notifications: ArrayList<NotificationsListViewState>,
-        notification: NotificationDB
+        notifications: ArrayList<NotificationsListViewState>, notification: NotificationDB
     ) {
         notifications.add(
             NotificationsListViewState(
@@ -209,6 +203,8 @@ class NotificationsListViewModel @Inject constructor(
                 notification.timestamp,
                 notification.idContact,
                 notification.priority,
+                notification.phoneNumber,
+                notification.mail
             )
         )
     }

@@ -27,10 +27,13 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityStartActivityBinding
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
+import com.yellowtwigs.knockin.utils.FirebaseViewModel
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 
@@ -42,11 +45,14 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var currentPosition = 0
     private lateinit var binding: ActivityStartActivityBinding
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     private lateinit var importContactPreferences: SharedPreferences
 
     private var contactsAreImported = false
     private var importationFinished = false
+
+    private lateinit var userIdPreferences: SharedPreferences
 
     //endregion
 
@@ -62,13 +68,18 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         setSliderContainer()
 
         if (checkIfGoEdition()) {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setBackground(getDrawable(R.color.backgroundColor))
+            MaterialAlertDialogBuilder(
+                this,
+                R.style.AlertDialog
+            ).setBackground(getDrawable(R.color.backgroundColor))
                 .setMessage(getString(R.string.start_activity_go_edition_message))
                 .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                }
-                .show()
+                }.show()
         }
+
+        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter StartActivity")
 
         importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
         contactsAreImported = importContactPreferences.getBoolean("Import_Contact", false)
@@ -90,6 +101,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 when (currentPosition) {
                     0 -> {
                         if (!importContactPreferences.getBoolean("Import_Contact", false)) {
+                            saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Try to Import Contact")
+
                             ActivityCompat.requestPermissions(
                                 this@StartActivity,
                                 arrayOf(Manifest.permission.READ_CONTACTS),
@@ -238,8 +251,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     radioButton4.visibility = View.GONE
 
                                     title.text =
-                                        "${getString(R.string.notif_adapter_show_message_button)} " +
-                                                "${getString(R.string.left_drawer_home)}"
+                                        "${getString(R.string.notif_adapter_show_message_button)} " + "${
+                                            getString(R.string.left_drawer_home)
+                                        }"
 
                                     subtitle.visibility = View.GONE
                                     activateButton.setText(R.string.start_activity_next)
@@ -270,26 +284,23 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (isClickable) {
             binding.activateButton.setBackgroundColor(
                 ResourcesCompat.getColor(
-                    resources,
-                    R.color.colorPrimary,
-                    null
+                    resources, R.color.colorPrimary, null
                 )
             )
         } else {
             binding.activateButton.setBackgroundColor(
                 ResourcesCompat.getColor(
-                    resources,
-                    R.color.greyColor,
-                    null
+                    resources, R.color.greyColor, null
                 )
             )
         }
     }
 
     private fun openOverlaySettings() {
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Overlay Settings")
+
         val intent = Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:$packageName")
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")
         )
         startActivity(intent)
     }
@@ -311,10 +322,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region =========================================== BILLING ============================================
 
     private fun setupBillingClient() {
-        val billingClient = BillingClient.newBuilder(this)
-            .setListener(this)
-            .enablePendingPurchases()
-            .build()
+        val billingClient =
+            BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
         connectToGooglePlayBilling(billingClient)
     }
 
@@ -342,9 +351,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_relaxation_theme")
         skuList.add("additional_applications_support")
 
-        val params = SkuDetailsParams.newBuilder()
-            .setSkusList(skuList)
-            .setType(BillingClient.SkuType.INAPP)
+        val params =
+            SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
 
         billingClient.querySkuDetailsAsync(
             params.build()
@@ -400,14 +408,14 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Import Contacts Validation")
+
                 CoroutineScope(Dispatchers.Main).launch {
                     importContactsViewModel.syncAllContactsInDatabase(contentResolver)
                 }
@@ -431,6 +439,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun activateNotificationsClick() {
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Activate Notifications")
+
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.yellowtwigs.Knockin.notificationExemple")

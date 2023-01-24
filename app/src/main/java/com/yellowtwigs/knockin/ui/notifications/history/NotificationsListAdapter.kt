@@ -93,7 +93,9 @@ class NotificationsListAdapter(
                                 lastClick = true
                             }
                         } else {
-                            onClickedCallback(notification.phoneNumber, convertPackageToString(platform, context))
+                            Log.i("GoToWithContact", "notification : $notification")
+
+                            onClickedCallback(notification.phoneNumber, platform)
 //                            onClickedCallback
 //                            if (context is NotificationHistoryActivity) {
 //                                context.recyclerSimpleClick(position)
@@ -125,7 +127,7 @@ class NotificationsListAdapter(
                     }
 
 //                    root.setOnLongClickListener(longClick)
-//                    root.setOnClickListener(click)
+                    root.setOnClickListener(click)
                 }
             }
         }

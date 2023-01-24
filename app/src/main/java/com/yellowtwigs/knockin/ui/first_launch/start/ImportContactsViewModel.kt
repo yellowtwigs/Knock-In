@@ -38,13 +38,7 @@ class ImportContactsViewModel @Inject constructor(
     private val ids = arrayListOf<Int>()
 
     suspend fun syncAllContactsInDatabase(contentResolver: ContentResolver) {
-        Log.i("ImportContacts", "ImportContacts 1")
-        Log.i(
-            "ImportContacts",
-            "getAllAndroidIdsUseCase.invoke() : ${getAllAndroidIdsUseCase.invoke()}"
-        )
         ids.addAll(getAllAndroidIdsUseCase.invoke())
-        Log.i("ImportContacts", "ids : $ids")
 
         val structuredNameSync = getStructuredNameSync(contentResolver)
         val contactDetails = getContactDetailsSync(contentResolver)
@@ -303,9 +297,6 @@ class ImportContactsViewModel @Inject constructor(
                 contactDetails.forEach { details ->
                     val id = details[1].toString().toInt()
 
-                    Log.i("ImportContacts", "id : $id")
-                    Log.i("ImportContacts", "!ids.contains(id) : ${!ids.contains(id)}")
-
                     if (!ids.contains(id)) {
                         if (fullName.first == details[1]) {
                             ids.add(id)
@@ -383,13 +374,6 @@ class ImportContactsViewModel @Inject constructor(
                                 listOfMails.add(details[4].toString())
                             } else {
                             }
-
-                            Log.i(
-                                "FullFullName", "${
-                                    fullFullName.uppercase().unAccent().replace("\\s".toRegex(), "")
-                                        .toCharArray().toString()
-                                }"
-                            )
 
                             createContactUseCase.invoke(
                                 ContactDB(

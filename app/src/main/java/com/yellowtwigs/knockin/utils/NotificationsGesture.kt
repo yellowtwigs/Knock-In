@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Telephony
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.yellowtwigs.knockin.R
@@ -135,7 +136,7 @@ object NotificationsGesture {
                 openMessenger(contact, context)
             }
             WHATSAPP_PACKAGE -> {
-                openWhatsapp(contact, context)
+                openWhatsapp(contact.replace(" ", ""), context)
             }
             GMAIL_PACKAGE -> {
                 openGmail(context)
@@ -162,13 +163,31 @@ object NotificationsGesture {
                 goToTwitter(context)
             }
             SNAPCHAT_PACKAGE -> {
-
+                val intent = context.packageManager.getLaunchIntentForPackage("com.snapchat.android")
+                intent?.let {
+                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    context.startActivity(it)
+                }
             }
             VIBER_PACKAGE -> {
-
+                val intent = context.packageManager.getLaunchIntentForPackage("com.viber.voip")
+                intent?.let {
+                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    context.startActivity(it)
+                }
             }
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
+            }
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
+                openSms(contact, context)
+            }
+            else -> {
+                val intent = context.packageManager.getLaunchIntentForPackage(packageName)
+                intent?.let {
+                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    context.startActivity(it)
+                }
             }
         }
     }
@@ -217,10 +236,22 @@ object NotificationsGesture {
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, Telephony.Sms.getDefaultSmsPackage(
+                context
+            ) -> {
+                openSms("", context)
+            }
         }
     }
 
     //region ============================================= goTo =============================================
+
+    fun openSms(phoneNumber: String, context: Context) {
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phoneNumber, null))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        context.startActivity(intent)
+    }
 
     private fun goToSkype(context: Context) {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("skype://skype"))

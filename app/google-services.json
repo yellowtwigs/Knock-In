@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "213912907565",
+    "project_id": "knock-in-89794",
+    "storage_bucket": "knock-in-89794.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213912907565:android:7814e02c9e6894024feda4",
+        "android_client_info": {
+          "package_name": "com.yellowtwigs.Knockin.notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213912907565-5j0osncugg2u0r15jbv0bf7om2d3tkp5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1i-lSrpsf7hvl01EViLhth_VrzMGEJa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213912907565-5j0osncugg2u0r15jbv0bf7om2d3tkp5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

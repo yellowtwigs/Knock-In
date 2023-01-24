@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -19,17 +20,17 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
-import com.yellowtwigs.knockin.model.database.ContactsDatabase
-import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.FirebaseViewModel
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -37,6 +38,9 @@ import java.util.*
 class TeleworkingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeleworkingBinding
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
+
+    private lateinit var userIdPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,10 @@ class TeleworkingActivity : AppCompatActivity() {
         val viewModel: TeleworkingViewModel by viewModels()
         binding = ActivityTeleworkingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the Teleworking Activity")
 
         setupContactList(viewModel)
         setupReminder()
@@ -156,6 +164,9 @@ class TeleworkingActivity : AppCompatActivity() {
             itemText.setTextColor(resources.getColor(R.color.colorPrimaryDark))
 
             navView.setNavigationItemSelectedListener { menuItem ->
+                if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
+                    menuItem.isChecked = true
+                }
                 drawerLayout.closeDrawers()
 
                 when (menuItem.itemId) {

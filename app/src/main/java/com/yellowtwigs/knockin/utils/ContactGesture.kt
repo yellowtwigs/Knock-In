@@ -36,8 +36,10 @@ object ContactGesture {
         }
     }
 
-    fun openWhatsapp(contact: CharSequence, context: Context) {
-        val url = "https://api.whatsapp.com/send?phone=$contact"
+    fun openWhatsapp(contact: String, context: Context) {
+        Log.i("GoToWithContact", "contact : $contact")
+
+        val url = "https://api.whatsapp.com/send?phone=${converter06To33(contact)}"
 
         val i = Intent(Intent.ACTION_VIEW)
         i.flags = FLAG_ACTIVITY_NEW_TASK

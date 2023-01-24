@@ -29,19 +29,19 @@ class ContactsListViewModel @Inject constructor(
 
     private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
         return ContactsListViewState(
-            contact.id,
-            contact.firstName,
-            contact.lastName,
-            contact.profilePicture,
-            contact.profilePicture64,
-            contact.listOfPhoneNumbers,
-            contact.listOfMails,
-            contact.priority,
-            contact.isFavorite == 1,
-            contact.messengerId,
-            contact.listOfMessagingApps.contains("com.whatsapp"),
-            contact.listOfMessagingApps.contains("org.telegram.messenger"),
-            contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
+            id = contact.id,
+            firstName = contact.firstName,
+            lastName = contact.lastName,
+            profilePicture = contact.profilePicture,
+            profilePicture64 = contact.profilePicture64,
+            listOfPhoneNumbers = contact.listOfPhoneNumbers,
+            listOfMails = contact.listOfMails,
+            priority = contact.priority,
+            isFavorite = contact.isFavorite == 1,
+            messengerId = contact.messengerId,
+            hasWhatsapp = contact.listOfMessagingApps.contains("com.whatsapp"),
+            hasTelegram = contact.listOfMessagingApps.contains("org.telegram.messenger"),
+            hasSignal = contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
         )
     }
 
@@ -147,8 +147,7 @@ class ContactsListViewModel @Inject constructor(
     ): List<ContactsListViewState> {
         return listOfContacts.filter { contact ->
             val name = contact.firstName + " " + contact.lastName
-            name.contains(input) || name.uppercase().contains(input.uppercase()) || name.lowercase()
-                .contains(input.lowercase())
+            name.contains(input) || name.uppercase().contains(input.uppercase()) || name.lowercase().contains(input.lowercase())
         }
     }
 

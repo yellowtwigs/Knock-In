@@ -5,6 +5,7 @@ import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
 import com.yellowtwigs.knockin.domain.group.UpdateFavoriteGroupUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseFirestoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

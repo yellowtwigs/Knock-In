@@ -92,7 +92,7 @@
         <activity
             android:name="com.yellowtwigs.knockin.ui.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".ui.in_app.PremiumActivity" />
+        <activity android:name=".ui.premium.PremiumActivity" />
         <receiver android:name=".ui.notifications.NotificationSender" />
         <receiver android:name=".ui.notifications.NotificationMessageSender" />
 

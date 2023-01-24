@@ -122,6 +122,8 @@ class NotificationsListenerService : NotificationListenerService() {
                                     getContactByName.invoke(name)
                                 }
                             }
+                            Log.i("GoToWithContact", "contact : $contact")
+
                             val notification = if (contact != null) {
                                 NotificationDB(
                                     0,
@@ -378,8 +380,6 @@ class NotificationsListenerService : NotificationListenerService() {
             }
 
             if (!sharedPreferences.getBoolean("view", false)) {
-                Log.i("PopupNotifications", "Passe par là : 1")
-
                 popupView = null
                 val edit = sharedPreferences.edit()
                 edit.putBoolean("view", true)
@@ -588,9 +588,6 @@ class NotificationsListenerService : NotificationListenerService() {
         val popupNotificationViewStates = arrayListOf<PopupNotificationViewState>()
 
         fun deleteItem(position: Int) {
-            Log.i("PopupNotifications", "$position")
-            Log.i("PopupNotifications", "$popupNotificationViewStates")
-
             popupNotificationViewStates.removeAt(position)
             if (popupNotificationViewStates.size == 1) {
                 numberOfMessages?.text = "1 message"

@@ -7,13 +7,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -29,18 +28,18 @@ import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
-import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.ContactGesture
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
+import com.yellowtwigs.knockin.utils.FirebaseViewModel
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class NotificationsHistoryActivity : AppCompatActivity() {
@@ -58,6 +57,9 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     private val notificationsListViewModel: NotificationsListViewModel by viewModels()
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
+
+    private lateinit var userIdPreferences: SharedPreferences
 
     //endregion
 
@@ -75,6 +77,10 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         setupDrawerLayout()
         setupBottomNavigationView()
         setupNotificationsList()
+
+        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the NotificationsHistoryActivity")
 
         //region ======================================== Listeners =========================================
 
@@ -288,11 +294,11 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         setupTeleworkingItem(binding.navView, this)
 
         binding.navView.apply {
-            val navItem = menu.findItem(R.id.nav_manage_screen)
-            navItem.isChecked = true
             menu.getItem(0).isChecked = true
             setNavigationItemSelectedListener { menuItem ->
-                menuItem.isChecked = true
+                if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
+                    menuItem.isChecked = true
+                }
                 binding.drawerLayout.closeDrawers()
 
                 when (menuItem.itemId) {

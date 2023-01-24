@@ -3,7 +3,6 @@ package com.yellowtwigs.knockin.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -20,7 +19,6 @@ import android.widget.RelativeLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -29,8 +27,7 @@ import com.yellowtwigs.knockin.R
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
-import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
@@ -124,7 +121,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         //region ======================================= DrawerLayout =======================================
 
-        // Drawerlayout
         help_activity_DrawerLayout = findViewById(R.id.help_drawer_layout)
 
         val navigationView = findViewById<NavigationView>(R.id.help_nav_view)
@@ -132,24 +128,26 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         val navItem = menu.findItem(R.id.nav_help)
         navItem.isChecked = true
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            help_activity_DrawerLayout?.closeDrawers()
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
 
-            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
 
-            itemText.text =
-                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-            itemLayout.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@HelpActivity,
-                        TeleworkingActivity::class.java
-                    )
+        itemLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@HelpActivity,
+                    TeleworkingActivity::class.java
                 )
+            )
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
+                menuItem.isChecked = true
             }
+            help_activity_DrawerLayout?.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {

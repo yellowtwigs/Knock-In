@@ -22,18 +22,15 @@ class ContactsGridAdapter(
     private val cxt: Context,
     private val onClickedCallback: (Int) -> Unit,
     private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactsListViewState) -> Unit
-) :
-    ListAdapter<ContactsListViewState, ContactsGridAdapter.ViewHolder>(
-        ContactsListViewStateComparator()
-    ) {
+) : ListAdapter<ContactsListViewState, ContactsGridAdapter.ViewHolder>(
+    ContactsListViewStateComparator()
+) {
 
     private var imageHeight = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemContactGridBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         imageHeight = binding.civ.layoutParams.height
         return ViewHolder(binding)
@@ -43,18 +40,16 @@ class ContactsGridAdapter(
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemContactGridBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemContactGridBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contact: ContactsListViewState) {
             binding.apply {
                 contactPriorityBorder(contact.priority, civ, cxt)
                 contactProfilePicture(contact.profilePicture64, contact.profilePicture, civ, cxt)
-                var firstname = contact.firstName
-                var lastname = contact.lastName
+                var firstnameData = contact.firstName
+                var lastnameData = contact.lastName
 
-                val len = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
-                    .getInt("gridview", 4)
+                val len = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE).getInt("gridview", 4)
 
                 val layoutParamsTV = firstName.layoutParams as ConstraintLayout.LayoutParams
                 val layoutParamsIV = civ.layoutParams as ConstraintLayout.LayoutParams
@@ -65,67 +60,79 @@ class ContactsGridAdapter(
                     layoutParamsTV.topMargin = 10
                     layoutParamsIV.topMargin = 10
 
-                    if (contact.firstName.length > 12)
-                        firstname = contact.firstName.substring(0, 10) + ".."
+                    if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                        if (firstnameData.length > 12) firstnameData = firstnameData.substring(0, 10) + ".."
 
-                    if (contact.lastName.length > 12)
-                        lastname = contact.lastName.substring(0, 10) + ".."
+                        val sizeFirstName = "$firstnameData"
+                        val spanFirstName = SpannableString("$firstnameData")
 
-                    val sizeFirstName = "$firstname"
-                    val spanFirstName = SpannableString("$firstname")
-                    spanFirstName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeFirstName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    val sizeLastName = "$lastName"
-                    val spanLastName = SpannableString("$lastName")
-                    spanLastName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeLastName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                        try {
+                            spanFirstName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
 
-                    firstName.text = spanFirstName
-                    lastName.text = spanLastName
+                            firstName.text = spanFirstName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    }
+
+                    if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                        if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+
+                        val sizeLastName = "$lastnameData"
+                        val spanLastName = SpannableString("$lastnameData")
+
+                        try {
+                            spanLastName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            lastName.text = spanLastName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    }
                 } else if (len == 5) {
                     civ.layoutParams.height = (imageHeight - imageHeight * 0.40).toInt()
                     civ.layoutParams.width = (imageHeight - imageHeight * 0.40).toInt()
                     layoutParamsTV.topMargin = 0
                     layoutParamsIV.topMargin = 0
 
-                    if (contact.firstName.length > 11)
-                        firstname = contact.firstName.substring(0, 9) + ".."
+                    if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                        if (firstnameData.length > 11) firstnameData = firstnameData.substring(0, 9) + ".."
 
-                    if (firstname != "") {
-                        val sizeFirstName = "$firstname"
-                        val spanFirstName = SpannableString("$firstname")
-                        spanFirstName.setSpan(
-                            RelativeSizeSpan(0.9f),
-                            0,
-                            sizeFirstName.length - 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                        firstName.text = spanFirstName
+                        val sizeFirstName = "$firstnameData"
+                        val spanFirstName = SpannableString("$firstnameData")
+
+                        try {
+                            spanFirstName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            firstName.text = spanFirstName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
                     }
-                    if (lastname != "") {
-                        val sizeLastName = "$lastName"
-                        val spanLastName = SpannableString("$lastName")
-                        spanLastName.setSpan(
-                            RelativeSizeSpan(0.9f),
-                            0,
-                            sizeLastName.length - 1,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
 
-                        lastName.text = spanLastName
+                    if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                        if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+
+                        val sizeLastName = "$lastnameData"
+                        val spanLastName = SpannableString("$lastnameData")
+
+                        try {
+                            spanLastName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            lastName.text = spanLastName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
                     }
                 }
-
-                firstName.text = firstname
-                lastName.text = lastname
 
                 favoriteIcon.isVisible = contact.isFavorite
 
@@ -147,15 +154,13 @@ class ContactsGridAdapter(
 
     class ContactsListViewStateComparator : DiffUtil.ItemCallback<ContactsListViewState>() {
         override fun areItemsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactsListViewState, newItem: ContactsListViewState
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactsListViewState, newItem: ContactsListViewState
         ): Boolean {
             return oldItem == newItem
         }

@@ -2,12 +2,12 @@ package com.yellowtwigs.knockin.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.firebase.firestore.FirebaseFirestore
 import com.yellowtwigs.knockin.domain.contact.*
 import com.yellowtwigs.knockin.domain.group.UpdateFavoriteGroupUseCase
 import com.yellowtwigs.knockin.domain.notifications.*
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.dao.ContactsDao
-import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
 import com.yellowtwigs.knockin.model.service.CheckDuplicateNotificationUseCase
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
@@ -35,6 +35,12 @@ class AppModule {
             .allowMainThreadQueries()
             .addMigrations()
             .build()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
 
     @Provides
     @Singleton

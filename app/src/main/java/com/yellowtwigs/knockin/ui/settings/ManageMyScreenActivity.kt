@@ -25,21 +25,27 @@ import com.yellowtwigs.knockin.databinding.ActivityManageMyScreenBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
+import com.yellowtwigs.knockin.utils.FirebaseViewModel
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class ManageMyScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManageMyScreenBinding
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
+
+    private lateinit var userIdPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +54,10 @@ class ManageMyScreenActivity : AppCompatActivity() {
         binding = ActivityManageMyScreenBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the ManageMyScreenActivity")
 
         if (intent.getBooleanExtra("ChangeTheme", false)) {
             buildMaterialAlertDialogBuilder()
@@ -74,22 +84,25 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
         setupTeleworkingItem(binding.navigationView, this)
 
-        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            binding.drawerLayout.closeDrawers()
+        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
+        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
 
-            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+        itemText.text =
+            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
 
-            itemText.text =
-                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-            itemLayout.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@ManageMyScreenActivity, TeleworkingActivity::class.java
-                    )
+        itemLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@ManageMyScreenActivity, TeleworkingActivity::class.java
                 )
+            )
+        }
+
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+            if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
+                menuItem.isChecked = true
             }
+            binding.drawerLayout.closeDrawers()
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {

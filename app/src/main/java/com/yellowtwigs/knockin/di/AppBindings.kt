@@ -6,6 +6,8 @@ import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepositoryImpl
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepositoryImpl
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseFirestoreRepository
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseFirestoreRepositoryImpl
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepositoryImpl
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
@@ -45,4 +47,8 @@ abstract class AppBindings {
     @Binds
     @Singleton
     abstract fun bindGroupsListRepository(impl: GroupsListRepositoryImpl): GroupsListRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFirebaseFirestoreRepository(impl: FirebaseFirestoreRepositoryImpl): FirebaseFirestoreRepository
 }

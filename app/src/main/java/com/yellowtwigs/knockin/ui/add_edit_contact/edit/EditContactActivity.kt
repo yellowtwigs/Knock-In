@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -37,19 +38,22 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsActiv
 import com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsViewState
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
-import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
+import com.yellowtwigs.knockin.utils.FirebaseViewModel
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class EditContactActivity : AppCompatActivity() {
@@ -57,6 +61,9 @@ class EditContactActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditContactBinding
 
     private val editContactViewModel: EditContactViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
+
+    private lateinit var userIdPreferences: SharedPreferences
 
     private var isChanged = false
 
@@ -110,6 +117,10 @@ class EditContactActivity : AppCompatActivity() {
         val id = intent.getIntExtra("ContactId", 1)
 
         fromVipSettings = intent.getBooleanExtra("fromVipSettings", false)
+
+        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the EditContactActivity")
 
         fromGroups = intent.getBooleanExtra("FromGroups", false)
         bindingAllDataFromUserId(id)

@@ -27,11 +27,14 @@ import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
-import com.yellowtwigs.knockin.ui.in_app.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.FirebaseViewModel
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import java.util.*
 
 @AndroidEntryPoint
 class VipSettingsActivity : AppCompatActivity() {
@@ -39,6 +42,9 @@ class VipSettingsActivity : AppCompatActivity() {
     //region ========================================== Var or Val ==========================================
 
     private val editContactViewModel: EditContactViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
+
+    private lateinit var userIdPreferences: SharedPreferences
 
     private var alarmSound: MediaPlayer? = null
 
@@ -88,15 +94,12 @@ class VipSettingsActivity : AppCompatActivity() {
 
         val jazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
         jazzySoundBought = jazzySoundPreferences.getBoolean("Jazzy_Sound_Bought", false)
-        jazzySoundBought = true
 
         val relaxSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
         relaxSoundBought = relaxSoundPreferences.getBoolean("Relax_Sound_Bought", false)
-        relaxSoundBought = true
 
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
-        funkySoundBought = true
 
         val contactId = intent.getIntExtra("ContactId", 0)
         editContactViewModel.getContactById(contactId).observe(this) { viewState ->
@@ -375,6 +378,10 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
             }
         }
+
+        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the VipSettingsActivity")
     }
 
     //region ========================================== Functions ===========================================
@@ -454,6 +461,8 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun onClickFirstCheckbox(checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean) {
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Click on Checkbox to buy song")
+
         uncheckBoxAll()
         checkBox.isChecked = true
         notificationSound = sound
@@ -468,10 +477,9 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun onClickCheckbox(checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean) {
+        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Click on Checkbox to buy song")
         uncheckBoxAll()
         checkBox.isChecked = true
-
-        Log.i("fromVipSettings", "sound : $sound")
 
         if (isBought) {
             notificationSound = sound

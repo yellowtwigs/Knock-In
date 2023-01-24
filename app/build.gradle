@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -12,9 +13,9 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 32
-        versionCode 181
+        versionCode 183
 //        versionName "2.2.8"
-        versionName "2.4.6"
+        versionName "2.4.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -85,6 +86,7 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.5.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.1'
 
     // Test
     testImplementation 'junit:junit:4.13.2'
@@ -137,8 +139,11 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
     implementation 'com.facebook.android:facebook-login:13.0.0'
 
-    def billing_version = "5.0.0"
+    def billing_version = "5.1.0"
     implementation("com.android.billingclient:billing-ktx:$billing_version")
+
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
 
 // Allow references to generated code
