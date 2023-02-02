@@ -494,4 +494,5 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="remove_filter">Hapus filter</string>
     <string name="allow_phone_call">Anda belum mengizinkan panggilan telepon</string>
     <string name="daily_reminder_time">Waktu pengingat harian</string>
+    <string name="teleworking_settings">Pengaturan telecommuting</string>
 </resources>

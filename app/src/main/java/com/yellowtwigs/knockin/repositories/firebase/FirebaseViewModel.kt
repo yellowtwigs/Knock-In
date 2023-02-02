@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.utils
+package com.yellowtwigs.knockin.repositories.firebase
 
 import androidx.lifecycle.ViewModel
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseFirestoreRepository

@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.cockpit
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -33,7 +34,7 @@ class CockpitListAdapter(private val cxt: Context) :
 
         fun onBind(cockpitViewState: CockpitViewState) {
             binding.appIcon.setImageResource(cockpitViewState.icon)
-            binding.root.setOnClickListener {
+            binding.appIcon.setOnClickListener {
                 convertPackageNameToGoTo(cockpitViewState.packageName, cxt)
             }
         }
@@ -52,8 +53,8 @@ class CockpitListAdapter(private val cxt: Context) :
             oldItem: CockpitViewState,
             newItem: CockpitViewState
         ): Boolean {
-            return oldItem.icon == oldItem.icon &&
-                    oldItem.packageName == oldItem.packageName
+            return oldItem.icon == newItem.icon &&
+                    oldItem.packageName == newItem.packageName
         }
 
     }

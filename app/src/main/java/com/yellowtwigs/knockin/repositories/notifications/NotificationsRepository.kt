@@ -11,6 +11,7 @@ interface NotificationsRepository {
     suspend fun insertNotification(notification: NotificationDB)
 
     suspend fun deleteNotification(notification: NotificationDB)
+    suspend fun deleteAllSystemNotifications()
     suspend fun deleteNotificationsByPlatform(platform: String)
     suspend fun deleteAllNotifications()
 }

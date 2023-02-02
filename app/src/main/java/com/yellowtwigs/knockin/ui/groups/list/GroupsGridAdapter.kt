@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -50,8 +51,8 @@ class GroupsGridAdapter(
             binding.apply {
                 contactPriorityBorder(contact.priority, civ, cxt)
                 contactProfilePicture(contact.profilePicture64, contact.profilePicture, civ, cxt)
-                var firstname = contact.firstName
-                var lastname = contact.lastName
+                var firstnameData = contact.firstName
+                var lastnameData = contact.lastName
 
                 val len = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     .getInt("gridview", 4)
@@ -65,63 +66,79 @@ class GroupsGridAdapter(
                     layoutParamsTV.topMargin = 10
                     layoutParamsIV.topMargin = 10
 
-                    if (contact.firstName.length > 12)
-                        firstname = contact.firstName.substring(0, 10) + ".."
+                    if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                        if (firstnameData.length > 12) firstnameData = firstnameData.substring(0, 10) + ".."
 
-                    if (contact.lastName.length > 12)
-                        lastname = contact.lastName.substring(0, 10) + ".."
+                        val sizeFirstName = "$firstnameData"
+                        val spanFirstName = SpannableString("$firstnameData")
 
-                    val sizeFirstName = "$firstname"
-                    val spanFirstName = SpannableString("$firstname")
-                    spanFirstName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeFirstName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    val sizeLastName = "$lastName"
-                    val spanLastName = SpannableString("$lastName")
-                    spanLastName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeLastName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                        try {
+                            spanFirstName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
 
-                    firstName.text = spanFirstName
-                    lastName.text = spanLastName
+                            firstName.text = spanFirstName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    }
+
+                    if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                        if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+
+                        val sizeLastName = "$lastnameData"
+                        val spanLastName = SpannableString("$lastnameData")
+
+                        try {
+                            spanLastName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            lastName.text = spanLastName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    }
                 } else if (len == 5) {
                     civ.layoutParams.height = (imageHeight - imageHeight * 0.40).toInt()
                     civ.layoutParams.width = (imageHeight - imageHeight * 0.40).toInt()
                     layoutParamsTV.topMargin = 0
                     layoutParamsIV.topMargin = 0
 
-                    if (contact.firstName.length > 11)
-                        firstname = contact.firstName.substring(0, 9) + ".."
+                    if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                        if (firstnameData.length > 11) firstnameData = firstnameData.substring(0, 9) + ".."
 
-                    val sizeFirstName = "$firstname"
-                    val spanFirstName = SpannableString("$firstname")
-                    spanFirstName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeFirstName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    val sizeLastName = "$lastName"
-                    val spanLastName = SpannableString("$lastName")
-                    spanLastName.setSpan(
-                        RelativeSizeSpan(0.9f),
-                        0,
-                        sizeLastName.length - 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                        val sizeFirstName = "$firstnameData"
+                        val spanFirstName = SpannableString("$firstnameData")
 
-                    firstName.text = spanFirstName
-                    lastName.text = spanLastName
+                        try {
+                            spanFirstName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            firstName.text = spanFirstName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    }
+
+                    if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                        if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+
+                        val sizeLastName = "$lastnameData"
+                        val spanLastName = SpannableString("$lastnameData")
+
+                        try {
+                            spanLastName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            lastName.text = spanLastName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    }
                 }
-
-                firstName.text = firstname
-                lastName.text = lastname
 
                 root.setOnClickListener {
                     onClickedCallback(contact.id)

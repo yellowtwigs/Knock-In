@@ -13,19 +13,21 @@ class FirebaseFirestoreRepositoryImpl @Inject constructor(
 
     override fun setActivityNameToUserClick(id: String, activityName: String) {
         val dateToday = LocalDate.now()
-        val nano = LocalTime.now().nano
-
-        val updateMap: MutableMap<String, String> = HashMap()
-        updateMap["$activityName $nano"] = "$activityName $nano"
 
         val year = dateToday.year
         val month = dateToday.monthValue
         val day = dateToday.dayOfMonth
+        val hour = LocalTime.now().hour
+        val minutes = LocalTime.now().minute
+        val second = LocalTime.now().second
 
-        val today = "$year-$month-$day"
+        val nano = LocalTime.now().nano
 
-        firebaseFirestore.collection("$today-$id")
-            .document("$id-$nano")
-            .set(updateMap)
+        val today = "$year-$month-$day-$hour-$minutes-$second-$nano"
+
+        val updateMap: MutableMap<String, String> = HashMap()
+        updateMap["$activityName $nano"] = "$activityName $nano"
+
+        firebaseFirestore.collection(id).document(today).set(updateMap)
     }
 }

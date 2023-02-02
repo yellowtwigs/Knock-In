@@ -490,4 +490,5 @@
     <string name="remove_filter">No filter</string>
     <string name="allow_phone_call">Você não permitiu chamadas telefônicas</string>
     <string name="daily_reminder_time">Hora do lembrete diário</string>
+    <string name="teleworking_settings">Configurações de teletrabalho</string>
 </resources>

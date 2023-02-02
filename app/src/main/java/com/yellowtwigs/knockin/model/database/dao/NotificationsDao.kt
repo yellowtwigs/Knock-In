@@ -45,6 +45,9 @@ interface NotificationsDao {
     @Query("DELETE FROM notifications_table WHERE platform = :platform")
     suspend fun deleteNotificationsByPlatform(platform: String)
 
+    @Query("DELETE FROM notifications_table WHERE is_system = 1")
+    suspend fun deleteAllSystemNotifications()
+
     @Query("DELETE FROM notifications_table")
     suspend fun deleteAllNotifications()
 

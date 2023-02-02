@@ -56,8 +56,10 @@ class TeleworkingContactsListAdapter(
                 var firstname = contact.firstName
                 var lastname = contact.lastName
 
-                val len = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+                var len = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
                     .getInt("gridview", 4)
+
+                if (len == 1) len = 4
 
                 val layoutParamsTV = firstName.layoutParams as ConstraintLayout.LayoutParams
                 val layoutParamsIV = civ.layoutParams as ConstraintLayout.LayoutParams

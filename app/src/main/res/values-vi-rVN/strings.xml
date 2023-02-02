@@ -490,4 +490,5 @@
     <string name="remove_filter">Xóa bộ lọc</string>
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Thời gian nhắc hàng ngày</string>
+    <string name="teleworking_settings">Cài đặt làm việc từ xa</string>
 </resources>

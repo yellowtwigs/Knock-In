@@ -38,7 +38,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Teleworking Dashboard"
+                android:text="@string/teleworking_settings"
                 android:textColor="?attr/textColor"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"

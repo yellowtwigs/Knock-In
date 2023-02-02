@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 20,
-    "identityHash": "7db91a0ad28edd4bba18a2aeb5951187",
+    "identityHash": "cae5ee1879dbe09fd6fd1acda84067be",
     "entities": [
       {
         "tableName": "contacts_table",
@@ -140,7 +140,7 @@
       },
       {
         "tableName": "notifications_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `is_cancellable` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `phone_number` TEXT NOT NULL, `mail` TEXT NOT NULL, `messenger_id` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `contact_name` TEXT NOT NULL, `description` TEXT NOT NULL, `platform` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `is_cancellable` INTEGER NOT NULL, `id_contact` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `phone_number` TEXT NOT NULL, `mail` TEXT NOT NULL, `messenger_id` TEXT NOT NULL, `is_system` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -212,6 +212,12 @@
             "fieldPath": "messengerId",
             "columnName": "messenger_id",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isSystem",
+            "columnName": "is_system",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -316,7 +322,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7db91a0ad28edd4bba18a2aeb5951187')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cae5ee1879dbe09fd6fd1acda84067be')"
     ]
   }
 }

@@ -26,4 +26,8 @@ class NotificationsRepositoryImpl @Inject constructor(private val dao: Notificat
     override suspend fun deleteAllNotifications() {
         dao.deleteAllNotifications()
     }
+
+    override suspend fun deleteAllSystemNotifications() {
+        dao.deleteAllSystemNotifications()
+    }
 }

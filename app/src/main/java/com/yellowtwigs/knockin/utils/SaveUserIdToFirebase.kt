@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.utils
 
 import android.content.SharedPreferences
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import java.util.*
 
 object SaveUserIdToFirebase {

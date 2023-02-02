@@ -16,7 +16,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.databinding.ActivityFirstVipSelectionBinding
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,6 +37,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     private var tooMuch = false
 
     private var listOfItemSelected = arrayListOf<Int>()
+    private var listOfContactsSelected = arrayListOf<FirstVipSelectionViewState>()
     private var listOfPairSelected = arrayListOf<Pair<Int, Int>>()
     private val viewModel: FirstVipSelectionViewModel by viewModels()
 
@@ -55,8 +58,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
         numberOfContactsVIPref = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
 
         contactsUnlimitedBought = getSharedPreferences(
-            "Contacts_Unlimited_Bought",
-            Context.MODE_PRIVATE
+            "Contacts_Unlimited_Bought", Context.MODE_PRIVATE
         ).getBoolean("Contacts_Unlimited_Bought", false)
 
         fromSettings = intent.getBooleanExtra("fromSettings", false)
@@ -66,18 +68,11 @@ class FirstVipSelectionActivity : AppCompatActivity() {
         setupToolbar(binding)
         setupRecyclerView(binding)
 
-        binding.multiSelectTextView.text = String.format(
-            applicationContext.resources.getString(R.string.multi_select_nb_contact),
-            listOfItemSelected.size
-        )
-
         if (Resources.getSystem().configuration.locale.language == "ar") {
-            binding.multiSelectTextView.text =
-                "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
+            binding.multiSelectTextView.text = "${viewModel.getNumbersContactsVipUseCase()} ${getString(R.string.multi_select_nb_contact)}"
         } else {
             binding.multiSelectTextView.text = String.format(
-                applicationContext.resources.getString(R.string.multi_select_nb_contact),
-                listOfItemSelected.size
+                applicationContext.resources.getString(R.string.multi_select_nb_contact), viewModel.getNumbersContactsVipUseCase()
             )
         }
     }
@@ -103,28 +98,40 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                 if (fromSettings) {
                     startActivity(
                         Intent(
-                            this@FirstVipSelectionActivity,
-                            NotificationsSettingsActivity::class.java
+                            this@FirstVipSelectionActivity, NotificationsSettingsActivity::class.java
                         )
                     )
                     finish()
+                } else if (intent.getBooleanExtra("fromTeleworking", false)) {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity, TeleworkingActivity::class.java
+                        ).putExtra("fromStartActivity", true)
+                    )
+                    finish()
                 } else {
-                    val intent =
-                        Intent(this@FirstVipSelectionActivity, ContactsListActivity::class.java)
+                    val intent = Intent(this@FirstVipSelectionActivity, ContactsListActivity::class.java)
                     intent.putExtra("fromStartActivity", true)
                     startActivity(intent)
                     finish()
                 }
             }
             R.id.nav_validate -> {
+                overlayAlertDialog()
                 setPriorityList()
 
                 if (fromSettings) {
                     startActivity(
                         Intent(
-                            this@FirstVipSelectionActivity,
-                            NotificationsSettingsActivity::class.java
+                            this@FirstVipSelectionActivity, NotificationsSettingsActivity::class.java
                         )
+                    )
+                    finish()
+                } else if (intent.getBooleanExtra("fromTeleworking", false)) {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity, TeleworkingActivity::class.java
+                        ).putExtra("fromStartActivity", true)
                     )
                     finish()
                 } else {
@@ -145,82 +152,76 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     //region =========================================== SETUP UI ===========================================
 
     private fun setupRecyclerView(binding: ActivityFirstVipSelectionBinding) {
-        firstVipSelectionAdapter =
-            FirstVipSelectionAdapter(this, listOfItemSelected) { id ->
-                if (listOfItemSelected.isEmpty() && firstClick) {
-                    listOfItemSelected.add(id)
-                    listOfPairSelected.add(Pair(id, 2))
-                    firstClick = false
+        firstVipSelectionAdapter = FirstVipSelectionAdapter(this, listOfItemSelected) { id, contact ->
+            if (listOfItemSelected.isEmpty() && firstClick) {
+                listOfItemSelected.add(id)
+                listOfContactsSelected.add(contact)
+                listOfPairSelected.add(Pair(id, 2))
+                firstClick = false
+            } else {
+                if (listOfItemSelected.contains(id)) {
+                    listOfItemSelected.remove(id)
+                    listOfContactsSelected.remove(contact)
+                    listOfPairSelected.remove(Pair(id, 2))
+                    listOfPairSelected.add(Pair(id, 1))
+                    tooMuch = false
+                    if (listOfItemSelected.isEmpty()) firstClick = true
                 } else {
-                    if (listOfItemSelected.contains(id)) {
-                        listOfItemSelected.remove(id)
-                        listOfPairSelected.remove(Pair(id, 2))
-                        listOfPairSelected.add(Pair(id, 1))
-                        tooMuch = false
-                        if (listOfItemSelected.isEmpty())
-                            firstClick = true
-                    } else {
-                        if (listOfItemSelected.size == 5) {
-                            if (contactsUnlimitedBought) {
-                                listOfItemSelected.add(id)
-                                listOfPairSelected.add(Pair(id, 2))
-                            } else {
-                                tooMuch = true
-                            }
-                        } else {
+                    if (listOfItemSelected.size == 5) {
+                        if (contactsUnlimitedBought) {
                             listOfItemSelected.add(id)
+                            listOfContactsSelected.add(contact)
                             listOfPairSelected.add(Pair(id, 2))
+                        } else {
+                            tooMuch = true
                         }
+                    } else {
+                        listOfItemSelected.add(id)
+                        listOfContactsSelected.add(contact)
+                        listOfPairSelected.add(Pair(id, 2))
                     }
                 }
+            }
 
-                if (contactsUnlimitedBought) {
+            if (contactsUnlimitedBought) {
+                if (Resources.getSystem().configuration.locale.language == "ar") {
+                    binding.multiSelectTextView.text = "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
+                } else {
+                    binding.multiSelectTextView.text = String.format(
+                        applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.size
+                    )
+                }
+
+                val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
+                edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
+                edit.apply()
+            } else {
+                if (tooMuch) {
+                    MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
+                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
+                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                            startActivity(
+                                Intent(
+                                    this@FirstVipSelectionActivity, PremiumActivity::class.java
+                                ).putExtra("fromMultiSelectActivity", true)
+                            )
+                        }.setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                        }.show()
+                } else {
                     if (Resources.getSystem().configuration.locale.language == "ar") {
-                        binding.multiSelectTextView.text =
-                            "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
+                        binding.multiSelectTextView.text = "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
                     } else {
                         binding.multiSelectTextView.text = String.format(
-                            applicationContext.resources.getString(R.string.multi_select_nb_contact),
-                            listOfItemSelected.size
+                            applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.size
                         )
                     }
 
                     val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
                     edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
                     edit.apply()
-                } else {
-                    if (tooMuch) {
-                        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                            .setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
-                            .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
-                            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                                startActivity(
-                                    Intent(
-                                        this@FirstVipSelectionActivity,
-                                        PremiumActivity::class.java
-                                    ).putExtra("fromMultiSelectActivity", true)
-                                )
-                            }
-                            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                            }
-                            .show()
-                    } else {
-                        if (Resources.getSystem().configuration.locale.language == "ar") {
-                            binding.multiSelectTextView.text =
-                                "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
-                        } else {
-                            binding.multiSelectTextView.text = String.format(
-                                applicationContext.resources.getString(R.string.multi_select_nb_contact),
-                                listOfItemSelected.size
-                            )
-                        }
-
-                        val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
-                        edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
-                        edit.apply()
-                    }
                 }
             }
+        }
         binding.multiSelectRecyclerView.apply {
             adapter = firstVipSelectionAdapter
 
@@ -236,6 +237,66 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
     //endregion
 
+    private fun overlayAlertDialog(): MaterialAlertDialogBuilder {
+        var message: String
+
+        if (listOfContactsSelected.size == 0) {
+            message =
+                applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
+        } else if (listOfContactsSelected.size == 1) {
+            message = String.format(
+                applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),
+                listOfContactsSelected.size,
+                getString(R.string.multi_select_contact)
+            )
+            if (listOfContactsSelected.size == 1) {
+                val contact = listOfContactsSelected[0]
+                message += "\n- " + contact.firstName + " " + contact.lastName
+            }
+        } else {
+            message = String.format(
+                applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),
+                listOfContactsSelected.size,
+                getString(R.string.multi_select_contacts)
+            )
+            for (contact in listOfContactsSelected) {
+                message += "\n- " + contact.firstName + " " + contact.lastName
+            }
+        }
+
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+            .setTitle("Knock In")
+            .setMessage(message + "\n" + applicationContext.resources.getString(R.string.multi_select_validate_selection))
+            .setBackground(getDrawable(R.color.backgroundColor))
+            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                setPriorityList()
+                if (fromSettings) {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity, NotificationsSettingsActivity::class.java
+                        )
+                    )
+                    finish()
+                } else if (intent.getBooleanExtra("fromTeleworking", false)) {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity, TeleworkingActivity::class.java
+                        ).putExtra("fromStartActivity", true)
+                    )
+                    finish()
+                } else {
+                    startActivity(
+                        Intent(
+                            this@FirstVipSelectionActivity, ContactsListActivity::class.java
+                        ).putExtra("fromStartActivity", true)
+                    )
+                    finish()
+                }
+            }
+            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+            }
+    }
+
     private fun setPriorityList() {
         viewModel.updateContact(listOfPairSelected)
     }
@@ -244,8 +305,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
         if (fromSettings) {
             startActivity(
                 Intent(
-                    this@FirstVipSelectionActivity,
-                    NotificationsSettingsActivity::class.java
+                    this@FirstVipSelectionActivity, NotificationsSettingsActivity::class.java
                 )
             )
             finish()

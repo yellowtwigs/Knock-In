@@ -16,5 +16,5 @@ data class NotificationDB(
         @ColumnInfo(name = "phone_number") val phoneNumber: String,
         @ColumnInfo(name = "mail") val mail: String,
         @ColumnInfo(name = "messenger_id") val messengerId: String,
-
+        @ColumnInfo(name = "is_system") val isSystem: Int,
         )

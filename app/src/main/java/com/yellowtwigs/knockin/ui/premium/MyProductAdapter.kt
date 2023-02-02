@@ -22,8 +22,7 @@ class MyProductAdapter(
 ) : ListAdapter<SkuDetails, MyProductAdapter.ViewHolder>(SkuDetailsComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            LayoutProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -32,8 +31,7 @@ class MyProductAdapter(
         holder.onBind(skuDetails)
     }
 
-    inner class ViewHolder(private val binding: LayoutProductItemBinding) :
-        RecyclerView.ViewHolder(binding.root), IProductClickListener {
+    inner class ViewHolder(private val binding: LayoutProductItemBinding) : RecyclerView.ViewHolder(binding.root), IProductClickListener {
         var iProductClickListener: IProductClickListener? = null
 
         @JvmName("setIProductClickListener1")
@@ -59,10 +57,8 @@ class MyProductAdapter(
                 val appsSupportPref = cxt.getSharedPreferences("Apps_Support_Bought", modePrivate)
                 val appsSupportBought = appsSupportPref.getBoolean("Apps_Support_Bought", false)
 
-                val unlimitedPref =
-                    cxt.getSharedPreferences("Contacts_Unlimited_Bought", modePrivate)
-                val contactsUnlimitedBought =
-                    unlimitedPref.getBoolean("Contacts_Unlimited_Bought", false)
+                val unlimitedPref = cxt.getSharedPreferences("Contacts_Unlimited_Bought", modePrivate)
+                val contactsUnlimitedBought = unlimitedPref.getBoolean("Contacts_Unlimited_Bought", false)
 
                 val skuDetailsTitle = skuDetails.title
                 val titleTransformed = skuDetailsTitle.split("\\(").toTypedArray()
@@ -71,23 +67,23 @@ class MyProductAdapter(
 
                 with(productName) {
                     when {
-                        contains("Jazzy") || contains("jazzy") -> {
+                        contains("Jazzy") || contains("jazzy") || contains("Джазовый") -> {
                             productItemImage.setImageResource(R.drawable.ic_circular_jazz_trumpet)
 
                             if (jazzySoundBought) {
                                 changeBackgroundToDarkGrey()
                             }
                         }
-                        contains("Funky") || contains("funky") -> {
+                        contains("Funky") || contains("funky") || contains("Веселый") -> {
                             productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
 
                             if (funkySoundBought) {
                                 changeBackgroundToDarkGrey()
                             }
                         }
-                        contains("Relaxation") || contains("Relajación") || contains("relaxation") || contains(
-                            "relajación"
-                        ) -> {
+                        contains("Relaxation") || contains("Relajación") || contains("relaxation") || contains("relajación") || contains("Entspannungs") || contains(
+                            "Relax"
+                        ) || contains("Relaxamento") || contains("Расслабление") -> {
                             productItemImage.setImageResource(R.drawable.ic_circular_relax)
 
                             if (relaxationSoundBought) {
@@ -108,7 +104,9 @@ class MyProductAdapter(
                                 changeBackgroundToDarkGrey()
                             }
                         }
-                        contains("Support") || contains("support") -> {
+                        contains("Support") || contains("Supporta") || contains("Suporta") || contains("Поддержка") || contains("Unterstützt") || contains(
+                            "support"
+                        ) -> {
                             productItemImage.setImageResource(R.drawable.ic_social_media)
 
                             if (appsSupportBought) {
@@ -123,8 +121,7 @@ class MyProductAdapter(
                 )
 
                 setIProductClickListener { _: View?, _: Int ->
-                    val billingFlowParams =
-                        BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
+                    val billingFlowParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
                     billingClient.launchBillingFlow(cxt, billingFlowParams)
                 }
 

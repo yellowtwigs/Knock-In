@@ -30,13 +30,12 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
-import com.yellowtwigs.knockin.utils.FirebaseViewModel
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class ManageMyScreenActivity : AppCompatActivity() {

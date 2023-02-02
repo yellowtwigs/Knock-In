@@ -11,4 +11,5 @@ data class NotificationsListViewState(
     val priority: Int,
     val phoneNumber: String,
     val mail: String,
+    val isSystem: Int
 )

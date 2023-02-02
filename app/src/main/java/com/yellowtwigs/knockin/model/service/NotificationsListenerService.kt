@@ -137,7 +137,8 @@ class NotificationsListenerService : NotificationListenerService() {
                                     contact.priority,
                                     contact.listOfPhoneNumbers[0],
                                     contact.listOfMails[0],
-                                    contact.messengerId
+                                    contact.messengerId,
+                                    0
                                 )
                             } else {
                                 NotificationDB(
@@ -152,7 +153,8 @@ class NotificationsListenerService : NotificationListenerService() {
                                     0,
                                     sbp.statusBarNotificationInfo["android.title"].toString(),
                                     sbp.statusBarNotificationInfo["android.title"].toString(),
-                                    ""
+                                    "",
+                                    0
                                 )
                             }
 
@@ -185,7 +187,8 @@ class NotificationsListenerService : NotificationListenerService() {
                                         0,
                                         sbp.statusBarNotificationInfo["android.title"].toString(),
                                         sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        ""
+                                        "",
+                                        1
                                     )
                                 )
                             ) {
@@ -202,7 +205,8 @@ class NotificationsListenerService : NotificationListenerService() {
                                         0,
                                         sbp.statusBarNotificationInfo["android.title"].toString(),
                                         sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        ""
+                                        "",
+                                        1
                                     )
                                 )
                             }

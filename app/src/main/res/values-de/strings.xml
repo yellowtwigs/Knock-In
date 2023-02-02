@@ -490,5 +490,6 @@
     <string name="edit_reminder_hour_title">Tägliche Erinnerungszeit für Nicht-VIP-Benachrichtigungen:</string>
     <string name="remove_filter">Filter entfernen</string>
     <string name="allow_phone_call">Sie haben keinen Anruf zugelassen</string>    <string name="daily_reminder_time">Tägliche Erinnerungszeit</string>
+    <string name="teleworking_settings">Telearbeitseinstellungen</string>
 
 </resources>

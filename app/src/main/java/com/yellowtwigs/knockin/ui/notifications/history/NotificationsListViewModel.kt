@@ -11,13 +11,14 @@ import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsListViewModel @Inject constructor(
-    private val repository: NotificationsRepository,
-    @ApplicationContext val context: Context
+    private val repository: NotificationsRepository, @ApplicationContext val context: Context
 ) : ViewModel() {
 
     private val viewStateLiveData = MediatorLiveData<List<NotificationsListViewState>>()
@@ -31,10 +32,7 @@ class NotificationsListViewModel @Inject constructor(
 
         viewStateLiveData.addSource(allNotifications) { notifications ->
             combine(
-                notifications,
-                searchBarTextLiveData.value,
-                sortedByLiveData.value,
-                filterByLiveData.value
+                notifications, searchBarTextLiveData.value, sortedByLiveData.value, filterByLiveData.value
             )
         }
 
@@ -67,10 +65,7 @@ class NotificationsListViewModel @Inject constructor(
     }
 
     private fun sortedContactsList(
-        sortedBy: Int?,
-        filterBy: Int?,
-        input: String?,
-        notifications: ArrayList<NotificationsListViewState>
+        sortedBy: Int?, filterBy: Int?, input: String?, notifications: ArrayList<NotificationsListViewState>
     ): List<NotificationsListViewState> {
         if (sortedBy != null) {
             when (sortedBy) {
@@ -107,10 +102,8 @@ class NotificationsListViewModel @Inject constructor(
     ): List<NotificationsListViewState> {
         return if (input != null) {
             filterNotificationsList(filterBy, notifications.filter { notification ->
-                val notificationText =
-                    notification.contactName + " " + notification.title + " " + notification.description
-                notificationText.contains(input) || notificationText.uppercase()
-                    .contains(input.uppercase()) || notificationText.lowercase()
+                val notificationText = notification.contactName + " " + notification.title + " " + notification.description
+                notificationText.contains(input) || notificationText.uppercase().contains(input.uppercase()) || notificationText.lowercase()
                     .contains(input.lowercase())
             })
         } else {
@@ -139,8 +132,7 @@ class NotificationsListViewModel @Inject constructor(
                 R.id.mail_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform,
-                            context
+                            it.platform, context
                         ) == "Gmail" || convertPackageToString(it.platform, context) == "Outlook"
                     }
                 }
@@ -152,11 +144,9 @@ class NotificationsListViewModel @Inject constructor(
                 R.id.facebook_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform,
-                            context
+                            it.platform, context
                         ) == "Messenger" || convertPackageToString(
-                            it.platform,
-                            context
+                            it.platform, context
                         ) == "Facebook"
                     }
                 }
@@ -204,7 +194,8 @@ class NotificationsListViewModel @Inject constructor(
                 notification.idContact,
                 notification.priority,
                 notification.phoneNumber,
-                notification.mail
+                notification.mail,
+                notification.isSystem
             )
         )
     }
@@ -227,5 +218,17 @@ class NotificationsListViewModel @Inject constructor(
 
     fun setFilterBy(filterBy: Int) {
         filterByLiveData.value = filterBy
+    }
+
+    fun deleteAllNotifications() {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deleteAllNotifications()
+        }
+    }
+
+    fun deleteAllSystemNotifications() {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deleteAllSystemNotifications()
+        }
     }
 }

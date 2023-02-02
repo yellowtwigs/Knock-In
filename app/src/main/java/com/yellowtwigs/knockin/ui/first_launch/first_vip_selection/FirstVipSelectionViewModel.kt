@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.ui.first_launch.first_vip_selection
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
+import com.yellowtwigs.knockin.domain.contact.GetNumbersContactsVipUseCase
 import com.yellowtwigs.knockin.domain.contact.UpdateContactPriorityByIdUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
@@ -16,9 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class FirstVipSelectionViewModel @Inject constructor(
     private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
-    private val updateContactPriorityByIdUseCase: UpdateContactPriorityByIdUseCase
-) :
-    ViewModel() {
+    private val updateContactPriorityByIdUseCase: UpdateContactPriorityByIdUseCase,
+    private val getNumbersContactsVipUseCase: GetNumbersContactsVipUseCase,
+) : ViewModel() {
 
     val contactsListViewStateLiveDataSortByFullName = liveData(Dispatchers.IO) {
         getAllContactsSortByFullNameUseCase.invoke().collect { contacts ->
@@ -49,4 +50,6 @@ class FirstVipSelectionViewModel @Inject constructor(
             }
         }
     }
+
+    fun getNumbersContactsVipUseCase() = getNumbersContactsVipUseCase.getNumbersOfContactsVip()
 }

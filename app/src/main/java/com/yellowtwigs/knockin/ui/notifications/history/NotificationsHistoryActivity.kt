@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -32,14 +31,13 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
-import com.yellowtwigs.knockin.utils.FirebaseViewModel
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class NotificationsHistoryActivity : AppCompatActivity() {
@@ -87,8 +85,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         binding.apply {
             floatingActionButton.setOnClickListener {
                 MaterialAlertDialogBuilder(
-                    this@NotificationsHistoryActivity,
-                    R.style.AlertDialog
+                    this@NotificationsHistoryActivity, R.style.AlertDialog
                 ).setTitle(getString(R.string.notification_history_alert_dialog_title))
                     .setMessage(getString(R.string.notification_history_alert_dialog_text))
                     .setPositiveButton(R.string.notification_history_alert_dialog_delete_button) { _, wich -> deleteAllNotifications() }
@@ -144,8 +141,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         inflater.inflate(R.menu.history_toolbar_menu, menu)
 
         val sortByPreferences = getSharedPreferences("Notifications_Sort_By", Context.MODE_PRIVATE)
-        val filterByPreferences =
-            getSharedPreferences("Notifications_Filter_By", Context.MODE_PRIVATE)
+        val filterByPreferences = getSharedPreferences("Notifications_Filter_By", Context.MODE_PRIVATE)
 
         when (sortByPreferences.getInt("Notifications_Sort_By", R.id.sort_by_date)) {
             R.id.sort_by_date -> {
@@ -181,8 +177,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val sortByPreferences = getSharedPreferences("Notifications_Sort_By", Context.MODE_PRIVATE)
-        val filterByPreferences =
-            getSharedPreferences("Notifications_Filter_By", Context.MODE_PRIVATE)
+        val filterByPreferences = getSharedPreferences("Notifications_Filter_By", Context.MODE_PRIVATE)
 
         val editorSortBy = sortByPreferences.edit()
         val editorFilterBy = filterByPreferences.edit()
@@ -209,8 +204,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             R.id.item_help -> {
                 if (Resources.getSystem().configuration.locale.language == "fr") {
                     val browserIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-historique")
+                        Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-historique")
                     )
                     startActivity(browserIntent)
                 } else {
@@ -304,8 +298,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.nav_notifications -> startActivity(
                         Intent(
-                            this@NotificationsHistoryActivity,
-                            NotificationsSettingsActivity::class.java
+                            this@NotificationsHistoryActivity, NotificationsSettingsActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> startActivity(
@@ -328,10 +321,9 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     }
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
-                        val messageString =
-                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
-                                R.string.location_on_playstore
-                            )
+                        val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
                         intent.putExtra(Intent.EXTRA_TEXT, messageString)
                         intent.type = "text/plain"
                         val messageIntent = Intent.createChooser(intent, null)
@@ -553,6 +545,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 notification.phoneNumber,
                 notification.mail,
                 "",
+                notification.isSystem
             )
         )
     }
@@ -570,26 +563,12 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         return checkPermission == PackageManager.PERMISSION_GRANTED
     }
 
-    /**
-     * Suppression de toutes les notifications systèmes
-     */
     private fun deleteAllNotificationsSystem() {
-//        val listTmp = mutableListOf<NotificationDB>()
-//        listTmp.addAll(listOfNotificationsDB)
-//        listTmp.forEach {
-//            if (!isMessagingApp(it.platform)) {
-//                it.id?.let { it1 ->
-//                    dao.deleteNotificationById(it1)
-//                }
-//            }
-//        }
+        notificationsListViewModel.deleteAllSystemNotifications()
+
     }
 
-    /**
-     * Suppression de toutes les notifications
-     */
     private fun deleteAllNotifications() {
-//        dao.deleteAllNotification()
-//        refreshActivity()
+        notificationsListViewModel.deleteAllNotifications()
     }
 }

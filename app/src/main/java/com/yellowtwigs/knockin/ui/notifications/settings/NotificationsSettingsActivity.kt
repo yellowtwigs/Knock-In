@@ -31,7 +31,6 @@ import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
-import com.yellowtwigs.knockin.utils.FirebaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -73,15 +72,23 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         setupCheckBoxes()
         setupReminderAlarm()
 
-        activateButtonIsClickable(!Settings.canDrawOverlays(this@NotificationsSettingsActivity), binding.activateOverlay)
-        binding.activateOverlay.setOnClickListener {
+        binding.activateOverlay.isChecked = Settings.canDrawOverlays(this@NotificationsSettingsActivity)
+
+        binding.activateOverlay.setOnCheckedChangeListener { compoundButton, isChecked ->
             openOverlaySettings()
         }
 
-        activateButtonIsClickable(!isNotificationServiceEnabled(), binding.activateNotification)
-        binding.activateNotification.setOnClickListener {
+        binding.activateNotification.isChecked = isNotificationServiceEnabled()
+        binding.activateNotification.setOnCheckedChangeListener { compoundButton, isChecked ->
             activateNotificationsClick()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.activateOverlay.isChecked = Settings.canDrawOverlays(this@NotificationsSettingsActivity)
+        binding.activateNotification.isChecked = isNotificationServiceEnabled()
     }
 
     //region ======================================= Drawer + Toolbar =======================================

@@ -29,7 +29,7 @@ import com.yellowtwigs.knockin.ui.notifications.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
-import com.yellowtwigs.knockin.utils.FirebaseViewModel
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -64,7 +64,7 @@ class TeleworkingActivity : AppCompatActivity() {
             getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
 
         binding.vipContactsButton.setOnClickListener {
-            startActivity(Intent(this@TeleworkingActivity, FirstVipSelectionActivity::class.java))
+            startActivity(Intent(this@TeleworkingActivity, FirstVipSelectionActivity::class.java).putExtra("fromTeleworking", true))
         }
 
         binding.teleworkingModeSwitch.isChecked =

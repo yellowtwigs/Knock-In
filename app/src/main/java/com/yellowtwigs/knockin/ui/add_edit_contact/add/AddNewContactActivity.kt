@@ -560,8 +560,6 @@ class AddNewContactActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == IMAGE_CAPTURE_CODE) {
-                Log.i("PHOTO_URI", "IMAGE_CAPTURE_CODE")
-
                 val matrix = Matrix()
                 val exif = ExifInterface(getRealPathFromUri(this, imageUri!!))
                 val rotation = exif.getAttributeInt(
@@ -582,7 +580,7 @@ class AddNewContactActivity : AppCompatActivity() {
             } else if (requestCode == SELECT_FILE) {
                 Log.i("PHOTO_URI", "SELECT_FILE")
                 val matrix = Matrix()
-                val selectedImageUri = data!!.data
+                val selectedImageUri = data?.data
                 val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
                 val rotation = exif.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,

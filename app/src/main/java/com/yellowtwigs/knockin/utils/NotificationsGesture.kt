@@ -236,9 +236,7 @@ object NotificationsGesture {
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
-            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, Telephony.Sms.getDefaultSmsPackage(
-                context
-            ) -> {
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
                 openSms("", context)
             }
         }
