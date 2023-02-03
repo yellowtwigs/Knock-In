@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -39,6 +40,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     private var listOfItemSelected = arrayListOf<Int>()
     private var listOfContactsSelected = arrayListOf<FirstVipSelectionViewState>()
     private var listOfPairSelected = arrayListOf<Pair<Int, Int>>()
+
     private val viewModel: FirstVipSelectionViewModel by viewModels()
 
     private var fromSettings = false
@@ -68,12 +70,22 @@ class FirstVipSelectionActivity : AppCompatActivity() {
         setupToolbar(binding)
         setupRecyclerView(binding)
 
-        if (Resources.getSystem().configuration.locale.language == "ar") {
-            binding.multiSelectTextView.text = "${viewModel.getNumbersContactsVipUseCase()} ${getString(R.string.multi_select_nb_contact)}"
-        } else {
-            binding.multiSelectTextView.text = String.format(
-                applicationContext.resources.getString(R.string.multi_select_nb_contact), viewModel.getNumbersContactsVipUseCase()
-            )
+        viewModel.listOfItemsSelected.observe(this) { ids ->
+            firstClick = ids.isEmpty()
+
+            listOfItemSelected.clear()
+            listOfItemSelected.addAll(ids)
+
+            Log.i("NumbersVIP", "listOfItemSelected.size 1 : ${listOfItemSelected.size}")
+            Log.i("NumbersVIP", "listOfItemSelected 1 : ${listOfItemSelected}")
+
+            if (Resources.getSystem().configuration.locale.language == "ar") {
+                binding.multiSelectTextView.text = "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
+            } else {
+                binding.multiSelectTextView.text = String.format(
+                    applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.size
+                )
+            }
         }
     }
 
@@ -153,30 +165,34 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(binding: ActivityFirstVipSelectionBinding) {
         firstVipSelectionAdapter = FirstVipSelectionAdapter(this, listOfItemSelected) { id, contact ->
-            if (listOfItemSelected.isEmpty() && firstClick) {
-                listOfItemSelected.add(id)
+            if (listOfItemSelected.distinct().isEmpty() && firstClick) {
+                viewModel.addItemToList(id)
+
                 listOfContactsSelected.add(contact)
                 listOfPairSelected.add(Pair(id, 2))
-                firstClick = false
+
+
             } else {
-                if (listOfItemSelected.contains(id)) {
-                    listOfItemSelected.remove(id)
+                if (listOfItemSelected.distinct().contains(id)) {
+                    viewModel.addItemToList(id)
+
                     listOfContactsSelected.remove(contact)
                     listOfPairSelected.remove(Pair(id, 2))
                     listOfPairSelected.add(Pair(id, 1))
                     tooMuch = false
-                    if (listOfItemSelected.isEmpty()) firstClick = true
                 } else {
-                    if (listOfItemSelected.size == 5) {
+                    if (listOfItemSelected.distinct().size == 5) {
                         if (contactsUnlimitedBought) {
-                            listOfItemSelected.add(id)
+                            viewModel.addItemToList(id)
+
                             listOfContactsSelected.add(contact)
                             listOfPairSelected.add(Pair(id, 2))
                         } else {
                             tooMuch = true
                         }
                     } else {
-                        listOfItemSelected.add(id)
+                        viewModel.addItemToList(id)
+
                         listOfContactsSelected.add(contact)
                         listOfPairSelected.add(Pair(id, 2))
                     }
@@ -184,17 +200,17 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             }
 
             if (contactsUnlimitedBought) {
-                if (Resources.getSystem().configuration.locale.language == "ar") {
-                    binding.multiSelectTextView.text = "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
-                } else {
-                    binding.multiSelectTextView.text = String.format(
-                        applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.size
-                    )
-                }
-
-                val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
-                edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
-                edit.apply()
+//                if (Resources.getSystem().configuration.locale.language == "ar") {
+//                    binding.multiSelectTextView.text = "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
+//                } else {
+//                    binding.multiSelectTextView.text = String.format(
+//                        applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.size
+//                    )
+//                }
+//
+//                val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
+//                edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
+//                edit.apply()
             } else {
                 if (tooMuch) {
                     MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.in_app_popup_nb_vip_max_title))
@@ -209,15 +225,15 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                         }.show()
                 } else {
                     if (Resources.getSystem().configuration.locale.language == "ar") {
-                        binding.multiSelectTextView.text = "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
+                        binding.multiSelectTextView.text = "${listOfItemSelected.distinct().size} ${getString(R.string.multi_select_nb_contact)}"
                     } else {
                         binding.multiSelectTextView.text = String.format(
-                            applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.size
+                            applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.distinct().size
                         )
                     }
 
                     val edit: SharedPreferences.Editor = numberOfContactsVIPref.edit()
-                    edit.putInt("nb_Contacts_VIP", listOfItemSelected.size)
+                    edit.putInt("nb_Contacts_VIP", listOfItemSelected.distinct().size)
                     edit.apply()
                 }
             }
@@ -241,8 +257,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
         var message: String
 
         if (listOfContactsSelected.size == 0) {
-            message =
-                applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
+            message = applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
         } else if (listOfContactsSelected.size == 1) {
             message = String.format(
                 applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),
@@ -264,11 +279,9 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             }
         }
 
-        return MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle("Knock In")
+        return MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle("Knock In")
             .setMessage(message + "\n" + applicationContext.resources.getString(R.string.multi_select_validate_selection))
-            .setBackground(getDrawable(R.color.backgroundColor))
-            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+            .setBackground(getDrawable(R.color.backgroundColor)).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 setPriorityList()
                 if (fromSettings) {
                     startActivity(
@@ -292,8 +305,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                     )
                     finish()
                 }
-            }
-            .setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+            }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
             }
     }
 

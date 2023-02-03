@@ -14,6 +14,7 @@ interface ContactsListRepository {
     fun getAllAndroidIds(): List<Int>
 
     fun getNumbersOfContactsVip(): Int
+    fun getContactsVIPIds(): ArrayList<Int>
 
     suspend fun updateContactPriorityById(id: Int, priority: Int)
 

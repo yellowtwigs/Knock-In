@@ -27,6 +27,9 @@ interface ContactsDao {
     @Query("SELECT * FROM contacts_table WHERE priority = 2")
     fun getAllContactsVIP(): Flow<List<ContactDB>>
 
+    @Query("SELECT id FROM contacts_table WHERE priority = 2")
+    fun getContactsVIPIds(): List<Int>
+
     @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 2")
     fun getNumbersOfContactsVip(): Int
 
