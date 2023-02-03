@@ -126,7 +126,13 @@ object InitContactsForListAdapter {
         }
 
         fun initContactNameFromGrid(
-            firstName: String, lastName: String, len: Int, firstNameTv: TextView, lastNameTv: TextView, civ: CircularImageView, imageHeight: Int
+            firstName: String,
+            lastName: String,
+            len: Int,
+            firstNameTv: TextView,
+            lastNameTv: TextView,
+            civ: CircularImageView,
+            imageHeight: Int
         ) {
             var firstnameData = firstName
             var lastnameData = lastName
@@ -134,82 +140,190 @@ object InitContactsForListAdapter {
             val layoutParamsTV = firstNameTv.layoutParams as ConstraintLayout.LayoutParams
             val layoutParamsIV = civ.layoutParams as ConstraintLayout.LayoutParams
 
-            if (len == 4) {
-                civ.layoutParams.height = (imageHeight - imageHeight * 0.25).toInt()
-                civ.layoutParams.width = (imageHeight - imageHeight * 0.25).toInt()
-                layoutParamsTV.topMargin = 10
-                layoutParamsIV.topMargin = 10
+            if (lastName == "Kozma") {
+                Log.i("NameBug", "firstNameTv.text : ${firstNameTv.text}")
+                Log.i("NameBug", "lastNameTv.text : ${lastNameTv.text}")
 
-                if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
-                    if (firstnameData.length > 12) firstnameData = firstnameData.substring(0, 10) + ".."
+                Log.i("NameBug", "firstName : ${firstName}")
+                Log.i("NameBug", "lastName : ${lastName}")
+            }
 
-                    val sizeFirstName = "$firstnameData"
-                    val spanFirstName = SpannableString("$firstnameData")
+            if (firstNameTv.text.isEmpty() && lastNameTv.text.isEmpty()) {
+                if (len == 4) {
+                    civ.layoutParams.height = (imageHeight - imageHeight * 0.25).toInt()
+                    civ.layoutParams.width = (imageHeight - imageHeight * 0.25).toInt()
+                    layoutParamsTV.topMargin = 10
+                    layoutParamsIV.topMargin = 10
 
-                    try {
-                        spanFirstName.setSpan(
-                            RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
+                    if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                        if (firstnameData.length > 12) firstnameData = firstnameData.substring(0, 10) + ".."
 
-                        firstNameTv.text = spanFirstName
-                    } catch (e: IndexOutOfBoundsException) {
-                        Log.i("GetContacts", "$e")
+                        val sizeFirstName = "$firstnameData"
+                        val spanFirstName = SpannableString("$firstnameData")
+
+                        try {
+                            spanFirstName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            firstNameTv.text = spanFirstName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    } else {
+                        firstNameTv.text = ""
+                    }
+
+                    if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                        if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+
+                        val sizeLastName = "$lastnameData"
+                        val spanLastName = SpannableString("$lastnameData")
+
+                        try {
+                            spanLastName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            lastNameTv.text = spanLastName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    } else {
+                        lastNameTv.text = ""
+                    }
+                } else if (len == 5) {
+                    civ.layoutParams.height = (imageHeight - imageHeight * 0.40).toInt()
+                    civ.layoutParams.width = (imageHeight - imageHeight * 0.40).toInt()
+                    layoutParamsTV.topMargin = 0
+                    layoutParamsIV.topMargin = 0
+
+                    if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                        if (firstnameData.length > 11) firstnameData = firstnameData.substring(0, 9) + ".."
+
+                        val sizeFirstName = "$firstnameData"
+                        val spanFirstName = SpannableString("$firstnameData")
+
+                        try {
+                            spanFirstName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            firstNameTv.text = spanFirstName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    } else {
+                        firstNameTv.text = ""
+                    }
+
+                    if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                        if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+
+                        val sizeLastName = "$lastnameData"
+                        val spanLastName = SpannableString("$lastnameData")
+
+                        try {
+                            spanLastName.setSpan(
+                                RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            lastNameTv.text = spanLastName
+                        } catch (e: IndexOutOfBoundsException) {
+                            Log.i("GetContacts", "$e")
+                        }
+                    } else {
+                        lastNameTv.text = ""
                     }
                 }
+            } else {
+                if (firstNameTv.text.toString() == firstName && lastNameTv.text.toString() == lastName) {
+                    if (len == 4) {
+                        civ.layoutParams.height = (imageHeight - imageHeight * 0.25).toInt()
+                        civ.layoutParams.width = (imageHeight - imageHeight * 0.25).toInt()
+                        layoutParamsTV.topMargin = 10
+                        layoutParamsIV.topMargin = 10
 
-                if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
-                    if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+                        if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                            if (firstnameData.length > 12) firstnameData = firstnameData.substring(0, 10) + ".."
 
-                    val sizeLastName = "$lastnameData"
-                    val spanLastName = SpannableString("$lastnameData")
+                            val sizeFirstName = "$firstnameData"
+                            val spanFirstName = SpannableString("$firstnameData")
 
-                    try {
-                        spanLastName.setSpan(
-                            RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
+                            try {
+                                spanFirstName.setSpan(
+                                    RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
 
-                        lastNameTv.text = spanLastName
-                    } catch (e: IndexOutOfBoundsException) {
-                        Log.i("GetContacts", "$e")
-                    }
-                }
-            } else if (len == 5) {
-                civ.layoutParams.height = (imageHeight - imageHeight * 0.40).toInt()
-                civ.layoutParams.width = (imageHeight - imageHeight * 0.40).toInt()
-                layoutParamsTV.topMargin = 0
-                layoutParamsIV.topMargin = 0
+                                firstNameTv.text = spanFirstName
+                            } catch (e: IndexOutOfBoundsException) {
+                                Log.i("GetContacts", "$e")
+                            }
+                        } else {
+                            firstNameTv.text = ""
+                        }
 
-                if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
-                    if (firstnameData.length > 11) firstnameData = firstnameData.substring(0, 9) + ".."
+                        if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                            if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
 
-                    val sizeFirstName = "$firstnameData"
-                    val spanFirstName = SpannableString("$firstnameData")
+                            val sizeLastName = "$lastnameData"
+                            val spanLastName = SpannableString("$lastnameData")
 
-                    try {
-                        spanFirstName.setSpan(
-                            RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
+                            try {
+                                spanLastName.setSpan(
+                                    RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
 
-                        firstNameTv.text = spanFirstName
-                    } catch (e: IndexOutOfBoundsException) {
-                        Log.i("GetContacts", "$e")
-                    }
-                }
+                                lastNameTv.text = spanLastName
+                            } catch (e: IndexOutOfBoundsException) {
+                                Log.i("GetContacts", "$e")
+                            }
+                        } else {
+                            lastNameTv.text = ""
+                        }
+                    } else if (len == 5) {
+                        civ.layoutParams.height = (imageHeight - imageHeight * 0.40).toInt()
+                        civ.layoutParams.width = (imageHeight - imageHeight * 0.40).toInt()
+                        layoutParamsTV.topMargin = 0
+                        layoutParamsIV.topMargin = 0
 
-                if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
-                    if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+                        if (firstnameData.isNotEmpty() || firstnameData.isNotBlank() || firstnameData != " ") {
+                            if (firstnameData.length > 11) firstnameData = firstnameData.substring(0, 9) + ".."
 
-                    val sizeLastName = "$lastnameData"
-                    val spanLastName = SpannableString("$lastnameData")
+                            val sizeFirstName = "$firstnameData"
+                            val spanFirstName = SpannableString("$firstnameData")
 
-                    try {
-                        spanLastName.setSpan(
-                            RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
+                            try {
+                                spanFirstName.setSpan(
+                                    RelativeSizeSpan(0.9f), 0, sizeFirstName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
 
-                        lastNameTv.text = spanLastName
-                    } catch (e: IndexOutOfBoundsException) {
-                        Log.i("GetContacts", "$e")
+                                firstNameTv.text = spanFirstName
+                            } catch (e: IndexOutOfBoundsException) {
+                                Log.i("GetContacts", "$e")
+                            }
+                        } else {
+                            firstNameTv.text = ""
+                        }
+
+                        if (lastnameData.isNotEmpty() || lastnameData.isNotBlank() || lastnameData != " ") {
+                            if (lastnameData.length > 12) lastnameData = lastnameData.substring(0, 10) + ".."
+
+                            val sizeLastName = "$lastnameData"
+                            val spanLastName = SpannableString("$lastnameData")
+
+                            try {
+                                spanLastName.setSpan(
+                                    RelativeSizeSpan(0.9f), 0, sizeLastName.length - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+
+                                lastNameTv.text = spanLastName
+                            } catch (e: IndexOutOfBoundsException) {
+                                Log.i("GetContacts", "$e")
+                            }
+                        } else {
+                            lastNameTv.text = ""
+                        }
                     }
                 }
             }

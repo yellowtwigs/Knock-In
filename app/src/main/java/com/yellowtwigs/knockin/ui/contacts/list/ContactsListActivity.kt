@@ -302,10 +302,9 @@ class ContactsListActivity : AppCompatActivity() {
                     }
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
-                        val messageString =
-                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
-                                R.string.location_on_playstore
-                            )
+                        val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
                         intent.putExtra(Intent.EXTRA_TEXT, messageString)
                         intent.type = "text/plain"
                         val messageIntent = Intent.createChooser(intent, null)
@@ -537,12 +536,7 @@ class ContactsListActivity : AppCompatActivity() {
 
         val contactsListAdapter = ContactsListAdapter(this, { id ->
             hideKeyboard(this)
-
-            startActivity(
-                Intent(this, EditContactActivity::class.java).putExtra(
-                    "ContactId", id
-                )
-            )
+            startActivity(Intent(this, EditContactActivity::class.java).putExtra("ContactId", id))
         }, { id, civ, contact ->
             hideKeyboard(this)
 
@@ -554,7 +548,7 @@ class ContactsListActivity : AppCompatActivity() {
 
         if (nbGrid == 1) {
             binding.recyclerView.apply {
-                contactsListViewModel.viewStateLiveData.observe(this@ContactsListActivity) { contacts ->
+                contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactsListActivity) { contacts ->
                     contactsListAdapter.submitList(null)
                     contactsListAdapter.submitList(contacts)
                 }
@@ -563,32 +557,62 @@ class ContactsListActivity : AppCompatActivity() {
                 setItemViewCacheSize(500)
             }
         } else {
-            binding.recyclerView.apply {
-                val contactsGridAdapter = ContactsGridAdapter(this@ContactsListActivity, { id ->
-                    hideKeyboard(this@ContactsListActivity)
+            if (nbGrid == 4) {
+                binding.recyclerView.apply {
+                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactsListActivity, { id ->
+                        hideKeyboard(this@ContactsListActivity)
 
-                    startActivity(
-                        Intent(
-                            this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
-                        ).putExtra(
-                            "ContactId", id
+                        startActivity(
+                            Intent(
+                                this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
+                            ).putExtra(
+                                "ContactId", id
+                            )
                         )
-                    )
-                }, { id, civ, contact ->
-                    hideKeyboard(this@ContactsListActivity)
+                    }, { id, civ, contact ->
+                        hideKeyboard(this@ContactsListActivity)
 
-                    itemSelected(civ, contact)
-                    modeMultiSelect = listOfItemSelected.isNotEmpty()
+                        itemSelected(civ, contact)
+                        modeMultiSelect = listOfItemSelected.isNotEmpty()
 
-                    setupMultiSelectToolbar(binding, modeMultiSelect)
-                })
-                contactsListViewModel.viewStateLiveData.observe(this@ContactsListActivity) { contacts ->
-                    contactsGridAdapter.submitList(null)
-                    contactsGridAdapter.submitList(contacts)
+                        setupMultiSelectToolbar(binding, modeMultiSelect)
+                    })
+                    contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactsListActivity) { contacts ->
+                        contactsGridAdapter.submitList(null)
+                        contactsGridAdapter.submitList(contacts)
+                    }
+                    adapter = contactsGridAdapter
+                    layoutManager = GridLayoutManager(context, nbGrid)
+                    setItemViewCacheSize(500)
                 }
-                adapter = contactsGridAdapter
-                layoutManager = GridLayoutManager(context, nbGrid)
-                setItemViewCacheSize(500)
+            } else if (nbGrid == 5) {
+                binding.recyclerView.apply {
+                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactsListActivity, { id ->
+                        hideKeyboard(this@ContactsListActivity)
+
+                        startActivity(
+                            Intent(
+                                this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
+                            ).putExtra(
+                                "ContactId", id
+                            )
+                        )
+                    }, { id, civ, contact ->
+                        hideKeyboard(this@ContactsListActivity)
+
+                        itemSelected(civ, contact)
+                        modeMultiSelect = listOfItemSelected.isNotEmpty()
+
+                        setupMultiSelectToolbar(binding, modeMultiSelect)
+                    })
+                    contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactsListActivity) { contacts ->
+                        contactsGridAdapter.submitList(null)
+                        contactsGridAdapter.submitList(contacts)
+                    }
+                    adapter = contactsGridAdapter
+                    layoutManager = GridLayoutManager(context, nbGrid)
+                    setItemViewCacheSize(500)
+                }
             }
         }
     }

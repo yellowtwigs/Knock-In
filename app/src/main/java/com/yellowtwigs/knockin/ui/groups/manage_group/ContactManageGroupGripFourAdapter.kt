@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.databinding.ItemContactGridBinding
+import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
 import com.yellowtwigs.knockin.utils.Converter
@@ -16,24 +16,21 @@ import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapt
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 
-class ContactManageGroupGripAdapter(
+class ContactManageGroupGripFourAdapter(
     private val cxt: Context,
     private val listOfItemSelected: ArrayList<String>,
     private val onClickedCallback: (String) -> Unit
 ) :
-    ListAdapter<ContactManageGroupViewState, ContactManageGroupGripAdapter.ViewHolder>(
+    ListAdapter<ContactManageGroupViewState, ContactManageGroupGripFourAdapter.ViewHolder>(
         ContactManageGroupViewStateComparator()
     ) {
 
-    private var imageHeight = 0
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemContactGridBinding.inflate(
+        val binding = ItemContactGrid4Binding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        imageHeight = binding.civ.layoutParams.height
         return ViewHolder(binding)
     }
 
@@ -41,7 +38,7 @@ class ContactManageGroupGripAdapter(
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemContactGridBinding) :
+    inner class ViewHolder(private val binding: ItemContactGrid4Binding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contact: ContactManageGroupViewState) {
@@ -49,17 +46,8 @@ class ContactManageGroupGripAdapter(
                 contactPriorityBorder(contact.priority, civ, cxt)
                 contactProfilePicture(contact.profilePicture64, contact.profilePicture, civ, cxt)
 
-                val len = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE).getInt("gridview", 4)
-
-                InitContactsForListAdapter.InitContactAdapter.initContactNameFromGrid(
-                    contact.firstName,
-                    contact.lastName,
-                    len,
-                    firstName,
-                    lastName,
-                    civ,
-                    imageHeight
-                )
+                firstName.text = contact.firstName
+                lastName.text = contact.lastName
 
                 itemSelected(contact.id, civ, contact)
 

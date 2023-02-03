@@ -56,11 +56,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllContactsUseCase(contactsListRepository: ContactsListRepository) =
-        GetAllContactsUseCase(contactsListRepository)
-
-    @Provides
-    @Singleton
     fun provideGetAllContactsSortByFullNameUseCase(contactsListRepository: ContactsListRepository) =
         GetAllContactsSortByFullNameUseCase(contactsListRepository)
 

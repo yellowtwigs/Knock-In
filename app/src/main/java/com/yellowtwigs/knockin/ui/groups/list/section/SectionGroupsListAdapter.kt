@@ -15,7 +15,8 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.GroupSectionItemBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.groups.list.ContactInGroupViewState
-import com.yellowtwigs.knockin.ui.groups.list.GroupsGridAdapter
+import com.yellowtwigs.knockin.ui.groups.list.GroupsGridFiveAdapter
+import com.yellowtwigs.knockin.ui.groups.list.GroupsGridFourAdapter
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListAdapter
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.utils.Converter
@@ -23,9 +24,7 @@ import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import java.net.URLEncoder
 
 class SectionGroupsListAdapter(
-    private val cxt: Context,
-    private val packageManager: PackageManager,
-    private val onClickedCallback: (Int) -> Unit
+    private val cxt: Context, private val packageManager: PackageManager, private val onClickedCallback: (Int) -> Unit
 ) : ListAdapter<SectionViewState, SectionGroupsListAdapter.ViewHolder>(
     SectionViewStateComparator()
 ) {
@@ -45,12 +44,10 @@ class SectionGroupsListAdapter(
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: GroupSectionItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: GroupSectionItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(section: SectionViewState) {
-            val sharedPreferences =
-                cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+            val sharedPreferences = cxt.getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
             val nbGrid = sharedPreferences.getInt("gridview", 1)
 
             binding.apply {
@@ -100,15 +97,17 @@ class SectionGroupsListAdapter(
                     isMultiSelect = listOfItemSelected.isNotEmpty()
                 }
 
-                val groupsGridAdapter = GroupsGridAdapter(cxt, isMultiSelect) { id ->
-                }
-
                 sectionRecyclerView.apply {
                     if (nbGrid == 1) {
                         groupsListAdapter.submitList(section.items)
                         adapter = groupsListAdapter
                         layoutManager = LinearLayoutManager(context)
                     } else {
+                        val groupsGridAdapter = if (nbGrid == 4) {
+                            GroupsGridFourAdapter(cxt, false, {})
+                        } else {
+                            GroupsGridFiveAdapter(cxt, false, {})
+                        }
                         groupsGridAdapter.submitList(section.items)
                         adapter = groupsGridAdapter
                         layoutManager = GridLayoutManager(context, nbGrid)
@@ -131,6 +130,11 @@ class SectionGroupsListAdapter(
                             adapter = groupsListAdapter
                             layoutManager = LinearLayoutManager(context)
                         } else {
+                            val groupsGridAdapter = if (nbGrid == 4) {
+                                GroupsGridFourAdapter(cxt, false, {})
+                            } else {
+                                GroupsGridFiveAdapter(cxt, false, {})
+                            }
                             groupsGridAdapter.submitList(section.items)
                             adapter = groupsGridAdapter
                             layoutManager = GridLayoutManager(context, nbGrid)
@@ -194,8 +198,7 @@ class SectionGroupsListAdapter(
         }
 
         private fun itemsSelected(
-            groupsListAdapter: GroupsListAdapter,
-            items: List<ContactInGroupViewState>
+            groupsListAdapter: GroupsListAdapter, items: List<ContactInGroupViewState>
         ) {
             items.map {
                 it.profilePicture = R.drawable.ic_item_selected

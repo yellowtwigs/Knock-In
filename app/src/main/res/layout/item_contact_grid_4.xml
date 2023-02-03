@@ -9,8 +9,8 @@
 
     <com.yellowtwigs.knockin.ui.CircularImageView
         android:id="@+id/civ"
-        android:layout_width="@dimen/rounded_image_view_height_width"
-        android:layout_height="@dimen/rounded_image_view_height_width"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="4dp"

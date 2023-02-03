@@ -5,21 +5,13 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.databinding.ItemContactGridBinding
-import com.yellowtwigs.knockin.databinding.ItemContactSelectedLayoutBinding
+import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
-import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
-import com.yellowtwigs.knockin.utils.Converter
-import com.yellowtwigs.knockin.utils.InitContactsForListAdapter
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
@@ -32,7 +24,7 @@ class ContactSelectedListAdapter(private val cxt: Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemContactGridBinding.inflate(
+            ItemContactGrid4Binding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -45,7 +37,7 @@ class ContactSelectedListAdapter(private val cxt: Context) :
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemContactGridBinding) :
+    inner class ViewHolder(private val binding: ItemContactGrid4Binding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contact: ContactDB) {

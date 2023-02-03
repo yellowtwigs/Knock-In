@@ -215,7 +215,7 @@ class TeleworkingActivity : AppCompatActivity() {
 
         if (len == 1) len = 4
 
-        val teleworkingContactsListAdapter = TeleworkingContactsListAdapter(this) { id ->
+        val teleworkingContactsListAdapter = TeleworkingContactsListFourAdapter(this) { id ->
             startActivity(
                 Intent(
                     this@TeleworkingActivity,
