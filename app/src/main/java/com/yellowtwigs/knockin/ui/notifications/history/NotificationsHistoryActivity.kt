@@ -285,7 +285,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     //region ======================================== DRAWER LAYOUT =========================================
 
     private fun setupDrawerLayout() {
-        setupTeleworkingItem(binding.navView, this)
+        setupTeleworkingItem(binding.drawerLayout, this)
 
         binding.navView.apply {
             menu.getItem(0).isChecked = true

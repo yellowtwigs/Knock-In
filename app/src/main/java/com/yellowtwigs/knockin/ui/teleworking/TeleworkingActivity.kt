@@ -67,6 +67,7 @@ class TeleworkingActivity : AppCompatActivity() {
 
             binding.vipContactsButton.setOnClickListener {
                 startActivity(Intent(this@TeleworkingActivity, FirstVipSelectionActivity::class.java).putExtra("fromTeleworking", true))
+                finish()
             }
 
             binding.teleworkingModeSwitch.isChecked = vipScheduleValueSharedPreferences.getBoolean("VipScheduleValue", false)
@@ -205,15 +206,28 @@ class TeleworkingActivity : AppCompatActivity() {
 
         if (len == 1) len = 4
 
-        val teleworkingContactsListAdapter = TeleworkingContactsListFourAdapter(this) { id ->
-            startActivity(
-                Intent(
-                    this@TeleworkingActivity, ContactSelectedWithAppsActivity::class.java
-                ).putExtra(
-                    "ContactId", id
+        val teleworkingContactsListAdapter = if (len == 4) {
+            TeleworkingContactsListFourAdapter(this) { id ->
+                startActivity(
+                    Intent(
+                        this@TeleworkingActivity, ContactSelectedWithAppsActivity::class.java
+                    ).putExtra(
+                        "ContactId", id
+                    )
                 )
-            )
+            }
+        } else {
+            TeleworkingContactsListFiveAdapter(this) { id ->
+                startActivity(
+                    Intent(
+                        this@TeleworkingActivity, ContactSelectedWithAppsActivity::class.java
+                    ).putExtra(
+                        "ContactId", id
+                    )
+                )
+            }
         }
+
 
         binding.vipContacts.apply {
             viewModel.liveData.observe(this@TeleworkingActivity) { contacts ->

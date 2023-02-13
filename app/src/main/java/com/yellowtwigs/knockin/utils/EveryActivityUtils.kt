@@ -6,6 +6,8 @@ import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
@@ -42,16 +44,14 @@ object EveryActivityUtils {
         }
     }
 
-    fun setupTeleworkingItem(navView: NavigationView, cxt: Activity) {
-        val menu = navView.menu
-
+    fun setupTeleworkingItem(drawerLayout: DrawerLayout, cxt: Activity) {
         val itemLayout = cxt.findViewById<ConstraintLayout>(R.id.teleworking_item)
         val itemText = cxt.findViewById<AppCompatTextView>(R.id.teleworking_item_text)
 
-        itemText.text =
-            "${cxt.getString(R.string.teleworking)} ${cxt.getString(R.string.left_drawer_settings)}"
+        itemText.text = "${cxt.getString(R.string.teleworking)} ${cxt.getString(R.string.left_drawer_settings)}"
 
         itemLayout.setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
             cxt.startActivity(Intent(cxt, TeleworkingActivity::class.java))
         }
     }

@@ -275,14 +275,14 @@ class ContactsListActivity : AppCompatActivity() {
             val navInviteFriend = menu.findItem(R.id.nav_invite_friend)
             navInviteFriend.isVisible = true
 
-            setupTeleworkingItem(binding.navView, this@ContactsListActivity)
+            setupTeleworkingItem(this, this@ContactsListActivity)
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
                 }
                 hideKeyboard(this@ContactsListActivity)
-                closeDrawers()
+                closeDrawer(GravityCompat.START)
 
                 when (menuItem.itemId) {
                     R.id.nav_notifications -> startActivity(
@@ -311,7 +311,6 @@ class ContactsListActivity : AppCompatActivity() {
                         startActivity(messageIntent)
                     }
                 }
-
                 true
             }
 

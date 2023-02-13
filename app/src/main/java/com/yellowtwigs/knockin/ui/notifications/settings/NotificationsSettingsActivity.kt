@@ -106,7 +106,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         val navItem = menu.findItem(R.id.nav_notifications)
         navItem.isChecked = true
 
-        setupTeleworkingItem(navigationView, this)
+        setupTeleworkingItem(binding.drawerLayout, this)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {

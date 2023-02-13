@@ -81,7 +81,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private fun setupDrawerLayout() {
         binding.navigationView.menu.findItem(R.id.nav_manage_screen).isChecked = true
 
-        setupTeleworkingItem(binding.navigationView, this)
+        setupTeleworkingItem(binding.drawerLayout, this)
 
         val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
         val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)

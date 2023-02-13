@@ -85,7 +85,7 @@ class GroupsListActivity : AppCompatActivity() {
             navItem.isChecked = true
             menu.getItem(0).isChecked = true
 
-            setupTeleworkingItem(binding.navView, this@GroupsListActivity)
+            setupTeleworkingItem(binding.drawerLayout, this@GroupsListActivity)
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {

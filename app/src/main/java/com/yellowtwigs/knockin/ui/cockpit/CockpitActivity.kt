@@ -82,9 +82,7 @@ class CockpitActivity : AppCompatActivity() {
 
             callButton.setOnClickListener {
                 phoneCall(
-                    this@CockpitActivity,
-                    phoneNumberEditText.text.toString(),
-                    MAKE_CALL_PERMISSION_REQUEST_CODE
+                    this@CockpitActivity, phoneNumberEditText.text.toString(), MAKE_CALL_PERMISSION_REQUEST_CODE
                 )
             }
 
@@ -95,9 +93,7 @@ class CockpitActivity : AppCompatActivity() {
                     startActivity(i)
                 } else {
                     Toast.makeText(
-                        this@CockpitActivity,
-                        R.string.cockpit_toast_phone_number_empty,
-                        Toast.LENGTH_SHORT
+                        this@CockpitActivity, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -113,16 +109,13 @@ class CockpitActivity : AppCompatActivity() {
                     )
                 } else {
                     Toast.makeText(
-                        this@CockpitActivity,
-                        R.string.cockpit_toast_phone_number_empty,
-                        Toast.LENGTH_SHORT
+                        this@CockpitActivity, R.string.cockpit_toast_phone_number_empty, Toast.LENGTH_SHORT
                     ).show()
                 }
             }
 
             openFab.setOnClickListener {
-                val slideLeft =
-                    AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_left)
+                val slideLeft = AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_left)
 
                 slideUp(editTextLayout)
                 slideUp(tableLayout)
@@ -135,10 +128,8 @@ class CockpitActivity : AppCompatActivity() {
             }
 
             closeFab.setOnClickListener {
-                val slideRight =
-                    AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_right)
-                val slideDown =
-                    AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_down)
+                val slideRight = AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_right)
+                val slideDown = AnimationUtils.loadAnimation(this@CockpitActivity, R.anim.slide_down)
 
                 editTextLayout.startAnimation(slideDown)
                 tableLayout.startAnimation(slideDown)
@@ -196,8 +187,7 @@ class CockpitActivity : AppCompatActivity() {
         binding.help.setOnClickListener {
             if (Resources.getSystem().configuration.locale.language == "fr") {
                 val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit")
+                    Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-cockpit")
                 )
                 startActivity(browserIntent)
             } else {
@@ -217,13 +207,13 @@ class CockpitActivity : AppCompatActivity() {
         val menu = binding.navView.menu
         menu.findItem(R.id.nav_home).isChecked = true
 
-        setupTeleworkingItem(binding.navView, this)
+        setupTeleworkingItem(binding.drawerLayout, this)
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
-            if(menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend){
+            if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                 menuItem.isChecked = true
             }
-            binding.drawerLayout.closeDrawers()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
 
             when (menuItem.itemId) {
                 R.id.nav_home -> {
@@ -258,10 +248,9 @@ class CockpitActivity : AppCompatActivity() {
                 }
                 R.id.nav_invite_friend -> {
                     val intent = Intent(Intent.ACTION_SEND)
-                    val messageString =
-                        resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
-                            R.string.location_on_playstore
-                        )
+                    val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                        R.string.location_on_playstore
+                    )
                     intent.putExtra(Intent.EXTRA_TEXT, messageString)
                     intent.type = "text/plain"
                     val messageIntent = Intent.createChooser(intent, null)
@@ -535,9 +524,7 @@ class CockpitActivity : AppCompatActivity() {
         when (requestCode) {
             MAKE_CALL_PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 phoneCall(
-                    this@CockpitActivity,
-                    binding.phoneNumberEditText.text.toString(),
-                    MAKE_CALL_PERMISSION_REQUEST_CODE
+                    this@CockpitActivity, binding.phoneNumberEditText.text.toString(), MAKE_CALL_PERMISSION_REQUEST_CODE
                 )
             }
         }

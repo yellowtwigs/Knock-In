@@ -162,18 +162,6 @@ class SectionGroupsListAdapter(
                     }
                     popupMenu.show()
                 }
-
-                sectionSms.setOnClickListener {
-                    monoChannelSmsClick(section.phoneNumbers)
-                }
-
-                sectionGmail.isVisible = section.emails.isNotEmpty()
-                sectionGmail.setOnClickListener {
-                    monoChannelMailClick(section.emails)
-                }
-                sectionWhatsapp.setOnClickListener {
-                    monoChannelWhatsapp()
-                }
             }
         }
 
@@ -197,47 +185,11 @@ class SectionGroupsListAdapter(
             }
         }
 
-        private fun itemsSelected(
-            groupsListAdapter: GroupsListAdapter, items: List<ContactInGroupViewState>
-        ) {
+        private fun itemsSelected(groupsListAdapter: GroupsListAdapter, items: List<ContactInGroupViewState>) {
             items.map {
                 it.profilePicture = R.drawable.ic_item_selected
             }
             groupsListAdapter.submitList(items)
-        }
-
-        private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
-            var message = "smsto:" + listOfPhoneNumber[0]
-            for (element in listOfPhoneNumber) {
-                message += ";$element"
-            }
-            cxt.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
-        }
-
-        private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
-            val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.putExtra(Intent.EXTRA_EMAIL, contact)
-            intent.data = Uri.parse("mailto:")
-            intent.type = "message/rfc822"
-            intent.putExtra(Intent.EXTRA_SUBJECT, "")
-            intent.putExtra(Intent.EXTRA_TEXT, "")
-            cxt.startActivity(intent)
-        }
-
-        private fun monoChannelWhatsapp() {
-            val i = Intent(Intent.ACTION_VIEW)
-
-            try {
-                val url = "https://api.whatsapp.com/send?text=" + URLEncoder.encode(".", "UTF-8")
-                i.setPackage("com.whatsapp")
-                i.data = Uri.parse(url)
-                if (i.resolveActivity(packageManager) != null) {
-                    cxt.startActivity(i)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
     }
 
