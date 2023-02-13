@@ -46,7 +46,8 @@ class ManageGroupActivity : AppCompatActivity() {
 
         groupId = intent.getIntExtra("GroupId", -1)
 
-        Log.i("MultiSelectGroup", "${intent.getIntegerArrayListExtra("contacts")}")
+        viewModel.getManageGroupViewState()
+
         intent.getIntegerArrayListExtra("contacts")?.forEach { id ->
             id?.let {
                 listOfItemSelected.add(it.toString())
@@ -89,6 +90,9 @@ class ManageGroupActivity : AppCompatActivity() {
                     setupSectionColorSelection()
 
                     binding.groupName.setText(manageGroupViewState.groupName)
+
+                    Log.i("IdsContactsFromGroup", "manageGroupViewState.listOfIds : ${manageGroupViewState.listOfIds}")
+
                     listOfItemSelected.addAll(manageGroupViewState.listOfIds)
 
                     val manageGroupListAdapter = ContactManageGroupListAdapter(

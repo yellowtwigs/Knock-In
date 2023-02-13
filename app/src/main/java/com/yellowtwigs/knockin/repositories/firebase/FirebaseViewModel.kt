@@ -11,4 +11,8 @@ class FirebaseViewModel @Inject constructor(private val firebaseFirestoreReposit
     fun setActivityNameToUserClick(id: String, activityName: String) {
         firebaseFirestoreRepository.setActivityNameToUserClick(id, activityName)
     }
+
+    fun setActivityNameToUserClickBis(id: String, activityName: String) {
+        firebaseFirestoreRepository.setActivityNameToUserClickBis(id, activityName)
+    }
 }

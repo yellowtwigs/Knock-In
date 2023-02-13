@@ -22,4 +22,21 @@ object SaveUserIdToFirebase {
             }
         }
     }
+
+    fun saveUserIdToFirebaseBis(userIdPreferences: SharedPreferences, viewModel: FirebaseViewModel, message:  String) {
+        var userId = userIdPreferences.getString("User_Id", "Default")
+
+        if (userId == "Default") {
+            userId = UUID.randomUUID().toString()
+            val userIdEdit = userIdPreferences.edit()
+            userIdEdit.putString("User_Id", userId)
+            userIdEdit.apply()
+
+            viewModel.setActivityNameToUserClickBis(userId, message)
+        } else {
+            userId?.let {
+                viewModel.setActivityNameToUserClickBis(it, message)
+            }
+        }
+    }
 }

@@ -9,5 +9,4 @@ data class SectionViewState(
     var items: List<ContactInGroupViewState> = ArrayList(),
     var phoneNumbers: ArrayList<String> = ArrayList(),
     var emails: ArrayList<String> = arrayListOf()
-) {
-}
+) 

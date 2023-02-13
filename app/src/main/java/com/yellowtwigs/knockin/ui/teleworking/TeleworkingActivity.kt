@@ -30,7 +30,9 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.utils.ContactGesture.sendMessageWithWhatsapp
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
+import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebaseBis
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -45,66 +47,67 @@ class TeleworkingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        try {
+            checkTheme(this)
 
-        val viewModel: TeleworkingViewModel by viewModels()
-        binding = ActivityTeleworkingBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+            val viewModel: TeleworkingViewModel by viewModels()
+            binding = ActivityTeleworkingBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
+            userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
 
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the Teleworking Activity")
+            saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the Teleworking Activity")
 
-        setupContactList(viewModel)
-        setupReminder()
-        setupToolbar()
-        editTextTimePicker()
+            setupContactList(viewModel)
+            setupReminder()
+            setupToolbar()
+            editTextTimePicker()
 
-        val vipScheduleValueSharedPreferences =
-            getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
+            val vipScheduleValueSharedPreferences = getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
 
-        binding.vipContactsButton.setOnClickListener {
-            startActivity(Intent(this@TeleworkingActivity, FirstVipSelectionActivity::class.java).putExtra("fromTeleworking", true))
-        }
-
-        binding.teleworkingModeSwitch.isChecked =
-            vipScheduleValueSharedPreferences.getBoolean("VipScheduleValue", false)
-
-        changeSwitchCompatColor(binding.teleworkingModeSwitch)
-
-        binding.teleworkingModeSwitch.setOnCheckedChangeListener { compoundButton, isChecked ->
-            changeSwitchCompatColor(binding.teleworkingModeSwitch)
-            if (isChecked) {
-                binding.teleworkingModeSwitch.thumbTintList
-
-                viewModel.updateContactsPriority(0)
-                val edit = vipScheduleValueSharedPreferences.edit()
-                edit.putBoolean("VipScheduleValue", true)
-                edit.apply()
-            } else {
-                viewModel.updateContactsPriority(1)
-                val edit = vipScheduleValueSharedPreferences.edit()
-                edit.putBoolean("VipScheduleValue", false)
-                edit.apply()
+            binding.vipContactsButton.setOnClickListener {
+                startActivity(Intent(this@TeleworkingActivity, FirstVipSelectionActivity::class.java).putExtra("fromTeleworking", true))
             }
-        }
 
-        setupDrawerLayout()
+            binding.teleworkingModeSwitch.isChecked = vipScheduleValueSharedPreferences.getBoolean("VipScheduleValue", false)
 
-        val notificationsHour = getSharedPreferences(
-            "TeleworkingReminder", Context.MODE_PRIVATE
-        ).getString("TeleworkingReminder", "")
+            changeSwitchCompatColor(binding.teleworkingModeSwitch)
 
-        if (notificationsHour?.contains("to") == true) {
-            binding.startTimeEditText.setText(convertTimeToStartTime(notificationsHour))
-            binding.endTimeEditText.setText(convertTimeToEndTime(notificationsHour))
+            binding.teleworkingModeSwitch.setOnCheckedChangeListener { compoundButton, isChecked ->
+                changeSwitchCompatColor(binding.teleworkingModeSwitch)
+                if (isChecked) {
+                    binding.teleworkingModeSwitch.thumbTintList
+
+                    viewModel.updateContactsPriority(0)
+                    val edit = vipScheduleValueSharedPreferences.edit()
+                    edit.putBoolean("VipScheduleValue", true)
+                    edit.apply()
+                } else {
+                    viewModel.updateContactsPriority(1)
+                    val edit = vipScheduleValueSharedPreferences.edit()
+                    edit.putBoolean("VipScheduleValue", false)
+                    edit.apply()
+                }
+            }
+
+            setupDrawerLayout()
+
+            val notificationsHour = getSharedPreferences(
+                "TeleworkingReminder", Context.MODE_PRIVATE
+            ).getString("TeleworkingReminder", "")
+
+            if (notificationsHour?.contains("to") == true) {
+                binding.startTimeEditText.setText(convertTimeToStartTime(notificationsHour))
+                binding.endTimeEditText.setText(convertTimeToEndTime(notificationsHour))
+            }
+        } catch (e: Exception) {
+            saveUserIdToFirebaseBis(userIdPreferences, firebaseViewModel, "Exception : $e")
         }
     }
 
     private fun changeSwitchCompatColor(switchTheme: SwitchCompat) {
         val states = arrayOf(
-            intArrayOf(-android.R.attr.state_checked),
-            intArrayOf(android.R.attr.state_checked)
+            intArrayOf(-android.R.attr.state_checked), intArrayOf(android.R.attr.state_checked)
         )
 
         lateinit var thumbColors: IntArray
@@ -113,33 +116,27 @@ class TeleworkingActivity : AppCompatActivity() {
         val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             thumbColors = intArrayOf(
-                Color.WHITE,
-                Color.CYAN
+                Color.WHITE, Color.CYAN
             )
 
             trackColors = intArrayOf(
-                Color.LTGRAY,
-                Color.argb(120, 3, 214, 194)
+                Color.LTGRAY, Color.argb(120, 3, 214, 194)
             )
         } else {
             thumbColors = intArrayOf(
-                Color.LTGRAY,
-                Color.CYAN
+                Color.LTGRAY, Color.CYAN
             )
 
             trackColors = intArrayOf(
-                Color.LTGRAY,
-                Color.argb(120, 3, 214, 194)
+                Color.LTGRAY, Color.argb(120, 3, 214, 194)
             )
         }
 
         DrawableCompat.setTintList(
-            DrawableCompat.wrap(switchTheme.thumbDrawable),
-            ColorStateList(states, thumbColors)
+            DrawableCompat.wrap(switchTheme.thumbDrawable), ColorStateList(states, thumbColors)
         )
         DrawableCompat.setTintList(
-            DrawableCompat.wrap(switchTheme.trackDrawable),
-            ColorStateList(states, trackColors)
+            DrawableCompat.wrap(switchTheme.trackDrawable), ColorStateList(states, trackColors)
         )
     }
 
@@ -159,8 +156,7 @@ class TeleworkingActivity : AppCompatActivity() {
             val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
 
             itemIcon.setImageResource(R.drawable.ic_teleworking_yellow)
-            itemText.text =
-                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
+            itemText.text = "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
             itemText.setTextColor(resources.getColor(R.color.colorPrimaryDark))
 
             navView.setNavigationItemSelectedListener { menuItem ->
@@ -172,32 +168,27 @@ class TeleworkingActivity : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.nav_home -> startActivity(
                         Intent(
-                            this@TeleworkingActivity,
-                            ContactsListActivity::class.java
+                            this@TeleworkingActivity, ContactsListActivity::class.java
                         )
                     )
                     R.id.nav_notifications -> startActivity(
                         Intent(
-                            this@TeleworkingActivity,
-                            NotificationsSettingsActivity::class.java
+                            this@TeleworkingActivity, NotificationsSettingsActivity::class.java
                         )
                     )
                     R.id.nav_in_app -> startActivity(
                         Intent(
-                            this@TeleworkingActivity,
-                            PremiumActivity::class.java
+                            this@TeleworkingActivity, PremiumActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> startActivity(
                         Intent(
-                            this@TeleworkingActivity,
-                            ManageMyScreenActivity::class.java
+                            this@TeleworkingActivity, ManageMyScreenActivity::class.java
                         )
                     )
                     R.id.nav_help -> startActivity(
                         Intent(
-                            this@TeleworkingActivity,
-                            HelpActivity::class.java
+                            this@TeleworkingActivity, HelpActivity::class.java
                         )
                     )
                 }
@@ -210,19 +201,16 @@ class TeleworkingActivity : AppCompatActivity() {
     //endregion
 
     private fun setupContactList(viewModel: TeleworkingViewModel) {
-        var len =
-            getSharedPreferences("Gridview_column", Context.MODE_PRIVATE).getInt("gridview", 4)
+        var len = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE).getInt("gridview", 4)
 
         if (len == 1) len = 4
 
         val teleworkingContactsListAdapter = TeleworkingContactsListFourAdapter(this) { id ->
             startActivity(
                 Intent(
-                    this@TeleworkingActivity,
-                    ContactSelectedWithAppsActivity::class.java
+                    this@TeleworkingActivity, ContactSelectedWithAppsActivity::class.java
                 ).putExtra(
-                    "ContactId",
-                    id
+                    "ContactId", id
                 )
             )
         }
@@ -256,19 +244,16 @@ class TeleworkingActivity : AppCompatActivity() {
             reminderHourEditText.setText(hourGetString(hour, minute))
             setReminderAlarm(hour, minute)
             reminderHourEditText.setOnClickListener {
-                val timePickerDialog =
-                    TimePickerDialog(this@TeleworkingActivity, TimePickerDialog.OnTimeSetListener(
-                        function = { _, h, m ->
-                            val editor = sharedPreferences.edit()
-                            editor.putInt("remindHour", h)
-                            editor.putInt("remindMinute", m)
-                            editor.apply()
-                            reminderHourEditText.setText(hourGetString(h, m))
-                            hour = h
-                            minute = m
-                            setReminderAlarm(hour, minute)
-                        }
-                    ), hour, minute, true)
+                val timePickerDialog = TimePickerDialog(this@TeleworkingActivity, TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
+                    val editor = sharedPreferences.edit()
+                    editor.putInt("remindHour", h)
+                    editor.putInt("remindMinute", m)
+                    editor.apply()
+                    reminderHourEditText.setText(hourGetString(h, m))
+                    hour = h
+                    minute = m
+                    setReminderAlarm(hour, minute)
+                }), hour, minute, true)
                 timePickerDialog.show()
             }
         }
@@ -299,25 +284,18 @@ class TeleworkingActivity : AppCompatActivity() {
         val intent = Intent(applicationContext, NotificationSender::class.java)
         intent.action = "NOTIFICATION_TIME"
         val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            100,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT
         )
         val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
         alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
+            AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent
         )
     }
 
     private fun editTextTimePicker() {
         binding.startTimeEditText.setOnClickListener { view ->
             val timePickerDialog = TimePickerDialog(
-                this,
-                { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
+                this, { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
                     if (minutes < 10) {
                         binding.startTimeEditText.setText(
                             hourOfDay.toString() + "h0" + minutes
@@ -334,8 +312,7 @@ class TeleworkingActivity : AppCompatActivity() {
         }
         binding.endTimeEditText.setOnClickListener { view ->
             val timePickerDialog = TimePickerDialog(
-                this,
-                { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
+                this, { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
                     if (minutes < 10) {
                         binding.endTimeEditText.setText(
                             hourOfDay.toString() + "h0" + minutes
@@ -384,13 +361,11 @@ class TeleworkingActivity : AppCompatActivity() {
 //    }
 
     override fun onStop() {
-        val teleworkingReminderValueSharedPreferences =
-            getSharedPreferences("TeleworkingReminder", Context.MODE_PRIVATE)
+        val teleworkingReminderValueSharedPreferences = getSharedPreferences("TeleworkingReminder", Context.MODE_PRIVATE)
         val teleworkingEditor = teleworkingReminderValueSharedPreferences.edit()
         teleworkingEditor.putString(
             "TeleworkingReminder", convertStartAndEndTimeToOneString(
-                binding.startTimeEditText.text.toString(),
-                binding.endTimeEditText.text.toString()
+                binding.startTimeEditText.text.toString(), binding.endTimeEditText.text.toString()
             )
         )
 

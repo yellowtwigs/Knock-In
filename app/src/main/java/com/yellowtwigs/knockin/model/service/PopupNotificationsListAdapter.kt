@@ -47,7 +47,6 @@ class PopupNotificationsListAdapter(
     private lateinit var thisParent: ViewGroup
     var newMessage = false
 
-    private val MAKE_CALL_PERMISSION_REQUEST_CODE = 1
     private var numberForPermission = ""
 
     var isClose = false
@@ -75,15 +74,13 @@ class PopupNotificationsListAdapter(
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemPopupNotificationBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemPopupNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(popup: PopupNotificationViewState) {
             binding.apply {
                 messageToSend.isEnabled = true
 
-                val unwrappedDrawable =
-                    AppCompatResources.getDrawable(cxt, R.drawable.item_notif_adapter_top_bar)
+                val unwrappedDrawable = AppCompatResources.getDrawable(cxt, R.drawable.item_notif_adapter_top_bar)
                 val wrappedDrawable = unwrappedDrawable?.let { DrawableCompat.wrap(it) }
 
                 platform.text = popup.platform
@@ -94,11 +91,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage,
-                                wrappedDrawable,
-                                R.drawable.ic_gmail,
-                                R.color.custom_shape_top_bar_gmail,
-                                cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_gmail, R.color.custom_shape_top_bar_gmail, cxt
                             )
                         }
                     }
@@ -109,11 +102,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage,
-                                wrappedDrawable,
-                                R.drawable.ic_messenger,
-                                R.color.custom_shape_top_bar_messenger,
-                                cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_messenger, R.color.custom_shape_top_bar_messenger, cxt
                             )
                         }
                     }
@@ -124,11 +113,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage,
-                                wrappedDrawable,
-                                R.drawable.ic_telegram,
-                                R.color.custom_shape_top_bar_telegram,
-                                cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_telegram, R.color.custom_shape_top_bar_telegram, cxt
                             )
                         }
                     }
@@ -139,11 +124,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage,
-                                wrappedDrawable,
-                                R.drawable.ic_signal,
-                                R.color.custom_shape_top_bar_signal,
-                                cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_signal, R.color.custom_shape_top_bar_signal, cxt
                             )
                         }
                     }
@@ -154,11 +135,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage,
-                                wrappedDrawable,
-                                R.drawable.ic_facebook,
-                                R.color.custom_shape_top_bar_facebook,
-                                cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_facebook, R.color.custom_shape_top_bar_facebook, cxt
                             )
                         }
                     }
@@ -169,11 +146,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage,
-                                wrappedDrawable,
-                                R.drawable.ic_sms,
-                                R.color.custom_shape_top_bar_sms,
-                                cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_sms, R.color.custom_shape_top_bar_sms, cxt
                             )
                         }
                     }
@@ -184,11 +157,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage,
-                                wrappedDrawable,
-                                R.drawable.ic_circular_whatsapp,
-                                R.color.custom_shape_top_bar_whatsapp,
-                                cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_circular_whatsapp, R.color.custom_shape_top_bar_whatsapp, cxt
                             )
                         }
                     }
@@ -254,8 +223,7 @@ class PopupNotificationsListAdapter(
                             val appIntent = Intent(Intent.ACTION_VIEW)
                             appIntent.flags = FLAG_ACTIVITY_NEW_TASK
                             appIntent.setClassName(
-                                "com.google.android.gm",
-                                "com.google.android.gm.ConversationListActivityGmail"
+                                "com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail"
                             )
                             try {
                                 cxt.startActivity(appIntent)
@@ -316,11 +284,7 @@ class PopupNotificationsListAdapter(
         }
 
         private fun setupIconAndColor(
-            platformImage: AppCompatImageView,
-            wrappedDrawable: Drawable,
-            iconId: Int,
-            colorId: Int,
-            cxt: Context
+            platformImage: AppCompatImageView, wrappedDrawable: Drawable, iconId: Int, colorId: Int, cxt: Context
         ) {
             platformImage.setImageResource(iconId)
             DrawableCompat.setTint(
@@ -358,15 +322,13 @@ class PopupNotificationsListAdapter(
     private fun closeNotificationPopup() {
         NotificationsListenerService.alarmSound?.stop()
         windowManager.removeView(popupView)
-        val sharedPreferences =
-            cxt.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences = cxt.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         edit.putBoolean("view", false)
         edit.apply()
     }
 
-    class PopupNotificationViewStateComparator :
-        DiffUtil.ItemCallback<PopupNotificationViewState>() {
+    class PopupNotificationViewStateComparator : DiffUtil.ItemCallback<PopupNotificationViewState>() {
         override fun areItemsTheSame(
             oldItem: PopupNotificationViewState, newItem: PopupNotificationViewState
         ): Boolean {
@@ -378,6 +340,5 @@ class PopupNotificationsListAdapter(
         ): Boolean {
             return oldItem == newItem
         }
-
     }
 }

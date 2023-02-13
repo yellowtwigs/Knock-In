@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.model.service
 
 data class PopupNotificationViewState(
-    val id: Int = 0,
+    val id: Int,
     val title: String,
     val description: String,
     val platform: String,

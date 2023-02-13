@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.groups.manage_group
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -16,20 +17,15 @@ import com.yellowtwigs.knockin.utils.InitContactsForListAdapter
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 
 class ContactManageGroupListAdapter(
-    private val cxt: Context,
-    private val listOfItemSelected: ArrayList<String>,
-    private val onClickedCallback: (String) -> Unit
-) :
-    ListAdapter<ContactManageGroupViewState, ContactManageGroupListAdapter.ViewHolder>(
-        ContactManageGroupViewStateComparator()
-    ) {
+    private val cxt: Context, private val listOfItemSelected: ArrayList<String>, private val onClickedCallback: (String) -> Unit
+) : ListAdapter<ContactManageGroupViewState, ContactManageGroupListAdapter.ViewHolder>(
+    ContactManageGroupViewStateComparator()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemContactListBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
@@ -38,56 +34,55 @@ class ContactManageGroupListAdapter(
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemContactListBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemContactListBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contact: ContactManageGroupViewState) {
             binding.apply {
                 InitContactsForListAdapter.InitContactAdapter.contactProfilePicture(
-                    contact.profilePicture64,
-                    contact.profilePicture,
-                    civ,
-                    cxt
+                    contact.profilePicture64, contact.profilePicture, civ, cxt
                 )
 
                 name.text = contact.firstName + " " + contact.lastName
 
-                itemSelected(contact.id, civ, contact)
+                itemSelected(contact.id.toString(), civ, contact)
+
+                if (contact.firstName.isBlank() || contact.firstName.isEmpty()) {
+                    itemSelected(contact.lastName, civ, contact)
+                } else if (contact.lastName.isBlank() || contact.lastName.isEmpty()) {
+                    itemSelected(contact.firstName, civ, contact)
+                } else {
+                    itemSelected(name.text.toString(), civ, contact)
+                }
+
+                Log.i("IdsContactsFromGroup", "contact.firstName : ${contact.firstName}")
+                Log.i("IdsContactsFromGroup", "contact.lastName : ${contact.lastName}")
 
                 root.setOnClickListener {
                     onClickedCallback(contact.id.toString())
-                    itemSelected(contact.id, civ, contact)
+                    itemSelected(contact.id.toString(), civ, contact)
                 }
             }
         }
     }
 
-    class ContactManageGroupViewStateComparator :
-        DiffUtil.ItemCallback<ContactManageGroupViewState>() {
+    class ContactManageGroupViewStateComparator : DiffUtil.ItemCallback<ContactManageGroupViewState>() {
         override fun areItemsTheSame(
-            oldItem: ContactManageGroupViewState,
-            newItem: ContactManageGroupViewState
+            oldItem: ContactManageGroupViewState, newItem: ContactManageGroupViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ContactManageGroupViewState,
-            newItem: ContactManageGroupViewState
+            oldItem: ContactManageGroupViewState, newItem: ContactManageGroupViewState
         ): Boolean {
-            return oldItem.firstName == newItem.firstName &&
-                    oldItem.lastName == newItem.lastName &&
-                    oldItem.profilePicture == newItem.profilePicture &&
-                    oldItem.profilePicture64 == newItem.profilePicture64
+            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64
         }
     }
 
     private fun itemSelected(
-        id: Int,
-        image: CircularImageView,
-        contact: ContactManageGroupViewState
+        id: String, image: CircularImageView, contact: ContactManageGroupViewState
     ) {
-        if (listOfItemSelected.contains(id.toString())) {
+        if (listOfItemSelected.contains(id)) {
             image.setImageResource(R.drawable.ic_item_selected)
         } else {
             if (contact.profilePicture64 != "") {

@@ -27,8 +27,7 @@ class GroupsListViewModel @Inject constructor(
     groupsListRepository: GroupsListRepository,
     private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
     private val manageGroupRepository: ManageGroupRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val viewStateLiveData = MediatorLiveData<List<SectionViewState>>()
 
@@ -73,20 +72,15 @@ class GroupsListViewModel @Inject constructor(
         val listOfSections = arrayListOf<SectionViewState>()
 
         if (allGroups != null && allContacts != null) {
-
             for (group in allGroups) {
                 val listOfContactsInGroup = arrayListOf<ContactInGroupViewState>()
                 val phoneNumbers = arrayListOf<String>()
                 val emails = arrayListOf<String>()
 
                 for (contact in allContacts) {
-                    val name: String = if (contact.firstName == "" || contact.firstName.isBlank() ||
-                        contact.firstName.isEmpty()
-                    ) {
+                    val name: String = if (contact.firstName == "" || contact.firstName.isBlank() || contact.firstName.isEmpty()) {
                         contact.lastName
-                    } else if (contact.lastName == "" || contact.lastName.isBlank() ||
-                        contact.lastName.isEmpty()
-                    ) {
+                    } else if (contact.lastName == "" || contact.lastName.isBlank() || contact.lastName.isEmpty()) {
                         contact.firstName
                     } else {
                         contact.firstName + " " + contact.lastName
@@ -105,7 +99,7 @@ class GroupsListViewModel @Inject constructor(
 
                         listOfContactsInGroup.add(
                             ContactInGroupViewState(
-                                0,
+                                contact.id,
                                 contact.firstName,
                                 contact.lastName,
                                 contact.profilePicture,
@@ -124,12 +118,7 @@ class GroupsListViewModel @Inject constructor(
 
                 listOfSections.add(
                     SectionViewState(
-                        group.id,
-                        group.name,
-                        group.section_color,
-                        sortedContactsList(listOfContactsInGroup),
-                        phoneNumbers,
-                        emails
+                        group.id, group.name, group.section_color, sortedContactsList(listOfContactsInGroup), phoneNumbers, emails
                     )
                 )
             }

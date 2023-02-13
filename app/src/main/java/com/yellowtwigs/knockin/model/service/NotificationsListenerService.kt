@@ -62,8 +62,6 @@ class NotificationsListenerService : NotificationListenerService() {
     private lateinit var durationPreferences: SharedPreferences
 
     private var popupView: View? = null
-    var adapterNotifications: PopupNotificationsListAdapter? = null
-    private var recyclerView: RecyclerView? = null
 
     @Inject
     lateinit var notificationsListenerUseCases: NotificationsListenerUseCases
@@ -390,9 +388,10 @@ class NotificationsListenerService : NotificationListenerService() {
                 edit.apply()
                 displayLayout(sbp, contactDB)
             } else {
+                Log.i("MessagesList", "sbp.id : ${sbp.id}")
                 popupNotificationViewStates.add(
                     PopupNotificationViewState(
-                        sbp.id,
+                        popupNotificationViewStates.size,
                         sbp.statusBarNotificationInfo["android.title"].toString(),
                         sbp.statusBarNotificationInfo["android.text"].toString(),
                         convertPackageToString(sbp.appNotifier!!, this),
@@ -405,7 +404,7 @@ class NotificationsListenerService : NotificationListenerService() {
 
                 adapterNotifications?.submitList(popupNotificationViewStates.sortedByDescending {
                     it.id
-                })
+                }.distinct())
                 recyclerView?.adapter = adapterNotifications
 
                 numberOfMessages?.text = "${popupNotificationViewStates.size} messages"
@@ -490,10 +489,10 @@ class NotificationsListenerService : NotificationListenerService() {
         }
 
         if (sharedPreferences.getBoolean("first_notif", true)) {
-            contactDB?.let { it ->
+            contactDB.let {
                 popupNotificationViewStates.add(
                     PopupNotificationViewState(
-                        sbp.id,
+                        popupNotificationViewStates.size,
                         sbp.statusBarNotificationInfo["android.title"].toString(),
                         sbp.statusBarNotificationInfo["android.text"].toString(),
                         convertPackageToString(sbp.appNotifier!!, this),
@@ -508,13 +507,12 @@ class NotificationsListenerService : NotificationListenerService() {
             adapterNotifications?.submitList(null)
             adapterNotifications?.submitList(popupNotificationViewStates.sortedByDescending {
                 it.id
-            })
+            }.distinct())
             recyclerView?.adapter = adapterNotifications
 
             val edit = sharedPreferences.edit()
             edit.putBoolean("first_notif", false)
             edit.apply()
-        } else {
         }
     }
 
@@ -525,11 +523,11 @@ class NotificationsListenerService : NotificationListenerService() {
             popupNotificationViewStates, contactDB, sbp, applicationContext
         )
 
-        adapterNotifications?.let {
+        adapterNotifications?.let { it ->
             it.submitList(null)
-            it.submitList(popupNotificationViewStates.sortedByDescending {
-                it.id
-            })
+            it.submitList(popupNotificationViewStates.sortedByDescending { notification ->
+                notification.id
+            }.distinct())
             recyclerView?.adapter = it
             val itemTouchHelper = ItemTouchHelper(PopupNotificationsSwipeDelete(it))
             itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -590,9 +588,24 @@ class NotificationsListenerService : NotificationListenerService() {
         var alarmSound: MediaPlayer? = null
         var numberOfMessages: TextView? = null
         val popupNotificationViewStates = arrayListOf<PopupNotificationViewState>()
+        var adapterNotifications: PopupNotificationsListAdapter? = null
+        private var recyclerView: RecyclerView? = null
 
         fun deleteItem(position: Int) {
-            popupNotificationViewStates.removeAt(position)
+            if (popupNotificationViewStates.size > position) {
+                popupNotificationViewStates.removeAt(position)
+            }
+
+            adapterNotifications?.let { it ->
+                it.submitList(null)
+                it.submitList(popupNotificationViewStates.sortedByDescending { notification ->
+                    notification.id
+                }.distinct())
+                recyclerView?.adapter = it
+                val itemTouchHelper = ItemTouchHelper(PopupNotificationsSwipeDelete(it))
+                itemTouchHelper.attachToRecyclerView(recyclerView)
+            }
+
             if (popupNotificationViewStates.size == 1) {
                 numberOfMessages?.text = "1 message"
             } else {
