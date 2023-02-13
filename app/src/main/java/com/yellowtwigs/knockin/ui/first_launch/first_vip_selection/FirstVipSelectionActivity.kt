@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
@@ -130,30 +131,6 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             }
             R.id.nav_validate -> {
                 overlayAlertDialog()
-                setPriorityList()
-
-                if (fromSettings) {
-                    startActivity(
-                        Intent(
-                            this@FirstVipSelectionActivity, NotificationsSettingsActivity::class.java
-                        )
-                    )
-                    finish()
-                } else if (intent.getBooleanExtra("fromTeleworking", false)) {
-                    startActivity(
-                        Intent(
-                            this@FirstVipSelectionActivity, TeleworkingActivity::class.java
-                        ).putExtra("fromStartActivity", true)
-                    )
-                    finish()
-                } else {
-                    startActivity(
-                        Intent(
-                            this@FirstVipSelectionActivity, ContactsListActivity::class.java
-                        ).putExtra("fromStartActivity", true)
-                    )
-                    finish()
-                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -225,7 +202,8 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                         }.show()
                 } else {
                     if (Resources.getSystem().configuration.locale.language == "ar") {
-                        binding.multiSelectTextView.text = "${listOfItemSelected.distinct().size} ${getString(R.string.multi_select_nb_contact)}"
+                        binding.multiSelectTextView.text =
+                            "${listOfItemSelected.distinct().size} ${getString(R.string.multi_select_nb_contact)}"
                     } else {
                         binding.multiSelectTextView.text = String.format(
                             applicationContext.resources.getString(R.string.multi_select_nb_contact), listOfItemSelected.distinct().size
@@ -253,7 +231,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
     //endregion
 
-    private fun overlayAlertDialog(): MaterialAlertDialogBuilder {
+    private fun overlayAlertDialog(): AlertDialog? {
         var message: String
 
         if (listOfContactsSelected.size == 0) {
@@ -307,6 +285,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                 }
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
             }
+            .show()
     }
 
     private fun setPriorityList() {
