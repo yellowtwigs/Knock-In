@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.groups.list.section
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.GroupSectionItemBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
@@ -22,6 +24,8 @@ import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import java.net.URLEncoder
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SectionGroupsListAdapter(
     private val cxt: Context, private val packageManager: PackageManager, private val onClickedCallback: (Int) -> Unit
@@ -155,7 +159,7 @@ class SectionGroupsListAdapter(
                                 )
                             }
                             R.id.menu_group_delete_group -> {
-                                onClickedCallback(section.id)
+                                deleteGroupAlertDialog(section.title, section.id)
                             }
                         }
                         return@setOnMenuItemClickListener true
@@ -163,6 +167,16 @@ class SectionGroupsListAdapter(
                     popupMenu.show()
                 }
             }
+        }
+
+        private fun deleteGroupAlertDialog(groupName: String, id: Int) {
+            MaterialAlertDialogBuilder(cxt, R.style.AlertDialog).setTitle(R.string.section_alert_delete_group_title).setMessage(
+                String.format(groupName, R.string.section_alert_delete_group_message)
+            ).setPositiveButton(
+                android.R.string.yes
+            ) { _: DialogInterface?, _: Int ->
+                onClickedCallback(id)
+            }.setNegativeButton(android.R.string.no, null).show()
         }
 
         private fun itemSelected(image: CircularImageView, contact: ContactInGroupViewState) {
