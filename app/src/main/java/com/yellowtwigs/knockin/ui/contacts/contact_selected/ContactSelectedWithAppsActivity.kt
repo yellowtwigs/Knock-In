@@ -11,12 +11,19 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactSelectedWithAppsBinding
+import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsGridFiveAdapter
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsGridFourAdapter
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListAdapter
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewModel
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.callPhone
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
@@ -25,6 +32,7 @@ import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.getAppOnPhone
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
@@ -39,12 +47,15 @@ import kotlin.system.measureTimeMillis
 class ContactSelectedWithAppsActivity : AppCompatActivity() {
 
     private val editContactViewModel: EditContactViewModel by viewModels()
+    private val contactsListViewModel: ContactsListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding = ActivityContactSelectedWithAppsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupRecyclerView(binding)
 
         val appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
@@ -235,5 +246,52 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 dialog.cancel()
             }
             .show()
+    }
+
+    private fun setupRecyclerView(binding: ActivityContactSelectedWithAppsBinding) {
+        val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
+        val nbGrid = sharedPreferences.getInt("gridview", 1)
+
+        val contactsListAdapter = ContactsListAdapter(this, { id ->
+            EveryActivityUtils.hideKeyboard(this)
+        }, { id, civ, contact ->
+        })
+
+        if (nbGrid == 1) {
+            binding.recyclerView.apply {
+                contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactSelectedWithAppsActivity) { contacts ->
+                    contactsListAdapter.submitList(null)
+                    contactsListAdapter.submitList(contacts)
+                }
+                adapter = contactsListAdapter
+                layoutManager = LinearLayoutManager(context)
+            }
+        } else {
+            if (nbGrid == 4) {
+                binding.recyclerView.apply {
+                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactSelectedWithAppsActivity, { id ->
+                    }, { id, civ, contact ->
+                    })
+                    contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactSelectedWithAppsActivity) { contacts ->
+                        contactsGridAdapter.submitList(null)
+                        contactsGridAdapter.submitList(contacts)
+                    }
+                    adapter = contactsGridAdapter
+                    layoutManager = GridLayoutManager(context, nbGrid)
+                }
+            } else if (nbGrid == 5) {
+                binding.recyclerView.apply {
+                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactSelectedWithAppsActivity, { id ->
+                    }, { id, civ, contact ->
+                    })
+                    contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactSelectedWithAppsActivity) { contacts ->
+                        contactsGridAdapter.submitList(null)
+                        contactsGridAdapter.submitList(contacts)
+                    }
+                    adapter = contactsGridAdapter
+                    layoutManager = GridLayoutManager(context, nbGrid)
+                }
+            }
+        }
     }
 }
