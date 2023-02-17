@@ -491,4 +491,5 @@
     <string name="allow_phone_call">Você não permitiu chamadas telefônicas</string>
     <string name="daily_reminder_time">Hora do lembrete diário</string>
     <string name="teleworking_settings">Configurações de teletrabalho</string>
+    <string name="message_from">Mensagem de %1$s</string>
 </resources>

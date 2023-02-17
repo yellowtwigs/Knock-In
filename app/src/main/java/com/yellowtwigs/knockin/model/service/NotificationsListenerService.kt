@@ -10,6 +10,7 @@ import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -34,7 +35,8 @@ import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.cancel
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.messagesNotUseless
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionXIntoScreen
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionYIntoScreen
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.vipNotificationWithLockscreen
+import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
+import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.isPhoneNumber
 import com.yellowtwigs.knockin.utils.ContactGesture.isValidEmail
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToEndTime
@@ -92,7 +94,7 @@ class NotificationsListenerService : NotificationListenerService() {
         durationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
 
 
-        val sbp = StatusBarParcelable(sbn)
+        var sbp = StatusBarParcelable(sbn, 0)
         if (sharedPreferences.getBoolean("serviceNotif", true) && messagesNotUseless(
                 sbp, resources
             )
@@ -123,6 +125,7 @@ class NotificationsListenerService : NotificationListenerService() {
                             Log.i("GoToWithContact", "contact : $contact")
 
                             val notification = if (contact != null) {
+                                sbp = StatusBarParcelable(sbn, contact.id)
                                 NotificationDB(
                                     0,
                                     sbp.tickerText.toString(),
@@ -348,12 +351,24 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    fun vipNotificationsDeployment(
-        sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB
-    ) {
+    fun vipNotificationsDeployment(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB) {
         val screenListener = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         if (screenListener.isKeyguardLocked) {
-            vipNotificationWithLockscreen(sbp, sbn, this@NotificationsListenerService, contact.id)
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+                val i = Intent(this, NotificationAlarmActivity::class.java)
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                i.putExtra("notification", sbp)
+
+                cancelNotification(sbn.key)
+                cancelWhatsappNotification(sbn, this)
+                startActivity(i)
+            } else {
+                val i = Intent(this, NotificationAlarmActivity::class.java)
+                i.putExtra("notification", sbp)
+                cancelNotification(sbn.key)
+                cancelWhatsappNotification(sbn, this)
+                startActivity(i)
+            }
         } else {
             cancelNotification(sbn.key)
             cancelWhatsappNotification(sbn, this)
@@ -541,8 +556,7 @@ class NotificationsListenerService : NotificationListenerService() {
 //            alarmSound?.stop()
 //        }
 
-        val imgClose =
-            popupView?.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
+        val imgClose = popupView?.findViewById<View>(R.id.notification_popup_close) as AppCompatImageView
         imgClose.visibility = View.VISIBLE
         imgClose.setOnClickListener {
             popupView?.let {

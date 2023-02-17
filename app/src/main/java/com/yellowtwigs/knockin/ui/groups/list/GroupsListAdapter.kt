@@ -29,15 +29,16 @@ import com.yellowtwigs.knockin.utils.RandomDefaultImage
 
 class GroupsListAdapter(
     private val cxt: Context,
-    private val isMultiSelect: Boolean,
     private val onClickedCallback: (Int) -> Unit,
     private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactInGroupViewState) -> Unit
 ) : ListAdapter<ContactInGroupViewState, GroupsListAdapter.ViewHolder>(
     GroupsListViewStateComparator()
 ) {
 
-    private var modeMultiSelect = isMultiSelect
-    private var isScrolling = false
+    companion object {
+        var isSectionClicked = false
+    }
+
     var listOfItemSelected = ArrayList<Int>()
 
     private var lastSelectMenuLen1: HorizontalScrollView? = null
@@ -160,18 +161,23 @@ class GroupsListAdapter(
                         onClickedCallbackMultiSelect(contact.id, civ, contact)
                         listContactItemMenu.visibility = View.GONE
                     } else {
-                        if (listContactItemMenu.visibility == View.GONE) {
-                            val slideUp = AnimationUtils.loadAnimation(cxt, R.anim.slide_up)
-                            listContactItemMenu.startAnimation(slideUp)
-                            listContactItemMenu.visibility = View.VISIBLE
-                            if (lastSelectMenuLen1 != null) lastSelectMenuLen1?.visibility =
-                                View.GONE
-                            lastSelectMenuLen1 = listContactItemMenu
-                        } else {
-                            listContactItemMenu.visibility = View.GONE
-                            lastSelectMenuLen1 = null
-                        }
+//                        if (listContactItemMenu.visibility == View.GONE) {
+//                            val slideUp = AnimationUtils.loadAnimation(cxt, R.anim.slide_up)
+//                            listContactItemMenu.startAnimation(slideUp)
+//                            listContactItemMenu.visibility = View.VISIBLE
+//                            if (lastSelectMenuLen1 != null) lastSelectMenuLen1?.visibility =
+//                                View.GONE
+//                            lastSelectMenuLen1 = listContactItemMenu
+//                        } else {
+//                            listContactItemMenu.visibility = View.GONE
+//                            lastSelectMenuLen1 = null
+//                        }
                     }
+                }
+
+                root.setOnLongClickListener {
+                    onClickedCallbackMultiSelect(contact.id, civ, contact)
+                    true
                 }
 
                 val param = listContactItemMenu.layoutParams as ViewGroup.MarginLayoutParams

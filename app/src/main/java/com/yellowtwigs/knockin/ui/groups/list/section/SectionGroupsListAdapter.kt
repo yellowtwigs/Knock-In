@@ -3,38 +3,42 @@ package com.yellowtwigs.knockin.ui.groups.list.section
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.GroupSectionItemBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.groups.list.ContactInGroupViewState
-import com.yellowtwigs.knockin.ui.groups.list.GroupsGridFiveAdapter
-import com.yellowtwigs.knockin.ui.groups.list.GroupsGridFourAdapter
-import com.yellowtwigs.knockin.ui.groups.list.GroupsListAdapter
+import com.yellowtwigs.knockin.ui.groups.list.*
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
-import java.net.URLEncoder
-import java.util.*
 import kotlin.collections.ArrayList
 
 class SectionGroupsListAdapter(
-    private val cxt: Context, private val packageManager: PackageManager, private val onClickedCallback: (Int) -> Unit
+    private val cxt: Context,
+    private val onClickedCallback: (Int) -> Unit,
+    private val onClickedCallbackMultiSelect: (Int) -> Unit
 ) : ListAdapter<SectionViewState, SectionGroupsListAdapter.ViewHolder>(
     SectionViewStateComparator()
 ) {
 
-    private var isMultiSelect = false
-    var listOfItemSelected = ArrayList<ContactInGroupViewState>()
+    companion object {
+        var listOfItemSelected = ArrayList<ContactInGroupViewState>()
+
+        var listOfIds = arrayListOf<Int>()
+        var listOfHasSms = arrayListOf<Boolean>()
+        var listOfPhoneNumbers = arrayListOf<String>()
+
+        var listOfHasEmail = arrayListOf<Boolean>()
+        var listOfEmails = arrayListOf<String>()
+
+        var listOfHasWhatsapp = arrayListOf<Boolean>()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -95,11 +99,13 @@ class SectionGroupsListAdapter(
                     }
                 }
 
-                val groupsListAdapter = GroupsListAdapter(cxt, !isMultiSelect, { id ->
-                }) { id, civ, contact ->
+                val groupsListAdapter = GroupsListAdapter(cxt, {}, { id, civ, contact ->
                     itemSelected(civ, contact)
-                    isMultiSelect = listOfItemSelected.isNotEmpty()
-                }
+                    (cxt as GroupsListActivity).modeMultiSelect = listOfItemSelected.isNotEmpty()
+                    GroupsGridFourAdapter.isSectionClicked = listOfItemSelected.isNotEmpty()
+//
+//                                setupMultiSelectToolbar(binding, modeMultiSelect)
+                })
 
                 sectionRecyclerView.apply {
                     if (nbGrid == 1) {
@@ -108,9 +114,23 @@ class SectionGroupsListAdapter(
                         layoutManager = LinearLayoutManager(context)
                     } else {
                         val groupsGridAdapter = if (nbGrid == 4) {
-                            GroupsGridFourAdapter(cxt, false, {})
+                            GroupsGridFourAdapter(cxt, {}, { id, civ, contact ->
+                                itemSelected(civ, contact)
+                                (cxt as GroupsListActivity).modeMultiSelect = listOfItemSelected.isNotEmpty()
+                                GroupsGridFourAdapter.isSectionClicked = listOfItemSelected.isNotEmpty()
+                                onClickedCallbackMultiSelect(1)
+//
+//                                setupMultiSelectToolbar(binding, modeMultiSelect)
+                            })
                         } else {
-                            GroupsGridFiveAdapter(cxt, false, {})
+                            GroupsGridFiveAdapter(cxt, {}, { id, civ, contact ->
+                                itemSelected(civ, contact)
+                                (cxt as GroupsListActivity).modeMultiSelect = listOfItemSelected.isNotEmpty()
+                                GroupsGridFourAdapter.isSectionClicked = listOfItemSelected.isNotEmpty()
+                                onClickedCallbackMultiSelect(1)
+//
+//                                setupMultiSelectToolbar(binding, modeMultiSelect)
+                            })
                         }
                         groupsGridAdapter.submitList(section.items)
                         adapter = groupsGridAdapter
@@ -119,31 +139,107 @@ class SectionGroupsListAdapter(
                 }
 
                 groupNameSection.setOnClickListener {
-                    if (listOfItemSelected.isEmpty()) {
-                        isMultiSelect = true
+                    (cxt as GroupsListActivity).modeMultiSelect = !GroupsGridFourAdapter.isSectionClicked
+                    GroupsGridFourAdapter.isSectionClicked = !GroupsGridFourAdapter.isSectionClicked
+                    GroupsGridFiveAdapter.isSectionClicked = !GroupsGridFiveAdapter.isSectionClicked
+                    GroupsListAdapter.isSectionClicked = !GroupsListAdapter.isSectionClicked
+                    if (GroupsGridFourAdapter.isSectionClicked) {
                         listOfItemSelected.addAll(section.items)
-                        itemsSelected(groupsListAdapter, section.items)
-                    } else {
-                        isMultiSelect = false
-                        listOfItemSelected.clear()
-                    }
+                        listOfIds.addAll(section.items.map { it.id })
 
-                    sectionRecyclerView.apply {
-                        if (nbGrid == 1) {
-                            groupsListAdapter.submitList(section.items)
-                            adapter = groupsListAdapter
-                            layoutManager = LinearLayoutManager(context)
-                        } else {
-                            val groupsGridAdapter = if (nbGrid == 4) {
-                                GroupsGridFourAdapter(cxt, false, {})
+                        listOfHasSms.addAll(section.items.map {
+                            !it.listOfPhoneNumbers.contains("")
+                        })
+
+                        listOfHasEmail.addAll(section.items.map {
+                            !it.listOfMails.contains("")
+                        })
+
+                        listOfPhoneNumbers.addAll(section.items.map { contact ->
+                            if (!contact.listOfPhoneNumbers.contains("")) {
+                                contact.listOfPhoneNumbers.random()
                             } else {
-                                GroupsGridFiveAdapter(cxt, false, {})
+                                ""
                             }
-                            groupsGridAdapter.submitList(section.items)
-                            adapter = groupsGridAdapter
-                            layoutManager = GridLayoutManager(context, nbGrid)
+                        })
+                        listOfPhoneNumbers.remove("")
+
+                        listOfEmails.addAll(section.items.map { contact ->
+                            if (!contact.listOfMails.contains("")) {
+                                contact.listOfMails.random()
+                            } else {
+                                ""
+                            }
+                        })
+
+                        listOfHasWhatsapp.addAll(section.items.map {
+                            it.hasWhatsapp
+                        })
+
+                        sectionRecyclerView.apply {
+                            if (nbGrid == 1) {
+                                groupsListAdapter.submitList(section.items)
+                                adapter = groupsListAdapter
+                                layoutManager = LinearLayoutManager(context)
+                            } else {
+                                val groupsGridAdapter = if (nbGrid == 4) {
+                                    GroupsGridFourAdapter(cxt, {}, { id, civ, contact ->
+                                        itemSelected(civ, contact)
+                                        cxt.modeMultiSelect = listOfItemSelected.isNotEmpty()
+//
+//                                setupMultiSelectToolbar(binding, modeMultiSelect)
+                                    })
+                                } else {
+                                    GroupsGridFiveAdapter(cxt, {}, { id, civ, contact ->
+                                        itemSelected(civ, contact)
+                                        cxt.modeMultiSelect = listOfItemSelected.isNotEmpty()
+//
+//                                setupMultiSelectToolbar(binding, modeMultiSelect)
+                                    })
+                                }
+                                groupsGridAdapter.submitList(section.items)
+                                adapter = groupsGridAdapter
+                                layoutManager = GridLayoutManager(context, nbGrid)
+                            }
+                        }
+                    } else {
+                        sectionRecyclerView.apply {
+                            listOfItemSelected.clear()
+                            listOfIds.clear()
+                            listOfHasSms.clear()
+                            listOfPhoneNumbers.clear()
+                            listOfHasEmail.clear()
+                            listOfEmails.clear()
+                            listOfHasWhatsapp.clear()
+
+                            if (nbGrid == 1) {
+                                groupsListAdapter.submitList(section.items)
+                                adapter = groupsListAdapter
+                                layoutManager = LinearLayoutManager(context)
+                            } else {
+                                val groupsGridAdapter = if (nbGrid == 4) {
+                                    GroupsGridFourAdapter(cxt, {}, { id, civ, contact ->
+                                        itemSelected(civ, contact)
+                                        cxt.modeMultiSelect = listOfItemSelected.isNotEmpty()
+//
+//                                setupMultiSelectToolbar(binding, modeMultiSelect)
+                                    })
+                                } else {
+                                    GroupsGridFiveAdapter(cxt, {}, { id, civ, contact ->
+                                        itemSelected(civ, contact)
+                                        cxt.modeMultiSelect = listOfItemSelected.isNotEmpty()
+//
+//                                setupMultiSelectToolbar(binding, modeMultiSelect)
+                                    })
+                                }
+                                groupsGridAdapter.submitList(section.items)
+                                adapter = groupsGridAdapter
+                                layoutManager = GridLayoutManager(context, nbGrid)
+                            }
                         }
                     }
+
+                    onClickedCallbackMultiSelect(1)
                 }
 
                 sectionMore.setOnClickListener {
@@ -182,6 +278,19 @@ class SectionGroupsListAdapter(
         private fun itemSelected(image: CircularImageView, contact: ContactInGroupViewState) {
             if (listOfItemSelected.contains(contact)) {
                 listOfItemSelected.remove(contact)
+                listOfIds.remove(contact.id)
+
+                listOfHasSms.remove(!contact.listOfPhoneNumbers.contains(""))
+                if (!contact.listOfPhoneNumbers.contains("")) {
+                    listOfPhoneNumbers.remove(contact.listOfPhoneNumbers.random())
+                }
+
+                listOfHasEmail.remove(!contact.listOfMails.contains(""))
+                if (!contact.listOfMails.contains("")) {
+                    listOfEmails.remove(contact.listOfMails.random())
+                }
+
+                listOfHasWhatsapp.remove(contact.hasWhatsapp)
 
                 if (contact.profilePicture64 != "") {
                     val bitmap = Converter.base64ToBitmap(contact.profilePicture64)
@@ -195,15 +304,21 @@ class SectionGroupsListAdapter(
                 }
             } else {
                 listOfItemSelected.add(contact)
-                image.setImageResource(R.drawable.ic_item_selected)
-            }
-        }
+                listOfIds.add(contact.id)
 
-        private fun itemsSelected(groupsListAdapter: GroupsListAdapter, items: List<ContactInGroupViewState>) {
-            items.map {
-                it.profilePicture = R.drawable.ic_item_selected
+                listOfHasSms.add(!contact.listOfPhoneNumbers.contains(""))
+                if (!contact.listOfPhoneNumbers.contains("")) {
+                    listOfPhoneNumbers.add(contact.listOfPhoneNumbers.random())
+                }
+
+                listOfHasEmail.add(!contact.listOfMails.contains(""))
+                if (!contact.listOfMails.contains("")) {
+                    listOfEmails.add(contact.listOfMails.random())
+                }
+
+                listOfHasWhatsapp.add(contact.hasWhatsapp)
+                image.setImageResource(contact.profilePictureSelected)
             }
-            groupsListAdapter.submitList(items)
         }
     }
 

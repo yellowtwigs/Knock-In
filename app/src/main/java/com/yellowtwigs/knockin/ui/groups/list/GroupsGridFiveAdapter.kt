@@ -13,20 +13,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
 import com.yellowtwigs.knockin.databinding.ItemContactGrid5Binding
+import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
 class GroupsGridFiveAdapter(
     private val cxt: Context,
-    private val isMultiSelect: Boolean,
-    private val onClickedCallback: (Int) -> Unit
+    private val onClickedCallback: (Int) -> Unit,
+    private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactInGroupViewState) -> Unit
 ) :
     ListAdapter<ContactInGroupViewState, GroupsGridFiveAdapter.ViewHolder>(
         GroupsListViewStateComparator()
     ) {
 
-    private var modeMultiSelect = false
-    private var isScrolling = false
+    companion object {
+        var isSectionClicked = false
+    }
+
     var listOfItemSelected = ArrayList<ContactInGroupViewState>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,7 +57,16 @@ class GroupsGridFiveAdapter(
                 lastName.text = contact.lastName
 
                 root.setOnClickListener {
-                    onClickedCallback(contact.id)
+                    if ((cxt as GroupsListActivity).modeMultiSelect) {
+                        onClickedCallbackMultiSelect(contact.id, civ, contact)
+                    } else {
+                        onClickedCallback(contact.id)
+                    }
+                }
+
+                root.setOnLongClickListener {
+                    onClickedCallbackMultiSelect(contact.id, civ, contact)
+                    true
                 }
             }
         }

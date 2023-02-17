@@ -497,4 +497,5 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="allow_phone_call">No has permitido la llamada telefónica</string>
     <string name="daily_reminder_time">Tiempo de recordatorio diario</string>
     <string name="teleworking_settings">Configuración de teletrabajo</string>
+    <string name="message_from">Mensaje de %1$s</string>
 </resources>

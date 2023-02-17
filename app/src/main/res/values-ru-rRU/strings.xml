@@ -492,4 +492,5 @@
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Ежедневное время напоминания</string>
     <string name="teleworking_settings">Настройки дистанционной работы</string>
+    <string name="message_from">Сообщение от %1$s</string>
 </resources>

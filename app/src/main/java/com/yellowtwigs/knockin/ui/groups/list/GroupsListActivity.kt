@@ -4,19 +4,29 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.net.Uri
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.databinding.ActivityGroupsListBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
+import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfEmails
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasEmail
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasSms
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasWhatsapp
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfIds
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfPhoneNumbers
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
@@ -26,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 
 @AndroidEntryPoint
 class GroupsListActivity : AppCompatActivity() {
@@ -33,6 +44,8 @@ class GroupsListActivity : AppCompatActivity() {
     private val groupsListViewModel: GroupsListViewModel by viewModels()
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
     var modeMultiSelect = false
+
+    private lateinit var sectionGroupsListAdapter: SectionGroupsListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +60,8 @@ class GroupsListActivity : AppCompatActivity() {
         setupBottomNavigationView(binding)
         setupGroupsList(binding)
         setupFloatingButtons(binding)
+        floatingButtonsClick(binding)
+        setupFloatingButtonVisibility(binding)
     }
 
     private fun setupFloatingButtons(binding: ActivityGroupsListBinding) {
@@ -62,13 +77,11 @@ class GroupsListActivity : AppCompatActivity() {
         binding.help.setOnClickListener {
             if (Resources.getSystem().configuration.locale.language == "fr") {
                 val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-groupes")
+                    Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-en-ligne-groupes")
                 )
                 startActivity(browserIntent)
             } else {
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-groups"))
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-groups"))
                 startActivity(browserIntent)
             }
         }
@@ -111,10 +124,9 @@ class GroupsListActivity : AppCompatActivity() {
                     }
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
-                        val messageString =
-                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
-                                R.string.location_on_playstore
-                            )
+                        val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
                         intent.putExtra(Intent.EXTRA_TEXT, messageString)
                         intent.type = "text/plain"
                         val messageIntent = Intent.createChooser(intent, null)
@@ -152,8 +164,7 @@ class GroupsListActivity : AppCompatActivity() {
                 R.id.navigation_contacts -> {
                     startActivity(
                         Intent(
-                            this@GroupsListActivity,
-                            ContactsListActivity::class.java
+                            this@GroupsListActivity, ContactsListActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -161,8 +172,7 @@ class GroupsListActivity : AppCompatActivity() {
                 R.id.navigation_notifcations -> {
                     startActivity(
                         Intent(
-                            this@GroupsListActivity,
-                            NotificationsHistoryActivity::class.java
+                            this@GroupsListActivity, NotificationsHistoryActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
                     return@OnNavigationItemSelectedListener true
@@ -176,17 +186,18 @@ class GroupsListActivity : AppCompatActivity() {
     }
 
     private fun setupGroupsList(binding: ActivityGroupsListBinding) {
-        val sectionGroupsListAdapter = SectionGroupsListAdapter(this, packageManager) { id ->
+        sectionGroupsListAdapter = SectionGroupsListAdapter(this, { id ->
             CoroutineScope(Dispatchers.Default).launch {
                 groupsListViewModel.deleteGroupById(id)
             }
-        }
+        }, { id ->
+            setupFloatingButtonVisibility(binding)
+        })
 
         binding.recyclerView.apply {
-            groupsListViewModel.getAllGroups()
-                .observe(this@GroupsListActivity) { groups ->
-                    sectionGroupsListAdapter.submitList(groups)
-                }
+            groupsListViewModel.getAllGroups().observe(this@GroupsListActivity) { groups ->
+                sectionGroupsListAdapter.submitList(groups)
+            }
             adapter = sectionGroupsListAdapter
             layoutManager = LinearLayoutManager(context)
             setItemViewCacheSize(500)
@@ -197,7 +208,75 @@ class GroupsListActivity : AppCompatActivity() {
 
     //region ========================================= MULTI SELECT =========================================
 
+    private fun setupFloatingButtonVisibility(binding: ActivityGroupsListBinding) {
+        binding.apply {
+            smsButton.isVisible = listOfIds.isNotEmpty() && !listOfHasSms.contains(false)
+            gmailButton.isVisible = listOfIds.isNotEmpty() && !listOfHasEmail.contains(false)
+            whatsappButton.isVisible = listOfIds.isNotEmpty() && !listOfHasWhatsapp.contains(false)
+            buttonMultichannel.isVisible = listOfIds.isNotEmpty()
+        }
+    }
 
+    private fun floatingButtonsClick(binding: ActivityGroupsListBinding) {
+        binding.apply {
+            buttonMultichannel.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@GroupsListActivity, MultiChannelActivity::class.java
+                    ).putIntegerArrayListExtra(
+                        "contacts", listOfIds
+                    )
+                )
+                finish()
+            }
+
+            whatsappButton.setOnClickListener {
+                multiChannelSendMessageWhatsapp()
+            }
+            smsButton.setOnClickListener {
+                monoChannelSmsClick(listOfPhoneNumbers)
+            }
+            gmailButton.setOnClickListener {
+                monoChannelMailClick(listOfEmails)
+            }
+        }
+    }
+
+    private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
+        var message = "smsto:" + listOfPhoneNumber[0]
+        for (i in 0 until listOfPhoneNumber.size) {
+            message += ";" + listOfPhoneNumber[i]
+        }
+        startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
+    }
+
+    private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
+        val contact = listOfMail.toArray(arrayOfNulls<String>(listOfMail.size))
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(
+            Intent.EXTRA_EMAIL, contact
+        )
+        intent.data = Uri.parse("mailto:")
+        intent.type = "message/rfc822"
+        intent.putExtra(Intent.EXTRA_SUBJECT, "")
+        intent.putExtra(Intent.EXTRA_TEXT, "")
+        startActivity(intent)
+    }
+
+    private fun multiChannelSendMessageWhatsapp() {
+        val i = Intent(Intent.ACTION_VIEW)
+
+        try {
+            val url = "https://api.whatsapp.com/send?text=" + URLEncoder.encode(".", "UTF-8")
+            i.setPackage("com.whatsapp")
+            i.data = Uri.parse(url)
+            if (i.resolveActivity(packageManager) != null) {
+                startActivity(i)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     //endregion
 

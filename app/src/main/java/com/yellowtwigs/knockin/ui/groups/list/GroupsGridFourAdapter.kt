@@ -12,29 +12,31 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
+import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
 class GroupsGridFourAdapter(
     private val cxt: Context,
-    private val isMultiSelect: Boolean,
-    private val onClickedCallback: (Int) -> Unit
-) :
-    ListAdapter<ContactInGroupViewState, GroupsGridFourAdapter.ViewHolder>(
-        GroupsListViewStateComparator()
-    ) {
+    private val onClickedCallback: (Int) -> Unit,
+    private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactInGroupViewState) -> Unit
+) : ListAdapter<ContactInGroupViewState, GroupsGridFourAdapter.ViewHolder>(
+    GroupsListViewStateComparator()
+) {
 
-    private var modeMultiSelect = false
-    private var isScrolling = false
+    companion object {
+        var isSectionClicked = false
+    }
+
     var listOfItemSelected = ArrayList<ContactInGroupViewState>()
 
     private var imageHeight = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemContactGrid4Binding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         imageHeight = binding.civ.layoutParams.height
         return ViewHolder(binding)
@@ -44,8 +46,7 @@ class GroupsGridFourAdapter(
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: ItemContactGrid4Binding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemContactGrid4Binding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contact: ContactInGroupViewState) {
             binding.apply {
@@ -56,7 +57,22 @@ class GroupsGridFourAdapter(
                 lastName.text = contact.lastName
 
                 root.setOnClickListener {
-                    onClickedCallback(contact.id)
+                    if ((cxt as GroupsListActivity).modeMultiSelect) {
+                        onClickedCallbackMultiSelect(contact.id, civ, contact)
+                    } else {
+                        onClickedCallback(contact.id)
+                    }
+                }
+
+                root.setOnLongClickListener {
+                    onClickedCallbackMultiSelect(contact.id, civ, contact)
+                    true
+                }
+
+                if (isSectionClicked) {
+                    civ.setImageResource(contact.profilePictureSelected)
+
+//                    onClickedCallbackMultiSelect(contact.id, civ, contact)
                 }
             }
         }
@@ -64,22 +80,15 @@ class GroupsGridFourAdapter(
 
     class GroupsListViewStateComparator : DiffUtil.ItemCallback<ContactInGroupViewState>() {
         override fun areItemsTheSame(
-            oldItem: ContactInGroupViewState,
-            newItem: ContactInGroupViewState
+            oldItem: ContactInGroupViewState, newItem: ContactInGroupViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ContactInGroupViewState,
-            newItem: ContactInGroupViewState
+            oldItem: ContactInGroupViewState, newItem: ContactInGroupViewState
         ): Boolean {
-            return oldItem.firstName == newItem.firstName &&
-                    oldItem.lastName == newItem.lastName &&
-                    oldItem.profilePicture == newItem.profilePicture &&
-                    oldItem.profilePicture64 == newItem.profilePicture64 &&
-                    oldItem.listOfPhoneNumbers == newItem.listOfPhoneNumbers &&
-                    oldItem.listOfMails == newItem.listOfMails
+            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 && oldItem.listOfPhoneNumbers == newItem.listOfPhoneNumbers && oldItem.listOfMails == newItem.listOfMails
         }
     }
 }

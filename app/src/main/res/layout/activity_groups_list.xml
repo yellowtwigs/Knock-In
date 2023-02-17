@@ -140,18 +140,77 @@
         <!--            app:layout_constraintEnd_toEndOf="parent"-->
         <!--            tools:targetApi="P" />-->
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_new_group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="@dimen/floating_button_margin"
-                    android:layout_marginBottom="80dp"
-                    android:background="@color/colorPrimary"
-                    android:src="@drawable/ic_add"
-                    app:backgroundTint="@color/colorPrimary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/whatsapp_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/start_activity_skip"
+            android:src="@drawable/ic_whatsapp"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/gmail_button"
+            app:layout_constraintEnd_toEndOf="@+id/gmail_button"
+            app:layout_constraintStart_toStartOf="@+id/gmail_button" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/gmail_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/start_activity_skip"
+            android:src="@drawable/ic_gmail_floating"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/sms_button"
+            app:layout_constraintEnd_toEndOf="@+id/sms_button"
+            app:layout_constraintStart_toStartOf="@+id/sms_button" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sms_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/start_activity_skip"
+            android:drawableTint="@color/lightColor"
+            android:src="@drawable/ic_message_floating"
+            android:tint="@color/lightColor"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/button_multichannel"
+            app:layout_constraintEnd_toEndOf="@+id/button_multichannel"
+            app:layout_constraintStart_toStartOf="@+id/button_multichannel" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_multichannel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/floating_button_margin"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/start_activity_skip"
+            android:src="@drawable/ic_exchange_arrows"
+            android:tint="@color/lightColor"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/add_new_group"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_new_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/floating_button_margin"
+            android:layout_marginBottom="80dp"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

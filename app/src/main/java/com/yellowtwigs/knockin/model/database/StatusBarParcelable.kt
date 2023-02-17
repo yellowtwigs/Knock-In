@@ -12,7 +12,7 @@ import java.util.HashMap
 
 /**
  * Classe qui correspond a StatusBarNotification(Qui nous permet d'avoir les attributs de la notification reçu) avec seulement les attributs utile pour notre application
- * Et celle-ci nous permet de passer l'objet entre les activité
+ * Et celle-ci nous permet de passer l'objet entre les activités
  * @author Florian Striebel
  */
 class StatusBarParcelable : Parcelable {
@@ -20,12 +20,14 @@ class StatusBarParcelable : Parcelable {
     var appNotifier: String? = ""
     var tickerText: String? = ""
     var tailleList: Int = 0
+    var contactId: Int = 0
     var key = ArrayList<String>()
 
     var statusBarNotificationInfo = HashMap<String, Any?>()
 
-    constructor(sbn: StatusBarNotification) {
+    constructor(sbn: StatusBarNotification, contactId: Int) {
         id = sbn.id
+        this.contactId = contactId
         tailleList = sbn.notification.extras.keySet().size
         appNotifier = sbn.packageName
 
@@ -45,8 +47,9 @@ class StatusBarParcelable : Parcelable {
         }
     }
 
-    constructor(NotifId: Int, listSize: Int, appliNotifier: String, sbnKey: ArrayList<String>, sbnInfo: HashMap<String, Any?>) {
+    constructor(NotifId: Int, listSize: Int, appliNotifier: String, sbnKey: ArrayList<String>, sbnInfo: HashMap<String, Any?>, contactId: Int) {
         id = NotifId
+        this.contactId = contactId
         tailleList = listSize
         appNotifier = appliNotifier
         key = sbnKey
@@ -63,6 +66,7 @@ class StatusBarParcelable : Parcelable {
      */
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(id)
+        dest.writeInt(contactId)
         dest.writeString(appNotifier)
         dest.writeInt(tailleList)
         dest.writeString(tickerText)
@@ -82,6 +86,7 @@ class StatusBarParcelable : Parcelable {
      */
     private constructor(`in`: Parcel) {
         id = `in`.readInt()
+        contactId = `in`.readInt()
         appNotifier = `in`.readString()
         tailleList = `in`.readInt()
         tickerText = `in`.readString()

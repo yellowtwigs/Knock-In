@@ -493,4 +493,5 @@
     <string name="allow_phone_call">أنت لا تسمح بالمكالمة الهاتفية</string>
     <string name="daily_reminder_time">وقت التذكير اليومي</string>
     <string name="teleworking_settings">إعدادات العمل عن بعد</string>
+    <string name="message_from">رسالة من %1$s</string>
 </resources>

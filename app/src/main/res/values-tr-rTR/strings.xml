@@ -491,4 +491,5 @@
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Günlük hatırlatma zamanı</string>
     <string name="teleworking_settings">Uzaktan çalışma ayarları</string>
+    <string name="message_from">Gönderen mesaj %1$s</string>
 </resources>

@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class NotificationAlarmActivity : AppCompatActivity() {
 
@@ -46,26 +49,25 @@ class NotificationAlarmActivity : AppCompatActivity() {
         val binding = ActivityNotificationAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sbp = intent.extras?.get("notification") as StatusBarParcelable
+
+        Log.i("NotificationsAlarmMsg", "sbp.contactId : ${sbp.contactId}")
+
         binding.apply {
-            editContactViewModel.getContactById(intent.getIntExtra("ContactId", 1))
-                .observe(this@NotificationAlarmActivity) { contact ->
-                    currentContact = contact
-                    contact?.apply {
-                        currentNotificationSound = notificationSound
-                        currentNotificationTone = notificationTone
-                        currentIsCustomSound = isCustomSound == 1
+            editContactViewModel.getContactById(sbp.contactId).observe(this@NotificationAlarmActivity) { contact ->
+                currentContact = contact
+                contact?.apply {
+                    currentNotificationSound = notificationSound
+                    currentNotificationTone = notificationTone
+                    currentIsCustomSound = isCustomSound == 1
 
-                        soundRingtone()
-                    }
+                    soundRingtone()
                 }
-
-            val sbp = intent.extras?.get("notification") as StatusBarParcelable
+            }
 
             sbp.apply {
                 val sender = statusBarNotificationInfo["android.title"] as String
-                val content = statusBarNotificationInfo["android.text"] as String
-
-                messageContent.text = "$sender : $content"
+                messageContent.text = getString(R.string.message_from, sender)
             }
 
             when (sbp.appNotifier) {
@@ -106,8 +108,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
             }
 
             window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
+                WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
 
             if (Build.VERSION.SDK_INT >= 27) {
@@ -117,26 +118,23 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 keyguardManager.requestDismissKeyguard(this@NotificationAlarmActivity, null)
             } else {
                 window.addFlags(
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                            or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                            or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                            or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                            or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
                 )
             }
 
             sbp.apply {
                 receiveMessageLayout.setOnClickListener {
                     if (isSMS) {
+                        Log.i("NotificationsAlarmMsg", "currentContact : $currentContact")
                         if (currentContact != null) {
+                            Log.i("NotificationsAlarmMsg", "phone number : ${currentContact?.listOfPhoneNumbers?.get(0)}")
+
                             openSms(
-                                currentContact?.listOfPhoneNumbers?.get(0) ?: "",
-                                this@NotificationAlarmActivity
+                                currentContact?.listOfPhoneNumbers?.get(0) ?: "", this@NotificationAlarmActivity
                             )
                         } else {
                             openSms(
-                                statusBarNotificationInfo["android.title"] as String,
-                                this@NotificationAlarmActivity
+                                statusBarNotificationInfo["android.title"] as String, this@NotificationAlarmActivity
                             )
                         }
                     } else {
@@ -144,29 +142,25 @@ class NotificationAlarmActivity : AppCompatActivity() {
                             "com.whatsapp" -> {
                                 if (currentContact != null) {
                                     openWhatsapp(
-                                        currentContact?.listOfPhoneNumbers?.get(0) ?: "",
-                                        this@NotificationAlarmActivity
+                                        currentContact?.listOfPhoneNumbers?.get(0) ?: "", this@NotificationAlarmActivity
                                     )
                                 } else {
                                     openWhatsapp(
-                                        statusBarNotificationInfo["android.title"] as String,
-                                        this@NotificationAlarmActivity
+                                        statusBarNotificationInfo["android.title"] as String, this@NotificationAlarmActivity
                                     )
                                 }
                             }
                             "com.google.android.gm" -> {
                                 val appIntent = Intent(Intent.ACTION_VIEW)
                                 appIntent.setClassName(
-                                    "com.google.android.gm",
-                                    "com.google.android.gm.ConversationListActivityGmail"
+                                    "com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail"
                                 )
                                 try {
                                     startActivity(appIntent)
                                 } catch (e: ActivityNotFoundException) {
                                     startActivity(
                                         Intent(
-                                            Intent.ACTION_VIEW,
-                                            Uri.parse("https://gmail.com/")
+                                            Intent.ACTION_VIEW, Uri.parse("https://gmail.com/")
                                         )
                                     )
                                 }
@@ -180,20 +174,17 @@ class NotificationAlarmActivity : AppCompatActivity() {
                             "org.telegram.messenger" -> {
                                 if (currentContact != null) {
                                     goToTelegram(
-                                        this@NotificationAlarmActivity,
-                                        "${currentContact?.firstName} ${currentContact?.lastName}"
+                                        this@NotificationAlarmActivity, "${currentContact?.firstName} ${currentContact?.lastName}"
                                     )
                                 } else {
                                     goToTelegram(
-                                        this@NotificationAlarmActivity,
-                                        currentContact?.listOfPhoneNumbers?.get(0) ?: ""
+                                        this@NotificationAlarmActivity, currentContact?.listOfPhoneNumbers?.get(0) ?: ""
                                     )
                                 }
                             }
                             "com.facebook.katana" -> {
                                 openMessenger(
-                                    currentContact?.messengerId ?: "",
-                                    this@NotificationAlarmActivity
+                                    currentContact?.messengerId ?: "", this@NotificationAlarmActivity
                                 )
                             }
                         }
