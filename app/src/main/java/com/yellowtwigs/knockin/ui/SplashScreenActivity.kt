@@ -59,11 +59,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
         //endregion
 
-        val sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
-        sharedFromSplashScreen.getBoolean("fromSplashScreen", false)
-        val edit = sharedFromSplashScreen.edit()
-        edit.putBoolean("fromSplashScreen", true)
-        edit.apply()
+//        val sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
+//        sharedFromSplashScreen.getBoolean("fromSplashScreen", false)
+//        val edit = sharedFromSplashScreen.edit()
+//        edit.putBoolean("fromSplashScreen", true)
+//        edit.apply()
 
         //region ======================================== Animation =========================================
 

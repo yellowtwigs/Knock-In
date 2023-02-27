@@ -492,4 +492,6 @@
     <string name="daily_reminder_time">Günlük hatırlatma zamanı</string>
     <string name="teleworking_settings">Uzaktan çalışma ayarları</string>
     <string name="message_from">Gönderen mesaj %1$s</string>
+    <string name="rate_this_app_title">Bu uygulamayı oyla</string>
+    <string name="rate_this_app_message">Bu uygulamayı beğendiyseniz, lütfen derecelendirmek için birkaç saniye ayırın, bize çok yardımcı olacaktır. teşekkürler</string>
 </resources>

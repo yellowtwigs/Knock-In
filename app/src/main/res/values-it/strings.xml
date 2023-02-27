@@ -492,4 +492,6 @@
     <string name="daily_reminder_time">Tempo di promemoria giornaliero</string>
     <string name="teleworking_settings">Impostazioni per il telelavoro</string>
     <string name="message_from">Messaggio da %1$s</string>
+    <string name="rate_this_app_title">Valuta questa applicazione</string>
+    <string name="rate_this_app_message">Se ti piace questa app, ti preghiamo di dedicare qualche secondo a valutarla, ci aiuterebbe molto. Grazie</string>
 </resources>

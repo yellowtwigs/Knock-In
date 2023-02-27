@@ -31,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 
@@ -63,6 +64,24 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         setupBillingClient()
         setSliderContainer()
+
+        val calendar = Calendar.getInstance()
+        val oneWeekSharedPreferences = getSharedPreferences("OneWeek", Context.MODE_PRIVATE)
+        val edit = oneWeekSharedPreferences.edit()
+
+        edit.putStringSet(
+            "OneWeek", setOf(
+                "DAY :${calendar.get(Calendar.DAY_OF_MONTH)}", // 29
+                "MONTH :${calendar.get(Calendar.MONTH)}", // 11
+                "YEAR :${calendar.get(Calendar.YEAR)}" // 2022
+            )
+        )
+        edit.apply()
+
+        val firstTime = getSharedPreferences("FirstTimeInTheApp", Context.MODE_PRIVATE)
+        val editFirstTime = firstTime.edit()
+        editFirstTime.putBoolean("FirstTimeInTheApp", true)
+        editFirstTime.apply()
 
         if (checkIfGoEdition()) {
             MaterialAlertDialogBuilder(

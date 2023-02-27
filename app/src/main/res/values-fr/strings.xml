@@ -494,4 +494,6 @@
     <string name="daily_reminder_time">Heure de rappel quotidienne</string>
     <string name="teleworking_settings">Paramètres Télétravail</string>
     <string name="message_from">Message de %1$s</string>
+    <string name="rate_this_app_title">Noter l\'application</string>
+    <string name="rate_this_app_message">Si vous aimez cette application, veuillez prendre quelques secondes pour la noter, cela nous aidera beaucoup. Merci</string>
 </resources>

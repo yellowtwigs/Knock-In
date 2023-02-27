@@ -492,4 +492,6 @@
     <string name="daily_reminder_time">Thời gian nhắc hàng ngày</string>
     <string name="teleworking_settings">Cài đặt làm việc từ xa</string>
     <string name="message_from">tin nhắn từ %1$s</string>
+    <string name="rate_this_app_title">Đánh giá ứng dụng này</string>
+    <string name="rate_this_app_message">Nếu bạn thích ứng dụng này, vui lòng dành vài giây để đánh giá nó, nó sẽ giúp chúng tôi rất nhiều. Cảm ơn</string>
 </resources>

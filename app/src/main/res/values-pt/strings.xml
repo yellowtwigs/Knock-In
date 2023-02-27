@@ -492,4 +492,6 @@
     <string name="daily_reminder_time">Hora do lembrete diário</string>
     <string name="teleworking_settings">Configurações de teletrabalho</string>
     <string name="message_from">Mensagem de %1$s</string>
+    <string name="rate_this_app_title">Avalie este aplicativo</string>
+    <string name="rate_this_app_message">Se você gosta deste aplicativo, por favor, reserve alguns segundos para avaliá-lo, isso nos ajudaria muito. Obrigado</string>
 </resources>

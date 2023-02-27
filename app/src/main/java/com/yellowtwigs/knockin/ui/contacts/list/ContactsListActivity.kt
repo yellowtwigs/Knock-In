@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.model.service.NotificationsListenerService
@@ -50,6 +52,8 @@ import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.net.URLEncoder
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class ContactsListActivity : AppCompatActivity() {
@@ -74,6 +78,10 @@ class ContactsListActivity : AppCompatActivity() {
 
     private var phoneNumber = ""
 
+    private lateinit var firstTime: SharedPreferences
+    private lateinit var rateThisAppSharedPreferences: SharedPreferences
+    private lateinit var sharedShowPopup: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -95,6 +103,197 @@ class ContactsListActivity : AppCompatActivity() {
         setupDrawerLayout(binding)
         floatingButtonsClick(binding)
         multiSelectToolbarClick(binding)
+
+        //region ======================================== Mobile Ads ========================================
+
+        rateThisAppSharedPreferences = getSharedPreferences("RateThisApp", Context.MODE_PRIVATE)
+        firstTime = getSharedPreferences("FirstTimeInTheApp", Context.MODE_PRIVATE)
+        val fromSplashScreen = rateThisAppSharedPreferences.getBoolean("RateThisApp", true)
+
+        sharedShowPopup = getSharedPreferences("sharedShowPopup", Context.MODE_PRIVATE)
+
+        val calendar = Calendar.getInstance()
+
+        if (firstTime.getBoolean("FirstTimeInTheApp", true)) {
+            val oneWeekSharedPreferences = getSharedPreferences("OneWeek", Context.MODE_PRIVATE)
+
+            val set = oneWeekSharedPreferences.getStringSet(
+                "OneWeek", setOf(
+                    calendar.get(Calendar.YEAR).toString(),
+                    calendar.get(Calendar.MONTH).toString(),
+                    calendar.get(Calendar.DAY_OF_MONTH).toString()
+                )
+            )
+
+            set?.let {
+                var day = 0
+                var month = 0
+                var year = 0
+                it.forEachIndexed { index, s ->
+                    with(s) {
+                        when {
+                            contains("DAY") -> {
+                                day = s.split(":")[1].toInt()
+                            }
+                            contains("MONTH") -> {
+                                month = s.split(":")[1].toInt()
+                            }
+                            contains("YEAR") -> {
+                                year = s.split(":")[1].toInt()
+                            }
+                            else -> {
+
+                            }
+                        }
+                    }
+                }
+
+                Log.i("OneWeek", "day : $day")
+                Log.i("OneWeek", "month : $month")
+                Log.i("OneWeek", "year : $year")
+
+                Log.i("OneWeek", "calendar.get(Calendar.DAY_OF_MONTH) : ${calendar.get(Calendar.DAY_OF_MONTH)}")
+                Log.i("OneWeek", "calendar.get(Calendar.MONTH) : ${calendar.get(Calendar.MONTH)}")
+                Log.i("OneWeek", "calendar.get(Calendar.YEAR) : ${calendar.get(Calendar.YEAR)}")
+
+                if (calendar.get(Calendar.DAY_OF_MONTH) >= day + 7) {
+                    val editFirstTime = firstTime.edit()
+                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                    editFirstTime.apply()
+                    rateThisAppPopup()
+                } else if (calendar.get(Calendar.MONTH) > month) {
+                    when (day) {
+                        1 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        2 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        25 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        26 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 2) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        27 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 3) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        28 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 4) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        29 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 5) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        30 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 6) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                        31 -> {
+                            if (calendar.get(Calendar.DAY_OF_MONTH) == 7) {
+                                val editFirstTime = firstTime.edit()
+                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                editFirstTime.apply()
+
+                                rateThisAppPopup()
+                                return
+                            }
+                        }
+                    }
+                } else if (calendar.get(Calendar.YEAR) > year) {
+                    val editFirstTime = firstTime.edit()
+                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                    editFirstTime.apply()
+                }
+            }
+        } else {
+            if (fromSplashScreen) {
+                val set = sharedShowPopup.getStringSet(
+                    "sharedShowPopup", setOf(
+                        calendar.get(Calendar.YEAR).toString(),
+                        calendar.get(Calendar.MONTH).toString(),
+                        calendar.get(Calendar.DAY_OF_MONTH).toString()
+                    )
+                )
+                set?.let {
+                    it.forEachIndexed { index, s ->
+                        when (index) {
+                            0 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) > s.toInt() + 1) {
+                                    rateThisAppPopup()
+                                }
+                            }
+                            1 -> {
+                                if (calendar.get(Calendar.YEAR) > s.toInt()) {
+                                    rateThisAppPopup()
+                                }
+                            }
+                            2 -> {
+                                if (calendar.get(Calendar.MONTH) > s.toInt()) {
+                                    rateThisAppPopup()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //endregion
     }
 
     override fun onStop() {
@@ -713,6 +912,46 @@ class ContactsListActivity : AppCompatActivity() {
                 )
             )
         }
+    }
+
+    private fun rateThisAppPopup() {
+        val manager = ReviewManagerFactory.create(this)
+        val request = manager.requestReviewFlow()
+        MaterialAlertDialogBuilder(
+            this, R.style.AlertDialog
+        ).setTitle(getString(R.string.rate_this_app_title))
+            .setMessage(getString(R.string.rate_this_app_message))
+            .setPositiveButton(R.string.start_activity_go_edition_positive_button) { alertDialog, _ ->
+                val edit = rateThisAppSharedPreferences.edit()
+                edit.putBoolean("RateThisApp", false)
+                edit.apply()
+                request.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val reviewInfo = task.result
+                        val flow = manager.launchReviewFlow(this, reviewInfo)
+                        flow.addOnCompleteListener { _ ->
+                        }
+                    } else {
+                    }
+                }
+                alertDialog.dismiss()
+                alertDialog.cancel()
+            }.setNegativeButton(R.string.alert_dialog_later) { alertDialog, _ ->
+                val calendar = Calendar.getInstance()
+
+                val editShowPopup = sharedShowPopup.edit()
+                editShowPopup.putStringSet(
+                    "sharedShowPopup", setOf(
+                        calendar.get(Calendar.YEAR).toString(), // 2022
+                        calendar.get(Calendar.MONTH).toString(), // 11
+                        calendar.get(Calendar.DAY_OF_MONTH).toString() // 21
+                    )
+                )
+                editShowPopup.apply()
+
+                alertDialog.dismiss()
+                alertDialog.cancel()
+            }.show()
     }
 
     companion object {

@@ -494,4 +494,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="daily_reminder_time">Waktu pengingat harian</string>
     <string name="teleworking_settings">Pengaturan telecommuting</string>
     <string name="message_from">Pesan dari %1$s</string>
+    <string name="rate_this_app_title">Nilai aplikasi ini</string>
+    <string name="rate_this_app_message">Jika Anda menyukai aplikasi ini, luangkan beberapa detik untuk menilainya, itu akan sangat membantu kami. terima kasih</string>
+
 </resources>

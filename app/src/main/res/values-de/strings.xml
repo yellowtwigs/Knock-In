@@ -492,5 +492,6 @@
     <string name="allow_phone_call">Sie haben keinen Anruf zugelassen</string>    <string name="daily_reminder_time">Tägliche Erinnerungszeit</string>
     <string name="teleworking_settings">Telearbeitseinstellungen</string>
     <string name="message_from">Nachricht von %1$s</string>
-
+    <string name="rate_this_app_title">Bewerte diese App</string>
+    <string name="rate_this_app_message">Wenn Ihnen diese App gefällt, nehmen Sie sich bitte ein paar Sekunden Zeit, um sie zu bewerten, es würde uns sehr helfen. Vielen Dank</string>
 </resources>
