@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/whatsapp"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_sms_pressed" />
+        app:srcCompat="@drawable/ic_micon" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/whatsapp"

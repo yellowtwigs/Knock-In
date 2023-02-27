@@ -141,6 +141,11 @@ class NotificationsListViewModel @Inject constructor(
                         convertPackageToString(it.platform, context) == "WhatsApp"
                     }
                 }
+                R.id.telegram_filter -> {
+                    return notifications.filter {
+                        convertPackageToString(it.platform, context) == "Telegram"
+                    }
+                }
                 R.id.facebook_filter -> {
                     return notifications.filter {
                         convertPackageToString(

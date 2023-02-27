@@ -59,7 +59,7 @@
     <string name="sort_by_favorite">Preferiti</string>
     <string name="main_tri_par_groupe">Gruppo</string>
     <string name="filter_by">Filtro notifiche:</string>
-    <string name="filter_by_all">Applicazione</string>
+    <string name="filter_by_all">Tutte le notifiche</string>
     <string name="filter_by_msg_apps">Messaggio</string>
     <string name="notif_filtre_systeme">Sistema</string>
     <string name="sort_by_date">Data e ora</string>

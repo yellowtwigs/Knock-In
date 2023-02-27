@@ -471,7 +471,7 @@ class ContactsListActivity : AppCompatActivity() {
                 startActivity(
                     Intent(
                         this@ContactsListActivity, MultiChannelActivity::class.java
-                    ).putIntegerArrayListExtra(
+                    ).putExtra("fromMainToMultiChannel", true).putIntegerArrayListExtra(
                         "contacts", listOfItemSelected
                     )
                 )

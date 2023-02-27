@@ -15,6 +15,7 @@ import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.isSectionClicked
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
@@ -25,10 +26,6 @@ class GroupsGridFourAdapter(
 ) : ListAdapter<ContactInGroupViewState, GroupsGridFourAdapter.ViewHolder>(
     GroupsListViewStateComparator()
 ) {
-
-    companion object {
-        var isSectionClicked = false
-    }
 
     var listOfItemSelected = ArrayList<ContactInGroupViewState>()
 
@@ -71,8 +68,6 @@ class GroupsGridFourAdapter(
 
                 if (isSectionClicked) {
                     civ.setImageResource(contact.profilePictureSelected)
-
-//                    onClickedCallbackMultiSelect(contact.id, civ, contact)
                 }
             }
         }

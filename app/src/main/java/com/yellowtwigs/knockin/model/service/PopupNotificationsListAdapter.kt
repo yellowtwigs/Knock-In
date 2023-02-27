@@ -146,7 +146,7 @@ class PopupNotificationsListAdapter(
 
                         if (wrappedDrawable != null) {
                             setupIconAndColor(
-                                platformImage, wrappedDrawable, R.drawable.ic_sms, R.color.custom_shape_top_bar_sms, cxt
+                                platformImage, wrappedDrawable, R.drawable.ic_micon, R.color.custom_shape_top_bar_sms, cxt
                             )
                         }
                     }

@@ -15,6 +15,7 @@ data class ContactInGroupViewState(
     val hasTelegram: Boolean,
     val hasSignal: Boolean,
     val messengerId: String,
+    val groupName: String,
     val pictureMultiSelect: Int = 0,
     var profilePictureSelected: Int = R.drawable.ic_item_selected,
 )

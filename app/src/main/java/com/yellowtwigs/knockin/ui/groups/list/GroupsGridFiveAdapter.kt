@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
 import com.yellowtwigs.knockin.databinding.ItemContactGrid5Binding
 import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
@@ -22,13 +23,7 @@ class GroupsGridFiveAdapter(
     private val onClickedCallback: (Int) -> Unit,
     private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactInGroupViewState) -> Unit
 ) :
-    ListAdapter<ContactInGroupViewState, GroupsGridFiveAdapter.ViewHolder>(
-        GroupsListViewStateComparator()
-    ) {
-
-    companion object {
-        var isSectionClicked = false
-    }
+    ListAdapter<ContactInGroupViewState, GroupsGridFiveAdapter.ViewHolder>(GroupsListViewStateComparator()) {
 
     var listOfItemSelected = ArrayList<ContactInGroupViewState>()
 
@@ -67,6 +62,10 @@ class GroupsGridFiveAdapter(
                 root.setOnLongClickListener {
                     onClickedCallbackMultiSelect(contact.id, civ, contact)
                     true
+                }
+
+                if (SectionGroupsListAdapter.isSectionClicked) {
+                    civ.setImageResource(contact.profilePictureSelected)
                 }
             }
         }

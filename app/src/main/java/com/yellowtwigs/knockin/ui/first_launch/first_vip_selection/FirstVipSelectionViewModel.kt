@@ -31,10 +31,6 @@ class FirstVipSelectionViewModel @Inject constructor(
     val listOfItemsSelected: MutableLiveData<ArrayList<Int>> = MutableLiveData(contactsIds)
 
     fun addItemToList(item: Int) {
-        Log.i("NumbersVIP", "item : $item")
-        Log.i("NumbersVIP", "contactsIds : $contactsIds")
-        Log.i("NumbersVIP", "contactsIds.contains(item) : ${contactsIds.contains(item)}")
-
         if (contactsIds.contains(item)) {
             contactsIds.remove(item)
             listOfItemsSelected.value = contactsIds

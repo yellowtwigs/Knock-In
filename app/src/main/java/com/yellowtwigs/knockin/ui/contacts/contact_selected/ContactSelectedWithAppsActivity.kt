@@ -59,16 +59,13 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
 
         val appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
-        editContactViewModel.getContactById(intent.getIntExtra("ContactId", 0))
-            .observe(this) { contact ->
+        editContactViewModel.getContactById(intent.getIntExtra("ContactId", 0)).observe(this) { contact ->
                 contact?.let {
                     binding.apply {
                         if (it.profilePicture64 == "") {
                             contactImage.setImageResource(
                                 randomDefaultImage(
-                                    contact.profilePicture,
-                                    this@ContactSelectedWithAppsActivity,
-                                    "Get"
+                                    contact.profilePicture, this@ContactSelectedWithAppsActivity, "Get"
                                 )
                             )
                         } else {
@@ -76,9 +73,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                         }
 
                         contactPriorityBorder(
-                            it.priority,
-                            contactImage,
-                            this@ContactSelectedWithAppsActivity
+                            it.priority, contactImage, this@ContactSelectedWithAppsActivity
                         )
 
                         name.text = "${it.firstName} ${it.lastName}"
@@ -94,9 +89,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
     }
 
     private fun initCircularMenu(
-        binding: ActivityContactSelectedWithAppsBinding,
-        contact: ContactDB,
-        appsSupportPref: SharedPreferences
+        binding: ActivityContactSelectedWithAppsBinding, contact: ContactDB, appsSupportPref: SharedPreferences
     ) {
         val listApp = getAppOnPhone(this)
 
@@ -118,13 +111,20 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                     checkVisibleMessagingApp(binding.callIcon, listOfPhoneNumbers[0] != "")
                     checkVisibleMessagingApp(binding.mailIcon, listOfMails[0] != "")
                     checkVisibleMessagingApp(binding.messengerIcon, messengerId != "" && listApp.contains("com.facebook.orca"))
-                    checkVisibleMessagingApp(binding.signalIcon, listApp.contains("org.thoughtcrime.securesms") && listOfMessagingApps.contains(
-                        "org.thoughtcrime.securesms"
-                    ))
-                    checkVisibleMessagingApp(binding.telegramIcon, listApp.contains("org.telegram.messenger") && listOfMessagingApps.contains("org.telegram.messenger"))
-                    checkVisibleMessagingApp(binding.whatsappIcon, isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && listOfMessagingApps.contains(
-                        "com.whatsapp"
-                    ))
+                    checkVisibleMessagingApp(
+                        binding.signalIcon, listApp.contains("org.thoughtcrime.securesms") && listOfMessagingApps.contains(
+                            "org.thoughtcrime.securesms"
+                        )
+                    )
+                    checkVisibleMessagingApp(
+                        binding.telegramIcon,
+                        listApp.contains("org.telegram.messenger") && listOfMessagingApps.contains("org.telegram.messenger")
+                    )
+                    checkVisibleMessagingApp(
+                        binding.whatsappIcon, isWhatsappInstalled(this@ContactSelectedWithAppsActivity) && listOfMessagingApps.contains(
+                            "com.whatsapp"
+                        )
+                    )
                 }
 
                 if (!appsSupportPref.getBoolean("Apps_Support_Bought", false)) {
@@ -140,35 +140,34 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 val buttonListener = View.OnClickListener { v: View ->
                     when (v.id) {
                         whatsappIcon.id -> {
-                            val sendIntent = Intent()
-                            sendIntent.action = Intent.ACTION_SEND
-                            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
-                            sendIntent.setType("text/plain")
-                            sendIntent.setPackage("com.whatsapp");
-                            startActivity(sendIntent)
-                            openWhatsapp(
-                                converter06To33(listOfPhoneNumbers.random()),
-                                this@ContactSelectedWithAppsActivity
-                            )
+                            if (listOfPhoneNumbers.random().isNotEmpty()) {
+                                openWhatsapp(
+                                    converter06To33(listOfPhoneNumbers.random()), this@ContactSelectedWithAppsActivity
+                                )
+                            } else {
+                                val sendIntent = Intent()
+                                sendIntent.action = Intent.ACTION_SEND
+                                sendIntent.putExtra(Intent.EXTRA_TEXT, "..")
+                                sendIntent.type = "text/plain"
+                                sendIntent.setPackage("com.whatsapp")
+                                startActivity(sendIntent)
+                            }
                         }
                         editIcon.id -> {
                             val intent = Intent(
-                                this@ContactSelectedWithAppsActivity,
-                                EditContactActivity::class.java
+                                this@ContactSelectedWithAppsActivity, EditContactActivity::class.java
                             )
                             intent.putExtra("ContactId", id)
                             startActivity(intent)
                         }
                         callIcon.id -> {
                             callPhone(
-                                listOfPhoneNumbers.random(),
-                                this@ContactSelectedWithAppsActivity
+                                listOfPhoneNumbers.random(), this@ContactSelectedWithAppsActivity
                             )
                         }
                         smsIcon.id -> {
                             val i = Intent(
-                                Intent.ACTION_SENDTO,
-                                Uri.fromParts("sms", listOfPhoneNumbers.random(), null)
+                                Intent.ACTION_SENDTO, Uri.fromParts("sms", listOfPhoneNumbers.random(), null)
                             )
                             startActivity(i)
                         }
@@ -186,8 +185,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                                 showInAppAlertDialog()
                             } else {
                                 val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://www.messenger.com/t/$messengerId")
+                                    Intent.ACTION_VIEW, Uri.parse("https://www.messenger.com/t/$messengerId")
                                 )
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 startActivity(intent)
@@ -201,14 +199,16 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                             }
                         }
                         telegramIcon.id -> {
-                            if (!appsSupportPref.getBoolean("Apps_Support_Bought", false)) {
-                                showInAppAlertDialog()
-                            } else {
-                                goToTelegram(
-                                    this@ContactSelectedWithAppsActivity,
-                                    listOfPhoneNumbers.random()
-                                )
-                            }
+                            goToTelegram(
+                                this@ContactSelectedWithAppsActivity, listOfPhoneNumbers.random()
+                            )
+//                            if (!appsSupportPref.getBoolean("Apps_Support_Bought", false)) {
+//                                showInAppAlertDialog()
+//                            } else {
+//                                goToTelegram(
+//                                    this@ContactSelectedWithAppsActivity, listOfPhoneNumbers.random()
+//                                )
+//                            }
                         }
                     }
                 }
@@ -234,18 +234,14 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
     }
 
     private fun showInAppAlertDialog() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle(getString(R.string.in_app_popup_apps_support_title))
-            .setMessage(getString(R.string.in_app_popup_apps_support_message))
-            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.in_app_popup_apps_support_title))
+            .setMessage(getString(R.string.in_app_popup_apps_support_message)).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 startActivity(Intent(this, PremiumActivity::class.java))
                 finish()
-            }
-            .setNegativeButton(R.string.alert_dialog_later) { dialog, _ ->
+            }.setNegativeButton(R.string.alert_dialog_later) { dialog, _ ->
                 dialog.dismiss()
                 dialog.cancel()
-            }
-            .show()
+            }.show()
     }
 
     private fun setupRecyclerView(binding: ActivityContactSelectedWithAppsBinding) {

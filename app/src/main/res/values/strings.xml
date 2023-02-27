@@ -62,7 +62,7 @@
     <string name="sort_by_favorite">Favorite</string>
     <string name="main_tri_par_groupe">Group</string>
     <string name="filter_by">Notification filter:</string>
-    <string name="filter_by_all">Notifications System</string>
+    <string name="filter_by_all">All Notifications</string>
     <string name="filter_by_msg_apps">Messaging Apps</string>
     <string name="notif_filtre_systeme">System</string>
     <string name="sort_by_date">Date and time</string>

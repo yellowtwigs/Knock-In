@@ -77,9 +77,6 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             listOfItemSelected.clear()
             listOfItemSelected.addAll(ids)
 
-            Log.i("NumbersVIP", "listOfItemSelected.size 1 : ${listOfItemSelected.size}")
-            Log.i("NumbersVIP", "listOfItemSelected 1 : ${listOfItemSelected}")
-
             if (Resources.getSystem().configuration.locale.language == "ar") {
                 binding.multiSelectTextView.text = "${listOfItemSelected.size} ${getString(R.string.multi_select_nb_contact)}"
             } else {
@@ -220,6 +217,12 @@ class FirstVipSelectionActivity : AppCompatActivity() {
             adapter = firstVipSelectionAdapter
 
             viewModel.contactsListViewStateLiveDataSortByFullName.observe(this@FirstVipSelectionActivity) { contacts ->
+                contacts.map {
+                    if (listOfItemSelected.distinct().contains(it.id)) {
+                        listOfContactsSelected.add(it)
+                    }
+                }
+
                 firstVipSelectionAdapter.submitList(contacts)
             }
 
@@ -234,22 +237,22 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     private fun overlayAlertDialog(): AlertDialog? {
         var message: String
 
-        if (listOfContactsSelected.size == 0) {
+        if (listOfItemSelected.distinct().isEmpty()) {
             message = applicationContext.resources.getString(R.string.multi_select_alert_dialog_0_contact)
-        } else if (listOfContactsSelected.size == 1) {
+        } else if (listOfItemSelected.distinct().size == 1) {
             message = String.format(
                 applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),
-                listOfContactsSelected.size,
+                listOfItemSelected.distinct().size,
                 getString(R.string.multi_select_contact)
             )
-            if (listOfContactsSelected.size == 1) {
+            if (listOfItemSelected.distinct().size == 1) {
                 val contact = listOfContactsSelected[0]
                 message += "\n- " + contact.firstName + " " + contact.lastName
             }
         } else {
             message = String.format(
                 applicationContext.resources.getString(R.string.multi_select_alert_dialog_nb_contact),
-                listOfContactsSelected.size,
+                listOfItemSelected.distinct().size,
                 getString(R.string.multi_select_contacts)
             )
             for (contact in listOfContactsSelected) {
@@ -284,8 +287,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                     finish()
                 }
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-            }
-            .show()
+            }.show()
     }
 
     private fun setPriorityList() {

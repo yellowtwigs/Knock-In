@@ -59,7 +59,7 @@
     <string name="sort_by_favorite">Yêu thích</string>
     <string name="main_tri_par_groupe">Nhóm</string>
     <string name="filter_by">Bộ lọc thông báo:</string>
-    <string name="filter_by_all">Ứng dụng</string>
+    <string name="filter_by_all">Tất cả thông báo</string>
     <string name="filter_by_msg_apps">Tin nhắn</string>
     <string name="notif_filtre_systeme">Hệ thống</string>
     <string name="sort_by_date">Ngày và giờ</string>

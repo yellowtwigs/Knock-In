@@ -52,25 +52,16 @@ class ImportContactsViewModel @Inject constructor(
         var idAndName: Pair<Int, Triple<String, String, String>>
         var structName: Triple<String, String, String>
         val phoneContact = resolver.query(
-            ContactsContract.Data.CONTENT_URI,
-            null,
-            null,
-            null,
-            ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME
+            ContactsContract.Data.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME
         )
         phoneContact?.apply {
             while (moveToNext()) {
                 try {
-                    val phoneId =
-                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID)).toInt()
-                    var firstName =
-                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME))
-                    var middleName =
-                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME))
-                    var lastName =
-                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME))
-                    val mimeType =
-                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.MIMETYPE))
+                    val phoneId = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID)).toInt()
+                    var firstName = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME))
+                    var middleName = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME))
+                    var lastName = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME))
+                    val mimeType = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.MIMETYPE))
                     val appsInPhone =
                         getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.StructuredName.ACCOUNT_TYPE_AND_DATA_SET))
 
@@ -162,18 +153,15 @@ class ImportContactsViewModel @Inject constructor(
 
         phoneNumberContact?.apply {
             while (moveToNext()) {
-                val phoneId =
-                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
+                val phoneId = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
 
-                val phoneNumber =
-                    if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)) == null) {
-                        ""
-                    } else {
-                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                    }
+                val phoneNumber = if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)) == null) {
+                    ""
+                } else {
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                }
 
-                var phonePic =
-                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+                var phonePic = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
 
 
                 phonePic = if (phonePic == null || phonePic.contains(
@@ -203,15 +191,13 @@ class ImportContactsViewModel @Inject constructor(
 
         emailContact?.apply {
             while (moveToNext()) {
-                val phoneId =
-                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+                val phoneId = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
 
-                val phoneEmail =
-                    if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.ADDRESS)) == null) {
-                        ""
-                    } else {
-                        getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.ADDRESS))
-                    }
+                val phoneEmail = if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.ADDRESS)) == null) {
+                    ""
+                } else {
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.ADDRESS))
+                }
 
                 listOfDetails.forEachIndexed { index, map ->
                     if (map[1] == phoneId?.toInt()) {
@@ -240,10 +226,8 @@ class ImportContactsViewModel @Inject constructor(
 //    }
 
     private fun openPhoto(contactId: Long, resolver: ContentResolver): InputStream? {
-        val contactUri =
-            ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId)
-        val photoUri =
-            Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
+        val contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId)
+        val photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
         val cursor = resolver.query(
             photoUri, arrayOf(ContactsContract.Contacts.Photo.PHOTO), null, null, null
         ) ?: return null
@@ -368,9 +352,7 @@ class ImportContactsViewModel @Inject constructor(
 
                             val listOfMails = mutableListOf<String>()
 
-                            if (details[4] != null && details[4].toString()
-                                    .isNotBlank() && details[4].toString().isNotEmpty()
-                            ) {
+                            if (details[4] != null && details[4].toString().isNotBlank() && details[4].toString().isNotEmpty()) {
                                 listOfMails.add(details[4].toString())
                             } else {
                             }
@@ -379,8 +361,7 @@ class ImportContactsViewModel @Inject constructor(
                                 ContactDB(
                                     0,
                                     id,
-                                    fullFullName.uppercase().unAccent()
-                                        .replace("\\s".toRegex(), ""),
+                                    fullFullName.uppercase().unAccent().replace("\\s".toRegex(), ""),
                                     fullName.second.first + secondName,
                                     fullName.second.third,
                                     randomDefaultImage(0, context, "Create"),
@@ -393,8 +374,8 @@ class ImportContactsViewModel @Inject constructor(
                                     "",
                                     listOfApps,
                                     "",
+                                    -1,
                                     0,
-                                    1,
                                     0,
                                     "",
                                     ""
@@ -567,18 +548,12 @@ class ImportContactsViewModel @Inject constructor(
 
     private fun getContactGroupSync(resolver: ContentResolver): List<Triple<Int, String?, String?>> {
         val phoneContact = resolver.query(
-            ContactsContract.Groups.CONTENT_URI,
-            null,
-            null,
-            null,
-            ContactsContract.Groups.TITLE + " ASC"
+            ContactsContract.Groups.CONTENT_URI, null, null, null, ContactsContract.Groups.TITLE + " ASC"
         )
         var allGroupMembers = listOf<Triple<Int, String?, String?>>()
         while (phoneContact?.moveToNext() == true) {
-            val groupId =
-                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Groups._ID))
-            var groupName =
-                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Groups.TITLE))
+            val groupId = phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Groups._ID))
+            var groupName = phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Groups.TITLE))
             if (groupName == "Starred in Android") {
                 groupName = "Favorites"
             }
@@ -605,19 +580,13 @@ class ImportContactsViewModel @Inject constructor(
     ): List<Triple<Int, String?, String?>> {
         val where = ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=" + groupId
         val phoneContact = resolver.query(
-            ContactsContract.Data.CONTENT_URI,
-            null,
-            where,
-            null,
-            ContactsContract.Data.DISPLAY_NAME + " ASC"
+            ContactsContract.Data.CONTENT_URI, null, where, null, ContactsContract.Data.DISPLAY_NAME + " ASC"
         )
         var member: Triple<Int, String?, String?>
         val groupMembers = arrayListOf<Triple<Int, String?, String?>>()
         while (phoneContact?.moveToNext() == true) {
-            val contactId =
-                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Data.CONTACT_ID))
-            val contactName =
-                phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Data.DISPLAY_NAME))
+            val contactId = phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Data.CONTACT_ID))
+            val contactName = phoneContact.getString(phoneContact.getColumnIndexOrThrow(ContactsContract.Data.DISPLAY_NAME))
 
             member = Triple(contactId!!.toInt(), contactName, groupName)
             if (!groupMembers.contains(member)) {
@@ -659,8 +628,7 @@ class ImportContactsViewModel @Inject constructor(
         idAndPhoneNumber: Map<Int, Any>, contactPhoneNumber: List<Map<Int, Any>>
     ): Boolean {
         contactPhoneNumber.forEach {
-            if (it[1] == idAndPhoneNumber[1] && it[2].toString()
-                    .replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString()
+            if (it[1] == idAndPhoneNumber[1] && it[2].toString().replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString()
                     .replace("\\s".toRegex(), "")
             ) {
                 return true
@@ -670,8 +638,7 @@ class ImportContactsViewModel @Inject constructor(
     }
 
     private fun isDuplicateGroup(
-        member: List<Triple<Int, String?, String?>>,
-        groupMembers: List<Triple<Int, String?, String?>>
+        member: List<Triple<Int, String?, String?>>, groupMembers: List<Triple<Int, String?, String?>>
     ): Boolean {
         groupMembers.forEach { _ ->
             groupMembers.forEachIndexed { index, it ->

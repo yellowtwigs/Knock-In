@@ -73,7 +73,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
             when (sbp.appNotifier) {
                 "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
                     isSMS = true
-                    messageImage.setImageResource(R.drawable.ic_sms_selector)
+                    messageImage.setImageResource(R.drawable.ic_micon)
                 }
                 "com.whatsapp" -> {
                     isSMS = false

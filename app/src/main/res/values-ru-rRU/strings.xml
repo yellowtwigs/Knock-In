@@ -59,7 +59,7 @@
     <string name="sort_by_favorite">Избранный</string>
     <string name="main_tri_par_groupe">Группа</string>
     <string name="filter_by">Фильтр уведомлений:</string>
-    <string name="filter_by_all">Применение</string>
+    <string name="filter_by_all">Все уведомления</string>
     <string name="filter_by_msg_apps">Сообщение</string>
     <string name="notif_filtre_systeme">Система</string>
     <string name="sort_by_date">Дата и время</string>

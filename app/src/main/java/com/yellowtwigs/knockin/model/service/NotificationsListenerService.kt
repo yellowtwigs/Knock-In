@@ -380,9 +380,12 @@ class NotificationsListenerService : NotificationListenerService() {
     private fun displayLayoutWithSharedPreferences(
         sbp: StatusBarParcelable, contactDB: ContactDB
     ) {
+        Log.i("GetDefaultSound", "contactDB.isCustomSound : ${contactDB.isCustomSound}")
         if (contactDB.isCustomSound == 1) {
+            Log.i("GetDefaultSound", "contactDB.notificationTone : ${contactDB.notificationTone}")
             alertCustomNotificationTone(contactDB.notificationTone)
         } else {
+            Log.i("GetDefaultSound", "contactDB.notificationSound : ${contactDB.notificationSound}")
             alertNotificationTone(contactDB.notificationSound)
         }
 

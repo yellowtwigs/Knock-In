@@ -59,7 +59,7 @@
     <string name="sort_by_favorite">Favoritos</string>
     <string name="main_tri_par_groupe">Grupo</string>
     <string name="filter_by">Filtrar notificaciones por:</string>
-    <string name="filter_by_all">Aplicación</string>
+    <string name="filter_by_all">Todas las notificaciones</string>
     <string name="filter_by_msg_apps">Mensaje</string>
     <string name="notif_filtre_systeme">Sistema</string>
     <string name="sort_by_date">Fecha y hora</string>

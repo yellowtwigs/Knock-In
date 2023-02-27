@@ -4,7 +4,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.net.Uri
-import android.view.View
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -12,20 +12,22 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.databinding.ActivityGroupsListBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.isSectionClicked
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfEmails
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasEmail
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasSms
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasWhatsapp
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfIds
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfItemSelected
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfPhoneNumbers
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
@@ -46,34 +48,47 @@ class GroupsListActivity : AppCompatActivity() {
     var modeMultiSelect = false
 
     private lateinit var sectionGroupsListAdapter: SectionGroupsListAdapter
+    private lateinit var binding: ActivityGroupsListBinding
+
+    private var fromOtherApp = false
+
+    companion object {
+        var listOfSectionsSelected = arrayListOf<Int>()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         checkTheme(this)
-
-        val binding = ActivityGroupsListBinding.inflate(layoutInflater)
+        binding = ActivityGroupsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupToolbar(binding)
-        setupDrawerLayout(binding)
-        setupBottomNavigationView(binding)
-        setupGroupsList(binding)
-        setupFloatingButtons(binding)
-        floatingButtonsClick(binding)
-        setupFloatingButtonVisibility(binding)
+        setupToolbar()
+        setupDrawerLayout()
+        setupBottomNavigationView()
+        setupGroupsList()
+        setupFloatingButtons()
+        floatingButtonsClick()
     }
 
-    private fun setupFloatingButtons(binding: ActivityGroupsListBinding) {
+    private fun setupFloatingButtons() {
         binding.addNewGroup.setOnClickListener {
             val intent = Intent(this@GroupsListActivity, ManageGroupActivity::class.java)
+            restartActivity()
             startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (fromOtherApp) {
+            refreshActivity()
         }
     }
 
     //region =========================================== TOOLBAR ============================================
 
-    private fun setupToolbar(binding: ActivityGroupsListBinding) {
+    private fun setupToolbar() {
         binding.help.setOnClickListener {
             if (Resources.getSystem().configuration.locale.language == "fr") {
                 val browserIntent = Intent(
@@ -91,7 +106,7 @@ class GroupsListActivity : AppCompatActivity() {
 
     //region ======================================== DRAWER LAYOUT =========================================
 
-    private fun setupDrawerLayout(binding: ActivityGroupsListBinding) {
+    private fun setupDrawerLayout() {
         binding.drawerLayout.apply {
             val menu = binding.navView.menu
             val navItem = menu.findItem(R.id.nav_home)
@@ -105,22 +120,36 @@ class GroupsListActivity : AppCompatActivity() {
                     menuItem.isChecked = true
                 }
                 closeDrawers()
-
                 when (menuItem.itemId) {
-                    R.id.nav_notifications -> startActivity(
-                        Intent(this@GroupsListActivity, NotificationsSettingsActivity::class.java)
-                    )
-                    R.id.nav_in_app -> startActivity(
-                        Intent(this@GroupsListActivity, PremiumActivity::class.java)
-                    )
-                    R.id.nav_manage_screen -> startActivity(
-                        Intent(this@GroupsListActivity, ManageMyScreenActivity::class.java)
-                    )
-                    R.id.nav_help -> startActivity(
-                        Intent(this@GroupsListActivity, HelpActivity::class.java)
-                    )
+                    R.id.nav_notifications -> {
+                        startActivity(
+                            Intent(this@GroupsListActivity, NotificationsSettingsActivity::class.java)
+                        )
+                        restartActivity()
+                    }
+                    R.id.nav_in_app -> {
+                        startActivity(
+                            Intent(this@GroupsListActivity, PremiumActivity::class.java)
+                        )
+                        restartActivity()
+                    }
+                    R.id.nav_manage_screen -> {
+                        startActivity(
+                            Intent(this@GroupsListActivity, ManageMyScreenActivity::class.java)
+                        )
+
+                        restartActivity()
+                    }
+
+                    R.id.nav_help -> {
+                        startActivity(
+                            Intent(this@GroupsListActivity, HelpActivity::class.java)
+                        )
+                        restartActivity()
+                    }
                     R.id.nav_sync_contact -> {
                         importContacts()
+                        restartActivity()
                     }
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
@@ -131,6 +160,7 @@ class GroupsListActivity : AppCompatActivity() {
                         intent.type = "text/plain"
                         val messageIntent = Intent.createChooser(intent, null)
                         startActivity(messageIntent)
+                        restartActivity()
                     }
                 }
 
@@ -157,7 +187,7 @@ class GroupsListActivity : AppCompatActivity() {
 
     //region =========================================== SETUP UI ===========================================
 
-    private fun setupBottomNavigationView(binding: ActivityGroupsListBinding) {
+    private fun setupBottomNavigationView() {
         binding.navigation.menu.getItem(1).isChecked = true
         binding.navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -167,6 +197,7 @@ class GroupsListActivity : AppCompatActivity() {
                             this@GroupsListActivity, ContactsListActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
+                    restartActivity()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_notifcations -> {
@@ -175,9 +206,16 @@ class GroupsListActivity : AppCompatActivity() {
                             this@GroupsListActivity, NotificationsHistoryActivity::class.java
                         ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     )
+                    restartActivity()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_cockpit -> {
+                    startActivity(
+                        Intent(
+                            this@GroupsListActivity, CockpitActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    )
+                    restartActivity()
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -185,13 +223,13 @@ class GroupsListActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupGroupsList(binding: ActivityGroupsListBinding) {
+    private fun setupGroupsList() {
         sectionGroupsListAdapter = SectionGroupsListAdapter(this, { id ->
             CoroutineScope(Dispatchers.Default).launch {
                 groupsListViewModel.deleteGroupById(id)
             }
         }, { id ->
-            setupFloatingButtonVisibility(binding)
+            setupFloatingButtonVisibility()
         })
 
         binding.recyclerView.apply {
@@ -208,16 +246,24 @@ class GroupsListActivity : AppCompatActivity() {
 
     //region ========================================= MULTI SELECT =========================================
 
-    private fun setupFloatingButtonVisibility(binding: ActivityGroupsListBinding) {
+    private fun setupFloatingButtonVisibility() {
         binding.apply {
-            smsButton.isVisible = listOfIds.isNotEmpty() && !listOfHasSms.contains(false)
-            gmailButton.isVisible = listOfIds.isNotEmpty() && !listOfHasEmail.contains(false)
-            whatsappButton.isVisible = listOfIds.isNotEmpty() && !listOfHasWhatsapp.contains(false)
-            buttonMultichannel.isVisible = listOfIds.isNotEmpty()
+            Log.i("MultiSelectGroups", "listOfIds : ${listOfIds}")
+//            Log.i("MultiSelectGroups", "listOfItemSelected : ${listOfItemSelected}")
+//            Log.i("MultiSelectGroups", "listOfPhoneNumbers : ${listOfPhoneNumbers}")
+//            Log.i("MultiSelectGroups", "listOfHasSms : ${listOfHasSms}")
+//            Log.i("MultiSelectGroups", "listOfHasEmail : ${listOfHasEmail}")
+//            Log.i("MultiSelectGroups", "listOfHasWhatsapp : ${listOfHasWhatsapp}")
+            smsButton.isVisible = listOfItemSelected.isNotEmpty() && !listOfHasSms.contains(false) && listOfHasSms.isNotEmpty()
+            gmailButton.isVisible = listOfItemSelected.isNotEmpty() && !listOfHasEmail.contains(false) && listOfHasEmail.isNotEmpty()
+            whatsappButton.isVisible =
+                listOfItemSelected.isNotEmpty() && !listOfHasWhatsapp.contains(false) && listOfHasWhatsapp.isNotEmpty()
+            buttonMultichannel.isVisible = listOfItemSelected.isNotEmpty()
+            modeMultiSelect = listOfItemSelected.isNotEmpty()
         }
     }
 
-    private fun floatingButtonsClick(binding: ActivityGroupsListBinding) {
+    private fun floatingButtonsClick() {
         binding.apply {
             buttonMultichannel.setOnClickListener {
                 startActivity(
@@ -227,17 +273,20 @@ class GroupsListActivity : AppCompatActivity() {
                         "contacts", listOfIds
                     )
                 )
-                finish()
+                fromOtherApp = false
             }
 
             whatsappButton.setOnClickListener {
                 multiChannelSendMessageWhatsapp()
+                fromOtherApp = true
             }
             smsButton.setOnClickListener {
                 monoChannelSmsClick(listOfPhoneNumbers)
+                fromOtherApp = true
             }
             gmailButton.setOnClickListener {
                 monoChannelMailClick(listOfEmails)
+                fromOtherApp = true
             }
         }
     }
@@ -282,8 +331,21 @@ class GroupsListActivity : AppCompatActivity() {
 
     //region ========================================= FUNCTIONS ============================================
 
+    private fun restartActivity() {
+        listOfItemSelected.clear()
+        listOfIds.clear()
+        listOfHasSms.clear()
+        listOfHasEmail.clear()
+        listOfHasWhatsapp.clear()
+        listOfSectionsSelected.clear()
+        isSectionClicked = false
+        setupFloatingButtonVisibility()
+    }
+
     fun refreshActivity() {
         startActivity(Intent(this@GroupsListActivity, GroupsListActivity::class.java))
+        restartActivity()
+        finish()
     }
 
     //endregion

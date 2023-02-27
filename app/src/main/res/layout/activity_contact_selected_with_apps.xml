@@ -96,7 +96,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="50dp"
-        android:src="@drawable/ic_sms"
+        android:src="@drawable/ic_micon"
         app:layout_constraintBottom_toTopOf="@+id/contact_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -110,7 +110,8 @@ class GroupsListViewModel @Inject constructor(
                                 contact.hasWhatsapp,
                                 contact.hasTelegram,
                                 contact.hasSignal,
-                                contact.messengerId
+                                contact.messengerId,
+                                group.name
                             )
                         )
                     }

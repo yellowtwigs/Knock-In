@@ -669,7 +669,7 @@
                 android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_sms_selector"
+                android:src="@drawable/ic_micon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

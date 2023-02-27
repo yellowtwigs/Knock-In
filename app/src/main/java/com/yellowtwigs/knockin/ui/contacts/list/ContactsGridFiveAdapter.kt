@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
 import com.yellowtwigs.knockin.databinding.ItemContactGrid5Binding
 import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
@@ -41,17 +42,19 @@ class ContactsGridFiveAdapter(
 
                 favoriteIcon.isVisible = contact.isFavorite
 
-                root.setOnClickListener {
-                    if ((cxt as ContactsListActivity).modeMultiSelect) {
-                        onClickedCallbackMultiSelect(contact.id, civ, contact)
-                    } else {
-                        onClickedCallback(contact.id)
+                if (cxt is ContactsListActivity) {
+                    root.setOnClickListener {
+                        if (cxt.modeMultiSelect) {
+                            onClickedCallbackMultiSelect(contact.id, civ, contact)
+                        } else {
+                            onClickedCallback(contact.id)
+                        }
                     }
-                }
 
-                root.setOnLongClickListener {
-                    onClickedCallbackMultiSelect(contact.id, civ, contact)
-                    true
+                    root.setOnLongClickListener {
+                        onClickedCallbackMultiSelect(contact.id, civ, contact)
+                        true
+                    }
                 }
             }
         }
