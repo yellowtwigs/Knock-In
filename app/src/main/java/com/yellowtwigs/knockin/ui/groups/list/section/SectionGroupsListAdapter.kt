@@ -14,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.GroupSectionItemBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.groups.list.*
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.utils.Converter
@@ -31,7 +32,7 @@ class SectionGroupsListAdapter(
 
         var listOfIds = arrayListOf<Int>()
         var listOfHasSms = arrayListOf<Boolean>()
-        var listOfPhoneNumbers = arrayListOf<String>()
+        var listOfPhoneNumbers = arrayListOf<Pair<PhoneNumberWithSpinner, PhoneNumberWithSpinner?>>()
 
         var listOfHasEmail = arrayListOf<Boolean>()
         var listOfEmails = arrayListOf<String>()
@@ -131,8 +132,6 @@ class SectionGroupsListAdapter(
                 }
 
                 groupNameSection.setOnClickListener {
-//                    Log.i("MultiSelectGroups", "!multiSelectOneClick : ${!multiSelectOneClick}")
-
                     if (GroupsListActivity.listOfSectionsSelected.contains(section.id)) {
                         GroupsListActivity.listOfSectionsSelected.remove(section.id)
                         isSectionClicked = false
@@ -145,17 +144,14 @@ class SectionGroupsListAdapter(
                                 listOfIds.remove(it.id)
                             }
 
-                            listOfHasSms.remove(!it.listOfPhoneNumbers.contains(""))
+                            listOfHasSms.remove(it.firstPhoneNumber.flag != null)
                             listOfHasEmail.remove(!it.listOfMails.contains(""))
                             listOfHasWhatsapp.remove(!it.hasWhatsapp)
 
-                            listOfPhoneNumbers.remove(
-                                if (!it.listOfPhoneNumbers.contains("")) {
-                                    it.listOfPhoneNumbers.random()
-                                } else {
-                                    ""
-                                }
-                            )
+                            if (listOfPhoneNumbers.contains(Pair(it.firstPhoneNumber, it.secondPhoneNumber))) {
+                                listOfPhoneNumbers.remove(Pair(it.firstPhoneNumber, it.secondPhoneNumber))
+                            }
+
                             listOfEmails.remove(
                                 if (!it.listOfMails.contains("")) {
                                     it.listOfMails.random()
@@ -213,22 +209,18 @@ class SectionGroupsListAdapter(
                             }
                         }
 
-                        listOfHasSms.addAll(section.items.map {
-                            !it.listOfPhoneNumbers.contains("")
-                        })
+                        listOfHasSms.addAll(
+                            section.items.map {
+                                it.firstPhoneNumber.flag != null
+                            })
 
                         listOfHasEmail.addAll(section.items.map {
                             !it.listOfMails.contains("")
                         })
 
                         listOfPhoneNumbers.addAll(section.items.map { contact ->
-                            if (!contact.listOfPhoneNumbers.contains("")) {
-                                contact.listOfPhoneNumbers.random()
-                            } else {
-                                ""
-                            }
+                            Pair(contact.firstPhoneNumber, contact.secondPhoneNumber)
                         })
-                        listOfPhoneNumbers.remove("")
 
                         listOfEmails.addAll(section.items.map { contact ->
                             if (!contact.listOfMails.contains("")) {
@@ -328,9 +320,9 @@ class SectionGroupsListAdapter(
                 listOfItemSelected.remove(contact)
                 listOfIds.remove(contact.id)
 
-                listOfHasSms.remove(!contact.listOfPhoneNumbers.contains(""))
-                if (!contact.listOfPhoneNumbers.contains("")) {
-                    listOfPhoneNumbers.remove(contact.listOfPhoneNumbers.random())
+                listOfHasSms.remove(contact.firstPhoneNumber.flag != null)
+                if (listOfPhoneNumbers.contains(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))) {
+                    listOfPhoneNumbers.remove(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))
                 }
 
                 listOfHasEmail.remove(!contact.listOfMails.contains(""))
@@ -354,10 +346,8 @@ class SectionGroupsListAdapter(
                 listOfItemSelected.add(contact)
                 listOfIds.add(contact.id)
 
-                listOfHasSms.add(!contact.listOfPhoneNumbers.contains(""))
-                if (!contact.listOfPhoneNumbers.contains("")) {
-                    listOfPhoneNumbers.add(contact.listOfPhoneNumbers.random())
-                }
+                listOfHasSms.add(contact.firstPhoneNumber.flag != null)
+                listOfPhoneNumbers.add(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))
 
                 listOfHasEmail.add(!contact.listOfMails.contains(""))
                 if (!contact.listOfMails.contains("")) {

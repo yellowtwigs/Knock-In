@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.groups.list
 
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 
 data class ContactInGroupViewState(
     val id: Int,
@@ -8,7 +9,8 @@ data class ContactInGroupViewState(
     var lastName: String,
     var profilePicture: Int,
     val profilePicture64: String,
-    val listOfPhoneNumbers: List<String>,
+    val firstPhoneNumber: PhoneNumberWithSpinner,
+    val secondPhoneNumber: PhoneNumberWithSpinner,
     val listOfMails: List<String>,
     val priority: Int,
     val hasWhatsapp: Boolean,

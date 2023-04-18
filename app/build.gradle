@@ -13,9 +13,9 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 32
-        versionCode 192
+        versionCode 201
 //        versionName "2.2.8"
-        versionName "2.5.7"
+        versionName "3.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -139,8 +139,6 @@ dependencies {
     implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
 
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
-    implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
-    implementation 'com.facebook.android:facebook-login:13.0.0'
 
     def billing_version = "5.1.0"
     implementation("com.android.billingclient:billing-ktx:$billing_version")

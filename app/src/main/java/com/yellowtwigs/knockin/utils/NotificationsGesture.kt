@@ -27,9 +27,10 @@ object NotificationsGesture {
     const val GMAIL_PACKAGE = "com.google.android.gm"
     const val OUTLOOK_PACKAGE = "com.microsoft.office.outlook"
 
-    private const val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
-    private const val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
-    private const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+    const val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
+    const val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
+    const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
+    const val MESSAGES_PACKAGE = "com.chating.messages.chat.fun"
 
     const val SIGNAL_PACKAGE = "org.thoughtcrime.securesms"
     const val TELEGRAM_PACKAGE = "org.telegram.messenger"
@@ -39,7 +40,6 @@ object NotificationsGesture {
     const val SNAPCHAT_PACKAGE = "com.snapchat.android"
     const val SKYPE_PACKAGE = "com.skype.raider"
     private const val REDDIT_PACKAGE = "com.reddit.frontpage"
-    private const val MESSAGES_PACKAGE = "com.chating.messages.chat.fun"
     private const val VIBER_PACKAGE = "com.viber.voip"
 
     private const val YOUTUBE_PACKAGE = "com.google.android.youtube"

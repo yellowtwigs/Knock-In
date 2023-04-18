@@ -5,6 +5,8 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
+import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +28,8 @@ class ContactsListViewModel @Inject constructor(
             lastName = contact.lastName,
             profilePicture = contact.profilePicture,
             profilePicture64 = contact.profilePicture64,
-            listOfPhoneNumbers = contact.listOfPhoneNumbers,
+            firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
+            secondPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
             listOfMails = contact.listOfMails,
             priority = contact.priority,
             isFavorite = contact.isFavorite == 1,
@@ -140,7 +143,7 @@ class ContactsListViewModel @Inject constructor(
     private fun filterContactsList(filterBy: Int, listOfContacts: List<ContactsListViewState>): List<ContactsListViewState> {
         when (filterBy) {
             R.id.sms_filter -> {
-                return listOfContacts.filter { it.listOfPhoneNumbers.isNotEmpty() && it.listOfPhoneNumbers[0].isNotEmpty() }
+                return listOfContacts.filter { it.firstPhoneNumber.phoneNumber.isNotBlank() && it.secondPhoneNumber.phoneNumber.isNotBlank() }
             }
             R.id.mail_filter -> {
                 return listOfContacts.filter { it.listOfMails.isNotEmpty() && it.listOfMails[0].isNotEmpty() }

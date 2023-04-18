@@ -16,5 +16,5 @@ interface EditContactRepository {
 
     suspend fun updateContactPriorityById(id: Int, priority: Int)
 
-    suspend fun deleteContact(contact: ContactDB)
+    suspend fun deleteContactById(id: Int)
 }

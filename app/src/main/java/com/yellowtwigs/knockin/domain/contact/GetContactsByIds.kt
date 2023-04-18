@@ -1,10 +1,10 @@
 package com.yellowtwigs.knockin.domain.contact
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
+import com.yellowtwigs.knockin.utils.ContactGesture
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -34,7 +34,8 @@ class GetContactsByIds @Inject constructor(
             contact.lastName,
             contact.profilePicture,
             contact.profilePicture64,
-            contact.listOfPhoneNumbers,
+            firstPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
+            secondPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
             contact.listOfMails,
             contact.priority,
             contact.isFavorite == 1,

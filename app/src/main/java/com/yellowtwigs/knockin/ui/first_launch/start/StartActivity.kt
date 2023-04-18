@@ -429,7 +429,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Import Contacts Validation")
 
                 CoroutineScope(Dispatchers.Main).launch {

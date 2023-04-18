@@ -12,8 +12,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.databinding.ActivityGroupsListBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
@@ -281,7 +283,79 @@ class GroupsListActivity : AppCompatActivity() {
                 fromOtherApp = true
             }
             smsButton.setOnClickListener {
-                monoChannelSmsClick(listOfPhoneNumbers)
+                val newListOfPhoneNumbers = arrayListOf<PhoneNumberWithSpinner>()
+
+                listOfPhoneNumbers.map { pair ->
+                    if (pair.second == null) {
+                        newListOfPhoneNumbers.add(pair.first)
+                    } else {
+                        if (pair.first.flag == 2 && pair.second?.flag == 2) {
+                            MaterialAlertDialogBuilder(
+                                this@GroupsListActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor))
+                                .setTitle("")
+                                .setMessage(getString(R.string.two_numbers_dialog_message))
+                                .setPositiveButton(pair.first.phoneNumber) { _, _ ->
+                                    newListOfPhoneNumbers.add(pair.first)
+                                }.setNegativeButton(pair.second?.phoneNumber) { dialog, _ ->
+                                    pair.second?.let {
+                                        newListOfPhoneNumbers.add(it)
+                                    }
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (pair.first.flag == 2 && pair.second?.flag == null) {
+                            newListOfPhoneNumbers.add(pair.first)
+                        } else if (pair.first.flag == null && pair.second?.flag == 2) {
+                            pair.second?.let {
+                                newListOfPhoneNumbers.add(it)
+                            }
+                        } else if (pair.first.flag != 2 && pair.second?.flag == null) {
+                            MaterialAlertDialogBuilder(
+                                this@GroupsListActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
+                                .setMessage(getString(R.string.multi_channel_not_mobile_flag))
+                                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                                    newListOfPhoneNumbers.add(pair.first)
+                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (pair.first.flag == null && pair.second?.flag != 2) {
+                            MaterialAlertDialogBuilder(
+                                this@GroupsListActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
+                                .setMessage(getString(R.string.multi_channel_not_mobile_flag))
+                                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                                    pair.second?.let {
+                                        newListOfPhoneNumbers.add(it)
+                                    }
+                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (pair.first.flag != 2 && pair.second?.flag != 2) {
+                            MaterialAlertDialogBuilder(
+                                this@GroupsListActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor))
+                                .setTitle("")
+                                .setMessage(getString(R.string.two_numbers_dialog_message))
+                                .setPositiveButton(pair.first.phoneNumber) { _, _ ->
+                                    newListOfPhoneNumbers.add(pair.first)
+                                }.setNegativeButton(pair.second?.phoneNumber) { dialog, _ ->
+                                    pair.second?.let {
+                                        newListOfPhoneNumbers.add(it)
+                                    }
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else {
+
+                        }
+                    }
+                }
+
+                monoChannelSmsClick(newListOfPhoneNumbers)
                 fromOtherApp = true
             }
             gmailButton.setOnClickListener {
@@ -291,10 +365,10 @@ class GroupsListActivity : AppCompatActivity() {
         }
     }
 
-    private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
-        var message = "smsto:" + listOfPhoneNumber[0]
+    private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<PhoneNumberWithSpinner>) {
+        var message = "smsto:" + listOfPhoneNumber[0].phoneNumber
         for (i in 0 until listOfPhoneNumber.size) {
-            message += ";" + listOfPhoneNumber[i]
+            message += ";" + listOfPhoneNumber[i].phoneNumber
         }
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
     }

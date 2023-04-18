@@ -23,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 import java.io.InputStream
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -152,9 +151,15 @@ class ImportContactsViewModel @Inject constructor(
         )
 
         phoneNumberContact?.apply {
+            var lastId = ""
+            var savedPhoneNumberWithType = ""
+            var savedPhoneNumber = ""
+            var savedPhoneType = ""
+            var savedPhoto = ""
+
             while (moveToNext()) {
                 val phoneId = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
-
+                val phoneType = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE))
                 val phoneNumber = if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)) == null) {
                     ""
                 } else {
@@ -162,12 +167,7 @@ class ImportContactsViewModel @Inject constructor(
                 }
 
                 var phonePic = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
-
-
-                phonePic = if (phonePic == null || phonePic.contains(
-                        "content://com.android.contactList/contactList/", ignoreCase = true
-                    )
-                ) {
+                phonePic = if (phonePic == null || phonePic.contains("content://com.android.contactList/contactList/", ignoreCase = true)) {
                     ""
                 } else {
                     val photo = phoneId?.toLong()?.let { openPhoto(it, resolver) }
@@ -178,12 +178,82 @@ class ImportContactsViewModel @Inject constructor(
                     }
                 }
 
-                contactDetails = mutableMapOf(
-                    1 to phoneId!!.toInt(), 2 to phoneNumber, 3 to phonePic
-                )
+                Log.i("ImportPhoneNumbersData", "phoneNumber : $phoneNumber")
+                Log.i("ImportPhoneNumbersData", "isLast : $isLast")
 
-                if (listOfDetails.isEmpty() || !listOfDetails.contains(contactDetails)) {
-                    listOfDetails.add(contactDetails)
+//                Log.i("ImportPhoneNumbersData", "phoneId : $phoneId")
+//                Log.i("ImportPhoneNumbersData", "phoneType : $phoneType")
+//                Log.i("ImportPhoneNumbersData", "savedPhoneType : $savedPhoneType")
+//                Log.i("ImportPhoneNumbersData", "phoneNumber : $phoneNumber")
+//                Log.i("ImportPhoneNumbersData", "$savedPhoneNumber : $savedPhoneNumber")
+//                Log.i("ImportPhoneNumbersData", "savedPhoneNumberWithType : $savedPhoneNumberWithType")
+
+                if (lastId == "") {
+                    // 01 74 85 96 36
+                    // 067-313-9484
+
+                    lastId = phoneId
+                    savedPhoneNumberWithType = "$phoneType:$phoneNumber"
+                    savedPhoneNumber = phoneNumber
+                    savedPhoneType = phoneType
+                    savedPhoto = phonePic
+                } else {
+                    if (lastId == phoneId) {
+                        if (savedPhoneNumber == phoneNumber && savedPhoneType == phoneType) {
+
+                        } else if (phoneNumber.contains("-") || savedPhoneNumber.contains("-")) {
+                            if (phoneNumber.replace("-", "") == savedPhoneNumber || savedPhoneNumber.replace(
+                                    "-", ""
+                                ) == phoneNumber
+                            ) {
+
+                            } else {
+                                savedPhoneNumberWithType = "$savedPhoneNumberWithType ||| $phoneType:$phoneNumber"
+                                savedPhoneNumber = phoneNumber
+                                savedPhoneType = phoneType
+                                savedPhoto = phonePic
+                            }
+                        } else if (phoneNumber.contains(" ") || savedPhoneNumber.contains(" ")) {
+                            if (phoneNumber.replace(" ", "") == savedPhoneNumber || savedPhoneNumber.replace(
+                                    " ", ""
+                                ) == phoneNumber
+                            ) {
+
+                            } else {
+                                savedPhoneNumberWithType = "$savedPhoneNumberWithType ||| $phoneType:$phoneNumber"
+                                savedPhoneNumber = phoneNumber
+                                savedPhoneType = phoneType
+                                savedPhoto = phonePic
+                            }
+                        } else {
+                            savedPhoneNumberWithType = "$savedPhoneNumberWithType ||| $phoneType:$phoneNumber"
+                            savedPhoneNumber = phoneNumber
+                            savedPhoneType = phoneType
+                            savedPhoto = phonePic
+                        }
+                    } else {
+                        contactDetails = mutableMapOf(
+                            1 to lastId.toInt(), 2 to savedPhoneNumberWithType, 3 to savedPhoto
+                        )
+                        if (listOfDetails.isEmpty() || !listOfDetails.contains(contactDetails)) {
+                            listOfDetails.add(contactDetails)
+                        }
+
+                        lastId = phoneId
+                        savedPhoneNumberWithType = "$phoneType:$phoneNumber"
+                        savedPhoneNumber = phoneNumber
+                        savedPhoneType = phoneType
+                        savedPhoto = phonePic
+                    }
+                }
+
+                if (isLast) {
+                    contactDetails = mutableMapOf(
+                        1 to phoneId.toInt(), 2 to "$phoneType:$phoneNumber", 3 to phonePic
+                    )
+                    if (listOfDetails.isEmpty() || !listOfDetails.contains(contactDetails)) {
+                        listOfDetails.add(contactDetails)
+                    }
                 }
             }
             close()
@@ -347,8 +417,26 @@ class ImportContactsViewModel @Inject constructor(
                                 }
                             }
 
-                            val listOfPhoneNumbers = mutableListOf<String>()
-                            listOfPhoneNumbers.add(details[2].toString())
+                            val listOfPhoneNumbers = arrayListOf<String>()
+
+                            if (details[2].toString().contains(" ||| ")) {
+
+                                val number1 = details[2].toString().split(" ||| ")[0]
+                                val number2 = details[2].toString().split(" ||| ")[1]
+
+                                if (number1.contains(" ||| ")) {
+                                    listOfPhoneNumbers.add(number1.split(" ||| ")[0])
+                                } else {
+                                    listOfPhoneNumbers.add(number1)
+                                }
+                                if (number2.contains(" ||| ")) {
+                                    listOfPhoneNumbers.add(number2.split(" ||| ")[0])
+                                } else {
+                                    listOfPhoneNumbers.add(number2)
+                                }
+                            } else {
+                                listOfPhoneNumbers.add(details[2].toString())
+                            }
 
                             val listOfMails = mutableListOf<String>()
 
@@ -569,8 +657,6 @@ class ImportContactsViewModel @Inject constructor(
             }
         }
         phoneContact?.close()
-
-//        Log.i("getAllGroups", "$allGroupMembers")
 
         return allGroupMembers
     }

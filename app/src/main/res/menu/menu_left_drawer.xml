@@ -23,6 +23,10 @@
             android:icon="@drawable/ic_grid"
             android:title="@string/left_drawer_my_screen" />
         <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/left_drawer_statistics" />
+        <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help"
             android:title="@string/left_drawer_help" />

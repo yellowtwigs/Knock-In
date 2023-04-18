@@ -4,18 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityMultiChannelBinding
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
-import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLEncoder
@@ -59,91 +61,91 @@ class MultiChannelActivity : AppCompatActivity() {
                 val hasWhatsapp = listOfHasWhatsapp.size != 0
                 val hasEmail = listOfMails.size != 0
 
-                if (messageEditText.text.toString() != "") {
-                    if (!hasSms && !hasWhatsapp && !hasEmail) {
-                        Toast.makeText(
-                            this@MultiChannelActivity, getString(R.string.multi_channel_list_of_channel_selected_empty), Toast.LENGTH_LONG
-                        ).show()
-                        sendValidate = false
-                    } else {
-                        if (hasSms && !hasWhatsapp && !hasEmail) {
-                            val numbers = arrayListOf<String>()
-                            listOfPhoneNumbers.forEach {
-                                numbers.add(it.second)
-                            }
-                            multiChannelSendMessage(
-                                numbers, messageEditText.text.toString()
-                            )
-                            sendValidate = true
-                        }
-                        if (hasWhatsapp && !hasSms && !hasEmail) {
-                            multiChannelSendMessageWhatsapp(messageEditText.text.toString())
-                            sendValidate = true
-                        }
-                        if (hasEmail && !hasSms && !hasWhatsapp) {
-                            val mails = arrayListOf<String>()
-                            listOfMails.forEach {
-                                mails.add(it.second)
-                            }
-                            multiChannelMailClick(
-                                mails, messageEditText.text.toString()
-                            )
-                            sendValidate = true
-                        } // Validate
+                val newListOfPhoneNumbers = arrayListOf<String>()
 
-                        // Two Channels
-                        if (hasSms && hasWhatsapp && !hasEmail) {
-                            val numbers = arrayListOf<String>()
-                            listOfPhoneNumbers.forEach {
-                                numbers.add(it.second)
-                            }
-                            multiChannelSendMessage(
-                                numbers, messageEditText.text.toString()
-                            )
-                            openWhatsapp = true
-                            twoChannels = true
-                        } // Validate
-                        if (hasSms && hasEmail && !hasWhatsapp) {
-                            val numbers = arrayListOf<String>()
-                            listOfPhoneNumbers.forEach {
-                                numbers.add(it.second)
-                            }
-                            multiChannelSendMessage(
-                                numbers, messageEditText.text.toString()
-                            )
-                            openMail = true
-                            twoChannels = true
-                        } // Validate
-                        if (hasWhatsapp && hasEmail && !hasSms) {
-                            multiChannelSendMessageWhatsapp(messageEditText.text.toString())
-                            openMail = true
-                            twoChannels = true
-                        } // Validate
+                listOfPhoneNumbers.map { pair ->
+                    newListOfPhoneNumbers.add(pair.second)
+                }
 
-                        if (hasSms && hasWhatsapp && hasEmail) {
-                            val numbers = arrayListOf<String>()
-                            listOfPhoneNumbers.forEach {
-                                numbers.add(it.second)
-                            }
-                            multiChannelSendMessage(
-                                numbers, messageEditText.text.toString()
-                            )
+                sendMessage(messageEditText, hasSms, hasWhatsapp, hasEmail, newListOfPhoneNumbers)
+            }
+        }
+    }
 
-                            openWhatsapp = true
-                            openMail = false
-                            tripleChannels = true
-                        }
+    private fun sendMessage(
+        messageEditText: AppCompatEditText,
+        hasSms: Boolean,
+        hasWhatsapp: Boolean,
+        hasEmail: Boolean,
+        newListOfPhoneNumbers: ArrayList<String>
+    ) {
+        if (messageEditText.text.toString() != "") {
+            if (!hasSms && !hasWhatsapp && !hasEmail) {
+                Toast.makeText(
+                    this@MultiChannelActivity, getString(R.string.multi_channel_list_of_channel_selected_empty), Toast.LENGTH_LONG
+                ).show()
+                sendValidate = false
+            } else {
+                if (hasSms && !hasWhatsapp && !hasEmail) {
+                    multiChannelSendMessage(
+                        newListOfPhoneNumbers, messageEditText.text.toString()
+                    )
+                    sendValidate = true
+                }
+                if (hasWhatsapp && !hasSms && !hasEmail) {
+                    multiChannelSendMessageWhatsapp(messageEditText.text.toString())
+                    sendValidate = true
+                }
+                if (hasEmail && !hasSms && !hasWhatsapp) {
+                    val mails = arrayListOf<String>()
+                    listOfMails.forEach {
+                        mails.add(it.second)
                     }
+                    multiChannelMailClick(
+                        mails, messageEditText.text.toString()
+                    )
+                    sendValidate = true
+                } // Validate
 
-                    hideKeyboard()
+                // Two Channels
+                if (hasSms && hasWhatsapp && !hasEmail) {
+                    multiChannelSendMessage(
+                        newListOfPhoneNumbers, messageEditText.text.toString()
+                    )
+                    openWhatsapp = true
+                    twoChannels = true
+                } // Validate
+                if (hasSms && hasEmail && !hasWhatsapp) {
+                    multiChannelSendMessage(
+                        newListOfPhoneNumbers, messageEditText.text.toString()
+                    )
+                    openMail = true
+                    twoChannels = true
+                } // Validate
+                if (hasWhatsapp && hasEmail && !hasSms) {
+                    multiChannelSendMessageWhatsapp(messageEditText.text.toString())
+                    openMail = true
+                    twoChannels = true
+                } // Validate
 
-                } else {
-                    Toast.makeText(
-                        this@MultiChannelActivity, getString(R.string.multi_channel_empty_field), Toast.LENGTH_SHORT
-                    ).show()
-                    hideKeyboard()
+                if (hasSms && hasWhatsapp && hasEmail) {
+                    multiChannelSendMessage(
+                        newListOfPhoneNumbers, messageEditText.text.toString()
+                    )
+
+                    openWhatsapp = true
+                    openMail = false
+                    tripleChannels = true
                 }
             }
+
+            hideKeyboard()
+
+        } else {
+            Toast.makeText(
+                this@MultiChannelActivity, getString(R.string.multi_channel_empty_field), Toast.LENGTH_SHORT
+            ).show()
+            hideKeyboard()
         }
     }
 
@@ -164,20 +166,100 @@ class MultiChannelActivity : AppCompatActivity() {
 
         listOfContactSelected?.let {
             multiChannelViewModel.getContactsByIds(it).observe(this@MultiChannelActivity) { contacts ->
-                val multiChannelListAdapter = MultiChannelListAdapter(this@MultiChannelActivity, { id, image, phoneNumber ->
-                    itemSelectedPhoneNumber(id, image, phoneNumber)
-                }, { id, image, mail ->
-                    itemSelectedMail(id, image, mail)
-                }, { id, image, phoneNumber ->
-                    itemSelectedWhatsapp(id, image, phoneNumber)
-                })
+                val multiChannelListAdapter =
+                    MultiChannelListAdapter(this@MultiChannelActivity, { id, image, firstPhoneNumber, secondPhoneNumber ->
+
+                        if (firstPhoneNumber.flag == 2 && secondPhoneNumber.flag == 2) {
+                            MaterialAlertDialogBuilder(
+                                this@MultiChannelActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                                .setMessage(getString(R.string.two_numbers_dialog_message))
+                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                    itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
+                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                    itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (firstPhoneNumber.flag == 2 && secondPhoneNumber.flag == null) {
+                            itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
+                        } else if (firstPhoneNumber.flag == null && secondPhoneNumber.flag == 2) {
+                            itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
+                        } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber.flag == null) {
+                            MaterialAlertDialogBuilder(
+                                this@MultiChannelActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
+                                .setMessage(getString(R.string.multi_channel_not_mobile_flag))
+                                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                                    itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
+                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (firstPhoneNumber.flag == null && secondPhoneNumber.flag != 2) {
+                            MaterialAlertDialogBuilder(
+                                this@MultiChannelActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
+                                .setMessage(getString(R.string.multi_channel_not_mobile_flag))
+                                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                                    itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
+                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber.flag != 2) {
+                            MaterialAlertDialogBuilder(
+                                this@MultiChannelActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                                .setMessage(getString(R.string.two_numbers_dialog_message))
+                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                    itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
+                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                    itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (firstPhoneNumber.flag == 2 && secondPhoneNumber.flag != 2) {
+                            MaterialAlertDialogBuilder(
+                                this@MultiChannelActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                                .setMessage(getString(R.string.two_numbers_dialog_message))
+                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                    itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
+                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                    itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber.flag == 2) {
+                            MaterialAlertDialogBuilder(
+                                this@MultiChannelActivity, R.style.AlertDialog
+                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                                .setMessage(getString(R.string.two_numbers_dialog_message))
+                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                    itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
+                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                    itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
+                                    dialog.cancel()
+                                    dialog.dismiss()
+                                }.show()
+                        } else {
+
+                        }
+
+                    }, { id, image, mail ->
+
+                        itemSelectedMail(id, image, mail)
+
+                    }, { id, image, firstPhoneNumber, secondPhoneNumber ->
+                        itemSelectedWhatsapp(id, image, firstPhoneNumber)
+                    })
 
                 binding.recyclerView.apply {
                     multiChannelListAdapter.submitList(null)
                     multiChannelListAdapter.submitList(contacts)
                     adapter = multiChannelListAdapter
                     layoutManager = LinearLayoutManager(context)
-                    setItemViewCacheSize(500)
                 }
             }
         }

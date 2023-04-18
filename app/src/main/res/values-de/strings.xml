@@ -271,7 +271,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat ist nicht installiert</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">Aufsuchen</string>
     <string name="notification_history_delete_notifications">Löschen Sie eine oder mehrere Benachrichtigungen</string>
     <string name="notification_history_delete_notifications_confirmation">Sind sie sicher auf iher Wahl?</string>
     <string name="notification_history_alert_dialog_text">Erinnerung: Sie können eine Benachrichtigung auch mit einem langen Fingertipp auswählen und mit dem Symbol oben rechts löschen</string>

@@ -17,6 +17,7 @@ import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +58,8 @@ class GroupsListViewModel @Inject constructor(
             contact.lastName,
             contact.profilePicture,
             contact.profilePicture64,
-            contact.listOfPhoneNumbers,
+            firstPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
+            secondPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
             contact.listOfMails,
             contact.priority,
             contact.isFavorite == 1,
@@ -93,9 +95,6 @@ class GroupsListViewModel @Inject constructor(
                         if (contact.listOfMails[0] != "" && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
                             emails.add(contact.listOfMails[0])
                         }
-                        if (contact.listOfPhoneNumbers[0] != "" && contact.listOfPhoneNumbers[0].isNotEmpty() && contact.listOfPhoneNumbers[0].isNotBlank()) {
-                            phoneNumbers.add(contact.listOfPhoneNumbers[0])
-                        }
 
                         listOfContactsInGroup.add(
                             ContactInGroupViewState(
@@ -104,7 +103,8 @@ class GroupsListViewModel @Inject constructor(
                                 contact.lastName,
                                 contact.profilePicture,
                                 contact.profilePicture64,
-                                contact.listOfPhoneNumbers,
+                                firstPhoneNumber =  contact.firstPhoneNumber,
+                                secondPhoneNumber = contact.secondPhoneNumber,
                                 contact.listOfMails,
                                 contact.priority,
                                 contact.hasWhatsapp,

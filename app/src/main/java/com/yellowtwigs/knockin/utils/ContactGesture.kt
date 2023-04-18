@@ -4,25 +4,168 @@ import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
+import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity.Companion.PHONE_CALL_REQUEST_CODE
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import java.sql.DriverManager
 import java.util.*
 
 object ContactGesture {
+
+    fun handleContactWithMultiplePhoneNumbers(
+        cxt: Context,
+        phoneNumbers: List<PhoneNumberWithSpinner>,
+        action: String,
+        onClickedMultipleNumbers: (String, PhoneNumberWithSpinner, PhoneNumberWithSpinner) -> Unit,
+        onNotMobileFlagClicked: (String, String, String) -> Unit,
+        message: String
+    ) {
+        if (phoneNumbers.size > 1) {
+            onClickedMultipleNumbers(action, phoneNumbers[0], phoneNumbers[1])
+        } else if (phoneNumbers.isNotEmpty()) {
+            val type = phoneNumbers[0].flag
+            val phoneNumber = phoneNumbers[0].phoneNumber
+
+            if (cxt is ContactsListActivity) {
+                when (action) {
+                    "call" -> {
+                        cxt.callPhone(phoneNumber)
+                    }
+                    "sms" -> {
+                        if (type == 2) {
+                            openSms(phoneNumber, cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, "")
+                        }
+                    }
+                    "send_whatsapp" -> {
+                        if (type == 2) {
+                            sendMessageWithWhatsapp(phoneNumber, message, cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, message)
+                        }
+                    }
+                    "send_message" -> {
+                        if (type == 2) {
+                            sendMessageWithAndroidMessage(phoneNumber, message, cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, message)
+                        }
+                    }
+                    "whatsapp" -> {
+                        if (type == 2) {
+                            openWhatsapp(converter06To33(phoneNumber), cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, "")
+                        }
+                    }
+                    "telegram" -> {
+                        if (type == 2) {
+                            goToTelegram(cxt, phoneNumber)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, "")
+                        }
+                    }
+                }
+            } else if (cxt is ContactSelectedWithAppsActivity) {
+                when (action) {
+                    "call" -> {
+                        callPhone(phoneNumber, cxt)
+                    }
+                    "sms" -> {
+                        if (type == 2) {
+                            openSms(phoneNumber, cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, "")
+                        }
+                    }
+                    "send_whatsapp" -> {
+                        if (type == 2) {
+                            sendMessageWithWhatsapp(phoneNumber, message, cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, message)
+                        }
+                    }
+                    "send_message" -> {
+                        if (type == 2) {
+                            sendMessageWithAndroidMessage(phoneNumber, message, cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, message)
+                        }
+                    }
+                    "whatsapp" -> {
+                        if (type == 2) {
+                            openWhatsapp(converter06To33(phoneNumber), cxt)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, "")
+                        }
+                    }
+                    "telegram" -> {
+                        if (type == 2) {
+                            goToTelegram(cxt, phoneNumber)
+                        } else {
+                            onNotMobileFlagClicked(action, phoneNumber, "")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun transformPhoneNumberToSinglePhoneNumberWithSpinner(phoneNumbers: List<String>, firstPhoneNumber: Boolean): PhoneNumberWithSpinner {
+        return if (firstPhoneNumber && phoneNumbers.isNotEmpty()) {
+            if (phoneNumbers[0].contains(":")) {
+                PhoneNumberWithSpinner(
+                    flag = phoneNumbers[0].split(":")[0].toInt(), // 1 ==> 0
+                    phoneNumber = phoneNumbers[0].split(":")[1]
+                )
+            } else {
+                PhoneNumberWithSpinner(
+                    flag = 0, phoneNumber = phoneNumbers[0]
+                )
+            }
+        } else if (phoneNumbers.size > 1) {
+            if (phoneNumbers[1].contains(":")) {
+                PhoneNumberWithSpinner(
+                    flag = phoneNumbers[1].split(":")[0].toInt(), // 1 ==> 0
+                    phoneNumber = phoneNumbers[1].split(":")[1]
+                )
+            } else {
+                PhoneNumberWithSpinner(
+                    flag = 0, phoneNumber = phoneNumbers[1]
+                )
+            }
+        } else {
+            PhoneNumberWithSpinner(
+                flag = null, phoneNumber = ""
+            )
+        }
+    }
+
+    fun transformPhoneNumberToPhoneNumbersWithSpinner(phoneNumbers: List<String>): List<PhoneNumberWithSpinner> {
+        return phoneNumbers.map { phoneNumber ->
+            if (phoneNumber.contains(":")) {
+                PhoneNumberWithSpinner(
+                    flag = phoneNumber.split(":")[0].toInt(), // 1 ==> 0
+                    phoneNumber = phoneNumber.split(":")[1]
+                )
+            } else {
+                PhoneNumberWithSpinner(
+                    flag = 0, phoneNumber = phoneNumber
+                )
+            }
+        }
+    }
 
     //region =========================================== WHATSAPP ===========================================
 
@@ -55,8 +198,7 @@ object ContactGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://whatsapp.com/")
+                    Intent.ACTION_VIEW, Uri.parse("https://whatsapp.com/")
                 )
             )
         }
@@ -90,12 +232,10 @@ object ContactGesture {
             Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
         } else {
             Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(
+                Intent.ACTION_VIEW, Uri.parse(
                     "https://t.me/${
                         converter06To33(phoneNumber).replace(
-                            "\\s".toRegex(),
-                            ""
+                            "\\s".toRegex(), ""
                         )
                     }"
                 )
@@ -108,8 +248,7 @@ object ContactGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://web.telegram.org/")
+                    Intent.ACTION_VIEW, Uri.parse("https://web.telegram.org/")
                 )
             )
         }
@@ -125,8 +264,7 @@ object ContactGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://web.telegram.org/")
+                    Intent.ACTION_VIEW, Uri.parse("https://web.telegram.org/")
                 )
             )
         }
@@ -147,16 +285,14 @@ object ContactGesture {
     }
 
     fun goToSignal(context: Context) {
-        val appIntent =
-            context.packageManager.getLaunchIntentForPackage("org.thoughtcrime.securesms")
+        val appIntent = context.packageManager.getLaunchIntentForPackage("org.thoughtcrime.securesms")
         try {
             context.startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
             Log.i("resolveInfoList", "$e")
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://signal.org/")
+                    Intent.ACTION_VIEW, Uri.parse("https://signal.org/")
                 )
             )
         }
@@ -182,20 +318,16 @@ object ContactGesture {
 
     fun callPhone(phoneNumber: String, context: Context) {
         if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CALL_PHONE
+                context, Manifest.permission.CALL_PHONE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                (context as Activity),
-                arrayOf(Manifest.permission.CALL_PHONE),
-                PHONE_CALL_REQUEST_CODE
+                (context as Activity), arrayOf(Manifest.permission.CALL_PHONE), PHONE_CALL_REQUEST_CODE
             )
         } else {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_CALL,
-                    Uri.fromParts("tel", phoneNumber, null)
+                    Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null)
                 )
             )
         }
@@ -203,7 +335,7 @@ object ContactGesture {
 
     fun isPhoneNumber(phoneNumber: String): Boolean {
         val regex =
-            "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))"
+            "((?:\\+|00)[17][ \\-]?|(?:\\+|00)[1-9]\\d{0,2}[ \\-]?|(?:\\+|00)1-\\d{3}[ \\-]?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:([ \\-][0-9]{2}){4}|((?:[0-9]{2}){4})|([ \\-][0-9]{3}[ \\-][0-9]{4})|([0-9]{7}))"
         return phoneNumber.matches(regex.toRegex())
     }
 
@@ -252,8 +384,7 @@ object ContactGesture {
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://outlook.com/")
+                    Intent.ACTION_VIEW, Uri.parse("https://outlook.com/")
                 )
             )
         }
@@ -274,16 +405,14 @@ object ContactGesture {
     fun goToGmail(context: Context) {
         val appIntent = Intent(Intent.ACTION_VIEW)
         appIntent.setClassName(
-            "com.google.android.gm",
-            "com.google.android.gm.ConversationListActivityGmail"
+            "com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail"
         )
         try {
             context.startActivity(appIntent)
         } catch (e: ActivityNotFoundException) {
             context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://gmail.com/")
+                    Intent.ACTION_VIEW, Uri.parse("https://gmail.com/")
                 )
             )
         }

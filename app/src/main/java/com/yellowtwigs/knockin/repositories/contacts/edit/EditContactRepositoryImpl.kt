@@ -21,5 +21,5 @@ class EditContactRepositoryImpl @Inject constructor(private val dao: ContactsDao
         dao.updateContactPriorityById(id, priority)
     }
 
-    override suspend fun deleteContact(contact: ContactDB) = dao.deleteContact(contact)
+    override suspend fun deleteContactById(id: Int) = dao.deleteContactById(id)
 }

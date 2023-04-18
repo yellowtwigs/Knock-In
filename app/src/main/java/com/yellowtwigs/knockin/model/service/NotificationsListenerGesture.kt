@@ -13,6 +13,8 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
+import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToPhoneNumbersWithSpinner
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 
 
@@ -127,7 +129,7 @@ object NotificationsListenerGesture {
                 sbp.statusBarNotificationInfo["android.text"].toString(),
                 platform,
                 "${contactDB.firstName} ${contactDB.lastName}",
-                contactDB.listOfPhoneNumbers[0],
+                transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                 contactDB.messengerId,
                 contactDB.listOfMails[0]
             )

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="@string/alert_dialog_vip_custom_settings_msg"
-        android:textAlignment="center"
+        android:gravity="center"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

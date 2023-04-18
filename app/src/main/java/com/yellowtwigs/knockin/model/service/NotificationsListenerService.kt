@@ -10,7 +10,6 @@ import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -35,10 +34,11 @@ import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.cancel
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.messagesNotUseless
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionXIntoScreen
 import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionYIntoScreen
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
-import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.isPhoneNumber
 import com.yellowtwigs.knockin.utils.ContactGesture.isValidEmail
+import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToPhoneNumbersWithSpinner
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToEndTime
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToHour
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToMinutes
@@ -406,7 +406,6 @@ class NotificationsListenerService : NotificationListenerService() {
                 edit.apply()
                 displayLayout(sbp, contactDB)
             } else {
-                Log.i("MessagesList", "sbp.id : ${sbp.id}")
                 popupNotificationViewStates.add(
                     PopupNotificationViewState(
                         popupNotificationViewStates.size,
@@ -414,7 +413,7 @@ class NotificationsListenerService : NotificationListenerService() {
                         sbp.statusBarNotificationInfo["android.text"].toString(),
                         convertPackageToString(sbp.appNotifier!!, this),
                         "${contactDB.firstName} ${contactDB.lastName}",
-                        contactDB.listOfPhoneNumbers[0],
+                        transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                         contactDB.messengerId,
                         contactDB.listOfMails[0]
                     )
@@ -515,7 +514,7 @@ class NotificationsListenerService : NotificationListenerService() {
                         sbp.statusBarNotificationInfo["android.text"].toString(),
                         convertPackageToString(sbp.appNotifier!!, this),
                         "${it.firstName} ${it.lastName}",
-                        it.listOfPhoneNumbers[0],
+                        transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                         it.messengerId,
                         it.listOfMails[0]
                     )

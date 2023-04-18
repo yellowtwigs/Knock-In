@@ -146,6 +146,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
             true
         }
     }
+
     private fun importContacts() {
         CoroutineScope(Dispatchers.Default).launch {
             importContactsViewModel.syncAllContactsInDatabase(contentResolver)

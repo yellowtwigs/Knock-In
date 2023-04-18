@@ -63,9 +63,9 @@
             android:layout_height="30dp"
             android:layout_marginEnd="20dp"
             android:background="?attr/actionBarItemBackground"
-            android:visibility="gone"
             android:clickable="true"
             android:focusable="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/validate"
             app:layout_constraintTop_toTopOf="parent"
@@ -216,40 +216,47 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/phone_number_layout"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/first_phone_number_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/background_layout_no_pressed_with_border"
                 android:backgroundTint="?attr/backgroundColor"
+                app:layout_constraintBottom_toTopOf="@+id/second_phone_number_layout"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/last_name_layout">
 
                 <RelativeLayout
-                    android:id="@+id/phone_number_icon"
+                    android:id="@+id/first_number_icon"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@color/transparentColor">
+                    android:background="@color/transparentColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_centerInParent="true"
                         app:srcCompat="@drawable/ic_phone_call" />
                 </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/phone_number_input"
-                    android:layout_width="match_parent"
+                    android:id="@+id/first_phone_number_input"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/phone_number_icon"
                     android:backgroundTint="?attr/backgroundColor"
                     android:hint="@string/edit_contact_phone_number"
                     android:textColor="?attr/textColor"
-                    android:textColorHint="?attr/textColor">
+                    android:textColorHint="?attr/textColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/first_number_icon">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/first_phone_number_content"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edit_text"
@@ -260,43 +267,50 @@
                         android:textColorHint="?attr/textColor" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/phone_number_fix_layout"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/second_phone_number_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_layout_no_pressed_with_border"
                 android:backgroundTint="?attr/backgroundColor"
+                app:layout_constraintBottom_toTopOf="@+id/phone_mail_layout"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phone_number_layout">
+                app:layout_constraintTop_toBottomOf="@+id/first_phone_number_layout">
 
                 <RelativeLayout
-                    android:id="@+id/phone_number_fix_icon"
+                    android:id="@+id/second_number_icon"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@color/transparentColor">
+                    android:background="@color/transparentColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_centerInParent="true"
                         app:srcCompat="@drawable/ic_phone_call" />
                 </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/phone_number_fix_input"
-                    android:layout_width="match_parent"
+                    android:id="@+id/second_phone_number_input"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/phone_number_fix_icon"
                     android:backgroundTint="?attr/backgroundColor"
                     android:hint="@string/edit_contact_phone_number"
                     android:textColor="?attr/textColor"
                     android:textColorHint="?attr/textColor"
-                    app:layout_constraintStart_toEndOf="@+id/phone_number_fix_icon">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/second_number_icon">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/second_phone_number_content"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edit_text"
@@ -307,7 +321,8 @@
                         android:textColorHint="?attr/textColor" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout
                 android:id="@+id/phone_mail_layout"
@@ -318,7 +333,7 @@
                 android:backgroundTint="?attr/backgroundColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phone_number_fix_layout">
+                app:layout_constraintTop_toBottomOf="@+id/second_phone_number_layout">
 
                 <RelativeLayout
                     android:id="@+id/mail_icon"
@@ -452,8 +467,8 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edit_text"
                         android:backgroundTint="?attr/backgroundColor"
-                        android:inputType="number"
                         android:hint="Messenger ID"
+                        android:inputType="number"
                         android:maxLines="1"
                         android:textColor="?attr/textColor"
                         android:textColorHint="?attr/textColor" />

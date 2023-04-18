@@ -436,7 +436,7 @@
     <string name="start_activity_skip_alert_dialog_positive_button">Skip</string>
 
     <string name="start_activity_go_edition_message">VIP notifications and notification history features are not available for "GO Edition" versions of Android.</string>
-    <string name="start_activity_go_edition_positive_button">Ok</string>
+    <string name="start_activity_go_edition_positive_button">OK</string>
     <string name="start_activity_personnalize_alert" translatable="false">You can personnalize notification for each individual VIP.</string>
     <string name="start_activity_alert_dialog_android_11_warning">Knock In\'s floating notifications (Bubbles) are not supported yet with Android 11 (version of your smartphone).  A version of the app offering floating notifications for Android 11 will be available soon. However, you can use the other functions of the application.</string>
 
@@ -502,4 +502,12 @@
     <string name="message_from">Message from %1$s</string>
     <string name="rate_this_app_title">Rate this app</string>
     <string name="rate_this_app_message">If you like this app, please take some seconds to rate it, it will help us a lot. Thanks</string>
+
+    <string name="two_numbers_dialog_message" translatable="false">You have two phone numbers, which one do you want to use ?</string>
+    <string name="not_mobile_flag_title" translatable="false">Not Mobile Flag</string>
+    <string name="not_mobile_flag_msg" translatable="false">This number is not mobile flagged, do you want to use it ?</string>
+    <string name="multi_channel_not_mobile_flag" translatable="false">You have at least one number that is not mobile flagged, do you want to use it ?</string>
+
+    <!--    android:entries="@array/messaging_apps_arrays"-->
+    <!--    android:prompt="@string/messaging_apps_arrays_prompt"-->
 </resources>

@@ -126,7 +126,10 @@ class GroupsListAdapter(
         override fun areContentsTheSame(
             oldItem: ContactInGroupViewState, newItem: ContactInGroupViewState
         ): Boolean {
-            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 && oldItem.listOfPhoneNumbers == newItem.listOfPhoneNumbers && oldItem.listOfMails == newItem.listOfMails
+            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 &&
+                    oldItem.firstPhoneNumber == newItem.firstPhoneNumber &&
+                    oldItem.secondPhoneNumber == newItem.secondPhoneNumber &&
+                    oldItem.listOfMails == newItem.listOfMails
         }
     }
 }

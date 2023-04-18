@@ -272,7 +272,6 @@
     <string name="cockpit_toast_snapchat_not_install">Snapchat غير مثبت</string>
     <!-- endregion -->
     <!-- region Notification History -->
-    <string name="notification_history_search_hint">البحث</string>
     <string name="notification_history_delete_notifications">حذف  إشعار واحد أو أكثر</string>
     <string name="notification_history_delete_notifications_confirmation">هل أنت متأكد من اختيارك ؟</string>
     <string name="notification_history_alert_dialog_text">تذكير: يمكنك أيضًا تحديد إشعار بضغطة طويلة وحذفه باستخدام الرمز في أعلى اليسار</string>

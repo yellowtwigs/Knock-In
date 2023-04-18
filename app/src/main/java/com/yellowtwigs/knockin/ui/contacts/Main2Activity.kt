@@ -125,9 +125,6 @@
 //
 //    private var settings_left_drawer_ThemeSwitch: SwitchCompat? = null
 //
-//    private lateinit var sharedFromSplashScreen: SharedPreferences
-//    private lateinit var sharedShowPopup: SharedPreferences
-//
 //    private val mOnNavigationItemSelectedListener =
 //        BottomNavigationView.OnNavigationItemSelectedListener { item ->
 //            when (item.itemId) {
@@ -196,21 +193,6 @@
 //
 //        if (isNotificationServiceEnabled()) {
 //            toggleNotificationListenerService()
-//        }
-//
-//        //endregion
-//
-//        //region ======================================== Mobile Ads ========================================
-//
-//        sharedFromSplashScreen = getSharedPreferences("fromSplashScreen", Context.MODE_PRIVATE)
-//        sharedShowPopup = getSharedPreferences("sharedShowPopup", Context.MODE_PRIVATE)
-//        val fromSplashScreen = sharedFromSplashScreen.getBoolean("fromSplashScreen", false)
-//        val showPopup = sharedShowPopup.getBoolean("sharedShowPopup", true)
-//
-//        if (showPopup) {
-//            if (fromSplashScreen) {
-//                customOptionVipPopupAd()
-//            }
 //        }
 //
 //        //endregion
@@ -1831,21 +1813,6 @@
 //        val edit = sharedFromSplashScreen.edit()
 //        edit.putBoolean("fromSplashScreen", false)
 //        edit.apply()
-//
-//        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//            .setView(R.layout.custom_alert_dialog_vip_notif_ad)
-//            .setPositiveButton(R.string.show_popup_positive_button) { alertDialog, _ ->
-//                val edit1 = sharedShowPopup.edit()
-//                edit1.putBoolean("sharedShowPopup", false)
-//                edit1.apply()
-//                alertDialog.dismiss()
-//                alertDialog.cancel()
-//            }.setNegativeButton(R.string.alert_dialog_close) { alertDialog, _ ->
-//                alertDialog.dismiss()
-//                alertDialog.cancel()
-//            }
-//            .show()
-//    }
 //
 ////endregion
 //}

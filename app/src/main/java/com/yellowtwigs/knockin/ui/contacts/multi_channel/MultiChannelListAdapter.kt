@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.MultiChannelItemLayoutBinding
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
@@ -17,23 +18,19 @@ import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapt
 
 class MultiChannelListAdapter(
     private val cxt: Context,
-    private val onClickedCallbackSms: (Int, AppCompatImageView, String) -> Unit,
+    private val onClickedCallbackSms: (Int, AppCompatImageView, PhoneNumberWithSpinner, PhoneNumberWithSpinner) -> Unit,
     private val onClickedCallbackEmail: (Int, AppCompatImageView, String) -> Unit,
-    private val onClickedCallbackWhatsapp: (Int, AppCompatImageView, String) -> Unit
-) :
-    ListAdapter<ContactsListViewState, MultiChannelListAdapter.ViewHolder>(
-        MultiChannelListViewStateComparator()
-    ) {
+    private val onClickedCallbackWhatsapp: (Int, AppCompatImageView, String, String) -> Unit
+) : ListAdapter<ContactsListViewState, MultiChannelListAdapter.ViewHolder>(
+    MultiChannelListViewStateComparator()
+) {
 
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
+        parent: ViewGroup, viewType: Int
     ): ViewHolder {
         return ViewHolder(
             MultiChannelItemLayoutBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
@@ -42,8 +39,7 @@ class MultiChannelListAdapter(
         holder.onBind(getItem(position))
     }
 
-    inner class ViewHolder(private val binding: MultiChannelItemLayoutBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: MultiChannelItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(contact: ContactsListViewState) {
             binding.apply {
@@ -53,7 +49,7 @@ class MultiChannelListAdapter(
                 name.text = contact.firstName + " " + contact.lastName
 
                 gmail.isVisible = contact.listOfMails[0] != ""
-                sms.isVisible = contact.listOfPhoneNumbers[0] != ""
+                sms.isVisible = contact.firstPhoneNumber.phoneNumber.isNotBlank()
                 whatsapp.isVisible = isWhatsappInstalled(cxt) && contact.hasWhatsapp
 
                 gmail.setOnClickListener {
@@ -62,14 +58,12 @@ class MultiChannelListAdapter(
                 }
 
                 sms.setOnClickListener {
-                    onClickedCallbackSms(contact.id, sms, contact.listOfPhoneNumbers.random())
+                    onClickedCallbackSms(contact.id, sms, contact.firstPhoneNumber, contact.secondPhoneNumber)
                 }
 
                 whatsapp.setOnClickListener {
                     onClickedCallbackWhatsapp(
-                        contact.id,
-                        whatsapp,
-                        contact.listOfPhoneNumbers.random()
+                        contact.id, whatsapp, contact.firstPhoneNumber.phoneNumber, contact.secondPhoneNumber.phoneNumber
                     )
                 }
             }
@@ -78,28 +72,18 @@ class MultiChannelListAdapter(
 
     class MultiChannelListViewStateComparator : DiffUtil.ItemCallback<ContactsListViewState>() {
         override fun areItemsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactsListViewState, newItem: ContactsListViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ContactsListViewState,
-            newItem: ContactsListViewState
+            oldItem: ContactsListViewState, newItem: ContactsListViewState
         ): Boolean {
-            return oldItem.firstName == newItem.firstName &&
-                    oldItem.lastName == newItem.lastName &&
-                    oldItem.profilePicture == newItem.profilePicture &&
-                    oldItem.profilePicture64 == newItem.profilePicture64 &&
-                    oldItem.listOfPhoneNumbers == newItem.listOfPhoneNumbers &&
-                    oldItem.listOfMails == newItem.listOfMails &&
-                    oldItem.priority == newItem.priority &&
-                    oldItem.isFavorite == newItem.isFavorite &&
-                    oldItem.messengerId == newItem.messengerId &&
-                    oldItem.hasWhatsapp == newItem.hasWhatsapp &&
-                    oldItem.hasTelegram == newItem.hasTelegram &&
-                    oldItem.hasSignal == newItem.hasSignal
+            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 &&
+                    oldItem.firstPhoneNumber == newItem.firstPhoneNumber &&
+                    oldItem.secondPhoneNumber == newItem.secondPhoneNumber &&
+                    oldItem.listOfMails == newItem.listOfMails && oldItem.priority == newItem.priority && oldItem.isFavorite == newItem.isFavorite && oldItem.messengerId == newItem.messengerId && oldItem.hasWhatsapp == newItem.hasWhatsapp && oldItem.hasTelegram == newItem.hasTelegram && oldItem.hasSignal == newItem.hasSignal
         }
     }
 }

@@ -59,7 +59,7 @@
                 android:background="@drawable/background_layout_selector"
                 android:paddingTop="10dp"
                 android:text="@string/notif_adapter_show_message_button"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -71,7 +71,7 @@
                 android:background="@drawable/background_layout_selector"
                 android:paddingTop="10dp"
                 android:text="@string/notif_adapter_call"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textStyle="bold"
                 android:visibility="visible" />
         </RelativeLayout>

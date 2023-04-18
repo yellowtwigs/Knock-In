@@ -31,6 +31,7 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewState
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -77,7 +78,7 @@ class VipSettingsActivity : AppCompatActivity() {
     private lateinit var permissionsPref: SharedPreferences
     private lateinit var binding: ActivityVipSettingsBinding
 
-    private lateinit var currentViewState: ContactDB
+    private lateinit var currentViewState: EditContactViewState
 
     //endregion
 
@@ -161,23 +162,17 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
                 dolphinDanceCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        dolphinDanceCheckbox,
-                        R.raw.dolphin_dance,
-                        jazzySoundBought
+                        dolphinDanceCheckbox, R.raw.dolphin_dance, jazzySoundBought
                     )
                 }
                 autumnLeavesCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        autumnLeavesCheckbox,
-                        R.raw.autumn_leaves,
-                        jazzySoundBought
+                        autumnLeavesCheckbox, R.raw.autumn_leaves, jazzySoundBought
                     )
                 }
                 freddieFreeloaderCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        freddieFreeloaderCheckbox,
-                        R.raw.freddie_freeloader,
-                        jazzySoundBought
+                        freddieFreeloaderCheckbox, R.raw.freddie_freeloader, jazzySoundBought
                     )
                 }
 
@@ -190,9 +185,7 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
                 offTheCurveCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        offTheCurveCheckbox,
-                        R.raw.off_the_curve_groove,
-                        funkySoundBought
+                        offTheCurveCheckbox, R.raw.off_the_curve_groove, funkySoundBought
                     )
                 }
                 funkYallCheckbox.setOnClickListener {
@@ -200,16 +193,12 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
                 keyboardFunkyToneCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        keyboardFunkyToneCheckbox,
-                        R.raw.keyboard_funky_tone,
-                        funkySoundBought
+                        keyboardFunkyToneCheckbox, R.raw.keyboard_funky_tone, funkySoundBought
                     )
                 }
                 uCantHoldNoGrooveCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        uCantHoldNoGrooveCheckbox,
-                        R.raw.u_cant_hold_no_groove,
-                        funkySoundBought
+                        uCantHoldNoGrooveCheckbox, R.raw.u_cant_hold_no_groove, funkySoundBought
                     )
                 }
                 coldSweatCheckbox.setOnClickListener {
@@ -222,16 +211,12 @@ class VipSettingsActivity : AppCompatActivity() {
 
                 xyloRelaxCheckbox.setOnClickListener {
                     onClickFirstCheckbox(
-                        xyloRelaxCheckbox,
-                        R.raw.xylophone_tone,
-                        relaxSoundBought
+                        xyloRelaxCheckbox, R.raw.xylophone_tone, relaxSoundBought
                     )
                 }
                 guitarRelaxCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        guitarRelaxCheckbox,
-                        R.raw.beautiful_chords_progression,
-                        relaxSoundBought
+                        guitarRelaxCheckbox, R.raw.beautiful_chords_progression, relaxSoundBought
                     )
                 }
                 gravityCheckbox.setOnClickListener {
@@ -239,23 +224,17 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
                 slowDancingCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        slowDancingCheckbox,
-                        R.raw.slow_dancing,
-                        relaxSoundBought
+                        slowDancingCheckbox, R.raw.slow_dancing, relaxSoundBought
                     )
                 }
                 scorpionThemeCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        scorpionThemeCheckbox,
-                        R.raw.fade_to_black,
-                        relaxSoundBought
+                        scorpionThemeCheckbox, R.raw.fade_to_black, relaxSoundBought
                     )
                 }
                 interstellarThemeCheckbox.setOnClickListener {
                     onClickCheckbox(
-                        interstellarThemeCheckbox,
-                        R.raw.interstellar_main_theme,
-                        relaxSoundBought
+                        interstellarThemeCheckbox, R.raw.interstellar_main_theme, relaxSoundBought
                     )
                 }
 
@@ -273,8 +252,7 @@ class VipSettingsActivity : AppCompatActivity() {
 
                     CoroutineScope(Dispatchers.Main).launch {
                         alarmSound?.stop()
-                        alarmSound =
-                            MediaPlayer.create(this@VipSettingsActivity, Uri.parse(notificationTone))
+                        alarmSound = MediaPlayer.create(this@VipSettingsActivity, Uri.parse(notificationTone))
                         alarmSound?.start()
                         delay(15000)
                         alarmSound?.stop()
@@ -351,13 +329,10 @@ class VipSettingsActivity : AppCompatActivity() {
                     }
                 }
 
-                startTime.isVisible =
-                    scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
+                startTime.isVisible = scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
                 endTime.isVisible = scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
-                startTimeEditText.isVisible =
-                    scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
-                endTimeEditText.isVisible =
-                    scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
+                startTimeEditText.isVisible = scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
+                endTimeEditText.isVisible = scheduleCustomRadioButton.isChecked || daytimeRadioButton.isChecked
 
                 if (hourLimit.contains("to")) {
                     binding.startTimeEditText.setText(convertTimeToStartTime(hourLimit))
@@ -386,12 +361,7 @@ class VipSettingsActivity : AppCompatActivity() {
     //region ========================================== Functions ===========================================
 
     private fun checkIfDataHasChanged(): Boolean {
-        return notificationSound != currentNotificationSound ||
-                isCustomSound != currentIsCustomSound ||
-                vipScheduleValue != currentVipScheduleValue ||
-                hourLimit != currentHourLimit ||
-                audioFile != currentAudioFile ||
-                notificationTone != currentNotificationTone
+        return notificationSound != currentNotificationSound || isCustomSound != currentIsCustomSound || vipScheduleValue != currentVipScheduleValue || hourLimit != currentHourLimit || audioFile != currentAudioFile || notificationTone != currentNotificationTone
     }
 
     //region ============================================= Date =============================================
@@ -416,8 +386,7 @@ class VipSettingsActivity : AppCompatActivity() {
         }
         binding.endTimeEditText.setOnClickListener { view ->
             val timePickerDialog = TimePickerDialog(
-                this,
-                { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
+                this, { timePicker: TimePicker?, hourOfDay: Int, minutes: Int ->
                     if (minutes < 10) {
                         binding.endTimeEditText.setText(
                             hourOfDay.toString() + "h0" + minutes
@@ -507,8 +476,8 @@ class VipSettingsActivity : AppCompatActivity() {
             if (intent.getBooleanExtra("hasChanged", false)) {
                 putExtra("FirstName", intent.getStringExtra("FirstName"))
                 putExtra("Lastname", intent.getStringExtra("Lastname"))
-                putExtra("PhoneNumber", intent.getStringExtra("PhoneNumber"))
-                putExtra("FixNumber", intent.getStringExtra("FixNumber"))
+                putExtra("FirstPhoneNumber", intent.getStringExtra("FirstPhoneNumber"))
+                putExtra("SecondPhoneNumber", intent.getStringExtra("SecondPhoneNumber"))
 
                 Log.i("VipSettingsViewState", "mail : ${intent.getStringExtra("Mail")}")
 
@@ -535,8 +504,7 @@ class VipSettingsActivity : AppCompatActivity() {
             if (binding.startTimeEditText.text.isNullOrBlank() || binding.endTimeEditText.text.isNullOrBlank()) {
             } else {
                 hourLimit = convertStartAndEndTimeToOneString(
-                    binding.startTimeEditText.text.toString(),
-                    binding.endTimeEditText.text.toString()
+                    binding.startTimeEditText.text.toString(), binding.endTimeEditText.text.toString()
                 )
                 putExtra("hourLimit", hourLimit)
             }
@@ -547,33 +515,25 @@ class VipSettingsActivity : AppCompatActivity() {
         if (toClose) {
             img.setImageDrawable(
                 ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.ic_bottom_arrow,
-                    null
+                    resources, R.drawable.ic_bottom_arrow, null
                 )
             )
         } else {
             img.setImageDrawable(
                 ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.ic_top_arrow,
-                    null
+                    resources, R.drawable.ic_top_arrow, null
                 )
             )
         }
     }
 
     private fun alertDialogBuySound() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-            .setTitle(getString(R.string.in_app_popup_tone_available_title))
-            .setMessage(getString(R.string.in_app_popup_tone_available_message))
-            .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.in_app_popup_tone_available_title))
+            .setMessage(getString(R.string.in_app_popup_tone_available_message)).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                 goToPremiumActivity()
-            }
-            .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+            }.setNegativeButton(R.string.alert_dialog_later) { _, _ ->
                 refreshChecked()
-            }
-            .show()
+            }.show()
     }
 
     private fun playAlarmSound() {
@@ -795,9 +755,7 @@ class VipSettingsActivity : AppCompatActivity() {
 
                         for (i in 0..title) {
                             try {
-                                if (cursor.getString(i)?.contains("storage") == true &&
-                                    cursor.getString(i)?.contains(".mp3") == true
-                                ) {
+                                if (cursor.getString(i)?.contains("storage") == true && cursor.getString(i)?.contains(".mp3") == true) {
                                     withContext(Dispatchers.Main) {
                                         binding.uploadSoundPath.isVisible = true
                                         binding.uploadSoundPath.text = cursor.getString(title)
@@ -818,9 +776,7 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -853,8 +809,7 @@ class VipSettingsActivity : AppCompatActivity() {
                 notificationTone = data.data.toString()
 
                 binding.uploadSoundPath.isVisible = true
-                binding.uploadSoundPath.text =
-                    data.data?.lastPathSegment?.split(":")?.get(1).toString()
+                binding.uploadSoundPath.text = data.data?.lastPathSegment?.split(":")?.get(1).toString()
 
                 binding.uploadCheckbox.isVisible = true
 
@@ -871,8 +826,7 @@ class VipSettingsActivity : AppCompatActivity() {
     private fun goToPremiumActivity() {
         startActivity(
             Intent(
-                this@VipSettingsActivity,
-                PremiumActivity::class.java
+                this@VipSettingsActivity, PremiumActivity::class.java
             ).putExtra("fromManageNotification", true)
         )
         finish()

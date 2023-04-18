@@ -34,9 +34,11 @@ import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
+import com.yellowtwigs.knockin.ui.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
@@ -44,6 +46,10 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
+import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
+import com.yellowtwigs.knockin.utils.ContactGesture.openSms
+import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
@@ -68,7 +74,7 @@ class ContactsListActivity : AppCompatActivity() {
     private var listOfItemSelected = arrayListOf<Int>()
 
     private var listOfHasSms = arrayListOf<Boolean>()
-    private var listOfPhoneNumbers = arrayListOf<String>()
+    private var listOfPhoneNumbers = arrayListOf<PhoneNumberWithSpinner>()
 
     private var listOfHasEmail = arrayListOf<Boolean>()
     private var listOfEmails = arrayListOf<String>()
@@ -80,7 +86,7 @@ class ContactsListActivity : AppCompatActivity() {
 
     private lateinit var firstTime: SharedPreferences
     private lateinit var rateThisAppSharedPreferences: SharedPreferences
-    private lateinit var sharedShowPopup: SharedPreferences
+    private lateinit var oneWeekSharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,15 +114,12 @@ class ContactsListActivity : AppCompatActivity() {
 
         rateThisAppSharedPreferences = getSharedPreferences("RateThisApp", Context.MODE_PRIVATE)
         firstTime = getSharedPreferences("FirstTimeInTheApp", Context.MODE_PRIVATE)
-        val fromSplashScreen = rateThisAppSharedPreferences.getBoolean("RateThisApp", true)
-
-        sharedShowPopup = getSharedPreferences("sharedShowPopup", Context.MODE_PRIVATE)
+        val isThisAppNotRate = rateThisAppSharedPreferences.getBoolean("RateThisApp", true)
 
         val calendar = Calendar.getInstance()
+        oneWeekSharedPreferences = getSharedPreferences("OneWeek", Context.MODE_PRIVATE)
 
         if (firstTime.getBoolean("FirstTimeInTheApp", true)) {
-            val oneWeekSharedPreferences = getSharedPreferences("OneWeek", Context.MODE_PRIVATE)
-
             val set = oneWeekSharedPreferences.getStringSet(
                 "OneWeek", setOf(
                     calendar.get(Calendar.YEAR).toString(),
@@ -148,109 +151,90 @@ class ContactsListActivity : AppCompatActivity() {
                     }
                 }
 
-                Log.i("OneWeek", "day : $day")
-                Log.i("OneWeek", "month : $month")
-                Log.i("OneWeek", "year : $year")
-
-                Log.i("OneWeek", "calendar.get(Calendar.DAY_OF_MONTH) : ${calendar.get(Calendar.DAY_OF_MONTH)}")
-                Log.i("OneWeek", "calendar.get(Calendar.MONTH) : ${calendar.get(Calendar.MONTH)}")
-                Log.i("OneWeek", "calendar.get(Calendar.YEAR) : ${calendar.get(Calendar.YEAR)}")
-
                 if (calendar.get(Calendar.DAY_OF_MONTH) >= day + 7) {
                     val editFirstTime = firstTime.edit()
                     editFirstTime.putBoolean("FirstTimeInTheApp", false)
                     editFirstTime.apply()
                     rateThisAppPopup()
                 } else if (calendar.get(Calendar.MONTH) > month) {
-                    when (day) {
-                        1 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
+                    if (calendar.get(Calendar.DAY_OF_MONTH) == day) {
+                        val editFirstTime = firstTime.edit()
+                        editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                        editFirstTime.apply()
 
-                                rateThisAppPopup()
-                                return
+                        rateThisAppPopup()
+                        return
+                    } else {
+                        when (day) {
+                            25 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) > 1) {
+                                    val editFirstTime = firstTime.edit()
+                                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                    editFirstTime.apply()
+
+                                    rateThisAppPopup()
+                                    return
+                                }
                             }
-                        }
-                        2 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
+                            26 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) >= 2) {
+                                    val editFirstTime = firstTime.edit()
+                                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                    editFirstTime.apply()
 
-                                rateThisAppPopup()
-                                return
+                                    rateThisAppPopup()
+                                    return
+                                }
                             }
-                        }
-                        25 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
+                            27 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) >= 3) {
+                                    val editFirstTime = firstTime.edit()
+                                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                    editFirstTime.apply()
 
-                                rateThisAppPopup()
-                                return
+                                    rateThisAppPopup()
+                                    return
+                                }
                             }
-                        }
-                        26 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 2) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
+                            28 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) >= 4) {
+                                    val editFirstTime = firstTime.edit()
+                                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                    editFirstTime.apply()
 
-                                rateThisAppPopup()
-                                return
+                                    rateThisAppPopup()
+                                    return
+                                }
                             }
-                        }
-                        27 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 3) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
+                            29 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) == 5) {
+                                    val editFirstTime = firstTime.edit()
+                                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                    editFirstTime.apply()
 
-                                rateThisAppPopup()
-                                return
+                                    rateThisAppPopup()
+                                    return
+                                }
                             }
-                        }
-                        28 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 4) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
+                            30 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) == 6) {
+                                    val editFirstTime = firstTime.edit()
+                                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                    editFirstTime.apply()
 
-                                rateThisAppPopup()
-                                return
+                                    rateThisAppPopup()
+                                    return
+                                }
                             }
-                        }
-                        29 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 5) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
+                            31 -> {
+                                if (calendar.get(Calendar.DAY_OF_MONTH) == 7) {
+                                    val editFirstTime = firstTime.edit()
+                                    editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                                    editFirstTime.apply()
 
-                                rateThisAppPopup()
-                                return
-                            }
-                        }
-                        30 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 6) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
-
-                                rateThisAppPopup()
-                                return
-                            }
-                        }
-                        31 -> {
-                            if (calendar.get(Calendar.DAY_OF_MONTH) == 7) {
-                                val editFirstTime = firstTime.edit()
-                                editFirstTime.putBoolean("FirstTimeInTheApp", false)
-                                editFirstTime.apply()
-
-                                rateThisAppPopup()
-                                return
+                                    rateThisAppPopup()
+                                    return
+                                }
                             }
                         }
                     }
@@ -258,36 +242,99 @@ class ContactsListActivity : AppCompatActivity() {
                     val editFirstTime = firstTime.edit()
                     editFirstTime.putBoolean("FirstTimeInTheApp", false)
                     editFirstTime.apply()
+                    rateThisAppPopup()
                 }
             }
         } else {
-            if (fromSplashScreen) {
-                val set = sharedShowPopup.getStringSet(
-                    "sharedShowPopup", setOf(
+            if (isThisAppNotRate) {
+                val set = oneWeekSharedPreferences.getStringSet(
+                    "OneWeek", setOf(
                         calendar.get(Calendar.YEAR).toString(),
                         calendar.get(Calendar.MONTH).toString(),
                         calendar.get(Calendar.DAY_OF_MONTH).toString()
                     )
                 )
                 set?.let {
+                    var day = 0
+                    var month = 0
+                    var year = 0
                     it.forEachIndexed { index, s ->
-                        when (index) {
-                            0 -> {
-                                if (calendar.get(Calendar.DAY_OF_MONTH) > s.toInt() + 1) {
-                                    rateThisAppPopup()
+                        with(s) {
+                            when {
+                                contains("DAY") -> {
+                                    day = s.split(":")[1].toInt()
                                 }
-                            }
-                            1 -> {
-                                if (calendar.get(Calendar.YEAR) > s.toInt()) {
-                                    rateThisAppPopup()
+                                contains("MONTH") -> {
+                                    month = s.split(":")[1].toInt()
                                 }
-                            }
-                            2 -> {
-                                if (calendar.get(Calendar.MONTH) > s.toInt()) {
-                                    rateThisAppPopup()
+                                contains("YEAR") -> {
+                                    year = s.split(":")[1].toInt()
+                                }
+                                else -> {
+
                                 }
                             }
                         }
+                    }
+
+                    if (calendar.get(Calendar.DAY_OF_MONTH) >= day + 7) {
+                        rateThisAppPopup()
+                    } else if (calendar.get(Calendar.MONTH) > month) {
+                        if (calendar.get(Calendar.DAY_OF_MONTH) == day) {
+                            val editFirstTime = firstTime.edit()
+                            editFirstTime.putBoolean("FirstTimeInTheApp", false)
+                            editFirstTime.apply()
+
+                            rateThisAppPopup()
+                            return
+                        } else {
+                            when (day) {
+                                25 -> {
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) > 1) {
+                                        rateThisAppPopup()
+                                        return
+                                    }
+                                }
+                                26 -> {
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) >= 2) {
+                                        rateThisAppPopup()
+                                        return
+                                    }
+                                }
+                                27 -> {
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) >= 3) {
+                                        rateThisAppPopup()
+                                        return
+                                    }
+                                }
+                                28 -> {
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) >= 4) {
+                                        rateThisAppPopup()
+                                        return
+                                    }
+                                }
+                                29 -> {
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) == 5) {
+                                        rateThisAppPopup()
+                                        return
+                                    }
+                                }
+                                30 -> {
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) == 6) {
+                                        rateThisAppPopup()
+                                        return
+                                    }
+                                }
+                                31 -> {
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) == 7) {
+                                        rateThisAppPopup()
+                                        return
+                                    }
+                                }
+                            }
+                        }
+                    } else if (calendar.get(Calendar.YEAR) > year) {
+                        rateThisAppPopup()
                     }
                 }
             }
@@ -493,9 +540,8 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_manage_screen -> startActivity(
                         Intent(this@ContactsListActivity, ManageMyScreenActivity::class.java)
                     )
-                    R.id.nav_help -> startActivity(
-                        Intent(this@ContactsListActivity, HelpActivity::class.java)
-                    )
+                    R.id.nav_help -> startActivity(Intent(this@ContactsListActivity, HelpActivity::class.java))
+                    R.id.nav_dashboard -> startActivity(Intent(this@ContactsListActivity, DashboardActivity::class.java))
                     R.id.nav_sync_contact -> {
                         importContacts()
                     }
@@ -576,9 +622,12 @@ class ContactsListActivity : AppCompatActivity() {
         if (listOfItemSelected.contains(contact.id)) {
             listOfItemSelected.remove(contact.id)
 
-            listOfHasSms.remove(!contact.listOfPhoneNumbers.contains(""))
-            if (!contact.listOfPhoneNumbers.contains("")) {
-                listOfPhoneNumbers.remove(contact.listOfPhoneNumbers.random())
+            listOfHasSms.remove(contact.firstPhoneNumber.flag != null)
+
+            if (listOfPhoneNumbers.contains(contact.firstPhoneNumber)) {
+                listOfPhoneNumbers.remove(contact.firstPhoneNumber)
+            } else if (listOfPhoneNumbers.contains(contact.secondPhoneNumber)) {
+                listOfPhoneNumbers.remove(contact.secondPhoneNumber)
             }
 
             listOfHasEmail.remove(!contact.listOfMails.contains(""))
@@ -602,10 +651,104 @@ class ContactsListActivity : AppCompatActivity() {
             listOfItemSelected.add(contact.id)
             image.setImageResource(R.drawable.ic_item_selected)
 
-            listOfHasSms.add(!contact.listOfPhoneNumbers.contains(""))
-            if (!contact.listOfPhoneNumbers.contains("")) {
-                listOfPhoneNumbers.add(contact.listOfPhoneNumbers.random())
+            listOfHasSms.add(contact.firstPhoneNumber.flag != null)
+
+            if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == 2) {
+                MaterialAlertDialogBuilder(
+                    this@ContactsListActivity, R.style.AlertDialog
+                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                    .setMessage(getString(R.string.two_numbers_dialog_message))
+                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
+                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
+                        listOfPhoneNumbers.add(contact.secondPhoneNumber)
+
+                        dialog.cancel()
+                        dialog.dismiss()
+                    }.show()
+            } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == null) {
+                listOfPhoneNumbers.add(contact.firstPhoneNumber)
+            } else if (contact.firstPhoneNumber.flag == null && contact.secondPhoneNumber.flag == 2) {
+                contact.secondPhoneNumber.let {
+                    listOfPhoneNumbers.add(it)
+                }
+            } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag == null) {
+                MaterialAlertDialogBuilder(
+                    this@ContactsListActivity, R.style.AlertDialog
+                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
+                    .setMessage(getString(R.string.multi_channel_not_mobile_flag))
+                    .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                    }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
+                        dialog.cancel()
+                        dialog.dismiss()
+                    }.show()
+            } else if (contact.firstPhoneNumber.flag == null && contact.secondPhoneNumber.flag != 2) {
+                MaterialAlertDialogBuilder(
+                    this@ContactsListActivity, R.style.AlertDialog
+                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
+                    .setMessage(getString(R.string.multi_channel_not_mobile_flag))
+                    .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                        contact.secondPhoneNumber.let {
+                            listOfPhoneNumbers.add(it)
+                        }
+                    }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
+                        dialog.cancel()
+                        dialog.dismiss()
+                    }.show()
+            } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag != 2) {
+                MaterialAlertDialogBuilder(
+                    this@ContactsListActivity, R.style.AlertDialog
+                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                    .setMessage(getString(R.string.two_numbers_dialog_message))
+                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
+                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
+                        listOfPhoneNumbers.add(contact.secondPhoneNumber)
+
+                        dialog.cancel()
+                        dialog.dismiss()
+                    }.show()
+            } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag != 2) {
+                MaterialAlertDialogBuilder(
+                    this@ContactsListActivity, R.style.AlertDialog
+                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                    .setMessage(getString(R.string.two_numbers_dialog_message))
+                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
+                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
+                        contact.secondPhoneNumber.let {
+                            listOfPhoneNumbers.add(it)
+                        }
+                        dialog.cancel()
+                        dialog.dismiss()
+                    }.show()
+            } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag == 2) {
+                MaterialAlertDialogBuilder(
+                    this@ContactsListActivity, R.style.AlertDialog
+                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
+                    .setMessage(getString(R.string.two_numbers_dialog_message))
+                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
+                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
+                        contact.secondPhoneNumber.let {
+                            listOfPhoneNumbers.add(it)
+                        }
+                        dialog.cancel()
+                        dialog.dismiss()
+                    }.show()
+            } else {
+
             }
+
+
+//            if (contact.firstPhoneNumber.flag != null) {
+//                if (contact.secondPhoneNumber.flag != null) {
+//                    listOfPhoneNumbers.add(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))
+//                } else {
+//                    listOfPhoneNumbers.add(Pair(contact.firstPhoneNumber, null))
+//                }
+//            }
 
             listOfHasEmail.add(!contact.listOfMails.contains(""))
             if (!contact.listOfMails.contains("")) {
@@ -613,6 +756,8 @@ class ContactsListActivity : AppCompatActivity() {
             }
 
             listOfHasWhatsapp.add(contact.hasWhatsapp)
+
+            Log.i("MultiMonoChannel", "listOfPhoneNumbers : $listOfPhoneNumbers")
         }
     }
 
@@ -680,7 +825,13 @@ class ContactsListActivity : AppCompatActivity() {
                 multiChannelSendMessageWhatsapp()
             }
             smsButton.setOnClickListener {
-                monoChannelSmsClick(listOfPhoneNumbers)
+                val newListOfPhoneNumbers = arrayListOf<PhoneNumberWithSpinner>()
+
+                listOfPhoneNumbers.map { phoneNumber ->
+                    newListOfPhoneNumbers.add(phoneNumber)
+                }
+
+                monoChannelSmsClick(newListOfPhoneNumbers)
             }
             gmailButton.setOnClickListener {
                 monoChannelMailClick(listOfEmails)
@@ -688,10 +839,12 @@ class ContactsListActivity : AppCompatActivity() {
         }
     }
 
-    private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<String>) {
-        var message = "smsto:" + listOfPhoneNumber[0]
+    private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<PhoneNumberWithSpinner>) {
+        Log.i("MultiMonoChannel", "listOfPhoneNumber 2 : ${listOfPhoneNumber}")
+
+        var message = "smsto:" + listOfPhoneNumber[0].phoneNumber
         for (i in 0 until listOfPhoneNumber.size) {
-            message += ";" + listOfPhoneNumber[i]
+            message += ";" + listOfPhoneNumber[i].phoneNumber
         }
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
     }
@@ -742,6 +895,72 @@ class ContactsListActivity : AppCompatActivity() {
             modeMultiSelect = listOfItemSelected.isNotEmpty()
 
             setupMultiSelectToolbar(binding, modeMultiSelect)
+        }, { action, number1, number2 ->
+            when (action) {
+                "call" -> {
+                    MaterialAlertDialogBuilder(
+                        this@ContactsListActivity, R.style.AlertDialog
+                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.notif_adapter_call)
+                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
+                            ContactGesture.callPhone(number1.phoneNumber, this@ContactsListActivity)
+                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
+                            ContactGesture.callPhone(number2.phoneNumber, this@ContactsListActivity)
+                        }.show()
+                }
+                "sms" -> {
+                    MaterialAlertDialogBuilder(
+                        this@ContactsListActivity, R.style.AlertDialog
+                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.list_contact_item_sms)
+                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
+                            openSms(number1.phoneNumber, this@ContactsListActivity)
+                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
+                            openSms(number2.phoneNumber, this@ContactsListActivity)
+                        }.show()
+                }
+                "whatsapp" -> {
+                    MaterialAlertDialogBuilder(
+                        this@ContactsListActivity, R.style.AlertDialog
+                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.list_contact_item_whatsapp)
+                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
+                            openWhatsapp(
+                                Converter.converter06To33(number1.phoneNumber), this@ContactsListActivity
+                            )
+                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
+                            openWhatsapp(
+                                Converter.converter06To33(number2.phoneNumber), this@ContactsListActivity
+                            )
+                        }.show()
+                }
+                "telegram" -> {
+                    MaterialAlertDialogBuilder(
+                        this@ContactsListActivity, R.style.AlertDialog
+                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("Telegram")
+                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
+                            goToTelegram(this@ContactsListActivity, number1.phoneNumber)
+                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
+                            goToTelegram(this@ContactsListActivity, number2.phoneNumber)
+                        }.show()
+                }
+            }
+        }, { action, number, message ->
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
+                .setTitle(getString(R.string.not_mobile_flag_title)).setMessage(getString(R.string.not_mobile_flag_msg))
+                .setPositiveButton(number) { _, _ ->
+                    when (action) {
+                        "sms" -> {
+                            openSms(phoneNumber, this)
+                        }
+                        "whatsapp" -> {
+                            openWhatsapp(phoneNumber, this)
+                        }
+                        "telegram" -> {
+                            goToTelegram(this, phoneNumber)
+                        }
+                    }
+                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
+                    dialog.cancel()
+                    dialog.dismiss()
+                }.show()
         })
 
         if (nbGrid == 1) {
@@ -917,9 +1136,7 @@ class ContactsListActivity : AppCompatActivity() {
     private fun rateThisAppPopup() {
         val manager = ReviewManagerFactory.create(this)
         val request = manager.requestReviewFlow()
-        MaterialAlertDialogBuilder(
-            this, R.style.AlertDialog
-        ).setTitle(getString(R.string.rate_this_app_title))
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.rate_this_app_title))
             .setMessage(getString(R.string.rate_this_app_message))
             .setPositiveButton(R.string.start_activity_go_edition_positive_button) { alertDialog, _ ->
                 val edit = rateThisAppSharedPreferences.edit()
@@ -939,15 +1156,15 @@ class ContactsListActivity : AppCompatActivity() {
             }.setNegativeButton(R.string.alert_dialog_later) { alertDialog, _ ->
                 val calendar = Calendar.getInstance()
 
-                val editShowPopup = sharedShowPopup.edit()
-                editShowPopup.putStringSet(
-                    "sharedShowPopup", setOf(
-                        calendar.get(Calendar.YEAR).toString(), // 2022
-                        calendar.get(Calendar.MONTH).toString(), // 11
-                        calendar.get(Calendar.DAY_OF_MONTH).toString() // 21
+                val oneWeekEdit = oneWeekSharedPreferences.edit()
+                oneWeekEdit.putStringSet(
+                    "OneWeek", setOf(
+                        "DAY :${calendar.get(Calendar.DAY_OF_MONTH)}", // 29
+                        "MONTH :${calendar.get(Calendar.MONTH)}", // 11
+                        "YEAR :${calendar.get(Calendar.YEAR)}" // 2022
                     )
                 )
-                editShowPopup.apply()
+                oneWeekEdit.apply()
 
                 alertDialog.dismiss()
                 alertDialog.cancel()

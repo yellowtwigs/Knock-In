@@ -11,6 +11,7 @@ import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -62,7 +63,8 @@ class ManageGroupViewModel @Inject constructor(
             contact.lastName,
             contact.profilePicture,
             contact.profilePicture64,
-            contact.listOfPhoneNumbers,
+            firstPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
+            secondPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
             contact.listOfMails,
             contact.priority,
             contact.isFavorite == 1,
