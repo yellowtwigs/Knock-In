@@ -37,9 +37,7 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.net.URLEncoder
 
 @AndroidEntryPoint
@@ -139,10 +137,8 @@ class GroupsListActivity : AppCompatActivity() {
                         startActivity(
                             Intent(this@GroupsListActivity, ManageMyScreenActivity::class.java)
                         )
-
                         restartActivity()
                     }
-
                     R.id.nav_help -> {
                         startActivity(
                             Intent(this@GroupsListActivity, HelpActivity::class.java)
@@ -250,12 +246,6 @@ class GroupsListActivity : AppCompatActivity() {
 
     private fun setupFloatingButtonVisibility() {
         binding.apply {
-            Log.i("MultiSelectGroups", "listOfIds : ${listOfIds}")
-//            Log.i("MultiSelectGroups", "listOfItemSelected : ${listOfItemSelected}")
-//            Log.i("MultiSelectGroups", "listOfPhoneNumbers : ${listOfPhoneNumbers}")
-//            Log.i("MultiSelectGroups", "listOfHasSms : ${listOfHasSms}")
-//            Log.i("MultiSelectGroups", "listOfHasEmail : ${listOfHasEmail}")
-//            Log.i("MultiSelectGroups", "listOfHasWhatsapp : ${listOfHasWhatsapp}")
             smsButton.isVisible = listOfItemSelected.isNotEmpty() && !listOfHasSms.contains(false) && listOfHasSms.isNotEmpty()
             gmailButton.isVisible = listOfItemSelected.isNotEmpty() && !listOfHasEmail.contains(false) && listOfHasEmail.isNotEmpty()
             whatsappButton.isVisible =
@@ -283,80 +273,10 @@ class GroupsListActivity : AppCompatActivity() {
                 fromOtherApp = true
             }
             smsButton.setOnClickListener {
-                val newListOfPhoneNumbers = arrayListOf<PhoneNumberWithSpinner>()
-
-                listOfPhoneNumbers.map { pair ->
-                    if (pair.second == null) {
-                        newListOfPhoneNumbers.add(pair.first)
-                    } else {
-                        if (pair.first.flag == 2 && pair.second?.flag == 2) {
-                            MaterialAlertDialogBuilder(
-                                this@GroupsListActivity, R.style.AlertDialog
-                            ).setBackground(getDrawable(R.color.backgroundColor))
-                                .setTitle("")
-                                .setMessage(getString(R.string.two_numbers_dialog_message))
-                                .setPositiveButton(pair.first.phoneNumber) { _, _ ->
-                                    newListOfPhoneNumbers.add(pair.first)
-                                }.setNegativeButton(pair.second?.phoneNumber) { dialog, _ ->
-                                    pair.second?.let {
-                                        newListOfPhoneNumbers.add(it)
-                                    }
-                                    dialog.cancel()
-                                    dialog.dismiss()
-                                }.show()
-                        } else if (pair.first.flag == 2 && pair.second?.flag == null) {
-                            newListOfPhoneNumbers.add(pair.first)
-                        } else if (pair.first.flag == null && pair.second?.flag == 2) {
-                            pair.second?.let {
-                                newListOfPhoneNumbers.add(it)
-                            }
-                        } else if (pair.first.flag != 2 && pair.second?.flag == null) {
-                            MaterialAlertDialogBuilder(
-                                this@GroupsListActivity, R.style.AlertDialog
-                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
-                                .setMessage(getString(R.string.multi_channel_not_mobile_flag))
-                                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                                    newListOfPhoneNumbers.add(pair.first)
-                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
-                                    dialog.cancel()
-                                    dialog.dismiss()
-                                }.show()
-                        } else if (pair.first.flag == null && pair.second?.flag != 2) {
-                            MaterialAlertDialogBuilder(
-                                this@GroupsListActivity, R.style.AlertDialog
-                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
-                                .setMessage(getString(R.string.multi_channel_not_mobile_flag))
-                                .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                                    pair.second?.let {
-                                        newListOfPhoneNumbers.add(it)
-                                    }
-                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
-                                    dialog.cancel()
-                                    dialog.dismiss()
-                                }.show()
-                        } else if (pair.first.flag != 2 && pair.second?.flag != 2) {
-                            MaterialAlertDialogBuilder(
-                                this@GroupsListActivity, R.style.AlertDialog
-                            ).setBackground(getDrawable(R.color.backgroundColor))
-                                .setTitle("")
-                                .setMessage(getString(R.string.two_numbers_dialog_message))
-                                .setPositiveButton(pair.first.phoneNumber) { _, _ ->
-                                    newListOfPhoneNumbers.add(pair.first)
-                                }.setNegativeButton(pair.second?.phoneNumber) { dialog, _ ->
-                                    pair.second?.let {
-                                        newListOfPhoneNumbers.add(it)
-                                    }
-                                    dialog.cancel()
-                                    dialog.dismiss()
-                                }.show()
-                        } else {
-
-                        }
-                    }
+                if (listOfPhoneNumbers.isNotEmpty()) {
+                    monoChannelSmsClick(listOfPhoneNumbers)
+                    fromOtherApp = true
                 }
-
-                monoChannelSmsClick(newListOfPhoneNumbers)
-                fromOtherApp = true
             }
             gmailButton.setOnClickListener {
                 monoChannelMailClick(listOfEmails)

@@ -24,7 +24,6 @@ import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
-import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
@@ -102,7 +101,7 @@ class VipSettingsActivity : AppCompatActivity() {
         funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
 
         val contactId = intent.getIntExtra("ContactId", 0)
-        editContactViewModel.getContactById(contactId).observe(this) { viewState ->
+        editContactViewModel.getEditContactViewStateById(contactId).observe(this) { viewState ->
             currentViewState = viewState
             binding.contactName.text = "${viewState.firstName} ${viewState.lastName}"
 

@@ -18,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityMultiChannelBinding
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLEncoder
@@ -174,9 +175,9 @@ class MultiChannelActivity : AppCompatActivity() {
                                 this@MultiChannelActivity, R.style.AlertDialog
                             ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
                                 .setMessage(getString(R.string.two_numbers_dialog_message))
-                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(firstPhoneNumber)} : ${firstPhoneNumber.phoneNumber}") { _, _ ->
                                     itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
-                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                }.setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(secondPhoneNumber)} : ${secondPhoneNumber.phoneNumber}") { dialog, _ ->
                                     itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
                                     dialog.cancel()
                                     dialog.dismiss()
@@ -212,9 +213,9 @@ class MultiChannelActivity : AppCompatActivity() {
                                 this@MultiChannelActivity, R.style.AlertDialog
                             ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
                                 .setMessage(getString(R.string.two_numbers_dialog_message))
-                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(firstPhoneNumber)} : ${firstPhoneNumber.phoneNumber}") { _, _ ->
                                     itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
-                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                }.setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(secondPhoneNumber)} : ${secondPhoneNumber.phoneNumber}") { dialog, _ ->
                                     itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
                                     dialog.cancel()
                                     dialog.dismiss()
@@ -224,9 +225,9 @@ class MultiChannelActivity : AppCompatActivity() {
                                 this@MultiChannelActivity, R.style.AlertDialog
                             ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
                                 .setMessage(getString(R.string.two_numbers_dialog_message))
-                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(firstPhoneNumber)} : ${firstPhoneNumber.phoneNumber}") { _, _ ->
                                     itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
-                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                }.setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(secondPhoneNumber)} : ${secondPhoneNumber.phoneNumber}") { dialog, _ ->
                                     itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
                                     dialog.cancel()
                                     dialog.dismiss()
@@ -236,9 +237,9 @@ class MultiChannelActivity : AppCompatActivity() {
                                 this@MultiChannelActivity, R.style.AlertDialog
                             ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
                                 .setMessage(getString(R.string.two_numbers_dialog_message))
-                                .setPositiveButton(firstPhoneNumber.phoneNumber) { _, _ ->
+                                .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(firstPhoneNumber)} : ${firstPhoneNumber.phoneNumber}") { _, _ ->
                                     itemSelectedPhoneNumber(id, image, firstPhoneNumber.phoneNumber)
-                                }.setNegativeButton(secondPhoneNumber.phoneNumber) { dialog, _ ->
+                                }.setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(secondPhoneNumber)} : ${secondPhoneNumber.phoneNumber}") { dialog, _ ->
                                     itemSelectedPhoneNumber(id, image, secondPhoneNumber.phoneNumber)
                                     dialog.cancel()
                                     dialog.dismiss()

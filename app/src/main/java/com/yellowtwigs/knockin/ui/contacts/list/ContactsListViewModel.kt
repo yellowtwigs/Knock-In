@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase

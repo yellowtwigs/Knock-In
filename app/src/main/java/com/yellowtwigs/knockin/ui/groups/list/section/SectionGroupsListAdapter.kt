@@ -17,6 +17,7 @@ import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.groups.list.*
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import kotlin.collections.ArrayList
@@ -32,7 +33,7 @@ class SectionGroupsListAdapter(
 
         var listOfIds = arrayListOf<Int>()
         var listOfHasSms = arrayListOf<Boolean>()
-        var listOfPhoneNumbers = arrayListOf<Pair<PhoneNumberWithSpinner, PhoneNumberWithSpinner?>>()
+        var listOfPhoneNumbers = arrayListOf<PhoneNumberWithSpinner>()
 
         var listOfHasEmail = arrayListOf<Boolean>()
         var listOfEmails = arrayListOf<String>()
@@ -148,8 +149,11 @@ class SectionGroupsListAdapter(
                             listOfHasEmail.remove(!it.listOfMails.contains(""))
                             listOfHasWhatsapp.remove(!it.hasWhatsapp)
 
-                            if (listOfPhoneNumbers.contains(Pair(it.firstPhoneNumber, it.secondPhoneNumber))) {
-                                listOfPhoneNumbers.remove(Pair(it.firstPhoneNumber, it.secondPhoneNumber))
+                            if (listOfPhoneNumbers.contains(it.firstPhoneNumber)) {
+                                listOfPhoneNumbers.remove(it.firstPhoneNumber)
+                            }
+                            if (listOfPhoneNumbers.contains(it.secondPhoneNumber)) {
+                                listOfPhoneNumbers.remove(it.secondPhoneNumber)
                             }
 
                             listOfEmails.remove(
@@ -209,18 +213,29 @@ class SectionGroupsListAdapter(
                             }
                         }
 
-                        listOfHasSms.addAll(
-                            section.items.map {
-                                it.firstPhoneNumber.flag != null
-                            })
+                        listOfHasSms.addAll(section.items.map {
+                            it.firstPhoneNumber.flag != null
+                        })
 
                         listOfHasEmail.addAll(section.items.map {
                             !it.listOfMails.contains("")
                         })
 
-                        listOfPhoneNumbers.addAll(section.items.map { contact ->
-                            Pair(contact.firstPhoneNumber, contact.secondPhoneNumber)
-                        })
+                        section.items.map { contact ->
+                            if (contact.firstPhoneNumber.flag == 2) {
+                                listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                            } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag == 2) {
+                                if (contact.secondPhoneNumber.phoneNumber.isNotEmpty()) {
+                                    listOfPhoneNumbers.add(contact.secondPhoneNumber)
+                                } else {
+                                    listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                                }
+                            } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == 2) {
+                                listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                            } else {
+                                listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                            }
+                        }
 
                         listOfEmails.addAll(section.items.map { contact ->
                             if (!contact.listOfMails.contains("")) {
@@ -319,10 +334,12 @@ class SectionGroupsListAdapter(
             if (listOfItemSelected.contains(contact)) {
                 listOfItemSelected.remove(contact)
                 listOfIds.remove(contact.id)
-
                 listOfHasSms.remove(contact.firstPhoneNumber.flag != null)
-                if (listOfPhoneNumbers.contains(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))) {
-                    listOfPhoneNumbers.remove(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))
+
+                if (listOfPhoneNumbers.contains(contact.firstPhoneNumber)) {
+                    listOfPhoneNumbers.remove(contact.firstPhoneNumber)
+                } else if (listOfPhoneNumbers.contains(contact.secondPhoneNumber)) {
+                    listOfPhoneNumbers.remove(contact.secondPhoneNumber)
                 }
 
                 listOfHasEmail.remove(!contact.listOfMails.contains(""))
@@ -347,7 +364,98 @@ class SectionGroupsListAdapter(
                 listOfIds.add(contact.id)
 
                 listOfHasSms.add(contact.firstPhoneNumber.flag != null)
-                listOfPhoneNumbers.add(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))
+
+                if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == 2) {
+                    MaterialAlertDialogBuilder(
+                        cxt, R.style.AlertDialog
+                    ).setBackground(cxt.getDrawable(R.color.backgroundColor)).setTitle("")
+                        .setMessage(cxt.getString(R.string.two_numbers_dialog_message))
+                        .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.firstPhoneNumber)} : ${contact.firstPhoneNumber.phoneNumber}") { _, _ ->
+                            listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                        }
+                        .setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.secondPhoneNumber)} : ${contact.secondPhoneNumber.phoneNumber}") { dialog, _ ->
+                            listOfPhoneNumbers.add(contact.secondPhoneNumber)
+
+                            dialog.cancel()
+                            dialog.dismiss()
+                        }.show()
+                } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == null) {
+                    listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                } else if (contact.firstPhoneNumber.flag == null && contact.secondPhoneNumber.flag == 2) {
+                    contact.secondPhoneNumber.let {
+                        listOfPhoneNumbers.add(it)
+                    }
+                } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag == null) {
+                    MaterialAlertDialogBuilder(
+                        cxt, R.style.AlertDialog
+                    ).setBackground(cxt.getDrawable(R.color.backgroundColor)).setTitle(cxt.getString(R.string.not_mobile_flag_title))
+                        .setMessage(cxt.getString(R.string.multi_channel_not_mobile_flag))
+                        .setPositiveButton(cxt.getString(R.string.alert_dialog_yes)) { _, _ ->
+                            listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                        }.setNegativeButton(cxt.getString(R.string.alert_dialog_no)) { dialog, _ ->
+                            dialog.cancel()
+                            dialog.dismiss()
+                        }.show()
+                } else if (contact.firstPhoneNumber.flag == null && contact.secondPhoneNumber.flag != 2) {
+                    MaterialAlertDialogBuilder(
+                        cxt, R.style.AlertDialog
+                    ).setBackground(cxt.getDrawable(R.color.backgroundColor)).setTitle(cxt.getString(R.string.not_mobile_flag_title))
+                        .setMessage(cxt.getString(R.string.multi_channel_not_mobile_flag))
+                        .setPositiveButton(cxt.getString(R.string.alert_dialog_yes)) { _, _ ->
+                            contact.secondPhoneNumber.let {
+                                listOfPhoneNumbers.add(it)
+                            }
+                        }.setNegativeButton(cxt.getString(R.string.alert_dialog_no)) { dialog, _ ->
+                            dialog.cancel()
+                            dialog.dismiss()
+                        }.show()
+                } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag != 2) {
+                    MaterialAlertDialogBuilder(
+                        cxt, R.style.AlertDialog
+                    ).setBackground(cxt.getDrawable(R.color.backgroundColor)).setTitle("")
+                        .setMessage(cxt.getString(R.string.two_numbers_dialog_message))
+                        .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.firstPhoneNumber)} : ${contact.firstPhoneNumber.phoneNumber}") { _, _ ->
+                            listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                        }
+                        .setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.secondPhoneNumber)} : ${contact.secondPhoneNumber.phoneNumber}") { dialog, _ ->
+                            listOfPhoneNumbers.add(contact.secondPhoneNumber)
+
+                            dialog.cancel()
+                            dialog.dismiss()
+                        }.show()
+                } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag != 2) {
+                    MaterialAlertDialogBuilder(
+                        cxt, R.style.AlertDialog
+                    ).setBackground(cxt.getDrawable(R.color.backgroundColor)).setTitle("")
+                        .setMessage(cxt.getString(R.string.two_numbers_dialog_message))
+                        .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.firstPhoneNumber)} : ${contact.firstPhoneNumber.phoneNumber}") { _, _ ->
+                            listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                        }
+                        .setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.secondPhoneNumber)} : ${contact.secondPhoneNumber.phoneNumber}") { dialog, _ ->
+                            contact.secondPhoneNumber.let {
+                                listOfPhoneNumbers.add(it)
+                            }
+                            dialog.cancel()
+                            dialog.dismiss()
+                        }.show()
+                } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag == 2) {
+                    MaterialAlertDialogBuilder(
+                        cxt, R.style.AlertDialog
+                    ).setBackground(cxt.getDrawable(R.color.backgroundColor)).setTitle("")
+                        .setMessage(cxt.getString(R.string.two_numbers_dialog_message))
+                        .setPositiveButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.firstPhoneNumber)} : ${contact.firstPhoneNumber.phoneNumber}") { _, _ ->
+                            listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                        }
+                        .setNegativeButton("${ContactGesture.transformPhoneNumberWithSpinnerToFlag(contact.secondPhoneNumber)} : ${contact.secondPhoneNumber.phoneNumber}") { dialog, _ ->
+                            contact.secondPhoneNumber.let {
+                                listOfPhoneNumbers.add(it)
+                            }
+                            dialog.cancel()
+                            dialog.dismiss()
+                        }.show()
+                } else {
+
+                }
 
                 listOfHasEmail.add(!contact.listOfMails.contains(""))
                 if (!contact.listOfMails.contains("")) {

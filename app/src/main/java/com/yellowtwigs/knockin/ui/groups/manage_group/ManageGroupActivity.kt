@@ -90,9 +90,6 @@ class ManageGroupActivity : AppCompatActivity() {
                     setupSectionColorSelection()
 
                     binding.groupName.setText(manageGroupViewState.groupName)
-
-                    Log.i("IdsContactsFromGroup", "manageGroupViewState.listOfIds : ${manageGroupViewState.listOfIds}")
-
                     listOfItemSelected.addAll(manageGroupViewState.listOfIds)
 
                     val manageGroupListAdapter = ContactManageGroupListAdapter(

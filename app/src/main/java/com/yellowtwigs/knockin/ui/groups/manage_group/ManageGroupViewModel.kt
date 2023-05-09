@@ -2,10 +2,8 @@ package com.yellowtwigs.knockin.ui.groups.manage_group
 
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
@@ -22,7 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ManageGroupViewModel @Inject constructor(
-    getAllContactsUseCase: GetAllContactsUseCase,
     private val manageGroupRepository: ManageGroupRepository,
     private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
     private val groupsListRepository: GroupsListRepository

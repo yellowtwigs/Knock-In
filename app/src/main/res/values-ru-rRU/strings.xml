@@ -495,4 +495,5 @@
     <string name="message_from">Сообщение от %1$s</string>
     <string name="rate_this_app_title">Оцени это приложение</string>
     <string name="rate_this_app_message">Если вам нравится это приложение, потратьте несколько секунд, чтобы оценить его, это нам очень поможет. Спасибо</string>
+    <string name="handle_one_phone_number_msg">Knock In обрабатывает только один номер мобильного телефона для каждого контакта</string>
 </resources>

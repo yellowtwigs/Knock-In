@@ -15,7 +15,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -44,6 +43,7 @@ import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.SingleContactViewState
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
@@ -83,7 +83,7 @@ class EditContactActivity : AppCompatActivity() {
     private var contactImageString = ""
     private var contactImageStringIsChanged = false
 
-    private lateinit var currentContact: EditContactViewState
+    private lateinit var currentContact: SingleContactViewState
     private lateinit var currentViewState: VipSettingsViewState
 
     private var currentPhoneNumber1 = ""
@@ -130,7 +130,7 @@ class EditContactActivity : AppCompatActivity() {
     //region =========================================== SETUP UI ===========================================
 
     private fun bindingAllDataFromUserId(id: Int) {
-        editContactViewModel.getContactById(id).observe(this) { contact ->
+        editContactViewModel.getSingleContactViewStateById(id).observe(this) { contact ->
             contact?.let {
                 currentContact = it
                 binding.apply {
@@ -158,10 +158,9 @@ class EditContactActivity : AppCompatActivity() {
                     messengerIdInput.editText?.setText(it.messengerId)
 
                     setupPriority(it.priority)
-                    currentPhoneNumber1 = it.firstPhoneNumber.phoneNumber
-                    currentPhoneNumber2 = it.secondPhoneNumber.phoneNumber
-                    binding.firstPhoneNumberContent.setText(it.firstPhoneNumber.phoneNumber)
-                    binding.secondPhoneNumberContent.setText(it.secondPhoneNumber.phoneNumber)
+                    currentPhoneNumber1 = it.firstPhoneNumber
+                    binding.firstPhoneNumberContent.setText(it.firstPhoneNumber)
+                    binding.firstNumberFlag.text = it.firstPhoneNumberFlag
 
                     isFavorite = it.isFavorite
                     if (it.isFavorite == 1) {
@@ -183,9 +182,6 @@ class EditContactActivity : AppCompatActivity() {
 
                     if (intent.getStringExtra("FirstPhoneNumber")?.contains(":") == true) {
                         firstPhoneNumberContent.setText(intent.getStringExtra("FirstPhoneNumber")?.split(":")?.get(1))
-                    }
-                    if (intent.getStringExtra("SecondPhoneNumber")?.contains(":") == true) {
-                        secondPhoneNumberContent.setText(intent.getStringExtra("SecondPhoneNumber")?.split(":")?.get(1))
                     }
 
                     mailInput.editText?.setText(intent.getStringExtra("Mail"))
@@ -349,6 +345,14 @@ class EditContactActivity : AppCompatActivity() {
                     favoriteContact2.visibility = View.VISIBLE
                 }
             }
+            phoneNumberInformations.setOnClickListener {
+                MaterialAlertDialogBuilder(
+                    this@EditContactActivity, R.style.AlertDialog
+                ).setTitle(getString(R.string.add_new_contact_phone_number))
+                    .setMessage(getString(R.string.handle_one_phone_number_msg))
+                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                    }.show()
+            }
             validate.setOnClickListener {
                 hideKeyboard(this@EditContactActivity)
                 if (checkIfADataWasChanged() && !checkIfFieldsAreEmpty()) {
@@ -430,12 +434,7 @@ class EditContactActivity : AppCompatActivity() {
             }
         }
 
-        if (isStringTotallyEmpty(binding.firstPhoneNumberContent.text.toString()) && isStringTotallyEmpty(binding.secondPhoneNumberContent.text.toString())) {
-
-        }
-
-        val listOfPhoneNumbers =
-            arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}", "${binding.secondPhoneNumberContent.text?.toString()}")
+        val listOfPhoneNumbers = arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}")
 
         val contact = ContactDB(
             currentContact.id,
@@ -522,8 +521,6 @@ class EditContactActivity : AppCompatActivity() {
             )
 
             putExtra(ContactsContract.Intents.Insert.PHONE, binding.firstPhoneNumberContent.text?.toString())
-            putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, binding.secondPhoneNumberContent.text?.toString())
-
             putExtra(
                 ContactsContract.Intents.Insert.EXTRA_DATA_SET, binding.messengerIdInput.editText?.text.toString()
             )
@@ -547,7 +544,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun checkIfADataWasChanged(): Boolean {
         binding.apply {
-            return firstNameInput.editText?.text.toString() != currentContact.firstName || lastNameInput.editText?.text.toString() != currentContact.lastName || currentPhoneNumber1 != firstPhoneNumberContent.text?.toString() || currentPhoneNumber2 != secondPhoneNumberContent.text?.toString() || mailInput.editText?.text.toString() != currentContact.listOfMails[0] || isFavorite != currentContact.isFavorite || mailIdInput.editText?.text.toString() != currentContact.mail_name || messengerIdInput.editText?.text.toString() != currentContact.messengerId || prioritySpinner.selectedItemPosition != currentContact.priority
+            return firstNameInput.editText?.text.toString() != currentContact.firstName || lastNameInput.editText?.text.toString() != currentContact.lastName || currentPhoneNumber1 != firstPhoneNumberContent.text?.toString() || mailInput.editText?.text.toString() != currentContact.listOfMails[0] || isFavorite != currentContact.isFavorite || mailIdInput.editText?.text.toString() != currentContact.mail_name || messengerIdInput.editText?.text.toString() != currentContact.messengerId || prioritySpinner.selectedItemPosition != currentContact.priority
         }
     }
 
@@ -555,13 +552,12 @@ class EditContactActivity : AppCompatActivity() {
         binding.apply {
             return isStringTotallyEmpty(firstNameInput.editText?.text.toString()) && isStringTotallyEmpty(lastNameInput.editText?.text.toString()) || isStringTotallyEmpty(
                 firstPhoneNumberContent.text.toString()
-            ) && isStringTotallyEmpty(secondPhoneNumberContent.text.toString())
+            )
         }
     }
 
     override fun onBackPressed() {
         hideKeyboard(this)
-//        isChanged ||
         if (checkIfADataWasChanged() || fromVipSettingsDataChanged) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_cancel_title)
                 .setMessage(R.string.edit_contact_alert_dialog_cancel_message).setBackground(

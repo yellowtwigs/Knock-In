@@ -4,8 +4,10 @@ import androidx.lifecycle.*
 import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
-import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToPhoneNumbersWithSpinner
+import com.yellowtwigs.knockin.ui.SingleContactViewState
+import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToSinglePhoneNumberWithFlag
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner
+import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberWithSpinnerToFlag
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,19 +18,51 @@ import javax.inject.Inject
 class EditContactViewModel @Inject constructor(
     private val editContactRepository: EditContactRepository,
     private val createContactUseCase: CreateContactUseCase,
-    private val dispatcherProvider: CoroutineDispatcherProvider
+    dispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
-    val phoneNumbersFlow = MutableStateFlow<ArrayList<PhoneNumberWithSpinner>>(arrayListOf())
+    val phoneNumbersFlow = MutableStateFlow<ArrayList<PhoneNumberWithFlag>>(arrayListOf())
 
-    fun getContactById(id: Int): LiveData<EditContactViewState> {
+    fun getEditContactViewStateById(id: Int): LiveData<EditContactViewState> {
         return editContactRepository.getContact(id).map {
             transformContactDbToEditContactViewState(it)
         }
     }
 
-    val phoneNumbersViewStateLiveData: LiveData<List<PhoneNumberWithSpinner>> = liveData(dispatcherProvider.io) {
+    fun getSingleContactViewStateById(id: Int): LiveData<SingleContactViewState> {
+        return editContactRepository.getContact(id).map {
+            transformContactDbToSingleContactViewState(it)
+        }
+    }
+
+    val phoneNumbersViewStateLiveData: LiveData<List<PhoneNumberWithFlag>> = liveData(dispatcherProvider.io) {
         phoneNumbersFlow.collect()
+    }
+
+    private fun transformContactDbToSingleContactViewState(contact: ContactDB): SingleContactViewState {
+        return SingleContactViewState(
+            id = contact.id,
+            androidId = contact.androidId,
+            fullName = contact.fullName,
+            firstName = contact.firstName,
+            lastName = contact.lastName,
+            profilePicture = contact.profilePicture,
+            profilePicture64 = contact.profilePicture64,
+            firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true).phoneNumber,
+            firstPhoneNumberFlag = transformPhoneNumberWithSpinnerToFlag(transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true)),
+            listOfMails = contact.listOfMails,
+            mail_name = contact.mail_name,
+            priority = contact.priority,
+            isFavorite = contact.isFavorite,
+            messengerId = contact.messengerId,
+            listOfMessagingApps = contact.listOfMessagingApps,
+            notificationTone = contact.notificationTone,
+            notificationSound = contact.notificationSound,
+            isCustomSound = contact.isCustomSound,
+            vipSchedule = contact.vipSchedule,
+            hourLimitForNotification = contact.hourLimitForNotification,
+            audioFileName = contact.audioFileName,
+        )
     }
 
     private fun transformContactDbToEditContactViewState(contact: ContactDB): EditContactViewState {
@@ -40,8 +74,7 @@ class EditContactViewModel @Inject constructor(
             lastName = contact.lastName,
             profilePicture = contact.profilePicture,
             profilePicture64 = contact.profilePicture64,
-            firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
-            secondPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
+            firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithFlag(contact.listOfPhoneNumbers, true),
             listOfMails = contact.listOfMails,
             mail_name = contact.mail_name,
             priority = contact.priority,

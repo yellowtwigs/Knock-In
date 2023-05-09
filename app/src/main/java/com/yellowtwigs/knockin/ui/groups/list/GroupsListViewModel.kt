@@ -14,6 +14,7 @@ import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
@@ -88,12 +89,15 @@ class GroupsListViewModel @Inject constructor(
                         contact.firstName + " " + contact.lastName
                     }
 
-                    if (group.listOfContactsData.contains(name) || group.listOfContactsData.contains(
-                            contact.id.toString()
-                        )
-                    ) {
+                    if (group.listOfContactsData.contains(name) || group.listOfContactsData.contains(contact.id.toString())) {
                         if (contact.listOfMails[0] != "" && contact.listOfMails[0].isNotEmpty() && contact.listOfMails[0].isNotBlank()) {
                             emails.add(contact.listOfMails[0])
+                        }
+
+                        val secondPhoneNumber = if (contact.secondPhoneNumber.phoneNumber.isBlank()) {
+                            PhoneNumberWithSpinner(null, "")
+                        } else {
+                            contact.secondPhoneNumber
                         }
 
                         listOfContactsInGroup.add(
@@ -103,8 +107,8 @@ class GroupsListViewModel @Inject constructor(
                                 contact.lastName,
                                 contact.profilePicture,
                                 contact.profilePicture64,
-                                firstPhoneNumber =  contact.firstPhoneNumber,
-                                secondPhoneNumber = contact.secondPhoneNumber,
+                                firstPhoneNumber = contact.firstPhoneNumber,
+                                secondPhoneNumber = secondPhoneNumber,
                                 contact.listOfMails,
                                 contact.priority,
                                 contact.hasWhatsapp,

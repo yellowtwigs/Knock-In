@@ -493,4 +493,5 @@
     <string name="message_from">tin nhắn từ %1$s</string>
     <string name="rate_this_app_title">Đánh giá ứng dụng này</string>
     <string name="rate_this_app_message">Nếu bạn thích ứng dụng này, vui lòng dành vài giây để đánh giá nó, nó sẽ giúp chúng tôi rất nhiều. Cảm ơn</string>
+    <string name="handle_one_phone_number_msg">Knock In chỉ xử lý một số điện thoại di động cho mỗi liên hệ</string>
 </resources>

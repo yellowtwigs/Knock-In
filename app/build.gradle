@@ -13,9 +13,9 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 32
-        versionCode 201
+        versionCode 209
 //        versionName "2.2.8"
-        versionName "3.0.7"
+        versionName "3.1.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -61,15 +61,6 @@ android {
             resValue "string", "app_name", "Knock In"
         }
     }
-//    dokka {
-//        outputFormat = 'html'
-//
-//        //includes = ['Module.md']
-//        outputDirectory = "$buildDir/javadoc"
-//
-//        skipDeprecated = true
-//        reportUndocumented = true
-//    }
 }
 
 dependencies {
@@ -115,6 +106,10 @@ dependencies {
 
     implementation "com.google.android.play:review:2.0.1"
     implementation "com.google.android.play:review-ktx:2.0.1"
+
+    // Data Visualisation
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'

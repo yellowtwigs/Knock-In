@@ -114,14 +114,16 @@
         app:layout_constraintTop_toBottomOf="@+id/sms_icon" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/call_icon"
+        android:id="@+id/call_icon_1"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="40dp"
         android:src="@drawable/ic_google_call"
-        app:layout_constraintBottom_toBottomOf="@+id/contact_layout"
-        app:layout_constraintEnd_toStartOf="@+id/contact_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/contact_layout" />
+        app:layout_constraintBottom_toTopOf="@+id/messenger_icon"
+        app:layout_constraintEnd_toStartOf="@+id/sms_icon"
+        app:layout_constraintStart_toEndOf="@+id/messenger_icon"
+        app:layout_constraintTop_toBottomOf="@+id/sms_icon" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/edit_icon"
@@ -164,20 +166,18 @@
         android:src="@drawable/ic_circular_signal"
         app:layout_constraintBottom_toTopOf="@+id/whatsapp_icon"
         app:layout_constraintEnd_toStartOf="@+id/whatsapp_icon"
-        app:layout_constraintStart_toEndOf="@+id/call_icon"
-        app:layout_constraintTop_toBottomOf="@+id/call_icon" />
+        app:layout_constraintStart_toEndOf="@+id/messenger_icon"
+        app:layout_constraintTop_toBottomOf="@+id/messenger_icon" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/messenger_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="40dp"
         android:src="@drawable/ic_circular_messenger"
-        app:layout_constraintBottom_toTopOf="@+id/call_icon"
-        app:layout_constraintEnd_toStartOf="@+id/sms_icon"
-        app:layout_constraintStart_toEndOf="@+id/call_icon"
-        app:layout_constraintTop_toBottomOf="@+id/sms_icon" />
+        app:layout_constraintBottom_toBottomOf="@+id/contact_layout"
+        app:layout_constraintEnd_toStartOf="@+id/contact_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contact_layout" />
 
     <RelativeLayout
         android:layout_width="0dp"

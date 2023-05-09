@@ -216,26 +216,24 @@ class AddNewContactActivity : AppCompatActivity() {
                     favoriteContact2.visibility = View.VISIBLE
                 }
             }
+            phoneNumberInformations.setOnClickListener {
+                MaterialAlertDialogBuilder(
+                    this@AddNewContactActivity, R.style.AlertDialog
+                ).setTitle(getString(R.string.add_new_contact_phone_number))
+                    .setMessage(getString(R.string.handle_one_phone_number_msg))
+                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                    }.show()
+            }
             validate.setOnClickListener {
                 hideKeyboard(this@AddNewContactActivity)
 
                 if (isStringTotallyEmpty(binding.firstNameInput.editText?.text.toString()) && isStringTotallyEmpty(binding.lastNameInput.editText?.text.toString())) {
                     Toast.makeText(this@AddNewContactActivity, "You should make a name for this contact", Toast.LENGTH_SHORT).show()
                 } else {
-                    if (isStringTotallyEmpty(binding.firstPhoneNumberContent.text.toString()) && isStringTotallyEmpty(binding.secondPhoneNumberContent.text.toString())) {
+                    if (isStringTotallyEmpty(binding.firstPhoneNumberContent.text.toString())) {
                         Toast.makeText(this@AddNewContactActivity, "You should add at least one phone number", Toast.LENGTH_SHORT).show()
                     } else {
-                        val listOfPhoneNumbers =
-                            if (binding.secondPhoneNumberContent.text.toString() == "" || binding.secondPhoneNumberContent.text.toString()
-                                    .isBlank()
-                            ) {
-                                listOf(binding.firstPhoneNumberContent.text?.toString() ?: "")
-                            } else {
-                                listOf(
-                                    binding.firstPhoneNumberContent.text?.toString() ?: "",
-                                    binding.secondPhoneNumberContent.text?.toString() ?: ""
-                                )
-                            }
+                        val listOfPhoneNumbers = listOf(binding.firstPhoneNumberContent.text?.toString() ?: "")
 
                         val fullName = if (isStringTotallyEmpty(binding.firstNameInput.editText?.text.toString())) {
                             binding.lastNameInput.editText?.text.toString()
@@ -360,12 +358,6 @@ class AddNewContactActivity : AppCompatActivity() {
             putExtra(ContactsContract.Contacts.Photo.PHOTO, contactImageString)
             putExtra(
                 ContactsContract.Intents.Insert.PHONE, binding.firstPhoneNumberContent.text?.toString()
-            )
-            putExtra(
-                ContactsContract.Intents.Insert.SECONDARY_PHONE, binding.secondPhoneNumberContent.text?.toString()
-            )
-            putExtra(
-                ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME
             )
             putExtra(
                 ContactsContract.Intents.Insert.EXTRA_DATA_SET, binding.messengerIdInput.editText?.text.toString()

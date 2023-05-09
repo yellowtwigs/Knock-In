@@ -16,18 +16,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityNotificationAlarmBinding
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
+import com.yellowtwigs.knockin.ui.SingleContactViewState
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewState
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
-import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.goToOutlook
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
-import com.yellowtwigs.knockin.utils.ContactGesture.handleContactWithMultiplePhoneNumbers
 import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
 import com.yellowtwigs.knockin.utils.ContactGesture.openSms
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
-import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +45,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var alarmSound: MediaPlayer? = null
 
     private val editContactViewModel: EditContactViewModel by viewModels()
-    private var currentContact: EditContactViewState? = null
+    private var currentContact: SingleContactViewState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,19 +55,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         val sbp = intent.extras?.get("notification") as StatusBarParcelable
 
-        Log.i("NotificationsAlarmMsg", "sbp.contactId : ${sbp.contactId}")
-
         binding.apply {
-            editContactViewModel.getContactById(sbp.contactId).observe(this@NotificationAlarmActivity) { contact ->
+            editContactViewModel.getSingleContactViewStateById(sbp.contactId).observe(this@NotificationAlarmActivity) { contact ->
                 currentContact = contact
                 contact?.apply {
                     currentNotificationSound = notificationSound
                     currentNotificationTone = notificationTone
                     currentIsCustomSound = isCustomSound == 1
-
-                    Log.i("GetNotificationSound", "notificationSound : $notificationSound")
-                    Log.i("GetNotificationSound", "notificationTone : $notificationTone")
-                    Log.i("GetNotificationSound", "isCustomSound : $isCustomSound")
 
                     soundRingtone()
                 }
@@ -133,121 +126,14 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
             sbp.apply {
                 receiveMessageLayout.setOnClickListener {
-                    val listOfPhoneNumbersWithSpinner = if (currentContact?.secondPhoneNumber?.phoneNumber == "") {
-                        listOf(
-                            PhoneNumberWithSpinner(
-                                currentContact?.firstPhoneNumber?.flag, currentContact?.firstPhoneNumber?.phoneNumber ?: ""
-                            )
-                        )
-                    } else {
-                        listOf(
-                            PhoneNumberWithSpinner(
-                                currentContact?.firstPhoneNumber?.flag, currentContact?.firstPhoneNumber?.phoneNumber ?: ""
-                            ), PhoneNumberWithSpinner(
-                                currentContact?.secondPhoneNumber?.flag, currentContact?.secondPhoneNumber?.phoneNumber ?: ""
-                            )
-                        )
-                    }
-
-
-
-
-
 
                     currentContact?.firstPhoneNumber ?: listOf(PhoneNumberWithSpinner(null, ""))
 
                     if (isSMS) {
                         if (currentContact != null) {
-                            handleContactWithMultiplePhoneNumbers(
-                                cxt = this@NotificationAlarmActivity,
-                                phoneNumbers = listOfPhoneNumbersWithSpinner,
-                                action = "telegram",
-                                onClickedMultipleNumbers = { action, number1, number2 ->
-                                    when (action) {
-                                        "call" -> {
-                                            MaterialAlertDialogBuilder(
-                                                this@NotificationAlarmActivity, R.style.AlertDialog
-                                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.notif_adapter_call)
-                                                .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                    ContactGesture.callPhone(number1.phoneNumber, this@NotificationAlarmActivity)
-                                                }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                    ContactGesture.callPhone(number2.phoneNumber, this@NotificationAlarmActivity)
-                                                }.show()
-                                        }
-                                        "sms" -> {
-                                            MaterialAlertDialogBuilder(
-                                                this@NotificationAlarmActivity, R.style.AlertDialog
-                                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.list_contact_item_sms)
-                                                .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                    openSms(number1.phoneNumber, this@NotificationAlarmActivity)
-                                                }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                    openSms(number2.phoneNumber, this@NotificationAlarmActivity)
-                                                }.show()
-                                        }
-                                        "whatsapp" -> {
-                                            MaterialAlertDialogBuilder(
-                                                this@NotificationAlarmActivity, R.style.AlertDialog
-                                            ).setBackground(getDrawable(R.color.backgroundColor))
-                                                .setTitle(R.string.list_contact_item_whatsapp)
-                                                .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                    openWhatsapp(
-                                                        Converter.converter06To33(number1.phoneNumber), this@NotificationAlarmActivity
-                                                    )
-                                                }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                    openWhatsapp(
-                                                        Converter.converter06To33(number2.phoneNumber), this@NotificationAlarmActivity
-                                                    )
-                                                }.show()
-                                        }
-                                        "telegram" -> {
-                                            MaterialAlertDialogBuilder(
-                                                this@NotificationAlarmActivity, R.style.AlertDialog
-                                            ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("Telegram")
-                                                .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                    goToTelegram(this@NotificationAlarmActivity, number1.phoneNumber)
-                                                }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                    goToTelegram(this@NotificationAlarmActivity, number2.phoneNumber)
-                                                }.show()
-                                        }
-                                    }
-                                },
-                                onNotMobileFlagClicked = { action, phoneNumber, message ->
-                                    MaterialAlertDialogBuilder(
-                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                    ).setBackground(getDrawable(R.color.backgroundColor))
-                                        .setTitle(getString(R.string.not_mobile_flag_title))
-                                        .setMessage("Please check that this number can receive sms")
-                                        .setPositiveButton(phoneNumber) { _, _ ->
-                                            when (action) {
-                                                "send_whatsapp" -> {
-                                                    ContactGesture.sendMessageWithWhatsapp(
-                                                        phoneNumber, message, this@NotificationAlarmActivity
-                                                    )
-                                                }
-                                                "send_message" -> {
-                                                    ContactGesture.sendMessageWithAndroidMessage(
-                                                        phoneNumber, message, this@NotificationAlarmActivity
-                                                    )
-                                                }
-                                                "sms" -> {
-                                                    openSms(phoneNumber, this@NotificationAlarmActivity)
-                                                }
-                                                "whatsapp" -> {
-                                                    openWhatsapp(phoneNumber, this@NotificationAlarmActivity)
-                                                }
-                                                "telegram" -> {
-                                                    goToTelegram(this@NotificationAlarmActivity, phoneNumber)
-                                                }
-                                            }
-                                        }.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                                        }.show()
-                                },
-                                ""
-                            )
+                            currentContact?.let { contact ->
+                                openSms(contact.firstPhoneNumber, this@NotificationAlarmActivity)
+                            }
                         } else {
                             openSms(
                                 statusBarNotificationInfo["android.title"] as String, this@NotificationAlarmActivity
@@ -257,100 +143,9 @@ class NotificationAlarmActivity : AppCompatActivity() {
                         when (appNotifier) {
                             "com.whatsapp" -> {
                                 if (currentContact != null) {
-                                    handleContactWithMultiplePhoneNumbers(
-                                        cxt = this@NotificationAlarmActivity,
-                                        phoneNumbers = listOfPhoneNumbersWithSpinner,
-                                        action = "telegram",
-                                        onClickedMultipleNumbers = { action, number1, number2 ->
-                                            when (action) {
-                                                "call" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor))
-                                                        .setTitle(R.string.notif_adapter_call)
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            ContactGesture.callPhone(number1.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            ContactGesture.callPhone(number2.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.show()
-                                                }
-                                                "sms" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor))
-                                                        .setTitle(R.string.list_contact_item_sms)
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            openSms(number1.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            openSms(number2.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.show()
-                                                }
-                                                "whatsapp" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor))
-                                                        .setTitle(R.string.list_contact_item_whatsapp)
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            openWhatsapp(
-                                                                Converter.converter06To33(number1.phoneNumber),
-                                                                this@NotificationAlarmActivity
-                                                            )
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            openWhatsapp(
-                                                                Converter.converter06To33(number2.phoneNumber),
-                                                                this@NotificationAlarmActivity
-                                                            )
-                                                        }.show()
-                                                }
-                                                "telegram" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("Telegram")
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            goToTelegram(this@NotificationAlarmActivity, number1.phoneNumber)
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            goToTelegram(this@NotificationAlarmActivity, number2.phoneNumber)
-                                                        }.show()
-                                                }
-                                            }
-                                        },
-                                        onNotMobileFlagClicked = { action, phoneNumber, message ->
-                                            MaterialAlertDialogBuilder(
-                                                this@NotificationAlarmActivity, R.style.AlertDialog
-                                            ).setBackground(getDrawable(R.color.backgroundColor))
-                                                .setTitle(getString(R.string.not_mobile_flag_title))
-                                                .setMessage("Please check that this number can receive sms")
-                                                .setPositiveButton(phoneNumber) { _, _ ->
-                                                    when (action) {
-                                                        "send_whatsapp" -> {
-                                                            ContactGesture.sendMessageWithWhatsapp(
-                                                                phoneNumber, message, this@NotificationAlarmActivity
-                                                            )
-                                                        }
-                                                        "send_message" -> {
-                                                            ContactGesture.sendMessageWithAndroidMessage(
-                                                                phoneNumber, message, this@NotificationAlarmActivity
-                                                            )
-                                                        }
-                                                        "sms" -> {
-                                                            openSms(phoneNumber, this@NotificationAlarmActivity)
-                                                        }
-                                                        "whatsapp" -> {
-                                                            openWhatsapp(phoneNumber, this@NotificationAlarmActivity)
-                                                        }
-                                                        "telegram" -> {
-                                                            goToTelegram(this@NotificationAlarmActivity, phoneNumber)
-                                                        }
-                                                    }
-                                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                                                }.show()
-                                        },
-                                        ""
-                                    )
+                                    currentContact?.let { contact ->
+                                        openWhatsapp(converter06To33(contact.firstPhoneNumber), this@NotificationAlarmActivity)
+                                    }
                                 } else {
                                     openWhatsapp(
                                         statusBarNotificationInfo["android.title"] as String, this@NotificationAlarmActivity
@@ -380,103 +175,9 @@ class NotificationAlarmActivity : AppCompatActivity() {
                             }
                             "org.telegram.messenger" -> {
                                 if (currentContact != null) {
-                                    handleContactWithMultiplePhoneNumbers(
-                                        cxt = this@NotificationAlarmActivity,
-                                        phoneNumbers = listOfPhoneNumbersWithSpinner,
-                                        action = "telegram",
-                                        onClickedMultipleNumbers = { action, number1, number2 ->
-                                            when (action) {
-                                                "call" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor))
-                                                        .setTitle(R.string.notif_adapter_call)
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            ContactGesture.callPhone(number1.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            ContactGesture.callPhone(number2.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.show()
-                                                }
-                                                "sms" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor))
-                                                        .setTitle(R.string.list_contact_item_sms)
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            openSms(number1.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            openSms(number2.phoneNumber, this@NotificationAlarmActivity)
-                                                        }.show()
-                                                }
-                                                "whatsapp" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor))
-                                                        .setTitle(R.string.list_contact_item_whatsapp)
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            openWhatsapp(
-                                                                Converter.converter06To33(number1.phoneNumber),
-                                                                this@NotificationAlarmActivity
-                                                            )
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            openWhatsapp(
-                                                                Converter.converter06To33(number2.phoneNumber),
-                                                                this@NotificationAlarmActivity
-                                                            )
-                                                        }.show()
-                                                }
-                                                "telegram" -> {
-                                                    MaterialAlertDialogBuilder(
-                                                        this@NotificationAlarmActivity, R.style.AlertDialog
-                                                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("Telegram")
-                                                        .setMessage(getString(R.string.two_numbers_dialog_message))
-                                                        .setPositiveButton(number1.phoneNumber) { _, _ ->
-                                                            goToTelegram(this@NotificationAlarmActivity, number1.phoneNumber)
-                                                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                                                            goToTelegram(this@NotificationAlarmActivity, number2.phoneNumber)
-                                                        }.show()
-                                                }
-                                            }
-                                        },
-                                        onNotMobileFlagClicked = { action, phoneNumber, message ->
-                                            MaterialAlertDialogBuilder(
-                                                this@NotificationAlarmActivity, R.style.AlertDialog
-                                            ).setBackground(getDrawable(R.color.backgroundColor))
-                                                .setTitle(getString(R.string.not_mobile_flag_title))
-                                                .setMessage("Please check that this number can receive sms")
-                                                .setPositiveButton(phoneNumber) { _, _ ->
-                                                    when (action) {
-                                                        "send_whatsapp" -> {
-                                                            ContactGesture.sendMessageWithWhatsapp(
-                                                                phoneNumber, message, this@NotificationAlarmActivity
-                                                            )
-                                                        }
-                                                        "send_message" -> {
-                                                            ContactGesture.sendMessageWithAndroidMessage(
-                                                                phoneNumber, message, this@NotificationAlarmActivity
-                                                            )
-                                                        }
-                                                        "sms" -> {
-                                                            openSms(phoneNumber, this@NotificationAlarmActivity)
-                                                        }
-                                                        "whatsapp" -> {
-                                                            openWhatsapp(phoneNumber, this@NotificationAlarmActivity)
-                                                        }
-                                                        "telegram" -> {
-                                                            goToTelegram(this@NotificationAlarmActivity, phoneNumber)
-                                                        }
-                                                    }
-                                                }.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                                                }.show()
-                                        },
-                                        ""
-                                    )
-//                                    goToTelegram(
-//                                        this@NotificationAlarmActivity, "${currentContact?.firstName} ${currentContact?.lastName}"
-//                                    )
+                                    currentContact?.let { contact ->
+                                        goToTelegram(this@NotificationAlarmActivity, contact.firstPhoneNumber)
+                                    }
                                 } else {
                                     goToTelegram(this@NotificationAlarmActivity, "")
                                 }

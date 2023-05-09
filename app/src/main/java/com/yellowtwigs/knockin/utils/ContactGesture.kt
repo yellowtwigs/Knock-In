@@ -12,6 +12,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithFlag
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
@@ -27,9 +28,10 @@ object ContactGesture {
         phoneNumbers: List<PhoneNumberWithSpinner>,
         action: String,
         onClickedMultipleNumbers: (String, PhoneNumberWithSpinner, PhoneNumberWithSpinner) -> Unit,
-        onNotMobileFlagClicked: (String, String, String) -> Unit,
+        onNotMobileFlagClicked: (String, PhoneNumberWithSpinner, String) -> Unit,
         message: String
     ) {
+
         if (phoneNumbers.size > 1) {
             onClickedMultipleNumbers(action, phoneNumbers[0], phoneNumbers[1])
         } else if (phoneNumbers.isNotEmpty()) {
@@ -45,35 +47,35 @@ object ContactGesture {
                         if (type == 2) {
                             openSms(phoneNumber, cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, "")
+                            onNotMobileFlagClicked(action, phoneNumbers[0], "")
                         }
                     }
                     "send_whatsapp" -> {
                         if (type == 2) {
                             sendMessageWithWhatsapp(phoneNumber, message, cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, message)
+                            onNotMobileFlagClicked(action, phoneNumbers[0], message)
                         }
                     }
                     "send_message" -> {
                         if (type == 2) {
                             sendMessageWithAndroidMessage(phoneNumber, message, cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, message)
+                            onNotMobileFlagClicked(action, phoneNumbers[0], message)
                         }
                     }
                     "whatsapp" -> {
                         if (type == 2) {
                             openWhatsapp(converter06To33(phoneNumber), cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, "")
+                            onNotMobileFlagClicked(action, phoneNumbers[0], "")
                         }
                     }
                     "telegram" -> {
                         if (type == 2) {
                             goToTelegram(cxt, phoneNumber)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, "")
+                            onNotMobileFlagClicked(action, phoneNumbers[0], "")
                         }
                     }
                 }
@@ -86,35 +88,35 @@ object ContactGesture {
                         if (type == 2) {
                             openSms(phoneNumber, cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, "")
+                            onNotMobileFlagClicked(action, phoneNumbers[0], "")
                         }
                     }
                     "send_whatsapp" -> {
                         if (type == 2) {
                             sendMessageWithWhatsapp(phoneNumber, message, cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, message)
+                            onNotMobileFlagClicked(action, phoneNumbers[0], message)
                         }
                     }
                     "send_message" -> {
                         if (type == 2) {
                             sendMessageWithAndroidMessage(phoneNumber, message, cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, message)
+                            onNotMobileFlagClicked(action, phoneNumbers[0], message)
                         }
                     }
                     "whatsapp" -> {
                         if (type == 2) {
                             openWhatsapp(converter06To33(phoneNumber), cxt)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, "")
+                            onNotMobileFlagClicked(action, phoneNumbers[0], "")
                         }
                     }
                     "telegram" -> {
                         if (type == 2) {
                             goToTelegram(cxt, phoneNumber)
                         } else {
-                            onNotMobileFlagClicked(action, phoneNumber, "")
+                            onNotMobileFlagClicked(action, phoneNumbers[0], "")
                         }
                     }
                 }
@@ -122,32 +124,78 @@ object ContactGesture {
         }
     }
 
-    fun transformPhoneNumberToSinglePhoneNumberWithSpinner(phoneNumbers: List<String>, firstPhoneNumber: Boolean): PhoneNumberWithSpinner {
+    fun transformPhoneNumberWithFlagToPhoneNumberWithSpinner(phoneNumbers: List<PhoneNumberWithFlag>): List<PhoneNumberWithSpinner> {
+        return phoneNumbers.map {
+            PhoneNumberWithSpinner(
+                flag = transformPhoneNumberFlagStringToFlagNumber(it.flag), phoneNumber = it.phoneNumber
+            )
+        }
+    }
+
+    fun transformPhoneNumberToSinglePhoneNumberWithFlag(phoneNumbers: List<String>, firstPhoneNumber: Boolean): PhoneNumberWithFlag {
         return if (firstPhoneNumber && phoneNumbers.isNotEmpty()) {
             if (phoneNumbers[0].contains(":")) {
-                PhoneNumberWithSpinner(
-                    flag = phoneNumbers[0].split(":")[0].toInt(), // 1 ==> 0
+                PhoneNumberWithFlag(
+                    flag = transformPhoneNumberFlagNumberToFlagString(phoneNumbers[0].split(":")[0].toInt()),
                     phoneNumber = phoneNumbers[0].split(":")[1]
                 )
             } else {
+                PhoneNumberWithFlag(flag = "Mobile", phoneNumber = phoneNumbers[0])
+            }
+        } else if (phoneNumbers.size > 1) {
+            if (phoneNumbers[1].contains(":")) {
+                PhoneNumberWithFlag(
+                    flag = transformPhoneNumberFlagNumberToFlagString(phoneNumbers[1].split(":")[0].toInt()),
+                    phoneNumber = phoneNumbers[1].split(":")[1]
+                )
+            } else {
+                PhoneNumberWithFlag(flag = "Mobile", phoneNumber = phoneNumbers[1])
+            }
+        } else {
+            PhoneNumberWithFlag(flag = "Mobile", phoneNumber = "")
+        }
+    }
+
+    fun transformPhoneNumberToSinglePhoneNumberWithSpinner(phoneNumbers: List<String>, firstPhoneNumber: Boolean): PhoneNumberWithSpinner {
+        return if (firstPhoneNumber && phoneNumbers.isNotEmpty()) {
+            if (phoneNumbers[0].contains(":")) {
+                if (phoneNumbers[0].split(":")[0] != "") {
+                    PhoneNumberWithSpinner(
+                        flag = phoneNumbers[0].split(":")[0].toInt(), // 1 ==> 0
+                        phoneNumber = phoneNumbers[0].split(":")[1]
+                    )
+                } else {
+                    PhoneNumberWithSpinner(
+                        flag = 2, // 1 ==> 0
+                        phoneNumber = phoneNumbers[0].split(":")[1]
+                    )
+                }
+            } else {
                 PhoneNumberWithSpinner(
-                    flag = 0, phoneNumber = phoneNumbers[0]
+                    flag = 2, phoneNumber = phoneNumbers[0]
                 )
             }
         } else if (phoneNumbers.size > 1) {
             if (phoneNumbers[1].contains(":")) {
-                PhoneNumberWithSpinner(
-                    flag = phoneNumbers[1].split(":")[0].toInt(), // 1 ==> 0
-                    phoneNumber = phoneNumbers[1].split(":")[1]
-                )
+                if (phoneNumbers[1].split(":")[0] != "") {
+                    PhoneNumberWithSpinner(
+                        flag = phoneNumbers[1].split(":")[0].toInt(), // 1 ==> 0
+                        phoneNumber = phoneNumbers[1].split(":")[1]
+                    )
+                } else {
+                    PhoneNumberWithSpinner(
+                        flag = 2, // 1 ==> 0
+                        phoneNumber = phoneNumbers[1].split(":")[1]
+                    )
+                }
             } else {
                 PhoneNumberWithSpinner(
-                    flag = 0, phoneNumber = phoneNumbers[1]
+                    flag = 2, phoneNumber = phoneNumbers[1]
                 )
             }
         } else {
             PhoneNumberWithSpinner(
-                flag = null, phoneNumber = ""
+                flag = 2, phoneNumber = ""
             )
         }
     }
@@ -160,10 +208,47 @@ object ContactGesture {
                     phoneNumber = phoneNumber.split(":")[1]
                 )
             } else {
-                PhoneNumberWithSpinner(
-                    flag = 0, phoneNumber = phoneNumber
-                )
+                PhoneNumberWithSpinner(flag = 2, phoneNumber = phoneNumber)
             }
+        }
+    }
+
+    fun transformPhoneNumberWithSpinnerToFlag(phoneNumberWithSpinner: PhoneNumberWithSpinner): String {
+        return when (phoneNumberWithSpinner.flag) {
+            1 -> "Home"
+            2 -> "Mobile"
+            3 -> "Work"
+            4 -> "Work Fax"
+            5 -> "Home Fax"
+            6 -> "Pager"
+            7 -> "Other"
+            else -> "Other"
+        }
+    }
+
+    fun transformPhoneNumberFlagNumberToFlagString(flag: Int): String {
+        return when (flag) {
+            1 -> "Home"
+            2 -> "Mobile"
+            3 -> "Work"
+            4 -> "Work Fax"
+            5 -> "Home Fax"
+            6 -> "Pager"
+            7 -> "Other"
+            else -> "Other"
+        }
+    }
+
+    fun transformPhoneNumberFlagStringToFlagNumber(flag: String): Int {
+        return when (flag) {
+            "Home" -> 1
+            "Mobile" -> 2
+            "Work" -> 3
+            "Work Fax" -> 4
+            "Home Fax" -> 5
+            "Pager" -> 6
+            "Other" -> 7
+            else -> 7
         }
     }
 

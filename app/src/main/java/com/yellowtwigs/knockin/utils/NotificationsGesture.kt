@@ -21,19 +21,32 @@ import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 
 object NotificationsGesture {
     const val FACEBOOK_PACKAGE = "com.facebook.katana"
+    const val FACEBOOK_APP_NAME = "Facebook"
+
     const val MESSENGER_PACKAGE = "com.facebook.orca"
+    const val MESSENGER_APP_NAME = "Messenger"
+
     const val WHATSAPP_PACKAGE = "com.whatsapp"
+    const val WHATSAPP_APP_NAME = "WhatsApp"
 
     const val GMAIL_PACKAGE = "com.google.android.gm"
-    const val OUTLOOK_PACKAGE = "com.microsoft.office.outlook"
+    const val GMAIL_APP_NAME = "Gmail"
 
+    const val OUTLOOK_PACKAGE = "com.microsoft.office.outlook"
+    const val OUTLOOK_APP_NAME = "Outlook"
+
+    const val MESSAGE_APP_NAME = "SMS"
     const val MESSAGE_PACKAGE = "com.google.android.apps.messaging"
     const val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
     const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
     const val MESSAGES_PACKAGE = "com.chating.messages.chat.fun"
 
     const val SIGNAL_PACKAGE = "org.thoughtcrime.securesms"
+    const val SIGNAL_APP_NAME = "Signal"
+
     const val TELEGRAM_PACKAGE = "org.telegram.messenger"
+    const val TELEGRAM_APP_NAME = "Telegram"
+
     const val INSTAGRAM_PACKAGE = "com.instagram.android"
     private const val DISCORD_PACKAGE = "com.discord"
     private const val TIKTOK_PACKAGE = "com.zhiliaoapp.musically"
@@ -50,17 +63,17 @@ object NotificationsGesture {
 
     fun convertPackageToString(packageName: String, context: Context): String {
         when (packageName) {
-            FACEBOOK_PACKAGE -> return "Facebook"
-            MESSENGER_PACKAGE -> return "Messenger"
-            WHATSAPP_PACKAGE -> return "WhatsApp"
-            GMAIL_PACKAGE -> return "Gmail"
-            OUTLOOK_PACKAGE -> return "Outlook"
+            FACEBOOK_PACKAGE -> return FACEBOOK_APP_NAME
+            MESSENGER_PACKAGE -> return MESSENGER_APP_NAME
+            WHATSAPP_PACKAGE -> return WHATSAPP_APP_NAME
+            GMAIL_PACKAGE -> return GMAIL_APP_NAME
+            OUTLOOK_PACKAGE -> return OUTLOOK_APP_NAME
 
-            MESSAGE_PACKAGE -> return "Message"
-            XIAOMI_MESSAGE_PACKAGE -> return "Message"
-            MESSAGE_SAMSUNG_PACKAGE -> return "Message"
-            MESSAGES_PACKAGE -> return "Message"
-            Telephony.Sms.getDefaultSmsPackage(context) -> return "Message"
+            MESSAGE_PACKAGE -> return MESSAGE_APP_NAME
+            XIAOMI_MESSAGE_PACKAGE -> return MESSAGE_APP_NAME
+            MESSAGE_SAMSUNG_PACKAGE -> return MESSAGE_APP_NAME
+            MESSAGES_PACKAGE -> return MESSAGE_APP_NAME
+            Telephony.Sms.getDefaultSmsPackage(context) -> return MESSAGE_APP_NAME
 
             SIGNAL_PACKAGE -> return "Signal"
             TELEGRAM_PACKAGE -> return "Telegram"

@@ -44,10 +44,12 @@ class ContactsGridFourAdapter(
                 favoriteIcon.isVisible = contact.isFavorite
 
                 root.setOnClickListener {
-                    if ((cxt as ContactsListActivity).modeMultiSelect) {
-                        onClickedCallbackMultiSelect(contact.id, civ, contact)
-                    } else {
-                        onClickedCallback(contact.id)
+                    if ((cxt is ContactsListActivity)) {
+                        if (cxt.modeMultiSelect) {
+                            onClickedCallbackMultiSelect(contact.id, civ, contact)
+                        } else {
+                            onClickedCallback(contact.id)
+                        }
                     }
                 }
 

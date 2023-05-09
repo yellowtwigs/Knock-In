@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 155,
-      "versionName": "2.3.0",
+      "versionCode": 201,
+      "versionName": "3.0.7",
       "outputFile": "app-premiumApp-release.apk"
     }
   ],

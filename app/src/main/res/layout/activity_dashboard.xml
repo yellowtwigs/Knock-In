@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.DashboardActivity">
+    tools:context=".ui.statistics.dashboard.DashboardActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,275 +13,43 @@
         android:background="?attr/backgroundColor"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/messaging_title"
-        android:layout_width="0dp"
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/messaging_apps_spinner"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Messaging :"
-        android:textColor="?attr/textColor"
-        android:textSize="23sp"
-        app:layout_constraintEnd_toStartOf="@+id/messaging_spinner"
+        android:layout_margin="10dp"
+        android:entries="@array/messaging_apps_arrays"
+        android:prompt="@string/messaging_apps_arrays_prompt"
+        android:spinnerMode="dialog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/messaging_spinner"
-        android:layout_width="0dp"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart_messaging"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintBottom_toBottomOf="@+id/messaging_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/messaging_title"
-        app:layout_constraintTop_toTopOf="@+id/messaging_title" />
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/daily_messaging_title"
-        android:layout_width="0dp"
+        android:id="@+id/all_notifications_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="Today :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/daily_messaging_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/messaging_title" />
+        app:layout_constraintBottom_toBottomOf="@+id/pie_chart_messaging"
+        app:layout_constraintEnd_toEndOf="@+id/pie_chart_messaging"
+        app:layout_constraintStart_toStartOf="@+id/pie_chart_messaging"
+        app:layout_constraintTop_toTopOf="@+id/pie_chart_messaging" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/daily_messaging_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/daily_messaging_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/daily_messaging_title"
-        app:layout_constraintTop_toTopOf="@+id/daily_messaging_title"
-        tools:text="50" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/weekly_messaging_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Last 7 Days :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/daily_messaging_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/daily_messaging_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/weekly_messaging_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/weekly_messaging_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/weekly_messaging_title"
-        app:layout_constraintTop_toTopOf="@+id/weekly_messaging_title"
-        tools:text="150" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/monthly_messaging_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Current Month :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/monthly_messaging_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weekly_messaging_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/monthly_messaging_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/monthly_messaging_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/monthly_messaging_title"
-        app:layout_constraintTop_toTopOf="@+id/monthly_messaging_title"
-        tools:text="431" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/all_messaging_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="All :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/all_messaging_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/monthly_messaging_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/all_messaging_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/all_messaging_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/all_messaging_title"
-        app:layout_constraintTop_toTopOf="@+id/all_messaging_title"
-        tools:text="785" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/vip_notifications_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="VIP :"
-        android:textColor="?attr/textColor"
-        android:textSize="23sp"
+    <View
+        android:id="@+id/view"
+        android:layout_width="0.5dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/all_messaging_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/daily_vip_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="Today :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/daily_vip_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vip_notifications_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/daily_vip_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/daily_vip_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/daily_vip_title"
-        app:layout_constraintTop_toTopOf="@+id/daily_vip_title"
-        tools:text="50" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/weekly_vip_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Last 7 Days :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/daily_vip_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/daily_vip_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/weekly_vip_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/weekly_vip_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/weekly_vip_title"
-        app:layout_constraintTop_toTopOf="@+id/weekly_vip_title"
-        tools:text="150" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/monthly_vip_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Current Month :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/monthly_vip_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weekly_vip_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/monthly_vip_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/monthly_vip_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/monthly_vip_title"
-        app:layout_constraintTop_toTopOf="@+id/monthly_vip_title"
-        tools:text="431" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/all_vip_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="All :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/all_vip_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/monthly_vip_title" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/all_vip_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/all_vip_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/all_vip_title"
-        app:layout_constraintTop_toTopOf="@+id/all_vip_title"
-        tools:text="785" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/time_health_care_title"
@@ -293,9 +61,10 @@
         android:text="Time saved :"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/time_health_care_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/all_vip_title" />
+        app:layout_constraintTop_toBottomOf="@+id/pie_chart_messaging" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/time_health_care_content"
@@ -306,6 +75,7 @@
         android:gravity="center"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/time_health_care_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/time_health_care_title"

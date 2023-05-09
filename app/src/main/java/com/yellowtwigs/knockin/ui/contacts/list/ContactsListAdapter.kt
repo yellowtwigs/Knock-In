@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactListBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
-import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
-import com.yellowtwigs.knockin.utils.ContactGesture.handleContactWithMultiplePhoneNumbers
 import com.yellowtwigs.knockin.utils.ContactGesture.isMessengerInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.isSignalInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.isTelegramInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.isWhatsappInstalled
 import com.yellowtwigs.knockin.utils.ContactGesture.openMailApp
 import com.yellowtwigs.knockin.utils.ContactGesture.openMessenger
-import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToPhoneNumbersWithSpinner
+import com.yellowtwigs.knockin.utils.ContactGesture.openSms
+import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 import kotlin.collections.ArrayList
@@ -31,9 +33,7 @@ import kotlin.collections.ArrayList
 class ContactsListAdapter(
     private val cxt: Context,
     private val onClickedCallback: (Int) -> Unit,
-    private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactsListViewState) -> Unit,
-    private val onClickedMultipleNumbers: (String, PhoneNumberWithSpinner, PhoneNumberWithSpinner) -> Unit,
-    private val onClickedNotSureIfItIsAMobilePhoneNumber: (String, String, String) -> Unit,
+    private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactsListViewState) -> Unit
 ) : ListAdapter<ContactsListViewState, ContactsListAdapter.ViewHolder>(
     ContactsListViewStateComparator()
 ), SectionIndexer {
@@ -78,15 +78,37 @@ class ContactsListAdapter(
                     cpt += 2
                     callLayout.visibility = View.VISIBLE
                     smsLayout.visibility = View.VISIBLE
+                    smsNumber.visibility = View.VISIBLE
                 } else {
                     callLayout.visibility = View.GONE
                     smsLayout.visibility = View.GONE
+                    smsNumber.visibility = View.GONE
+                }
+                if (contact.secondPhoneNumber.phoneNumber != "") {
+                    cpt += 2
+                    callLayout2.visibility = View.VISIBLE
+                    smsLayout2.visibility = View.VISIBLE
+                    smsNumber2.visibility = View.VISIBLE
+                } else {
+                    callLayout2.visibility = View.GONE
+                    smsLayout2.visibility = View.GONE
+                    smsNumber2.visibility = View.GONE
+                    smsNumber.visibility = View.GONE
+                    callNumber.visibility = View.GONE
                 }
                 if (isWhatsappInstalled(cxt) && contact.hasWhatsapp) {
                     cpt += 1
                     whatsappLayout.visibility = View.VISIBLE
+                    if (contact.secondPhoneNumber.phoneNumber != "") {
+                        cpt += 2
+                        whatsappLayout2.visibility = View.VISIBLE
+                    } else {
+                        whatsappLayout2.visibility = View.GONE
+                        whatsappNumber1.visibility = View.GONE
+                    }
                 } else {
                     whatsappLayout.visibility = View.GONE
+                    whatsappLayout2.visibility = View.GONE
                 }
                 if (isMessengerInstalled(cxt) && contact.messengerId != "") {
                     cpt += 1
@@ -119,34 +141,20 @@ class ContactsListAdapter(
                 val listener = View.OnClickListener { v: View ->
                     when (v.id) {
                         smsLayout.id -> {
-                            handleContactWithMultiplePhoneNumbers(
-                                cxt = cxt,
-                                phoneNumbers = transformPhoneNumberToPhoneNumbersWithSpinner(
-                                    listOf(
-                                        contact.firstPhoneNumber.phoneNumber,
-                                        contact.secondPhoneNumber.phoneNumber
-                                    )
-                                ),
-                                action = "sms",
-                                onClickedMultipleNumbers = onClickedMultipleNumbers,
-                                onNotMobileFlagClicked = onClickedNotSureIfItIsAMobilePhoneNumber,
-                                ""
-                            )
+                            openSms(contact.firstPhoneNumber.phoneNumber, cxt)
+                        }
+                        smsLayout2.id -> {
+                            openSms(contact.secondPhoneNumber.phoneNumber, cxt)
                         }
                         callLayout.id -> {
-                            handleContactWithMultiplePhoneNumbers(
-                                cxt = cxt,
-                                phoneNumbers = transformPhoneNumberToPhoneNumbersWithSpinner(
-                                    listOf(
-                                        contact.firstPhoneNumber.phoneNumber,
-                                        contact.secondPhoneNumber.phoneNumber
-                                    )
-                                ),
-                                action = "call",
-                                onClickedMultipleNumbers = onClickedMultipleNumbers,
-                                onNotMobileFlagClicked = onClickedNotSureIfItIsAMobilePhoneNumber,
-                                ""
-                            )
+                            if (cxt is ContactsListActivity) {
+                                cxt.callPhone(contact.firstPhoneNumber.phoneNumber)
+                            }
+                        }
+                        callLayout2.id -> {
+                            if (cxt is ContactsListActivity) {
+                                cxt.callPhone(contact.secondPhoneNumber.phoneNumber)
+                            }
                         }
                         mailLayout.id -> {
                             openMailApp(contact.listOfMails[0], cxt)
@@ -155,34 +163,13 @@ class ContactsListAdapter(
                             openMessenger(contact.messengerId, cxt)
                         }
                         whatsappLayout.id -> {
-                            handleContactWithMultiplePhoneNumbers(
-                                cxt = cxt,
-                                phoneNumbers = transformPhoneNumberToPhoneNumbersWithSpinner(
-                                    listOf(
-                                        contact.firstPhoneNumber.phoneNumber,
-                                        contact.secondPhoneNumber.phoneNumber
-                                    )
-                                ),
-                                action = "whatsapp",
-                                onClickedMultipleNumbers = onClickedMultipleNumbers,
-                                onNotMobileFlagClicked = onClickedNotSureIfItIsAMobilePhoneNumber,
-                                ""
-                            )
+                            openWhatsapp(Converter.converter06To33(contact.firstPhoneNumber.phoneNumber), cxt)
+                        }
+                        whatsappLayout2.id -> {
+                            openWhatsapp(Converter.converter06To33(contact.secondPhoneNumber.phoneNumber), cxt)
                         }
                         telegramLayout.id -> {
-                            handleContactWithMultiplePhoneNumbers(
-                                cxt = cxt,
-                                phoneNumbers = transformPhoneNumberToPhoneNumbersWithSpinner(
-                                    listOf(
-                                        contact.firstPhoneNumber.phoneNumber,
-                                        contact.secondPhoneNumber.phoneNumber
-                                    )
-                                ),
-                                action = "telegram",
-                                onClickedMultipleNumbers = onClickedMultipleNumbers,
-                                onNotMobileFlagClicked = onClickedNotSureIfItIsAMobilePhoneNumber,
-                                ""
-                            )
+                            ContactGesture.goToTelegram(cxt, contact.firstPhoneNumber.phoneNumber)
                         }
                         signalLayout.id -> {
                             goToSignal(cxt)
@@ -194,10 +181,13 @@ class ContactsListAdapter(
                 }
 
                 smsLayout.setOnClickListener(listener)
+                smsLayout2.setOnClickListener(listener)
                 callLayout.setOnClickListener(listener)
+                callLayout2.setOnClickListener(listener)
                 mailLayout.setOnClickListener(listener)
                 messengerLayout.setOnClickListener(listener)
                 whatsappLayout.setOnClickListener(listener)
+                whatsappLayout2.setOnClickListener(listener)
                 telegramLayout.setOnClickListener(listener)
                 signalLayout.setOnClickListener(listener)
                 editLayout.setOnClickListener(listener)
@@ -265,10 +255,7 @@ class ContactsListAdapter(
         override fun areContentsTheSame(
             oldItem: ContactsListViewState, newItem: ContactsListViewState
         ): Boolean {
-            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 &&
-                    oldItem.firstPhoneNumber == newItem.firstPhoneNumber &&
-                    oldItem.secondPhoneNumber == newItem.secondPhoneNumber &&
-                    oldItem.listOfMails == newItem.listOfMails && oldItem.priority == newItem.priority && oldItem.isFavorite == newItem.isFavorite && oldItem.messengerId == newItem.messengerId && oldItem.hasWhatsapp == newItem.hasWhatsapp && oldItem.hasTelegram == newItem.hasTelegram && oldItem.hasSignal == newItem.hasSignal
+            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 && oldItem.firstPhoneNumber == newItem.firstPhoneNumber && oldItem.secondPhoneNumber == newItem.secondPhoneNumber && oldItem.listOfMails == newItem.listOfMails && oldItem.priority == newItem.priority && oldItem.isFavorite == newItem.isFavorite && oldItem.messengerId == newItem.messengerId && oldItem.hasWhatsapp == newItem.hasWhatsapp && oldItem.hasTelegram == newItem.hasTelegram && oldItem.hasSignal == newItem.hasSignal
         }
     }
 

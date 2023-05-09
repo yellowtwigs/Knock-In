@@ -38,9 +38,10 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
-import com.yellowtwigs.knockin.ui.dashboard.DashboardActivity
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
+import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
@@ -50,6 +51,7 @@ import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
 import com.yellowtwigs.knockin.utils.ContactGesture.openSms
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
+import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberWithSpinnerToFlag
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
@@ -626,7 +628,8 @@ class ContactsListActivity : AppCompatActivity() {
 
             if (listOfPhoneNumbers.contains(contact.firstPhoneNumber)) {
                 listOfPhoneNumbers.remove(contact.firstPhoneNumber)
-            } else if (listOfPhoneNumbers.contains(contact.secondPhoneNumber)) {
+            }
+            if (listOfPhoneNumbers.contains(contact.secondPhoneNumber)) {
                 listOfPhoneNumbers.remove(contact.secondPhoneNumber)
             }
 
@@ -653,102 +656,19 @@ class ContactsListActivity : AppCompatActivity() {
 
             listOfHasSms.add(contact.firstPhoneNumber.flag != null)
 
-            if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == 2) {
-                MaterialAlertDialogBuilder(
-                    this@ContactsListActivity, R.style.AlertDialog
-                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
-                    .setMessage(getString(R.string.two_numbers_dialog_message))
-                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
-                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
-                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
-                        listOfPhoneNumbers.add(contact.secondPhoneNumber)
-
-                        dialog.cancel()
-                        dialog.dismiss()
-                    }.show()
-            } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == null) {
+            if (contact.firstPhoneNumber.flag == 2) {
                 listOfPhoneNumbers.add(contact.firstPhoneNumber)
-            } else if (contact.firstPhoneNumber.flag == null && contact.secondPhoneNumber.flag == 2) {
-                contact.secondPhoneNumber.let {
-                    listOfPhoneNumbers.add(it)
-                }
-            } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag == null) {
-                MaterialAlertDialogBuilder(
-                    this@ContactsListActivity, R.style.AlertDialog
-                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
-                    .setMessage(getString(R.string.multi_channel_not_mobile_flag))
-                    .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
-                    }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
-                        dialog.cancel()
-                        dialog.dismiss()
-                    }.show()
-            } else if (contact.firstPhoneNumber.flag == null && contact.secondPhoneNumber.flag != 2) {
-                MaterialAlertDialogBuilder(
-                    this@ContactsListActivity, R.style.AlertDialog
-                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(getString(R.string.not_mobile_flag_title))
-                    .setMessage(getString(R.string.multi_channel_not_mobile_flag))
-                    .setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                        contact.secondPhoneNumber.let {
-                            listOfPhoneNumbers.add(it)
-                        }
-                    }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
-                        dialog.cancel()
-                        dialog.dismiss()
-                    }.show()
-            } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag != 2) {
-                MaterialAlertDialogBuilder(
-                    this@ContactsListActivity, R.style.AlertDialog
-                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
-                    .setMessage(getString(R.string.two_numbers_dialog_message))
-                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
-                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
-                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
-                        listOfPhoneNumbers.add(contact.secondPhoneNumber)
-
-                        dialog.cancel()
-                        dialog.dismiss()
-                    }.show()
-            } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag != 2) {
-                MaterialAlertDialogBuilder(
-                    this@ContactsListActivity, R.style.AlertDialog
-                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
-                    .setMessage(getString(R.string.two_numbers_dialog_message))
-                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
-                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
-                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
-                        contact.secondPhoneNumber.let {
-                            listOfPhoneNumbers.add(it)
-                        }
-                        dialog.cancel()
-                        dialog.dismiss()
-                    }.show()
             } else if (contact.firstPhoneNumber.flag != 2 && contact.secondPhoneNumber.flag == 2) {
-                MaterialAlertDialogBuilder(
-                    this@ContactsListActivity, R.style.AlertDialog
-                ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("")
-                    .setMessage(getString(R.string.two_numbers_dialog_message))
-                    .setPositiveButton(contact.firstPhoneNumber.phoneNumber) { _, _ ->
-                        listOfPhoneNumbers.add(contact.firstPhoneNumber)
-                    }.setNegativeButton(contact.secondPhoneNumber.phoneNumber) { dialog, _ ->
-                        contact.secondPhoneNumber.let {
-                            listOfPhoneNumbers.add(it)
-                        }
-                        dialog.cancel()
-                        dialog.dismiss()
-                    }.show()
+                if (contact.secondPhoneNumber.phoneNumber.isNotEmpty()) {
+                    listOfPhoneNumbers.add(contact.secondPhoneNumber)
+                } else {
+                    listOfPhoneNumbers.add(contact.firstPhoneNumber)
+                }
+            } else if (contact.firstPhoneNumber.flag == 2 && contact.secondPhoneNumber.flag == 2) {
+                listOfPhoneNumbers.add(contact.firstPhoneNumber)
             } else {
-
+                listOfPhoneNumbers.add(contact.firstPhoneNumber)
             }
-
-
-//            if (contact.firstPhoneNumber.flag != null) {
-//                if (contact.secondPhoneNumber.flag != null) {
-//                    listOfPhoneNumbers.add(Pair(contact.firstPhoneNumber, contact.secondPhoneNumber))
-//                } else {
-//                    listOfPhoneNumbers.add(Pair(contact.firstPhoneNumber, null))
-//                }
-//            }
 
             listOfHasEmail.add(!contact.listOfMails.contains(""))
             if (!contact.listOfMails.contains("")) {
@@ -756,8 +676,6 @@ class ContactsListActivity : AppCompatActivity() {
             }
 
             listOfHasWhatsapp.add(contact.hasWhatsapp)
-
-            Log.i("MultiMonoChannel", "listOfPhoneNumbers : $listOfPhoneNumbers")
         }
     }
 
@@ -840,13 +758,13 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     private fun monoChannelSmsClick(listOfPhoneNumber: ArrayList<PhoneNumberWithSpinner>) {
-        Log.i("MultiMonoChannel", "listOfPhoneNumber 2 : ${listOfPhoneNumber}")
-
-        var message = "smsto:" + listOfPhoneNumber[0].phoneNumber
-        for (i in 0 until listOfPhoneNumber.size) {
-            message += ";" + listOfPhoneNumber[i].phoneNumber
+        if (listOfPhoneNumber.isNotEmpty()) {
+            var message = "smsto:" + listOfPhoneNumber[0].phoneNumber
+            for (i in 0 until listOfPhoneNumber.size) {
+                message += ";" + listOfPhoneNumber[i].phoneNumber
+            }
+            startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
         }
-        startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(message)))
     }
 
     private fun monoChannelMailClick(listOfMail: ArrayList<String>) {
@@ -895,72 +813,6 @@ class ContactsListActivity : AppCompatActivity() {
             modeMultiSelect = listOfItemSelected.isNotEmpty()
 
             setupMultiSelectToolbar(binding, modeMultiSelect)
-        }, { action, number1, number2 ->
-            when (action) {
-                "call" -> {
-                    MaterialAlertDialogBuilder(
-                        this@ContactsListActivity, R.style.AlertDialog
-                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.notif_adapter_call)
-                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
-                            ContactGesture.callPhone(number1.phoneNumber, this@ContactsListActivity)
-                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                            ContactGesture.callPhone(number2.phoneNumber, this@ContactsListActivity)
-                        }.show()
-                }
-                "sms" -> {
-                    MaterialAlertDialogBuilder(
-                        this@ContactsListActivity, R.style.AlertDialog
-                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.list_contact_item_sms)
-                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
-                            openSms(number1.phoneNumber, this@ContactsListActivity)
-                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                            openSms(number2.phoneNumber, this@ContactsListActivity)
-                        }.show()
-                }
-                "whatsapp" -> {
-                    MaterialAlertDialogBuilder(
-                        this@ContactsListActivity, R.style.AlertDialog
-                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle(R.string.list_contact_item_whatsapp)
-                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
-                            openWhatsapp(
-                                Converter.converter06To33(number1.phoneNumber), this@ContactsListActivity
-                            )
-                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                            openWhatsapp(
-                                Converter.converter06To33(number2.phoneNumber), this@ContactsListActivity
-                            )
-                        }.show()
-                }
-                "telegram" -> {
-                    MaterialAlertDialogBuilder(
-                        this@ContactsListActivity, R.style.AlertDialog
-                    ).setBackground(getDrawable(R.color.backgroundColor)).setTitle("Telegram")
-                        .setMessage(getString(R.string.two_numbers_dialog_message)).setPositiveButton(number1.phoneNumber) { _, _ ->
-                            goToTelegram(this@ContactsListActivity, number1.phoneNumber)
-                        }.setNegativeButton(number2.phoneNumber) { _, _ ->
-                            goToTelegram(this@ContactsListActivity, number2.phoneNumber)
-                        }.show()
-                }
-            }
-        }, { action, number, message ->
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
-                .setTitle(getString(R.string.not_mobile_flag_title)).setMessage(getString(R.string.not_mobile_flag_msg))
-                .setPositiveButton(number) { _, _ ->
-                    when (action) {
-                        "sms" -> {
-                            openSms(phoneNumber, this)
-                        }
-                        "whatsapp" -> {
-                            openWhatsapp(phoneNumber, this)
-                        }
-                        "telegram" -> {
-                            goToTelegram(this, phoneNumber)
-                        }
-                    }
-                }.setNegativeButton(getString(R.string.alert_dialog_no)) { dialog, _ ->
-                    dialog.cancel()
-                    dialog.dismiss()
-                }.show()
         })
 
         if (nbGrid == 1) {

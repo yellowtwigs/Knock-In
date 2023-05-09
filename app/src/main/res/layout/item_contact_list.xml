@@ -92,6 +92,42 @@
                     android:layout_centerInParent="true"
                     android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_google_call" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/call_number"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_above="@+id/call_icon"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/number_1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/call_layout_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/background_layout_selector"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/call_icon_2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_google_call" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/call_number_2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_above="@+id/call_icon_2"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/number_2" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -106,7 +142,44 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/sms_number"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_above="@+id/sms_icon"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/number_1" />
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/sms_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_micon" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sms_layout_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/background_layout_selector"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_call"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/sms_number_2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_above="@+id/sms_icon_2"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/number_2" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/sms_icon_2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerInParent="true"
@@ -127,12 +200,49 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/whatsapp_icon"
+                    android:id="@+id/whatsapp_icon_1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
                     android:background="?attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_whatsapp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/whatsapp_number_1"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_above="@+id/whatsapp_icon_1"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/number_1" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/whatsapp_layout_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/background_layout_selector"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/list_contact_item_constraint_sms"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/whatsapp_icon_2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="?attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_whatsapp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/whatsapp_number_2"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_above="@+id/whatsapp_icon_2"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/number_2" />
 
             </RelativeLayout>
 

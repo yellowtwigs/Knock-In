@@ -508,6 +508,11 @@
     <string name="not_mobile_flag_msg" translatable="false">This number is not mobile flagged, do you want to use it ?</string>
     <string name="multi_channel_not_mobile_flag" translatable="false">You have at least one number that is not mobile flagged, do you want to use it ?</string>
 
-    <!--    android:entries="@array/messaging_apps_arrays"-->
-    <!--    android:prompt="@string/messaging_apps_arrays_prompt"-->
+    <string-array name="messaging_apps_arrays" translatable="false">
+        <item>All</item>
+        <item>VIP</item>
+    </string-array>
+
+    <string name="messaging_apps_arrays_prompt" translatable="false">All</string>
+    <string name="handle_one_phone_number_msg">Knock In handles only one mobile number per contact</string>
 </resources>

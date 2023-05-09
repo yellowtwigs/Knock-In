@@ -44,22 +44,17 @@ class ContactManageGroupListAdapter(
 
                 name.text = contact.firstName + " " + contact.lastName
 
-                itemSelected(contact.id.toString(), civ, contact)
-
                 if (contact.firstName.isBlank() || contact.firstName.isEmpty()) {
-                    itemSelected(contact.lastName, civ, contact)
+                    itemSelected(contact.id, contact.lastName, civ, contact)
                 } else if (contact.lastName.isBlank() || contact.lastName.isEmpty()) {
-                    itemSelected(contact.firstName, civ, contact)
+                    itemSelected(contact.id, contact.firstName, civ, contact)
                 } else {
-                    itemSelected(name.text.toString(), civ, contact)
+                    itemSelected(contact.id, name.text.toString(), civ, contact)
                 }
-
-                Log.i("IdsContactsFromGroup", "contact.firstName : ${contact.firstName}")
-                Log.i("IdsContactsFromGroup", "contact.lastName : ${contact.lastName}")
 
                 root.setOnClickListener {
                     onClickedCallback(contact.id.toString())
-                    itemSelected(contact.id.toString(), civ, contact)
+                    itemSelected(contact.id, name.text.toString(), civ, contact)
                 }
             }
         }
@@ -79,10 +74,8 @@ class ContactManageGroupListAdapter(
         }
     }
 
-    private fun itemSelected(
-        id: String, image: CircularImageView, contact: ContactManageGroupViewState
-    ) {
-        if (listOfItemSelected.contains(id)) {
+    private fun itemSelected(id: Int, name: String, image: CircularImageView, contact: ContactManageGroupViewState) {
+        if (listOfItemSelected.contains(id.toString()) || listOfItemSelected.contains(name)) {
             image.setImageResource(R.drawable.ic_item_selected)
         } else {
             if (contact.profilePicture64 != "") {

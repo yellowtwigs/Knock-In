@@ -496,5 +496,6 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="message_from">Pesan dari %1$s</string>
     <string name="rate_this_app_title">Nilai aplikasi ini</string>
     <string name="rate_this_app_message">Jika Anda menyukai aplikasi ini, luangkan beberapa detik untuk menilainya, itu akan sangat membantu kami. terima kasih</string>
+    <string name="handle_one_phone_number_msg">Knock In hanya menangani satu nomor ponsel per kontak</string>
 
 </resources>

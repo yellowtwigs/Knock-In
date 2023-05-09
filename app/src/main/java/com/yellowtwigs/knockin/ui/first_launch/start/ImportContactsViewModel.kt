@@ -15,6 +15,7 @@ import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.Converter.unAccent
+import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -74,7 +75,7 @@ class ImportContactsViewModel @Inject constructor(
                         }
                         if (!isNumeric) {
                             if (firstName != null) {
-                                if (!firstName.contains("Telegram") && !firstName.contains("WhatsApp") && !firstName.contains(
+                                if (!firstName.contains("Telegram") && !firstName.contains(NotificationsGesture.WHATSAPP_APP_NAME) && !firstName.contains(
                                         "com.google"
                                     ) && !firstName.contains("Signal")
                                 ) {
@@ -159,7 +160,11 @@ class ImportContactsViewModel @Inject constructor(
 
             while (moveToNext()) {
                 val phoneId = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
-                val phoneType = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE))
+                val phoneType = if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE)) == null) {
+                    ""
+                } else {
+                    getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE))
+                }
                 val phoneNumber = if (getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER)) == null) {
                     ""
                 } else {
@@ -177,16 +182,6 @@ class ImportContactsViewModel @Inject constructor(
                         ""
                     }
                 }
-
-                Log.i("ImportPhoneNumbersData", "phoneNumber : $phoneNumber")
-                Log.i("ImportPhoneNumbersData", "isLast : $isLast")
-
-//                Log.i("ImportPhoneNumbersData", "phoneId : $phoneId")
-//                Log.i("ImportPhoneNumbersData", "phoneType : $phoneType")
-//                Log.i("ImportPhoneNumbersData", "savedPhoneType : $savedPhoneType")
-//                Log.i("ImportPhoneNumbersData", "phoneNumber : $phoneNumber")
-//                Log.i("ImportPhoneNumbersData", "$savedPhoneNumber : $savedPhoneNumber")
-//                Log.i("ImportPhoneNumbersData", "savedPhoneNumberWithType : $savedPhoneNumberWithType")
 
                 if (lastId == "") {
                     // 01 74 85 96 36
@@ -208,10 +203,14 @@ class ImportContactsViewModel @Inject constructor(
                             ) {
 
                             } else {
-                                savedPhoneNumberWithType = "$savedPhoneNumberWithType ||| $phoneType:$phoneNumber"
-                                savedPhoneNumber = phoneNumber
-                                savedPhoneType = phoneType
-                                savedPhoto = phonePic
+                                if (savedPhoneType == "2") {
+                                } else if (phoneType == "2") {
+                                    savedPhoneNumberWithType = "$phoneType:$phoneNumber"
+                                    savedPhoneNumber = phoneNumber
+                                    savedPhoneType = phoneType
+                                    savedPhoto = phonePic
+                                } else {
+                                }
                             }
                         } else if (phoneNumber.contains(" ") || savedPhoneNumber.contains(" ")) {
                             if (phoneNumber.replace(" ", "") == savedPhoneNumber || savedPhoneNumber.replace(
@@ -220,16 +219,24 @@ class ImportContactsViewModel @Inject constructor(
                             ) {
 
                             } else {
-                                savedPhoneNumberWithType = "$savedPhoneNumberWithType ||| $phoneType:$phoneNumber"
+                                if (savedPhoneType == "2") {
+                                } else if (phoneType == "2") {
+                                    savedPhoneNumberWithType = "$phoneType:$phoneNumber"
+                                    savedPhoneNumber = phoneNumber
+                                    savedPhoneType = phoneType
+                                    savedPhoto = phonePic
+                                } else {
+                                }
+                            }
+                        } else {
+                            if (savedPhoneType == "2") {
+                            } else if (phoneType == "2") {
+                                savedPhoneNumberWithType = "$phoneType:$phoneNumber"
                                 savedPhoneNumber = phoneNumber
                                 savedPhoneType = phoneType
                                 savedPhoto = phonePic
+                            } else {
                             }
-                        } else {
-                            savedPhoneNumberWithType = "$savedPhoneNumberWithType ||| $phoneType:$phoneNumber"
-                            savedPhoneNumber = phoneNumber
-                            savedPhoneType = phoneType
-                            savedPhoto = phonePic
                         }
                     } else {
                         contactDetails = mutableMapOf(
@@ -418,25 +425,7 @@ class ImportContactsViewModel @Inject constructor(
                             }
 
                             val listOfPhoneNumbers = arrayListOf<String>()
-
-                            if (details[2].toString().contains(" ||| ")) {
-
-                                val number1 = details[2].toString().split(" ||| ")[0]
-                                val number2 = details[2].toString().split(" ||| ")[1]
-
-                                if (number1.contains(" ||| ")) {
-                                    listOfPhoneNumbers.add(number1.split(" ||| ")[0])
-                                } else {
-                                    listOfPhoneNumbers.add(number1)
-                                }
-                                if (number2.contains(" ||| ")) {
-                                    listOfPhoneNumbers.add(number2.split(" ||| ")[0])
-                                } else {
-                                    listOfPhoneNumbers.add(number2)
-                                }
-                            } else {
-                                listOfPhoneNumbers.add(details[2].toString())
-                            }
+                            listOfPhoneNumbers.add(details[2].toString())
 
                             val listOfMails = mutableListOf<String>()
 
