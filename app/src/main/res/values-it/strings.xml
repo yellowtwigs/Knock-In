@@ -494,5 +494,5 @@
     <string name="message_from">Messaggio da %1$s</string>
     <string name="rate_this_app_title">Valuta questa applicazione</string>
     <string name="rate_this_app_message">Se ti piace questa app, ti preghiamo di dedicare qualche secondo a valutarla, ci aiuterebbe molto. Grazie</string>
-    <string name="handle_one_phone_number_msg">Knock In gestisce un solo numero di cellulare per contatto</string>
+    <string name="handle_one_phone_number_msg">Importiamo il tuo numero di telefono di contatto etichettato mobile dalla tua rubrica. Knock In gestisce un solo numero di cellulare per contatto.</string>
 </resources>

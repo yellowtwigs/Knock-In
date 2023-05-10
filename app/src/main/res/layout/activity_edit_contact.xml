@@ -397,7 +397,7 @@
                     android:background="?attr/actionBarItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    app:srcCompat="@drawable/ic_help" />
+                    app:srcCompat="@drawable/ic_about" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -455,7 +455,7 @@
                     android:background="?attr/actionBarItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    app:srcCompat="@drawable/ic_help" />
+                    app:srcCompat="@drawable/ic_about" />
 
             </RelativeLayout>
 

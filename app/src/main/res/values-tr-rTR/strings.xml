@@ -494,5 +494,5 @@
     <string name="message_from">Gönderen mesaj %1$s</string>
     <string name="rate_this_app_title">Bu uygulamayı oyla</string>
     <string name="rate_this_app_message">Bu uygulamayı beğendiyseniz, lütfen derecelendirmek için birkaç saniye ayırın, bize çok yardımcı olacaktır. teşekkürler</string>
-    <string name="handle_one_phone_number_msg">Knock In, kişi başına yalnızca bir cep telefonu numarasını işler</string>
+    <string name="handle_one_phone_number_msg">Cep etiketli iletişim telefon numaranızı adres defterinizden içe aktarıyoruz. Knock In, kişi başına yalnızca bir cep telefonu numarasını işler.</string>
 </resources>

@@ -514,5 +514,5 @@
     </string-array>
 
     <string name="messaging_apps_arrays_prompt" translatable="false">All</string>
-    <string name="handle_one_phone_number_msg">Knock In handles only one mobile number per contact</string>
+    <string name="handle_one_phone_number_msg">We import your contact phone number labelled mobile from your address book. Knock In handles only one mobile number per contact.</string>
 </resources>

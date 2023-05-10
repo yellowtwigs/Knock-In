@@ -495,5 +495,5 @@
     <string name="message_from">رسالة من %1$s</string>
     <string name="rate_this_app_title">قيم هذا التطبيق</string>
     <string name="rate_this_app_message">إذا أعجبك هذا التطبيق ، فيرجى أخذ بضع ثوان لتقييمه ، فسيساعدنا كثيرًا. شكرًا</string>
-    <string name="handle_one_phone_number_msg">Knock In يتعامل مع رقم هاتف محمول واحد فقط لكل جهة اتصال</string>
+    <string name="handle_one_phone_number_msg">نقوم باستيراد رقم هاتف الاتصال الخاص بك المسمى موبايل من دفتر العناوين الخاص بك. Knock In يتعامل مع رقم هاتف محمول واحد فقط لكل جهة اتصال.</string>
 </resources>

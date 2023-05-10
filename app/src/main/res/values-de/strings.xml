@@ -493,5 +493,5 @@
     <string name="message_from">Nachricht von %1$s</string>
     <string name="rate_this_app_title">Bewerte diese App</string>
     <string name="rate_this_app_message">Wenn Ihnen diese App gefällt, nehmen Sie sich bitte ein paar Sekunden Zeit, um sie zu bewerten, es würde uns sehr helfen. Vielen Dank</string>
-    <string name="handle_one_phone_number_msg">Knock In verwaltet nur eine Handynummer pro Kontakt</string>
+    <string name="handle_one_phone_number_msg">Wir importieren Ihre Kontakttelefonnummer mit der Bezeichnung „mobile“ aus Ihrem Adressbuch. Knock In verarbeitet nur eine Mobiltelefonnummer pro Kontakt.</string>
 </resources>

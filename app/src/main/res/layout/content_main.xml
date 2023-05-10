@@ -73,7 +73,7 @@
                     android:background="?attr/actionBarItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-                    app:srcCompat="@drawable/ic_help" />
+                    app:srcCompat="@drawable/ic_about" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/main_toolbar_menu"

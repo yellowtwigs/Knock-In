@@ -500,5 +500,5 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="message_from">Mensaje de %1$s</string>
     <string name="rate_this_app_title">Califica esta aplicación</string>
     <string name="rate_this_app_message">Si te gusta esta aplicación, tómate unos segundos para calificarla, nos ayudaría mucho. Gracias</string>
-    <string name="handle_one_phone_number_msg">Knock In maneja solo un número de móvil por contacto</string>
+    <string name="handle_one_phone_number_msg">Importamos su número de teléfono de contacto etiquetado como móvil desde su libreta de direcciones. Knock In maneja solo un número de móvil por contacto.</string>
 </resources>
