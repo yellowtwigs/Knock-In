@@ -40,29 +40,59 @@ class EditContactViewModel @Inject constructor(
     }
 
     private fun transformContactDbToSingleContactViewState(contact: ContactDB): SingleContactViewState {
-        return SingleContactViewState(
-            id = contact.id,
-            androidId = contact.androidId,
-            fullName = contact.fullName,
-            firstName = contact.firstName,
-            lastName = contact.lastName,
-            profilePicture = contact.profilePicture,
-            profilePicture64 = contact.profilePicture64,
-            firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true).phoneNumber,
-            firstPhoneNumberFlag = transformPhoneNumberWithSpinnerToFlag(transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true)),
-            listOfMails = contact.listOfMails,
-            mail_name = contact.mail_name,
-            priority = contact.priority,
-            isFavorite = contact.isFavorite,
-            messengerId = contact.messengerId,
-            listOfMessagingApps = contact.listOfMessagingApps,
-            notificationTone = contact.notificationTone,
-            notificationSound = contact.notificationSound,
-            isCustomSound = contact.isCustomSound,
-            vipSchedule = contact.vipSchedule,
-            hourLimitForNotification = contact.hourLimitForNotification,
-            audioFileName = contact.audioFileName,
-        )
+        return if (contact != null) {
+            SingleContactViewState(
+                id = contact.id,
+                androidId = contact.androidId,
+                fullName = contact.fullName,
+                firstName = contact.firstName,
+                lastName = contact.lastName,
+                profilePicture = contact.profilePicture,
+                profilePicture64 = contact.profilePicture64,
+                firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true).phoneNumber,
+                firstPhoneNumberFlag = transformPhoneNumberWithSpinnerToFlag(
+                    transformPhoneNumberToSinglePhoneNumberWithSpinner(
+                        contact.listOfPhoneNumbers, true
+                    )
+                ),
+                listOfMails = contact.listOfMails,
+                mail_name = contact.mail_name,
+                priority = contact.priority,
+                isFavorite = contact.isFavorite,
+                messengerId = contact.messengerId,
+                listOfMessagingApps = contact.listOfMessagingApps,
+                notificationTone = contact.notificationTone,
+                notificationSound = contact.notificationSound,
+                isCustomSound = contact.isCustomSound,
+                vipSchedule = contact.vipSchedule,
+                hourLimitForNotification = contact.hourLimitForNotification,
+                audioFileName = contact.audioFileName,
+            )
+        } else {
+            SingleContactViewState(
+                id = 0,
+                androidId = 0,
+                fullName = "",
+                firstName = "",
+                lastName = "",
+                profilePicture = 1,
+                profilePicture64 = "",
+                firstPhoneNumber = "",
+                firstPhoneNumberFlag = "",
+                listOfMails = listOf(),
+                mail_name = "",
+                priority = 1,
+                isFavorite = 1,
+                messengerId = "",
+                listOfMessagingApps = listOf(),
+                notificationTone = "",
+                notificationSound = 1,
+                isCustomSound = 1,
+                vipSchedule = 1,
+                hourLimitForNotification = "",
+                audioFileName = "",
+            )
+        }
     }
 
     private fun transformContactDbToEditContactViewState(contact: ContactDB): EditContactViewState {

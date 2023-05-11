@@ -307,8 +307,6 @@ class EditContactActivity : AppCompatActivity() {
                     .setMessage(getString(R.string.edit_contact_delete_contact_message))
                     .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
                         CoroutineScope(Dispatchers.IO).launch {
-                            editContactViewModel.deleteContactById(currentContact.id)
-
                             withContext(Dispatchers.Main) {
                                 if (currentContact.priority == 2) {
                                     val edit = getSharedPreferences(
@@ -319,6 +317,8 @@ class EditContactActivity : AppCompatActivity() {
                                 }
                                 goToContactsOrGroups()
                             }
+
+                            editContactViewModel.deleteContactById(currentContact.id)
                         }
                     }.setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
                     }.show()
@@ -348,8 +348,7 @@ class EditContactActivity : AppCompatActivity() {
             phoneNumberInformations.setOnClickListener {
                 MaterialAlertDialogBuilder(
                     this@EditContactActivity, R.style.AlertDialog
-                ).setTitle(getString(R.string.add_new_contact_phone_number))
-                    .setMessage(getString(R.string.handle_one_phone_number_msg))
+                ).setTitle(getString(R.string.add_new_contact_phone_number)).setMessage(getString(R.string.handle_one_phone_number_msg))
                     .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
                     }.show()
             }
