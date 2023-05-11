@@ -589,6 +589,8 @@ class ImportContactsViewModel @Inject constructor(
             // Favorites
 
             var groupIsDone = false
+            var groupIsAlreadyInDB = false
+            var groupTriple = ""
 
             contactGroup.forEachIndexed { index, triple ->
                 // Index : 1
@@ -596,6 +598,7 @@ class ImportContactsViewModel @Inject constructor(
 
                 if (!groupsName.contains(triple.third!!)) {
                     // groupsName add Importés le 28/06/2022
+                    groupTriple = triple.third.toString()
                     groupsName.add(triple.third!!)
                 }
                 // contactsInGroup add 402
@@ -606,11 +609,22 @@ class ImportContactsViewModel @Inject constructor(
                     groupIsDone = contactGroup[index + 1].third!! != triple.third!!
                 }
 
-                if (groupIsDone) {
-                    val group = GroupDB(
-                        0, triple.third!!, "", -500138, contactsInGroup, 1
-                    )
-                    manageGroupRepository.insertGroup(group)
+                if (groupIsDone || groupTriple != triple.third || index == contactGroup.lastIndex) {
+                    if (manageGroupRepository.getAllGroups().isEmpty()) {
+                        val group = GroupDB(0, triple.third!!, "", -500138, contactsInGroup, 1)
+                        manageGroupRepository.insertGroup(group)
+                    } else {
+                        manageGroupRepository.getAllGroups().forEach { groupDb ->
+                            if (groupDb.name == triple.third!! && groupDb.listOfContactsData == contactsInGroup) {
+                                groupIsAlreadyInDB = true
+                            }
+                        }
+                        if (!groupIsAlreadyInDB) {
+                            val group = GroupDB(0, triple.third!!, "", -500138, contactsInGroup, 1)
+                            manageGroupRepository.insertGroup(group)
+                        }
+                    }
+
                     contactsInGroup.clear()
                 }
             }

@@ -11,7 +11,10 @@ interface GroupsDao {
     //region ============================================= GET ==============================================
 
     @Query("SELECT * FROM groups_table ORDER BY name ASC")
-    fun getAllGroups(): Flow<List<GroupDB>>
+    fun getAllGroupsFlow(): Flow<List<GroupDB>>
+
+    @Query("SELECT * FROM groups_table ORDER BY name ASC")
+    fun getAllGroups(): List<GroupDB>
 
     @Query("SELECT * FROM groups_table WHERE name = :groupName")
     fun getGroupWithName(groupName: String): Flow<GroupDB>

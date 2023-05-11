@@ -6,6 +6,7 @@ interface ManageGroupRepository {
 
     suspend fun insertGroup(group: GroupDB)
     suspend fun updateGroup(group: GroupDB)
+    fun getAllGroups(): List<GroupDB>
 
     suspend fun deleteGroupById(id: Int)
 }

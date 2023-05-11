@@ -1,23 +1,17 @@
 package com.yellowtwigs.knockin.ui.groups.list
 
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionViewState
-import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +28,7 @@ class GroupsListViewModel @Inject constructor(
     private val viewStateLiveData = MediatorLiveData<List<SectionViewState>>()
 
     init {
-        val allGroups = groupsListRepository.getAllGroups()
+        val allGroups = groupsListRepository.getAllGroupsLiveData()
         val contactsListViewStateLiveDataSortByFullName = liveData(Dispatchers.IO) {
             getAllContactsSortByFullNameUseCase.invoke().collect { contacts ->
                 emit(contacts.map {

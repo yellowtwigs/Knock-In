@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface GroupsListRepository {
 
-    fun getAllGroups(): LiveData<List<GroupDB>>
+    fun getAllGroupsLiveData(): LiveData<List<GroupDB>>
     fun getAllGroupsFlow(): Flow<List<GroupDB>>
 
     fun getGroupById(id: Int): LiveData<GroupDB>
