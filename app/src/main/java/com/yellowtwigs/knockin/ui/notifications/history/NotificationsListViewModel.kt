@@ -8,6 +8,7 @@ import com.yellowtwigs.knockin.repositories.firebase.FirebaseFirestoreRepository
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.NotificationsGesture
+import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSAGE_APP_NAME
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -127,7 +128,7 @@ class NotificationsListViewModel @Inject constructor(
                     return notifications.filter {
                         convertPackageToString(
                             it.platform, context
-                        ) == "Message"
+                        ) == MESSAGE_APP_NAME
                     }
                 }
                 R.id.mail_filter -> {
