@@ -8,21 +8,23 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/performance_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/speedometer_light_green" />
+        app:srcCompat="@drawable/ic_speedometer_light_green" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/background_border_rounded_yellow"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/performance_icon">
@@ -42,36 +44,43 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/notifications_total"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Number of notifications total : 50"
+            android:textAlignment="center"
             android:textColor="?attr/textColor"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/notifications_vip"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/daily_performance" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/notifications_vip"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:text="Number of notifications VIP : 10"
+            android:textAlignment="center"
             android:textColor="?attr/textColor"
             android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notifications_total" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/re_focus_time_gained"
-            android:layout_width="wrap_content"
+            android:id="@+id/advice_message"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Temps de re-concentration sauvés : 10h"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="15dp"
+            android:text="Message"
+            android:textAlignment="center"
             android:textColor="?attr/textColor"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"

@@ -119,15 +119,15 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     private fun setupPieChart(list: List<PieChartDataViewState>) {
         dataPieChart.setUsePercentValues(true)
         dataPieChart.description.isEnabled = false
-        dataPieChart.setExtraOffsets(5F, 10F, 5F, 5F)
+        dataPieChart.setExtraOffsets(5F, 5F, 5F, 5F)
 
         dataPieChart.dragDecelerationFrictionCoef = 0.95f
 
         dataPieChart.isDrawHoleEnabled = true
         dataPieChart.setHoleColor(Color.WHITE)
 
-        dataPieChart.setTransparentCircleColor(Color.WHITE)
-        dataPieChart.setTransparentCircleAlpha(110)
+//        dataPieChart.setTransparentCircleColor(Color.WHITE)
+//        dataPieChart.setTransparentCircleAlpha(110)
 
         dataPieChart.holeRadius = 58f
         dataPieChart.transparentCircleRadius = 61f
@@ -143,7 +143,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 //        seekBarX.setProgress(4);
 //        seekBarY.setProgress(10);
 
-        dataPieChart.animateY(1400, Easing.EaseInOutQuad)
+        dataPieChart.animateY(100, Easing.EaseInOutQuad)
         // chart.spin(2000, 0, 360);
 
         val l = dataPieChart.legend
@@ -156,7 +156,6 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         l.yOffset = 0f
 
         dataPieChart.setEntryLabelColor(Color.WHITE)
-//        dataPieChart.setEntryLabelTypeface(tfRegular);
         dataPieChart.setEntryLabelTextSize(12f)
 
         setupDataToPieChart(list)
@@ -166,14 +165,14 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         val colors: ArrayList<Int> = ArrayList()
         val entries: List<PieEntry> = list.map {
             colors.add(it.color)
-            PieEntry(it.number.toFloat(), "${it.platform} : ${it.number}", resources.getDrawable(R.drawable.speedometer_orange))
+            PieEntry(it.number.toFloat(), "${it.platform} : ${it.number}", resources.getDrawable(R.drawable.ic_speedometer_strong_green))
         }
 
         val dataSet = PieDataSet(entries, "")
         dataSet.setDrawIcons(false)
-        dataSet.sliceSpace = 50f
-        dataSet.iconsOffset = MPPointF(0F, 100F)
-        dataSet.selectionShift = 5f
+        dataSet.sliceSpace = 1f
+//        dataSet.
+        dataSet.selectionShift = 20F
 
 //        for (c in TEST_COLORS) colors.add(c)
 //        for (c in JOYFUL_COLORS) colors.add(c)

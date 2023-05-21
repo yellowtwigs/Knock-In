@@ -5,6 +5,7 @@ import android.provider.Telephony
 import android.util.Log
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardViewState
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
@@ -22,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DailyStatisticsViewModel @Inject constructor(
     private val notificationsRepository: NotificationsRepository,
+    private val contactsListRepository: ContactsListRepository,
     coroutineDispatcherProvider: CoroutineDispatcherProvider,
     private val application: Application
 ) : ViewModel() {
@@ -29,7 +31,13 @@ class DailyStatisticsViewModel @Inject constructor(
     val spinnerSelectedItemFlow = MutableStateFlow(0)
 
     val dailyStatisticsViewStateLiveData: LiveData<DailyStatisticsViewState> = liveData(coroutineDispatcherProvider.io) {
-        combine(notificationsRepository.getAllNotifications().asFlow(), spinnerSelectedItemFlow) { list, selectItem ->
+        combine(
+            notificationsRepository.getAllNotifications().asFlow(),
+            contactsListRepository.getNumbersOfContactsVipFlow(),
+            contactsListRepository.getNumbersOfContactsStandardFlow(),
+            contactsListRepository.getNumbersOfContactsSilentFlow(),
+            spinnerSelectedItemFlow
+        ) { list, numberOfContactsVIP, numberOfContactsStandard, numberOfContactsSilent, selectItem ->
 
             val platform = when (selectItem) {
                 0 -> ""
@@ -151,23 +159,50 @@ class DailyStatisticsViewModel @Inject constructor(
 
             val allNotificationsAvoided = allMessagingNumbers.toInt().minus(allVipNumbers.toInt())
 
-            val timeSaved = allNotificationsAvoided * 23
+//            val icon = when (messagingNumbersDaily.minus(vipNumbersDaily)) {
+//                in 0..9 -> R.drawable.ic_speedometer_strong_red
+//                in 10..30 -> R.drawable.ic_speedometer_light_green
+//                in 30..50 -> R.drawable.ic_speedometer_strong_green
+//                in 50..100 -> R.drawable.ic_speedometer_orange
+//                else -> {
+//                    R.drawable.ic_speedometer_yellow
+//                }
+//            }
 
-            Log.i("NotificationsNumbers", "allMessagingNumbers : $allMessagingNumbers")
-            Log.i("NotificationsNumbers", "allVipNumbers : $allVipNumbers")
-            Log.i(
-                "NotificationsNumbers",
-                "allMessagingNumbers.toInt().minus(allVipNumbers.toInt()) : ${allMessagingNumbers.toInt().minus(allVipNumbers.toInt())}"
-            )
+            // 5+ non-VIP notifs from other contacts
 
-            val icon = when (messagingNumbersDaily.minus(vipNumbersDaily)) {
-                in 0..9 -> R.drawable.speedometer_strong_red
-                in 10..30 -> R.drawable.speedometer_light_green
-                in 30..50 -> R.drawable.speedometer_strong_green
-                in 50..100 -> R.drawable.speedometer_orange
-                else -> {
-                    R.drawable.speedometer_light_red
-                }
+            val nonVipNotificationsNumbers = messagingNumbersDaily.minus(vipNumbersDaily)
+
+            val numberOfContacts = numberOfContactsStandard.plus(numberOfContactsVIP).plus(numberOfContactsSilent)
+
+            val isAllOtherContactsSilent = numberOfContacts.minus(numberOfContactsVIP) == numberOfContactsSilent
+
+            val icon = if (numberOfContactsVIP == 0 && numberOfContactsSilent == 0) {
+                R.drawable.ic_speedometer_strong_red
+            } else if (numberOfContactsVIP < 5 && numberOfContactsSilent == 0) {
+                R.drawable.ic_speedometer_orange
+            } else if (numberOfContactsVIP < 5 && nonVipNotificationsNumbers >= 5) {
+                R.drawable.ic_speedometer_yellow
+            } else if (numberOfContactsVIP == 5 && nonVipNotificationsNumbers >= 5) {
+                R.drawable.ic_speedometer_light_green
+            } else if (numberOfContactsVIP > 1 && isAllOtherContactsSilent) {
+                R.drawable.ic_speedometer_strong_green
+            } else {
+                R.drawable.ic_speedometer_yellow
+            }
+
+            val adviceMessage = if (numberOfContactsVIP == 0 && numberOfContactsSilent == 0) {
+                "Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt"
+            } else if (numberOfContactsVIP < 5 && numberOfContactsSilent == 0) {
+                "You can optimize significantly you time by using silent mode with non VIP contacts"
+            } else if (numberOfContactsVIP < 5 && nonVipNotificationsNumbers >= 5) {
+                "You may miss important messages from several contacts – we recommend adding one or more VIPs"
+            } else if (numberOfContactsVIP == 5 && nonVipNotificationsNumbers >= 5) {
+                "You may have more VIPs to configure - we recommend buying a VIP package"
+            } else if (numberOfContactsVIP < 5 && isAllOtherContactsSilent) {
+                "Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs"
+            } else {
+                ""
             }
 
             emit(
@@ -175,7 +210,7 @@ class DailyStatisticsViewModel @Inject constructor(
                     icon = icon,
                     numberOfNotificationsTotal = "Nombre total de notifications : $messagingNumbersDaily",
                     numberOfNotificationsVip = "Nombre total de notifications VIP : $vipNumbersDaily",
-                    refocusTimeGained = "Temps de re-concentration sauvés : $timeSaved min"
+                    adviceMessage = adviceMessage
                 )
             )
         }.collect()

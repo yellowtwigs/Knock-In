@@ -27,7 +27,7 @@ class DailyStatisticsActivity : AppCompatActivity() {
             binding.performanceIcon.setImageResource(it.icon)
             binding.notificationsTotal.text = it.numberOfNotificationsTotal
             binding.notificationsVip.text = it.numberOfNotificationsVip
-            binding.reFocusTimeGained.text = it.refocusTimeGained
+            binding.adviceMessage.text = it.adviceMessage
         }
     }
 }

@@ -33,6 +33,15 @@ interface ContactsDao {
     @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 2")
     fun getNumbersOfContactsVip(): Int
 
+    @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 2")
+    fun getNumbersOfContactsVipFlow(): Flow<Int>
+
+    @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 1")
+    fun getNumbersOfContactsStandardFlow(): Flow<Int>
+
+    @Query("SELECT COUNT(priority) FROM contacts_table WHERE priority = 0")
+    fun getNumbersOfContactsSilentFlow(): Flow<Int>
+
     @Query("SELECT android_id FROM contacts_table")
     fun getAllAndroidIds(): List<Int>
 

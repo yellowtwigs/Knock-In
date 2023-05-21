@@ -4,6 +4,6 @@ data class DailyStatisticsViewState(
     val icon: Int,
     val numberOfNotificationsTotal: String,
     val numberOfNotificationsVip: String,
-    val refocusTimeGained: String,
+    val adviceMessage: String,
 ) {
 }
