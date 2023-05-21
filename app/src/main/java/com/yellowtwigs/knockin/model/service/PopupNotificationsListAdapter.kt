@@ -20,7 +20,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemPopupNotificationBinding
 import com.yellowtwigs.knockin.utils.ContactGesture
@@ -31,9 +30,13 @@ import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
 import com.yellowtwigs.knockin.utils.ContactGesture.sendMail
 import com.yellowtwigs.knockin.utils.ContactGesture.sendMessageWithAndroidMessage
 import com.yellowtwigs.knockin.utils.ContactGesture.sendMessageWithWhatsapp
-import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
+import com.yellowtwigs.knockin.utils.NotificationsGesture.FACEBOOK_APP_NAME
+import com.yellowtwigs.knockin.utils.NotificationsGesture.GMAIL_APP_NAME
 import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSAGE_APP_NAME
+import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSENGER_APP_NAME
+import com.yellowtwigs.knockin.utils.NotificationsGesture.SIGNAL_APP_NAME
+import com.yellowtwigs.knockin.utils.NotificationsGesture.TELEGRAM_APP_NAME
 import com.yellowtwigs.knockin.utils.NotificationsGesture.WHATSAPP_APP_NAME
 
 class PopupNotificationsListAdapter(
@@ -84,16 +87,11 @@ class PopupNotificationsListAdapter(
                 } else {
                     null
                 }
-                val secondPhoneNumber = if (popup.listOfPhoneNumbersWithSpinner.size > 1) {
-                    popup.listOfPhoneNumbersWithSpinner[1]
-                } else {
-                    null
-                }
 
                 platform.text = popup.platform
 
                 when (popup.platform) {
-                    "Gmail" -> {
+                    GMAIL_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
 
                         if (wrappedDrawable != null) {
@@ -102,7 +100,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
-                    "Messenger" -> {
+                    MESSENGER_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
                         messageToSend.visibility = View.INVISIBLE
@@ -113,7 +111,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
-                    "Telegram" -> {
+                    TELEGRAM_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
                         messageToSend.visibility = View.INVISIBLE
@@ -124,7 +122,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
-                    "Signal" -> {
+                    SIGNAL_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
                         messageToSend.visibility = View.INVISIBLE
@@ -135,7 +133,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
-                    "Facebook" -> {
+                    FACEBOOK_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
                         messageToSend.visibility = View.INVISIBLE
@@ -146,7 +144,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
-                    "Message" -> {
+                    MESSAGE_APP_NAME -> {
                         callButton.visibility = View.VISIBLE
                         buttonSend.visibility = View.VISIBLE
                         messageToSend.visibility = View.VISIBLE
@@ -197,7 +195,7 @@ class PopupNotificationsListAdapter(
                     NotificationsListenerService.alarmSound?.stop()
                     closeNotificationPopup()
                     when (platform.text) {
-                        "Facebook" -> {
+                        FACEBOOK_APP_NAME -> {
                             val uri = Uri.parse("facebook:/newsfeed")
                             val likeIng = Intent(Intent.ACTION_VIEW, uri)
                             try {
@@ -211,7 +209,7 @@ class PopupNotificationsListAdapter(
                             }
                             closeNotificationPopup()
                         }
-                        "Messenger" -> {
+                        MESSENGER_APP_NAME -> {
                             if (popup.messengerId != "") {
                                 openMessenger(popup.messengerId, cxt)
                             } else {
@@ -225,25 +223,13 @@ class PopupNotificationsListAdapter(
                         }
                         WHATSAPP_APP_NAME -> {
                             if (firstPhoneNumber != null) {
-                                firstPhoneNumber.let { number ->
-                                    if (firstPhoneNumber.flag == 2) {
-                                        openWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), cxt)
-                                    } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber?.flag == 2) {
-                                        if (secondPhoneNumber.phoneNumber.isEmpty()) {
-                                            openWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), cxt)
-                                        } else {
-                                            openWhatsapp(converter06To33(secondPhoneNumber.phoneNumber), cxt)
-                                        }
-                                    } else {
-                                        openWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), cxt)
-                                    }
-                                }
+                                openWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), cxt)
                             } else {
                                 openWhatsapp(popup.title, cxt)
                             }
                             closeNotificationPopup()
                         }
-                        "Gmail" -> {
+                        GMAIL_APP_NAME -> {
                             val appIntent = Intent(Intent.ACTION_VIEW)
                             appIntent.flags = FLAG_ACTIVITY_NEW_TASK
                             appIntent.setClassName(
@@ -260,45 +246,21 @@ class PopupNotificationsListAdapter(
                             }
                             closeNotificationPopup()
                         }
-                        "Message" -> {
+                        MESSAGE_APP_NAME -> {
                             if (firstPhoneNumber != null) {
-                                firstPhoneNumber.let { number ->
-                                    if (firstPhoneNumber.flag == 2) {
-                                        ContactGesture.openSms(firstPhoneNumber.phoneNumber, cxt)
-                                    } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber?.flag == 2) {
-                                        if (secondPhoneNumber.phoneNumber.isEmpty()) {
-                                            ContactGesture.openSms(firstPhoneNumber.phoneNumber, cxt)
-                                        } else {
-                                            ContactGesture.openSms(secondPhoneNumber.phoneNumber, cxt)
-                                        }
-                                    } else {
-                                        ContactGesture.openSms(firstPhoneNumber.phoneNumber, cxt)
-                                    }
-                                }
+                                ContactGesture.openSms(firstPhoneNumber.phoneNumber, cxt)
                             } else {
                                 ContactGesture.openSms(popup.title, cxt)
                             }
                             closeNotificationPopup()
                         }
-                        "Signal" -> {
+                        SIGNAL_APP_NAME -> {
                             goToSignal(cxt)
                             closeNotificationPopup()
                         }
-                        "Telegram" -> {
+                        TELEGRAM_APP_NAME -> {
                             if (firstPhoneNumber != null) {
-                                firstPhoneNumber.let { number ->
-                                    if (firstPhoneNumber.flag == 2) {
-                                        goToTelegram(cxt, firstPhoneNumber.phoneNumber)
-                                    } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber?.flag == 2) {
-                                        if (secondPhoneNumber.phoneNumber.isEmpty()) {
-                                            goToTelegram(cxt, firstPhoneNumber.phoneNumber)
-                                        } else {
-                                            goToTelegram(cxt, secondPhoneNumber.phoneNumber)
-                                        }
-                                    } else {
-                                        goToTelegram(cxt, firstPhoneNumber.phoneNumber)
-                                    }
-                                }
+                                goToTelegram(cxt, firstPhoneNumber.phoneNumber)
                             } else {
                                 goToTelegram(cxt, popup.title)
                             }
@@ -309,21 +271,8 @@ class PopupNotificationsListAdapter(
 
                 callButton.setOnClickListener {
                     NotificationsListenerService.alarmSound?.stop()
-
                     if (firstPhoneNumber != null) {
-                        firstPhoneNumber.let { number ->
-                            if (firstPhoneNumber.flag == 2) {
-                                ContactGesture.callPhone(firstPhoneNumber.phoneNumber, cxt)
-                            } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber?.flag == 2) {
-                                if (secondPhoneNumber.phoneNumber.isEmpty()) {
-                                    ContactGesture.callPhone(firstPhoneNumber.phoneNumber, cxt)
-                                } else {
-                                    ContactGesture.callPhone(secondPhoneNumber.phoneNumber, cxt)
-                                }
-                            } else {
-                                ContactGesture.callPhone(firstPhoneNumber.phoneNumber, cxt)
-                            }
-                        }
+                        ContactGesture.callPhone(firstPhoneNumber.phoneNumber, cxt)
                     } else {
                         ContactGesture.callPhone(popup.title, cxt)
                     }
@@ -339,43 +288,19 @@ class PopupNotificationsListAdapter(
                         when (popup.platform) {
                             WHATSAPP_APP_NAME -> {
                                 if (firstPhoneNumber != null) {
-                                    firstPhoneNumber.let { number ->
-                                        if (firstPhoneNumber.flag == 2) {
-                                            sendMessageWithWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), message, cxt)
-                                        } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber?.flag == 2) {
-                                            if (secondPhoneNumber.phoneNumber.isEmpty()) {
-                                                sendMessageWithWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), message, cxt)
-                                            } else {
-                                                sendMessageWithWhatsapp(converter06To33(secondPhoneNumber.phoneNumber), message, cxt)
-                                            }
-                                        } else {
-                                            sendMessageWithWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), message, cxt)
-                                        }
-                                    }
+                                    sendMessageWithWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), message, cxt)
                                 } else {
                                     sendMessageWithWhatsapp(popup.title, message, cxt)
                                 }
                                 closeNotificationPopup()
                             }
-                            "Gmail" -> {
+                            GMAIL_APP_NAME -> {
                                 sendMail(popup.email, "", message, cxt)
                                 closeNotificationPopup()
                             }
-                            "Message" -> {
+                            MESSAGE_APP_NAME -> {
                                 if (firstPhoneNumber != null) {
-                                    firstPhoneNumber.let { number ->
-                                        if (firstPhoneNumber.flag == 2) {
-                                            sendMessageWithAndroidMessage(firstPhoneNumber.phoneNumber, message, cxt)
-                                        } else if (firstPhoneNumber.flag != 2 && secondPhoneNumber?.flag == 2) {
-                                            if (secondPhoneNumber.phoneNumber.isEmpty()) {
-                                                sendMessageWithAndroidMessage(firstPhoneNumber.phoneNumber, message, cxt)
-                                            } else {
-                                                sendMessageWithAndroidMessage(secondPhoneNumber.phoneNumber, message, cxt)
-                                            }
-                                        } else {
-                                            sendMessageWithAndroidMessage(firstPhoneNumber.phoneNumber, message, cxt)
-                                        }
-                                    }
+                                    sendMessageWithAndroidMessage(firstPhoneNumber.phoneNumber, message, cxt)
                                 } else {
                                     sendMessageWithAndroidMessage(popup.title, message, cxt)
                                 }
