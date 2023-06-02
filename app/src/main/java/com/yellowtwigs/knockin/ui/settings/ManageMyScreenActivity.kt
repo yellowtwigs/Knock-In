@@ -29,8 +29,8 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -81,22 +81,6 @@ class ManageMyScreenActivity : AppCompatActivity() {
     private fun setupDrawerLayout() {
         binding.navigationView.menu.findItem(R.id.nav_manage_screen).isChecked = true
 
-        setupTeleworkingItem(binding.drawerLayout, this)
-
-        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-        itemText.text =
-            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-        itemLayout.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@ManageMyScreenActivity, TeleworkingActivity::class.java
-                )
-            )
-        }
-
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                 menuItem.isChecked = true
@@ -111,6 +95,12 @@ class ManageMyScreenActivity : AppCompatActivity() {
                         )
                     )
                 }
+                R.id.nav_dashboard -> startActivity(
+                    Intent(this@ManageMyScreenActivity, DashboardActivity::class.java)
+                )
+                R.id.nav_teleworking -> startActivity(
+                    Intent(this@ManageMyScreenActivity, TeleworkingActivity::class.java)
+                )
                 R.id.nav_notifications -> startActivity(
                     Intent(
                         this@ManageMyScreenActivity, NotificationsSettingsActivity::class.java

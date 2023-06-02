@@ -31,21 +31,21 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Home-Kontakte</string>
+    <string name="left_drawer_home">Meine Kontakte werden angezeigt</string>
     <string name="left_drawer_my_groups">Verwalte meine Gruppen</string>
     <string name="left_drawer_information">Meine persönlichen Informationen</string>
     <string name="left_drawer_chat">Nachricht</string>
-    <string name="left_drawer_notif_config">Verwalten Sie meine Benachrichtigungen</string>
+    <string name="left_drawer_notification_settings">Verwalten Sie meine Benachrichtigungen</string>
     <string name="left_drawer_settings">Parametern</string>
     <string name="left_drawer_my_screen">Anzeigeoptionen</string>
-    <string name="left_drawer_in_app">Shop</string>
+    <string name="left_drawer_in_app">Meine Einkäufe</string>
     <string name="left_drawer_data_access">Datenzugriff</string>
-    <string name="left_drawer_statistics">Meine Statistiken</string>
+    <string name="left_drawer_statistics">Verfolgen Sie meine Leistung</string>
     <string name="left_drawer_help">Hilfe</string>
     <string name="left_drawer_import">Kontakte importieren</string>
     <string name="settings_contact_popup_phone_call">Telefonanruf</string>
     <string name="manage_my_screen_contact_popup_long_text">Aktivieren/Deaktivieren Sie das Popup, bevor Sie einen Kontakt anrufen</string>
-    <string name="settings_invite_friend_text">Lade deine Freunde ein</string>
+    <string name="settings_invite_friend_text">Lade meine Freunde ein</string>
     <string name="invite_friend_text">Verwenden Sie Knock In für ein neues Kommunikationserlebnis</string>
     <!-- endregion-->
     <!-- region Main Activity !-->

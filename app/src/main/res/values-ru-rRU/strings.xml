@@ -31,16 +31,16 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Книга домашних адресов</string>
+    <string name="left_drawer_home">Просмотр моих контактов</string>
     <string name="left_drawer_my_groups">Управление моими группами</string>
     <string name="left_drawer_information">Мои личные данные</string>
     <string name="left_drawer_chat">Рассылка сообщений</string>
-    <string name="left_drawer_notif_config">Управление моими уведомлениями</string>
+    <string name="left_drawer_notification_settings">Управление моими уведомлениями</string>
     <string name="left_drawer_settings">Настройки</string>
     <string name="left_drawer_my_screen">Опции отображения</string>
-    <string name="left_drawer_in_app">Магазин</string>
+    <string name="left_drawer_in_app">Мои покупки</string>
     <string name="left_drawer_data_access">Доступ к данным</string>
-    <string name="left_drawer_statistics">Статистика</string>
+    <string name="left_drawer_statistics">Следите за моим выступлением</string>
     <string name="left_drawer_help">Помощь</string>
     <string name="left_drawer_import">Импортировать контакты</string>
     <string name="settings_contact_popup_phone_call">Всплывающее окно телефонного звонка</string>
@@ -225,7 +225,7 @@
     <string name="notification_manager_prio_1">Скрыть уведомления 1 приоритета</string>
     <string name="notification_alert_dialog_title">Выбор VIP-контактов</string>
     <string name="notification_alert_dialog_message">Вы хотите выбрать высокоприоритетные контакты?</string>
-    
+
     <string name="notification_vip_message_tone">Тон VIP-уведомлений</string>
     <string name="notification_vip_default_message_tone">Тональный сигнал по умолчанию</string>
     <string name="vip_jazzy_title">Джаззи Тон</string>
@@ -495,5 +495,6 @@
     <string name="message_from">Сообщение от %1$s</string>
     <string name="rate_this_app_title">Оцени это приложение</string>
     <string name="rate_this_app_message">Если вам нравится это приложение, потратьте несколько секунд, чтобы оценить его, это нам очень поможет. Спасибо</string>
-    <string name="handle_one_phone_number_msg">Knock In обрабатывает только один номер мобильного телефона для каждого контакта</string>
+    <string name="handle_one_phone_number_msg">Мы импортируем ваш контактный номер телефона с пометкой «Мобильный» из вашей адресной кни</string>
+
 </resources>

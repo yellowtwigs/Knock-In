@@ -21,7 +21,7 @@
         <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notification"
-            android:title="@string/left_drawer_notif_config"
+            android:title="@string/left_drawer_notification_settings"
             android:visible="false"/>
         <item
             android:id="@+id/nav_manage_screen"

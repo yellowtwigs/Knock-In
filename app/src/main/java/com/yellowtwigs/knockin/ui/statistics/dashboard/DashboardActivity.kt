@@ -9,7 +9,9 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -24,8 +26,16 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.databinding.ActivityDashboardBinding
+import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -58,16 +68,21 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         setSupportActionBar(binding.toolbar)
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)
+        actionbar?.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                if (binding.drawerLayout.isOpen) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    binding.drawerLayout.openDrawer(GravityCompat.START)
+                }
                 return true
             }
             R.id.item_help -> {
-                startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java))
+//                startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java))
 //                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
 //                    .setTitle(R.string.help)
 //                    .setMessage(resources.getString(R.string.statistics_help_msg))
@@ -87,23 +102,70 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 
     //region ================================================================ DRAWER ================================================================
 
+
+    //region ======================================== DRAWER LAYOUT =========================================
+
     private fun setupDrawerLayout() {
-//        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-//        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-//
-//        itemText.text = "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-//
-//        itemLayout.setOnClickListener {
-//            startActivity(Intent(this@DashboardActivity, TeleworkingActivity::class.java))
-//        }
+        binding.drawerLayout.apply {
+            val menu = binding.navView.menu
+            menu.findItem(R.id.nav_dashboard).isChecked = true
+
+            val navSyncContact = menu.findItem(R.id.nav_sync_contact)
+            navSyncContact.isVisible = false
+
+            val navInviteFriend = menu.findItem(R.id.nav_invite_friend)
+            navInviteFriend.isVisible = true
+
+            binding.navView.setNavigationItemSelectedListener { menuItem ->
+                if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
+                    menuItem.isChecked = true
+                }
+                EveryActivityUtils.hideKeyboard(this@DashboardActivity)
+                closeDrawer(GravityCompat.START)
+
+                when (menuItem.itemId) {
+                    R.id.nav_home -> startActivity(
+                        Intent(this@DashboardActivity, ContactsListActivity::class.java)
+                    )
+                    R.id.nav_notifications -> startActivity(
+                        Intent(this@DashboardActivity, NotificationsSettingsActivity::class.java)
+                    )
+                    R.id.nav_teleworking -> startActivity(
+                        Intent(this@DashboardActivity, TeleworkingActivity::class.java)
+                    )
+                    R.id.nav_in_app -> startActivity(
+                        Intent(this@DashboardActivity, PremiumActivity::class.java)
+                    )
+                    R.id.nav_manage_screen -> startActivity(
+                        Intent(this@DashboardActivity, ManageMyScreenActivity::class.java)
+                    )
+                    R.id.nav_help -> startActivity(Intent(this@DashboardActivity, HelpActivity::class.java))
+                    R.id.nav_dashboard -> startActivity(Intent(this@DashboardActivity, DashboardActivity::class.java))
+                    R.id.nav_invite_friend -> {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
+                        intent.putExtra(Intent.EXTRA_TEXT, messageString)
+                        intent.type = "text/plain"
+                        val messageIntent = Intent.createChooser(intent, null)
+                        startActivity(messageIntent)
+                    }
+                }
+                true
+            }
+        }
     }
+
+    //endregion
+
 
     //endregion
 
     private fun setupDataToView() {
         dashboardViewModel.dashboardViewStateLiveData.observe(this) {
             setupPieChart(it.list)
-            binding.allNotificationsTitle.setText(it.notificationsTitle)
+            binding.allNotificationsTitle.text = it.notificationsTitle
         }
 
         binding.messagingAppsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

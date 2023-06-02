@@ -34,8 +34,9 @@ import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.C
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.net.URLEncoder
@@ -113,8 +114,6 @@ class GroupsListActivity : AppCompatActivity() {
             navItem.isChecked = true
             menu.getItem(0).isChecked = true
 
-            setupTeleworkingItem(binding.drawerLayout, this@GroupsListActivity)
-
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
@@ -127,6 +126,12 @@ class GroupsListActivity : AppCompatActivity() {
                         )
                         restartActivity()
                     }
+                    R.id.nav_teleworking -> startActivity(
+                        Intent(this@GroupsListActivity, TeleworkingActivity::class.java)
+                    )
+                    R.id.nav_dashboard -> startActivity(
+                        Intent(this@GroupsListActivity, DashboardActivity::class.java)
+                    )
                     R.id.nav_in_app -> {
                         startActivity(
                             Intent(this@GroupsListActivity, PremiumActivity::class.java)

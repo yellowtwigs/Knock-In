@@ -31,21 +31,21 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Casa-Livro do Endereço</string>
+    <string name="left_drawer_home">Vendo meus contatos</string>
     <string name="left_drawer_my_groups">Gerenciar meus grupos</string>
     <string name="left_drawer_information">Meus dados pessoais</string>
     <string name="left_drawer_chat">Mensagens</string>
-    <string name="left_drawer_notif_config">Gerenciar minhas notificações</string>
+    <string name="left_drawer_notification_settings">Gerenciar minhas notificações</string>
     <string name="left_drawer_settings">Configuração </string>
     <string name="left_drawer_my_screen">Opções de exibição</string>
-    <string name="left_drawer_in_app">Loja</string>
+    <string name="left_drawer_in_app">Minhas Compras</string>
     <string name="left_drawer_data_access">Acesso de dado</string>
-    <string name="left_drawer_statistics">Estatisticas</string>
+    <string name="left_drawer_statistics">Acompanhe meu desempenho</string>
     <string name="left_drawer_help">Ajuda</string>
     <string name="left_drawer_import">Contatos da importação </string>
     <string name="settings_contact_popup_phone_call">Chamada telefônica</string>
     <string name="manage_my_screen_contact_popup_long_text">Ativar/desativar o pop-up antes de ligar para um contato</string>
-    <string name="settings_invite_friend_text">Convide seus amigos</string>
+    <string name="settings_invite_friend_text">Convide meus amigos</string>
     <string name="invite_friend_text">Use o Knock In para uma nova experiência de comunicação</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -490,7 +490,7 @@
     <string name="remove_filter">No filter</string>
     <string name="allow_phone_call">Você não permitiu chamadas telefônicas</string>
     <string name="daily_reminder_time">Hora do lembrete diário</string>
-    <string name="teleworking_settings">Configurações de teletrabalho</string>
+    <string name="teleworking_settings">Mi Configurações de teletrabalho</string>
     <string name="message_from">Mensagem de %1$s</string>
     <string name="rate_this_app_title">Avalie este aplicativo</string>
     <string name="rate_this_app_message">Se você gosta deste aplicativo, por favor, reserve alguns segundos para avaliá-lo, isso nos ajudaria muito. Obrigado</string>

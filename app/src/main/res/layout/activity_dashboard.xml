@@ -1,85 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.statistics.dashboard.DashboardActivity">
+    tools:context=".ui.statistics.dashboard.DashboardActivity"
+    tools:openDrawer="start">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/backgroundColor"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/messaging_apps_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:entries="@array/messaging_apps_arrays"
+            android:prompt="@string/messaging_apps_arrays_prompt"
+            android:spinnerMode="dialog"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_chart_messaging"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/messaging_apps_spinner" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/all_notifications_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/pie_chart_messaging"
+            app:layout_constraintEnd_toEndOf="@+id/pie_chart_messaging"
+            app:layout_constraintStart_toStartOf="@+id/pie_chart_messaging"
+            app:layout_constraintTop_toTopOf="@+id/pie_chart_messaging" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0.5dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="300dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:background="?attr/backgroundColor"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:headerLayout="@layout/nav_header_drawer"
+        app:itemIconTint="@color/drawer_navigation_color"
+        app:itemTextColor="@color/drawer_navigation_color"
+        app:menu="@menu/menu_left_drawer" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/messaging_apps_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:entries="@array/messaging_apps_arrays"
-        android:prompt="@string/messaging_apps_arrays_prompt"
-        android:spinnerMode="dialog"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pie_chart_messaging"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/messaging_apps_spinner" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/all_notifications_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/pie_chart_messaging"
-        app:layout_constraintEnd_toEndOf="@+id/pie_chart_messaging"
-        app:layout_constraintStart_toStartOf="@+id/pie_chart_messaging"
-        app:layout_constraintTop_toTopOf="@+id/pie_chart_messaging" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="0.5dp"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/time_health_care_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Time saved :"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/time_health_care_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pie_chart_messaging" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/time_health_care_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textColor="?attr/textColor"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/time_health_care_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/time_health_care_title"
-        app:layout_constraintTop_toTopOf="@+id/time_health_care_title"
-        tools:text="50" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

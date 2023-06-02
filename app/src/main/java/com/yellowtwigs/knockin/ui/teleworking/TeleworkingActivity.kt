@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.activity.viewModels
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
@@ -23,14 +21,12 @@ import com.yellowtwigs.knockin.databinding.ActivityTeleworkingBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
-import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
-import com.yellowtwigs.knockin.ui.notifications.NotificationSender
+import com.yellowtwigs.knockin.ui.notifications.sender.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
-import com.yellowtwigs.knockin.utils.ContactGesture.sendMessageWithWhatsapp
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebaseBis
 import dagger.hilt.android.AndroidEntryPoint
@@ -153,12 +149,8 @@ class TeleworkingActivity : AppCompatActivity() {
 
     private fun setupDrawerLayout() {
         binding.apply {
-            val itemIcon = findViewById<AppCompatImageView>(R.id.teleworking_item_icon)
-            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-            itemIcon.setImageResource(R.drawable.ic_teleworking_yellow)
-            itemText.text = "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-            itemText.setTextColor(resources.getColor(R.color.colorPrimaryDark))
+            val menu = binding.navView.menu
+            menu.findItem(R.id.nav_teleworking).isChecked = true
 
             navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
@@ -179,7 +171,7 @@ class TeleworkingActivity : AppCompatActivity() {
                     )
                     R.id.nav_in_app -> startActivity(
                         Intent(
-                            this@TeleworkingActivity, PremiumActivity::class.java
+                            this@TeleworkingActivity, TeleworkingActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> startActivity(

@@ -10,13 +10,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
@@ -27,10 +27,10 @@ import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelec
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
-import com.yellowtwigs.knockin.ui.notifications.NotificationSender
+import com.yellowtwigs.knockin.ui.notifications.sender.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -106,8 +106,6 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         val navItem = menu.findItem(R.id.nav_notifications)
         navItem.isChecked = true
 
-        setupTeleworkingItem(binding.drawerLayout, this)
-
         navigationView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                 menuItem.isChecked = true
@@ -118,51 +116,38 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                 settings_NotificationMessagesAlarmSound?.stop()
             }
 
-            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-            itemText.text =
-                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-            itemLayout.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@NotificationsSettingsActivity,
-                        TeleworkingActivity::class.java
-                    )
-                )
-            }
-
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     startActivity(
                         Intent(
-                            this@NotificationsSettingsActivity,
-                            ContactsListActivity::class.java
+                            this@NotificationsSettingsActivity, ContactsListActivity::class.java
                         )
                     )
                 }
+                R.id.nav_dashboard -> startActivity(
+                    Intent(this@NotificationsSettingsActivity, DashboardActivity::class.java)
+                )
+                R.id.nav_teleworking -> startActivity(
+                    Intent(this@NotificationsSettingsActivity, TeleworkingActivity::class.java)
+                )
                 R.id.nav_manage_screen -> {
                     startActivity(
                         Intent(
-                            this@NotificationsSettingsActivity,
-                            ManageMyScreenActivity::class.java
+                            this@NotificationsSettingsActivity, ManageMyScreenActivity::class.java
                         )
                     )
                 }
                 R.id.nav_in_app -> {
                     startActivity(
                         Intent(
-                            this@NotificationsSettingsActivity,
-                            PremiumActivity::class.java
+                            this@NotificationsSettingsActivity, PremiumActivity::class.java
                         )
                     )
                 }
                 R.id.nav_help -> {
                     startActivity(
                         Intent(
-                            this@NotificationsSettingsActivity,
-                            HelpActivity::class.java
+                            this@NotificationsSettingsActivity, HelpActivity::class.java
                         )
                     )
                 }
@@ -171,10 +156,9 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                 }
                 R.id.nav_invite_friend -> {
                     val intent = Intent(Intent.ACTION_SEND)
-                    val messageString =
-                        resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
-                            R.string.location_on_playstore
-                        )
+                    val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                        R.string.location_on_playstore
+                    )
                     intent.putExtra(Intent.EXTRA_TEXT, messageString)
                     intent.type = "text/plain"
                     val messageIntent = Intent.createChooser(intent, null)
@@ -208,14 +192,12 @@ class NotificationsSettingsActivity : AppCompatActivity() {
             R.id.item_help -> {
                 if (Resources.getSystem().configuration.locale.language == "fr") {
                     val browserIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.yellowtwigs.com/aide-gestion-des-notifications")
+                        Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/aide-gestion-des-notifications")
                     )
                     startActivity(browserIntent)
                 } else {
                     val browserIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://www.yellowtwigs.com/help-notification-management")
+                        Intent.ACTION_VIEW, Uri.parse("https://www.yellowtwigs.com/help-notification-management")
                     )
                     startActivity(browserIntent)
                 }
@@ -232,17 +214,13 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         if (isClickable) {
             button.setBackgroundColor(
                 ResourcesCompat.getColor(
-                    resources,
-                    R.color.colorPrimary,
-                    null
+                    resources, R.color.colorPrimary, null
                 )
             )
         } else {
             button.setBackgroundColor(
                 ResourcesCompat.getColor(
-                    resources,
-                    R.color.greyColor,
-                    null
+                    resources, R.color.greyColor, null
                 )
             )
         }
@@ -250,8 +228,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
 
     private fun openOverlaySettings() {
         val intent = Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:$packageName")
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")
         )
         startActivity(intent)
     }
@@ -286,8 +263,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         multiSelectVipButton.setOnClickListener {
             startActivity(
                 Intent(
-                    this@NotificationsSettingsActivity,
-                    FirstVipSelectionActivity::class.java
+                    this@NotificationsSettingsActivity, FirstVipSelectionActivity::class.java
                 ).putExtra("fromSettings", true)
             )
         }
@@ -348,8 +324,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
     private fun goToPremiumActivity() {
         startActivity(
             Intent(this@NotificationsSettingsActivity, PremiumActivity::class.java).putExtra(
-                "fromManageNotification",
-                true
+                "fromManageNotification", true
             )
         )
         finish()
@@ -366,8 +341,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
             if (!switchReminder.isChecked) {
                 editReminderHourLayout.isEnabled = false
                 editReminderHourLayout.background = AppCompatResources.getDrawable(
-                    this@NotificationsSettingsActivity,
-                    R.color.greyColor
+                    this@NotificationsSettingsActivity, R.color.greyColor
                 )
             }
 
@@ -397,8 +371,9 @@ class NotificationsSettingsActivity : AppCompatActivity() {
 
             editReminderHourLayout.setOnClickListener {
                 val timePickerDialog = TimePickerDialog(
-                    this@NotificationsSettingsActivity,
-                    { _, h, m ->
+                    this@NotificationsSettingsActivity, { _, h, m ->
+                        Log.i("GetReminderTime", "hour : $h")
+                        Log.i("GetReminderTime", "minutes : $m")
                         val editor = sharedPreferences.edit()
                         editor.putInt("remindHour", h)
                         editor.putInt("remindMinute", m)
@@ -407,10 +382,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                         hour = h
                         minute = m
                         setReminderAlarm(hour, minute)
-                    },
-                    hour,
-                    minute,
-                    true
+                    }, hour, minute, true
                 )
                 timePickerDialog.show()
             }
@@ -425,17 +397,11 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         val intent = Intent(applicationContext, NotificationSender::class.java)
         intent.action = "NOTIFICATION_TIME"
         val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            100,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT
         )
         val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
         alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
+            AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent
         )
     }
 

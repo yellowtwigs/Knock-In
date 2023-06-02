@@ -31,16 +31,16 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Nhà - Sổ địa chỉ</string>
+    <string name="left_drawer_home">Xem danh bạ của tôi</string>
     <string name="left_drawer_my_groups">Quản lý nhóm của tôi</string>
     <string name="left_drawer_information">Dữ liệu cá nhân của tôi</string>
     <string name="left_drawer_chat">Nhắn tin</string>
-    <string name="left_drawer_notif_config">Quản lý thông báo của tôi</string>
+    <string name="left_drawer_notification_settings">Quản lý thông báo của tôi</string>
     <string name="left_drawer_settings">Cài đặt</string>
     <string name="left_drawer_my_screen">Tùy chọn hiển thị</string>
-    <string name="left_drawer_in_app">Cửa hàng </string>
+    <string name="left_drawer_in_app">Sự thanh toán của tôi</string>
     <string name="left_drawer_data_access">Truy cập dữ liệu</string>
-    <string name="left_drawer_statistics">Thống kê</string>
+    <string name="left_drawer_statistics">Theo dõi hiệu suất của tôi</string>
     <string name="left_drawer_help">Trợ giúp</string>
     <string name="left_drawer_import">Nhập liên hệ</string>
     <string name="settings_contact_popup_phone_call">Gọi điện thoại</string>

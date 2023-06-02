@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.yellowtwigs.knockin">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
@@ -104,8 +103,7 @@
             android:configChanges="orientation|screenSize" />
         <activity android:name=".ui.premium.PremiumActivity" />
 
-        <receiver android:name=".ui.notifications.NotificationSender" />
-        <receiver android:name=".ui.notifications.NotificationMessageSender" />
+        <receiver android:name=".ui.notifications.sender.NotificationSender" />
 
         <service
             android:name=".model.service.NotificationsListenerService"

@@ -95,13 +95,14 @@ class NotificationsListenerService : NotificationListenerService() {
 
 
         var sbp = StatusBarParcelable(sbn, 0)
-        if (sharedPreferences.getBoolean("serviceNotif", true) && messagesNotUseless(
-                sbp, resources
-            )
-        ) {
+        if (sharedPreferences.getBoolean("serviceNotif", true) && messagesNotUseless(sbp, resources)) {
             sbp.castName()
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
+
+            Log.i("MessagesMessanger", "name : ${name}")
+            Log.i("MessagesMessanger", "message : ${message}")
+            Log.i("MessagesMessanger", "sbp.appNotifier : ${sbp.appNotifier}")
 
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
@@ -122,7 +123,7 @@ class NotificationsListenerService : NotificationListenerService() {
                                     getContactByName.invoke(name)
                                 }
                             }
-                            Log.i("GoToWithContact", "contact : $contact")
+                            Log.i("GoToWithContact", "sbp.appNotifier : ${sbp.appNotifier}")
 
                             val notification = if (contact != null) {
                                 sbp = StatusBarParcelable(sbn, contact.id)
@@ -492,12 +493,12 @@ class NotificationsListenerService : NotificationListenerService() {
                     val deplacementY = y - oldPosY
 
                     container?.x = positionXIntoScreen(
-                        container?.x!!, deplacementX, container?.width?.toFloat(), windowManager!!
+                        container?.x!!, deplacementX, container?.width?.toFloat() ?: 0F, windowManager!!
                     )
                     oldPosX = x - deplacementX
 
                     container?.y = positionYIntoScreen(
-                        container?.y, deplacementY, container?.height?.toFloat(), windowManager!!
+                        container?.y ?: 0F, deplacementY, container?.height?.toFloat() ?: 0F, windowManager!!
                     )
                     oldPosY = y - deplacementY
                 }

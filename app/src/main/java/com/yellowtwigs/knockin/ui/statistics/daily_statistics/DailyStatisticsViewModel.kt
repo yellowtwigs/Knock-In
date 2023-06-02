@@ -208,8 +208,8 @@ class DailyStatisticsViewModel @Inject constructor(
             emit(
                 DailyStatisticsViewState(
                     icon = icon,
-                    numberOfNotificationsTotal = "Nombre total de notifications : $messagingNumbersDaily",
-                    numberOfNotificationsVip = "Nombre total de notifications VIP : $vipNumbersDaily",
+                    numberOfNotificationsUnprocessed = "${messagingNumbersDaily - vipNumbersDaily} notifications non traitées",
+                    numberOfNotificationsVip = "$vipNumbersDaily notifications VIP",
                     adviceMessage = adviceMessage
                 )
             )

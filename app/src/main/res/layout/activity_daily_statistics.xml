@@ -43,19 +43,30 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/notifications_total"
+            android:id="@+id/notifications_unprocessed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:text="Number of notifications total : 50"
+            android:gravity="center"
+            android:text="X notifications non traitées"
             android:textAlignment="center"
             android:textColor="?attr/textColor"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/notifications_vip"
+            app:layout_constraintBottom_toTopOf="@+id/to_dashboard_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/daily_performance" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/to_dashboard_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View"
+            app:layout_constraintBottom_toTopOf="@+id/notifications_vip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notifications_total" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/notifications_vip"
@@ -63,7 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:text="Number of notifications VIP : 10"
+            android:gravity="center"
+            android:text="Y notifications VIP"
             android:textAlignment="center"
             android:textColor="?attr/textColor"
             android:textSize="20sp"
@@ -79,6 +91,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="70dp"
             android:layout_marginEnd="15dp"
+            android:gravity="center"
             android:text="Message"
             android:textAlignment="center"
             android:textColor="?attr/textColor"

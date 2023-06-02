@@ -32,14 +32,14 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">جهات الاتصال</string>
+    <string name="left_drawer_home">عرض جهات الاتصال الخاصة بي</string>
     <string name="left_drawer_my_groups">إدارة مجموعاتي</string>
     <string name="left_drawer_information">معلوماتي الشخصية</string>
     <string name="left_drawer_chat">إرسال الرسائل</string>
-    <string name="left_drawer_notif_config">إدارة إشعاراتي</string>
+    <string name="left_drawer_notification_settings">إدارة إشعاراتي</string>
     <string name="left_drawer_settings">الإعدادات</string>
     <string name="left_drawer_my_screen">خيارات العرض</string>
-    <string name="left_drawer_in_app">المتجر</string>
+    <string name="left_drawer_in_app">مشترياتي</string>
     <string name="left_drawer_data_access">الدخول الى البيانات</string>
     <string name="left_drawer_statistics">إحصائياتي</string>
     <string name="left_drawer_help">مساعدة</string>

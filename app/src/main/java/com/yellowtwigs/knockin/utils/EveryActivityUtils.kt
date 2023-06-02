@@ -44,15 +44,15 @@ object EveryActivityUtils {
         }
     }
 
-    fun setupTeleworkingItem(drawerLayout: DrawerLayout, cxt: Activity) {
-        val itemLayout = cxt.findViewById<ConstraintLayout>(R.id.teleworking_item)
-        val itemText = cxt.findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-        itemText.text = "${cxt.getString(R.string.teleworking)} ${cxt.getString(R.string.left_drawer_settings)}"
-
-        itemLayout.setOnClickListener {
-            drawerLayout.closeDrawer(GravityCompat.START)
-            cxt.startActivity(Intent(cxt, TeleworkingActivity::class.java))
-        }
-    }
+//    fun setupTeleworkingItem(drawerLayout: DrawerLayout, cxt: Activity) {
+//        val itemLayout = cxt.findViewById<ConstraintLayout>(R.id.teleworking_item)
+//        val itemText = cxt.findViewById<AppCompatTextView>(R.id.teleworking_item_text)
+//
+//        itemText.text = "${cxt.getString(R.string.teleworking)} ${cxt.getString(R.string.left_drawer_settings)}"
+//
+//        itemLayout.setOnClickListener {
+//            drawerLayout.closeDrawer(GravityCompat.START)
+//            cxt.startActivity(Intent(cxt, TeleworkingActivity::class.java))
+//        }
+//    }
 }

@@ -30,6 +30,7 @@ import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -128,21 +129,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         val navItem = menu.findItem(R.id.nav_help)
         navItem.isChecked = true
 
-        val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-        val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-        itemText.text =
-            "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-        itemLayout.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@HelpActivity,
-                    TeleworkingActivity::class.java
-                )
-            )
-        }
-
         navigationView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                 menuItem.isChecked = true
@@ -158,11 +144,15 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                         )
                     )
                 }
+                R.id.nav_dashboard -> startActivity(Intent(this@HelpActivity, DashboardActivity::class.java))
                 R.id.nav_notifications -> startActivity(
                     Intent(
                         this@HelpActivity,
                         NotificationsSettingsActivity::class.java
                     )
+                )
+                R.id.nav_teleworking -> startActivity(
+                    Intent(this@HelpActivity, TeleworkingActivity::class.java)
                 )
                 R.id.nav_manage_screen -> startActivity(
                     Intent(

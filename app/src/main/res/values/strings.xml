@@ -33,21 +33,21 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Home-Address Book</string>
+    <string name="left_drawer_home">Viewing my contacts</string>
     <string name="left_drawer_my_groups">Manage my groups</string>
     <string name="left_drawer_information">My personal data</string>
     <string name="left_drawer_chat">Messaging</string>
-    <string name="left_drawer_notif_config">Manage my notifications</string>
+    <string name="left_drawer_notification_settings">Manage My Notifications</string>
     <string name="left_drawer_settings">Settings</string>
     <string name="left_drawer_my_screen">Display options</string>
-    <string name="left_drawer_in_app">Shop</string>
+    <string name="left_drawer_in_app">My Purchases</string>
     <string name="left_drawer_data_access">Data access</string>
-    <string name="left_drawer_statistics">Statistics</string>
+    <string name="left_drawer_statistics">Follow My Performance</string>
     <string name="left_drawer_help">Help</string>
     <string name="left_drawer_import">Import contacts</string>
     <string name="settings_contact_popup_phone_call">Phone call</string>
     <string name="manage_my_screen_contact_popup_long_text"> Enable/disable popup before calling a contact</string>
-    <string name="settings_invite_friend_text">Invite your friends</string>
+    <string name="settings_invite_friend_text">Invite my friends</string>
     <string name="invite_friend_text">Use Knock In for a new communication experience</string>
     <!-- endregion-->
 
@@ -498,7 +498,7 @@
     <string name="remove_filter">No filter</string>
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Daily reminder time</string>
-    <string name="teleworking_settings">Teleworking Settings</string>
+    <string name="teleworking_settings">My Teleworking Settings</string>
     <string name="message_from">Message from %1$s</string>
     <string name="rate_this_app_title">Rate this app</string>
     <string name="rate_this_app_message">If you like this app, please take some seconds to rate it, it will help us a lot. Thanks</string>

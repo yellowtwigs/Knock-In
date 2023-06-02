@@ -15,7 +15,6 @@ import com.yellowtwigs.knockin.model.service.NotificationsListenerService
 class NotificationMessageSender : BroadcastReceiver() {
     @SuppressLint("ObsoleteSdkInt")
     override fun onReceive(context: Context, intent: Intent) {
-        println("received")
         val CHANNEL_ID = "my_channel"
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

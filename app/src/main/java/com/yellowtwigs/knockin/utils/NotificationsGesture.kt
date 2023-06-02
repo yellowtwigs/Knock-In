@@ -40,6 +40,7 @@ object NotificationsGesture {
     const val XIAOMI_MESSAGE_PACKAGE = "com.android.mms"
     const val MESSAGE_SAMSUNG_PACKAGE = "com.samsung.android.messaging"
     const val MESSAGES_PACKAGE = "com.chating.messages.chat.fun"
+    private const val MESSAGES_GO_PACKAGE = "com.messagesgo.messanger"
 
     const val SIGNAL_PACKAGE = "org.thoughtcrime.securesms"
     const val SIGNAL_APP_NAME = "Signal"
@@ -73,10 +74,11 @@ object NotificationsGesture {
             XIAOMI_MESSAGE_PACKAGE -> return MESSAGE_APP_NAME
             MESSAGE_SAMSUNG_PACKAGE -> return MESSAGE_APP_NAME
             MESSAGES_PACKAGE -> return MESSAGE_APP_NAME
+            MESSAGES_GO_PACKAGE -> return MESSAGE_APP_NAME
             Telephony.Sms.getDefaultSmsPackage(context) -> return MESSAGE_APP_NAME
 
-            SIGNAL_PACKAGE -> return "Signal"
-            TELEGRAM_PACKAGE -> return "Telegram"
+            SIGNAL_PACKAGE -> return SIGNAL_APP_NAME
+            TELEGRAM_PACKAGE -> return TELEGRAM_APP_NAME
             INSTAGRAM_PACKAGE -> return "Instagram"
             DISCORD_PACKAGE -> return "Discord"
             TIKTOK_PACKAGE -> return "Tiktok"
@@ -102,6 +104,7 @@ object NotificationsGesture {
             XIAOMI_MESSAGE_PACKAGE -> return R.drawable.rounded_notification_background_xiaomi
             MESSAGE_SAMSUNG_PACKAGE -> return R.drawable.rounded_notification_background_facebook
             MESSAGES_PACKAGE -> return R.drawable.rounded_notification_background_facebook
+            MESSAGES_GO_PACKAGE -> return R.drawable.rounded_notification_background_facebook
             Telephony.Sms.getDefaultSmsPackage(context) -> return R.drawable.rounded_notification_background_knock_in
 
             SIGNAL_PACKAGE -> return R.drawable.rounded_notification_background_outlook
@@ -125,7 +128,7 @@ object NotificationsGesture {
             WHATSAPP_PACKAGE -> true
             GMAIL_PACKAGE -> true
             OUTLOOK_PACKAGE -> true
-            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE -> true
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE -> true
             Telephony.Sms.getDefaultSmsPackage(context) -> true
             SIGNAL_PACKAGE -> true
             TELEGRAM_PACKAGE -> true
@@ -192,7 +195,7 @@ object NotificationsGesture {
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
-            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
                 openSms(contact, context)
             }
             else -> {
@@ -249,7 +252,7 @@ object NotificationsGesture {
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
-            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
                 openSms("", context)
             }
         }

@@ -31,16 +31,16 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Home-Rubrica</string>
+    <string name="left_drawer_home">Visualizzazione dei miei contatti</string>
     <string name="left_drawer_my_groups">Gestione gruppi</string>
     <string name="left_drawer_information">Dati Personali</string>
     <string name="left_drawer_chat">Messaggi</string>
-    <string name="left_drawer_notif_config">Gestione Notifiche</string>
+    <string name="left_drawer_notification_settings">Gestione Notifiche</string>
     <string name="left_drawer_settings">Configurazione</string>
     <string name="left_drawer_my_screen">Opzioni Display</string>
-    <string name="left_drawer_in_app">Shop</string>
+    <string name="left_drawer_in_app">I Miei Acquisti</string>
     <string name="left_drawer_data_access">Accesso ai dati</string>
-    <string name="left_drawer_statistics">Statistiche</string>
+    <string name="left_drawer_statistics">Segui la mia esibizione</string>
     <string name="left_drawer_help">Help</string>
     <string name="left_drawer_import">Contatti importanti</string>
     <string name="settings_contact_popup_phone_call">Chiamate vocali</string>
@@ -490,7 +490,7 @@
     <string name="remove_filter">No filtro</string>
     <string name="allow_phone_call">Non hai permesso la telefonata</string>
     <string name="daily_reminder_time">Tempo di promemoria giornaliero</string>
-    <string name="teleworking_settings">Impostazioni per il telelavoro</string>
+    <string name="teleworking_settings">Mi Impostazioni per il telelavoro</string>
     <string name="message_from">Messaggio da %1$s</string>
     <string name="rate_this_app_title">Valuta questa applicazione</string>
     <string name="rate_this_app_message">Se ti piace questa app, ti preghiamo di dedicare qualche secondo a valutarla, ci aiuterebbe molto. Grazie</string>

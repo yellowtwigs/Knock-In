@@ -248,9 +248,5 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer">
-
-        <include layout="@layout/teleworking_menu_item" />
-
-    </com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/menu_left_drawer"/>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactSelectedWithAppsBinding
-import com.yellowtwigs.knockin.ui.SingleContactViewState
+import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewState

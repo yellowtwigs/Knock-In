@@ -31,21 +31,21 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Libreta de direcciones</string>
+    <string name="left_drawer_home">Ver mis contactos</string>
     <string name="left_drawer_my_groups">Gestión de grupos </string>
     <string name="left_drawer_information">Información personal </string>
     <string name="left_drawer_chat">Mensajes</string>
-    <string name="left_drawer_notif_config">Gestión de notificaciones</string>
+    <string name="left_drawer_notification_settings">Gestión de notificaciones</string>
     <string name="left_drawer_settings">Ajustes</string>
     <string name="left_drawer_my_screen">Opciones de pantalla</string>
-    <string name="left_drawer_in_app">Tienda</string>
+    <string name="left_drawer_in_app">Mis Compras</string>
     <string name="left_drawer_data_access">Acceso a datos</string>
-    <string name="left_drawer_statistics"> Estadísticas </string>
+    <string name="left_drawer_statistics">Sigue mi desempeño</string>
     <string name="left_drawer_help">Ayuda</string>
     <string name="left_drawer_import">Importar contactos</string>
     <string name="settings_contact_popup_phone_call">Mensage emergente de Notificación de llamada</string>
     <string name="manage_my_screen_contact_popup_long_text"> Activar/Desactivar ventana emergente antes de llamar un contacto</string>
-    <string name="settings_invite_friend_text">Invita a tus amigos</string>
+    <string name="settings_invite_friend_text">Invita i miei amici</string>
     <string name="invite_friend_text">Use Knock In para una nueva experiencia de comunicación</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -496,7 +496,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="remove_filter">Quitar filtro</string>
     <string name="allow_phone_call">No has permitido la llamada telefónica</string>
     <string name="daily_reminder_time">Tiempo de recordatorio diario</string>
-    <string name="teleworking_settings">Configuración de teletrabajo</string>
+    <string name="teleworking_settings">Mi Configuración de teletrabajo</string>
     <string name="message_from">Mensaje de %1$s</string>
     <string name="rate_this_app_title">Califica esta aplicación</string>
     <string name="rate_this_app_message">Si te gusta esta aplicación, tómate unos segundos para calificarla, nos ayudaría mucho. Gracias</string>

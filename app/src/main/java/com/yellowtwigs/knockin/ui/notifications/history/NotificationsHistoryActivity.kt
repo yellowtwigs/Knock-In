@@ -30,8 +30,9 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -285,8 +286,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     //region ======================================== DRAWER LAYOUT =========================================
 
     private fun setupDrawerLayout() {
-        setupTeleworkingItem(binding.drawerLayout, this)
-
         binding.navView.apply {
             menu.getItem(0).isChecked = true
             setNavigationItemSelectedListener { menuItem ->
@@ -300,6 +299,12 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                         Intent(
                             this@NotificationsHistoryActivity, NotificationsSettingsActivity::class.java
                         )
+                    )
+                    R.id.nav_teleworking -> startActivity(
+                        Intent(this@NotificationsHistoryActivity, TeleworkingActivity::class.java)
+                    )
+                    R.id.nav_dashboard -> startActivity(
+                        Intent(this@NotificationsHistoryActivity, DashboardActivity::class.java)
                     )
                     R.id.nav_manage_screen -> startActivity(
                         Intent(

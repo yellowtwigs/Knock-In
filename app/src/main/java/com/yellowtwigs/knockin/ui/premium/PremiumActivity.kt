@@ -152,6 +152,9 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             NotificationsSettingsActivity::class.java
                         )
                     )
+                    R.id.nav_teleworking -> startActivity(
+                        Intent(this@PremiumActivity, TeleworkingActivity::class.java)
+                    )
                     R.id.nav_manage_screen -> {
                         startActivity(
                             Intent(

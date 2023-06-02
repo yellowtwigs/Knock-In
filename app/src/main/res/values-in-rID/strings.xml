@@ -31,16 +31,16 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Buku alamat rumah</string>
+    <string name="left_drawer_home">Melihat kontak saya</string>
     <string name="left_drawer_my_groups">Kelola kelompok saya</string>
     <string name="left_drawer_information">Data pribadi saya</string>
     <string name="left_drawer_chat">Pesan</string>
-    <string name="left_drawer_notif_config">Kelola notifikasi saya</string>
+    <string name="left_drawer_notification_settings">Kelola notifikasi saya</string>
     <string name="left_drawer_settings">Pengaturan</string>
     <string name="left_drawer_my_screen">Opsi tampilan</string>
-    <string name="left_drawer_in_app">Toko</string>
+    <string name="left_drawer_in_app">Pembelian Saya</string>
     <string name="left_drawer_data_access">Akses Data</string>
-    <string name="left_drawer_statistics">Statistik</string>
+    <string name="left_drawer_statistics">Ikuti penampilan saya</string>
     <string name="left_drawer_help">Membantu</string>
     <string name="left_drawer_import">Kontak impor</string>
     <string name="settings_contact_popup_phone_call">Panggilan telepon</string>

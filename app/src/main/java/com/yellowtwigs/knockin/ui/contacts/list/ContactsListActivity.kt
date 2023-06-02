@@ -12,7 +12,6 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,30 +37,26 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
-import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
-import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.utils.ContactGesture
-import com.yellowtwigs.knockin.utils.ContactGesture.goToTelegram
-import com.yellowtwigs.knockin.utils.ContactGesture.openSms
-import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
-import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberWithSpinnerToFlag
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
+import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.setupTeleworkingItem
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class ContactsListActivity : AppCompatActivity() {
@@ -134,7 +129,7 @@ class ContactsListActivity : AppCompatActivity() {
                 var day = 0
                 var month = 0
                 var year = 0
-                it.forEachIndexed { index, s ->
+                it.forEachIndexed { _, s ->
                     with(s) {
                         when {
                             contains("DAY") -> {
@@ -523,8 +518,6 @@ class ContactsListActivity : AppCompatActivity() {
             val navInviteFriend = menu.findItem(R.id.nav_invite_friend)
             navInviteFriend.isVisible = true
 
-            setupTeleworkingItem(this, this@ContactsListActivity)
-
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
@@ -535,6 +528,9 @@ class ContactsListActivity : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.nav_notifications -> startActivity(
                         Intent(this@ContactsListActivity, NotificationsSettingsActivity::class.java)
+                    )
+                    R.id.nav_teleworking -> startActivity(
+                        Intent(this@ContactsListActivity, TeleworkingActivity::class.java)
                     )
                     R.id.nav_in_app -> startActivity(
                         Intent(this@ContactsListActivity, PremiumActivity::class.java)
@@ -866,7 +862,7 @@ class ContactsListActivity : AppCompatActivity() {
                                 "ContactId", id
                             )
                         )
-                    }, { id, civ, contact ->
+                    }, { _, civ, contact ->
                         hideKeyboard(this@ContactsListActivity)
 
                         itemSelected(civ, contact)
@@ -1000,7 +996,6 @@ class ContactsListActivity : AppCompatActivity() {
                         val flow = manager.launchReviewFlow(this, reviewInfo)
                         flow.addOnCompleteListener { _ ->
                         }
-                    } else {
                     }
                 }
                 alertDialog.dismiss()

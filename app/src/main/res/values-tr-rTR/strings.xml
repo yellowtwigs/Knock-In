@@ -31,16 +31,16 @@
     <!-- endregion-->
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Ev-Adres Defteri</string>
+    <string name="left_drawer_home">Kişilerimi görüntüleme</string>
     <string name="left_drawer_my_groups">Gruplarımı yönet</string>
     <string name="left_drawer_information">Kişisel verilerim</string>
     <string name="left_drawer_chat">Mesajlaşma</string>
-    <string name="left_drawer_notif_config">Bildirimlerimi yönet</string>
+    <string name="left_drawer_notification_settings">Bildirimlerimi yönet</string>
     <string name="left_drawer_settings">Ayarlar</string>
     <string name="left_drawer_my_screen">Görüntüleme seçenekleri</string>
-    <string name="left_drawer_in_app">Mağaza</string>
+    <string name="left_drawer_in_app">Satın alımlarım</string>
     <string name="left_drawer_data_access">Veri erişimi</string>
-    <string name="left_drawer_statistics">İstatistikler</string>
+    <string name="left_drawer_statistics">performansımı takip et</string>
     <string name="left_drawer_help">Yardım</string>
     <string name="left_drawer_import">Kişileri içe aktar</string>
     <string name="settings_contact_popup_phone_call">Telefon görüşmesi açılır penceresi</string>

@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
-import com.yellowtwigs.knockin.ui.SingleContactViewState
+import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToSinglePhoneNumberWithFlag
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberWithSpinnerToFlag
