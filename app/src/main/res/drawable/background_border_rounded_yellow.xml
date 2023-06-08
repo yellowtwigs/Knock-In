@@ -4,5 +4,5 @@
         android:width="10dp"
         android:color="@color/yellow_tag_group" />
     <corners
-        android:radius="100dp" />
+        android:radius="50dp" />
 </shape>

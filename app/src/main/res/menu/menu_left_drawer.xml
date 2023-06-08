@@ -37,10 +37,5 @@
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_about"
             android:title="@string/left_drawer_help" />
-        <item
-            android:id="@+id/nav_messenger"
-            android:icon="@drawable/ic_chat"
-            android:title="@string/left_drawer_chat"
-            android:visible="false" />
     </group>
 </menu>

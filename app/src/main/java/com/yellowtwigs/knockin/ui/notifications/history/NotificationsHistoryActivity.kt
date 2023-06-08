@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,6 +32,7 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
@@ -39,6 +41,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class NotificationsHistoryActivity : AppCompatActivity() {
@@ -353,7 +357,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     //region =========================================== SETUP UI ===========================================
 
     private fun setupBottomNavigationView() {
-        binding.navigation.menu.getItem(2).isChecked = true
+        binding.navigation.menu.getItem(R.id.nav_home).isChecked = true
         binding.navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_contacts -> {
@@ -388,7 +392,15 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     private fun setupNotificationsList() {
         notificationsAdapter = NotificationsListAdapter(this) { phoneNumber, platform ->
-            convertPackageNameToGoToWithContact(platform, phoneNumber, this)
+            if (platform == "com.yellowtwigs.Knockin.notification") {
+                startActivity(Intent(this@NotificationsHistoryActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
+            } else {
+                convertPackageNameToGoToWithContact(platform, phoneNumber, this)
+            }
+        }
+
+        binding.notificationPin.setOnClickListener {
+            startActivity(Intent(this@NotificationsHistoryActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
         }
 
         binding.recyclerView.apply {
@@ -396,9 +408,15 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
             notificationsListViewModel.getAllNotifications().observe(
                 this@NotificationsHistoryActivity
-            ) { notifications ->
+            ) { notificationsHistoryViewState ->
                 notificationsAdapter.submitList(null)
-                notificationsAdapter.submitList(notifications)
+                notificationsAdapter.submitList(notificationsHistoryViewState.list)
+
+//                binding.notificationPin.isVisible = notificationsHistoryViewState.isVisible
+//                binding.app.text = context.getString(R.string.app_name)
+//                binding.title.text = notificationsHistoryViewState.title
+//                binding.content.text = notificationsHistoryViewState.description
+//                binding.notificationDate.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notificationsHistoryViewState.timestamp))
 //                scrollToPosition(0)
 //                (layoutManager as LinearLayoutManager).scrollToPosition(0)
             }

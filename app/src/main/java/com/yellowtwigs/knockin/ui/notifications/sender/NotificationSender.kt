@@ -41,9 +41,6 @@ class NotificationSender : BroadcastReceiver() {
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
-        Log.i("GetReminderTime", "!isNotificationServiceEnabled(context) : ${!isNotificationServiceEnabled(context)}")
-        Log.i("GetReminderTime", "sharedPreferences.getBoolean(\"reminder\", false) : ${sharedPreferences.getBoolean("reminder", false)}")
-
         if (isNotificationServiceEnabled(context) && sharedPreferences.getBoolean("reminder", false)) {
             val notification = NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.drawable.ic_letter_k)
                 .setContentTitle(context.getString(R.string.notification_sender_content_title)).setContentText(

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -24,6 +25,7 @@ import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -85,16 +87,11 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         fromManageNotification = intent.getBooleanExtra("fromManageNotification", false)
 
-        sharedFunkySoundPreferences =
-            getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
-        sharedJazzySoundPreferences =
-            getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
-        sharedRelaxationSoundPreferences =
-            getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
-        sharedContactsUnlimitedPreferences =
-            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
-        sharedCustomSoundPreferences =
-            getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
+        sharedFunkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
+        sharedJazzySoundPreferences = getSharedPreferences("Jazzy_Sound_Bought", Context.MODE_PRIVATE)
+        sharedRelaxationSoundPreferences = getSharedPreferences("Relax_Sound_Bought", Context.MODE_PRIVATE)
+        sharedContactsUnlimitedPreferences = getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
+        sharedCustomSoundPreferences = getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
         appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
         setupLeftDrawerLayout(sharedThemePreferences)
@@ -117,20 +114,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
             val navItem = menu.findItem(R.id.nav_in_app)
             navItem.isChecked = true
 
-            val itemLayout = findViewById<ConstraintLayout>(R.id.teleworking_item)
-            val itemText = findViewById<AppCompatTextView>(R.id.teleworking_item_text)
-
-            itemText.text =
-                "${getString(R.string.teleworking)} ${getString(R.string.left_drawer_settings)}"
-
-            itemLayout.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@PremiumActivity, TeleworkingActivity::class.java
-                    )
-                )
-            }
-
             navViewPremium.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
@@ -141,25 +124,25 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     R.id.nav_home -> {
                         startActivity(
                             Intent(
-                                this@PremiumActivity,
-                                ContactsListActivity::class.java
+                                this@PremiumActivity, ContactsListActivity::class.java
                             )
                         )
                     }
                     R.id.nav_notifications -> startActivity(
                         Intent(
-                            this@PremiumActivity,
-                            NotificationsSettingsActivity::class.java
+                            this@PremiumActivity, NotificationsSettingsActivity::class.java
                         )
                     )
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@PremiumActivity, TeleworkingActivity::class.java)
                     )
+                    R.id.nav_dashboard -> startActivity(
+                        Intent(this@PremiumActivity, DashboardActivity::class.java)
+                    )
                     R.id.nav_manage_screen -> {
                         startActivity(
                             Intent(
-                                this@PremiumActivity,
-                                ManageMyScreenActivity::class.java
+                                this@PremiumActivity, ManageMyScreenActivity::class.java
                             )
                         )
                     }
@@ -171,10 +154,9 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     }
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
-                        val messageString =
-                            resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
-                                R.string.location_on_playstore
-                            )
+                        val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
+                            R.string.location_on_playstore
+                        )
                         intent.putExtra(Intent.EXTRA_TEXT, messageString)
                         intent.type = "text/plain"
                         val messageIntent = Intent.createChooser(intent, null)
@@ -219,27 +201,28 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun setupBillingClient() {
-        billingClient = BillingClient.newBuilder(this)
-            .setListener(this)
-            .enablePendingPurchases()
-            .build()
+        billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
 
         connectToGooglePlayBilling()
     }
 
     private fun connectToGooglePlayBilling() {
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    querySkuDetails()
-                } else {
-                    connectToGooglePlayBilling()
+        try {
+            billingClient.startConnection(object : BillingClientStateListener {
+                override fun onBillingSetupFinished(billingResult: BillingResult) {
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                        querySkuDetails()
+                    } else {
+                        connectToGooglePlayBilling()
+                    }
                 }
-            }
 
-            override fun onBillingServiceDisconnected() {
-            }
-        })
+                override fun onBillingServiceDisconnected() {
+                }
+            })
+        } catch (e: Exception) {
+            Log.e("Exception", "$e")
+        }
     }
 
     private fun querySkuDetails() {
@@ -250,9 +233,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_relaxation_theme")
         skuList.add("additional_applications_support")
 
-        params = SkuDetailsParams.newBuilder()
-            .setSkusList(skuList)
-            .setType(BillingClient.SkuType.INAPP)
+        params = SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
 
         billingClient.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
             runOnUiThread {
@@ -279,123 +260,93 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (purchases != null) {
             when {
                 purchases[0].originalJson.contains("notifications_vip_funk_theme") -> {
-                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
-                        if (!purchases[0].isAcknowledged) {
-                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                                .setPurchaseToken(purchases[0].purchaseToken)
-                            billingClient.acknowledgePurchase(
-                                acknowledgePurchaseParams.build(),
-                                acknowledgePurchaseResponseListener
-                            )
-                            Toast.makeText(
-                                this,
-                                getString(R.string.in_app_purchase_made_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val edit = sharedFunkySoundPreferences?.edit()
-                            edit?.putBoolean("Funky_Sound_Bought", true)
-                            edit?.apply()
-                            backToManageNotifAfterBuying()
-                        }
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) if (!purchases[0].isAcknowledged) {
+                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchases[0].purchaseToken)
+                        billingClient.acknowledgePurchase(
+                            acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener
+                        )
+                        Toast.makeText(
+                            this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT
+                        ).show()
+                        val edit = sharedFunkySoundPreferences?.edit()
+                        edit?.putBoolean("Funky_Sound_Bought", true)
+                        edit?.apply()
+                        backToManageNotifAfterBuying()
+                    }
                 }
                 purchases[0].originalJson.contains("notifications_vip_jazz_theme") -> {
-                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
-                        if (!purchases[0].isAcknowledged) {
-                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                                .setPurchaseToken(purchases[0].purchaseToken)
-                            billingClient.acknowledgePurchase(
-                                acknowledgePurchaseParams.build(),
-                                acknowledgePurchaseResponseListener
-                            )
-                            Toast.makeText(
-                                this,
-                                getString(R.string.in_app_purchase_made_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val edit = sharedJazzySoundPreferences?.edit()
-                            edit?.putBoolean("Jazzy_Sound_Bought", true)
-                            edit?.apply()
-                            backToManageNotifAfterBuying()
-                        }
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) if (!purchases[0].isAcknowledged) {
+                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchases[0].purchaseToken)
+                        billingClient.acknowledgePurchase(
+                            acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener
+                        )
+                        Toast.makeText(
+                            this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT
+                        ).show()
+                        val edit = sharedJazzySoundPreferences?.edit()
+                        edit?.putBoolean("Jazzy_Sound_Bought", true)
+                        edit?.apply()
+                        backToManageNotifAfterBuying()
+                    }
                 }
                 purchases[0].originalJson.contains("notifications_vip_relaxation_theme") -> {
-                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
-                        if (!purchases[0].isAcknowledged) {
-                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                                .setPurchaseToken(purchases[0].purchaseToken)
-                            billingClient.acknowledgePurchase(
-                                acknowledgePurchaseParams.build(),
-                                acknowledgePurchaseResponseListener
-                            )
-                            Toast.makeText(
-                                this,
-                                getString(R.string.in_app_purchase_made_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val edit = sharedRelaxationSoundPreferences!!.edit()
-                            edit.putBoolean("Relax_Sound_Bought", true)
-                            edit.apply()
-                            backToManageNotifAfterBuying()
-                        }
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) if (!purchases[0].isAcknowledged) {
+                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchases[0].purchaseToken)
+                        billingClient.acknowledgePurchase(
+                            acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener
+                        )
+                        Toast.makeText(
+                            this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT
+                        ).show()
+                        val edit = sharedRelaxationSoundPreferences!!.edit()
+                        edit.putBoolean("Relax_Sound_Bought", true)
+                        edit.apply()
+                        backToManageNotifAfterBuying()
+                    }
                 }
                 purchases[0].originalJson.contains("contacts_vip_unlimited") -> {
-                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
-                        if (!purchases[0].isAcknowledged) {
-                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                                .setPurchaseToken(purchases[0].purchaseToken)
-                            billingClient.acknowledgePurchase(
-                                acknowledgePurchaseParams.build(),
-                                acknowledgePurchaseResponseListener
-                            )
-                            Toast.makeText(
-                                this,
-                                getString(R.string.in_app_purchase_made_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val edit = sharedContactsUnlimitedPreferences!!.edit()
-                            edit.putBoolean("Contacts_Unlimited_Bought", true)
-                            edit.apply()
-                        }
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) if (!purchases[0].isAcknowledged) {
+                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchases[0].purchaseToken)
+                        billingClient.acknowledgePurchase(
+                            acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener
+                        )
+                        Toast.makeText(
+                            this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT
+                        ).show()
+                        val edit = sharedContactsUnlimitedPreferences!!.edit()
+                        edit.putBoolean("Contacts_Unlimited_Bought", true)
+                        edit.apply()
+                    }
                 }
                 purchases[0].originalJson.contains("notifications_vip_custom_tones_theme") -> {
-                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
-                        if (!purchases[0].isAcknowledged) {
-                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                                .setPurchaseToken(purchases[0].purchaseToken)
-                            billingClient.acknowledgePurchase(
-                                acknowledgePurchaseParams.build(),
-                                acknowledgePurchaseResponseListener
-                            )
-                            Toast.makeText(
-                                this,
-                                getString(R.string.in_app_purchase_made_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val edit = sharedCustomSoundPreferences!!.edit()
-                            edit.putBoolean("Custom_Sound_Bought", true)
-                            edit.apply()
-                            backToManageNotifAfterBuying()
-                        }
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) if (!purchases[0].isAcknowledged) {
+                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchases[0].purchaseToken)
+                        billingClient.acknowledgePurchase(
+                            acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener
+                        )
+                        Toast.makeText(
+                            this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT
+                        ).show()
+                        val edit = sharedCustomSoundPreferences!!.edit()
+                        edit.putBoolean("Custom_Sound_Bought", true)
+                        edit.apply()
+                        backToManageNotifAfterBuying()
+                    }
                 }
                 purchases[0].originalJson.contains("additional_applications_support") -> {
-                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED)
-                        if (!purchases[0].isAcknowledged) {
-                            val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                                .setPurchaseToken(purchases[0].purchaseToken)
-                            billingClient.acknowledgePurchase(
-                                acknowledgePurchaseParams.build(),
-                                acknowledgePurchaseResponseListener
-                            )
-                            Toast.makeText(
-                                this,
-                                getString(R.string.in_app_purchase_made_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val edit = appsSupportPref?.edit()
-                            edit?.putBoolean("Apps_Support_Bought", true)
-                            edit?.apply()
-                            backToManageNotifAfterBuying()
-                        }
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) if (!purchases[0].isAcknowledged) {
+                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchases[0].purchaseToken)
+                        billingClient.acknowledgePurchase(
+                            acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener
+                        )
+                        Toast.makeText(
+                            this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT
+                        ).show()
+                        val edit = appsSupportPref?.edit()
+                        edit?.putBoolean("Apps_Support_Bought", true)
+                        edit?.apply()
+                        backToManageNotifAfterBuying()
+                    }
                 }
             }
         } else {
@@ -410,20 +361,15 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     fun backToManageNotifAfterBuying() {
         if (fromManageNotification) {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-                .setTitle(getString(R.string.in_app_purchase_made_message))
-                .setMessage(getString(R.string.in_app_shop_return_to_notif))
-                .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.in_app_purchase_made_message))
+                .setMessage(getString(R.string.in_app_shop_return_to_notif)).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
                     startActivity(
                         Intent(
-                            this@PremiumActivity,
-                            NotificationsSettingsActivity::class.java
+                            this@PremiumActivity, NotificationsSettingsActivity::class.java
                         ).putExtra("fromMultiSelectActivity", true)
                     )
-                }
-                .setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                }
-                .show()
+                }.setNegativeButton(R.string.alert_dialog_later) { _, _ ->
+                }.show()
         }
     }
 

@@ -100,9 +100,9 @@ class NotificationsListenerService : NotificationListenerService() {
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
 
-            Log.i("MessagesMessanger", "name : ${name}")
-            Log.i("MessagesMessanger", "message : ${message}")
-            Log.i("MessagesMessanger", "sbp.appNotifier : ${sbp.appNotifier}")
+            Log.i("GetKnockinNotif", "sbp.appNotifier : ${sbp.appNotifier}")
+            Log.i("GetKnockinNotif", "name : $name")
+            Log.i("GetKnockinNotif", "message : $message")
 
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {

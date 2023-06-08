@@ -38,7 +38,7 @@ class DailyStatisticsActivity : AppCompatActivity() {
             binding.performanceIcon.setImageResource(it.icon)
             binding.notificationsUnprocessed.text = it.numberOfNotificationsUnprocessed
             binding.notificationsVip.text = it.numberOfNotificationsVip
-            binding.adviceMessage.text = it.adviceMessage
+            binding.adviceMessageContent.text = it.adviceMessage
         }
     }
 }

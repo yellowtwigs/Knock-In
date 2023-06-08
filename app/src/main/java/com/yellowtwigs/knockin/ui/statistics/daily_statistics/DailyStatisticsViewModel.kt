@@ -76,7 +76,7 @@ class DailyStatisticsViewModel @Inject constructor(
                 } else {
                     notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.priority == 2
                 }
-            }.size
+            }.size / 2
             val vipNumbersWeekly = list.filter { notification ->
                 if (platform != "") {
                     if (platform == "Message") {
@@ -191,25 +191,35 @@ class DailyStatisticsViewModel @Inject constructor(
                 R.drawable.ic_speedometer_yellow
             }
 
-            val adviceMessage = if (numberOfContactsVIP == 0 && numberOfContactsSilent == 0) {
-                "Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt"
-            } else if (numberOfContactsVIP < 5 && numberOfContactsSilent == 0) {
-                "You can optimize significantly you time by using silent mode with non VIP contacts"
-            } else if (numberOfContactsVIP < 5 && nonVipNotificationsNumbers >= 5) {
-                "You may miss important messages from several contacts – we recommend adding one or more VIPs"
-            } else if (numberOfContactsVIP == 5 && nonVipNotificationsNumbers >= 5) {
-                "You may have more VIPs to configure - we recommend buying a VIP package"
-            } else if (numberOfContactsVIP < 5 && isAllOtherContactsSilent) {
-                "Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs"
+            val strongRed = numberOfContactsVIP == 0 && numberOfContactsSilent == 0
+            val orange = numberOfContactsVIP < 5 && numberOfContactsSilent == 0
+            val yellow = numberOfContactsVIP < 5 && nonVipNotificationsNumbers >= 5
+            val lightGreen = numberOfContactsVIP == 5 && nonVipNotificationsNumbers >= 5
+            val strongGreen = numberOfContactsVIP > 1 && isAllOtherContactsSilent
+
+            val adviceMessage = if (strongRed) {
+                application.getString(R.string.strong_red_advice)
+            } else if (orange) {
+                application.getString(R.string.orange_advice)
+            } else if (yellow) {
+                application.getString(R.string.yellow_advice)
+            } else if (lightGreen) {
+                application.getString(R.string.light_green_advice)
+            } else if (strongGreen) {
+                application.getString(R.string.strong_green_advice)
             } else {
-                ""
+                application.getString(R.string.yellow_advice)
             }
+
+            val unprocessedNotifications = (messagingNumbersDaily - vipNumbersDaily) / 2
 
             emit(
                 DailyStatisticsViewState(
                     icon = icon,
-                    numberOfNotificationsUnprocessed = "${messagingNumbersDaily - vipNumbersDaily} notifications non traitées",
-                    numberOfNotificationsVip = "$vipNumbersDaily notifications VIP",
+                    numberOfNotificationsUnprocessed = application.getString(
+                        R.string.number_unprocessed_notifications, unprocessedNotifications
+                    ),
+                    numberOfNotificationsVip = application.getString(R.string.number_vip_notifications, vipNumbersDaily),
                     adviceMessage = adviceMessage
                 )
             )

@@ -1,6 +1,9 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
+import android.app.Application
+import android.app.Notification
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
@@ -20,10 +23,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsListViewModel @Inject constructor(
-    private val repository: NotificationsRepository, @ApplicationContext val context: Context
+    private val repository: NotificationsRepository, private val application: Application
 ) : ViewModel() {
 
-    private val viewStateLiveData = MediatorLiveData<List<NotificationsListViewState>>()
+    private val viewStateLiveData = MediatorLiveData<NotificationsHistoryViewState>()
 
     private val searchBarTextLiveData = MutableLiveData<String>()
     private val sortedByLiveData = MutableLiveData<Int>()
@@ -56,14 +59,32 @@ class NotificationsListViewModel @Inject constructor(
 
     ) {
         val notifications = arrayListOf<NotificationsListViewState>()
+        var pinNotification: NotificationDB? = null
 
         if (allNotifications?.isNotEmpty() == true) {
             for (notification in allNotifications) {
+
+//                Log.i("GetKnockinNotif", "notification.platform : ${notification.platform}")
+//
+//                if (notification.platform == "com.yellowtwigs.Knockin.notification") {
+//                    pinNotification = notification
+//                } else {
+//                }
+
                 addNotificationInList(notifications, notification)
+
             }
         }
 
-        viewStateLiveData.value = sortedContactsList(sortedBy, filterBy, input, notifications)
+        viewStateLiveData.value = NotificationsHistoryViewState(
+            title = pinNotification?.title ?: "",
+            description = pinNotification?.description ?: "",
+            platform = pinNotification?.platform ?: "",
+            timestamp = pinNotification?.timestamp ?: 0L,
+            isVisible = pinNotification != null,
+            list = sortedContactsList(sortedBy, filterBy, input, notifications)
+        )
+
     }
 
     private fun sortedContactsList(
@@ -122,59 +143,59 @@ class NotificationsListViewModel @Inject constructor(
                     return notifications
                 }
                 R.id.filter_by_msg_apps -> {
-                    return notifications.filter { isMessagingApp(it.platform, context) }
+                    return notifications.filter { isMessagingApp(it.platform, application) }
                 }
                 R.id.sms_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform, context
+                            it.platform, application
                         ) == MESSAGE_APP_NAME
                     }
                 }
                 R.id.mail_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform, context
-                        ) == "Gmail" || convertPackageToString(it.platform, context) == "Outlook"
+                            it.platform, application
+                        ) == "Gmail" || convertPackageToString(it.platform, application) == "Outlook"
                     }
                 }
                 R.id.whatsapp_filter -> {
                     return notifications.filter {
-                        convertPackageToString(it.platform, context) == NotificationsGesture.WHATSAPP_APP_NAME
+                        convertPackageToString(it.platform, application) == NotificationsGesture.WHATSAPP_APP_NAME
                     }
                 }
                 R.id.telegram_filter -> {
                     return notifications.filter {
-                        convertPackageToString(it.platform, context) == "Telegram"
+                        convertPackageToString(it.platform, application) == "Telegram"
                     }
                 }
                 R.id.facebook_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform, context
+                            it.platform, application
                         ) == "Messenger" || convertPackageToString(
-                            it.platform, context
+                            it.platform, application
                         ) == "Facebook"
                     }
                 }
                 R.id.signal_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform, context
+                            it.platform, application
                         ) == "Signal"
                     }
                 }
                 R.id.discord_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform, context
+                            it.platform, application
                         ) == "Discord"
                     }
                 }
                 R.id.viber_filter -> {
                     return notifications.filter {
                         convertPackageToString(
-                            it.platform, context
+                            it.platform, application
                         ) == "Viber"
                     }
                 }
@@ -207,7 +228,7 @@ class NotificationsListViewModel @Inject constructor(
         )
     }
 
-    fun getAllNotifications(): LiveData<List<NotificationsListViewState>> {
+    fun getAllNotifications(): LiveData<NotificationsHistoryViewState> {
         return viewStateLiveData
     }
 

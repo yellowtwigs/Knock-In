@@ -112,7 +112,7 @@ class GroupsListActivity : AppCompatActivity() {
             val menu = binding.navView.menu
             val navItem = menu.findItem(R.id.nav_home)
             navItem.isChecked = true
-            menu.getItem(0).isChecked = true
+            menu.getItem(R.id.nav_home).isChecked = true
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
