@@ -30,23 +30,20 @@
     <string name="help_activity_contact_terms_of_use">شروط الاستعمال</string>
     <string name="help_activity_contact_generals_informations">معلومات عامة</string>
     <!-- endregion-->
+
     <!-- region Left Drawer Titles -->
-    <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">عرض جهات الاتصال الخاصة بي</string>
-    <string name="left_drawer_my_groups">إدارة مجموعاتي</string>
-    <string name="left_drawer_information">معلوماتي الشخصية</string>
-    <string name="left_drawer_chat">إرسال الرسائل</string>
-    <string name="left_drawer_notification_settings">إدارة إشعاراتي</string>
-    <string name="left_drawer_settings">الإعدادات</string>
-    <string name="left_drawer_my_screen">خيارات العرض</string>
-    <string name="left_drawer_in_app">مشترياتي</string>
-    <string name="left_drawer_data_access">الدخول الى البيانات</string>
-    <string name="left_drawer_statistics">إحصائياتي</string>
-    <string name="left_drawer_help">مساعدة</string>
+    <string name="left_drawer_in_app">جهات</string>
+    <string name="left_drawer_notification_settings">تتبع أدائي</string>
+    <string name="teleworking_settings">إعدادات العمل عن بعد الخاصة بي</string>
+    <string name="left_drawer_statistics"> إدارة إخطاراتي</string>
+    <string name="left_drawer_home">مشترياتي</string>
+    <string name="left_drawer_my_screen">ادعو اصدقائي</string>
     <string name="left_drawer_import">استيراد جهات الاتصال</string>
+    <string name="settings_invite_friend_text">خيارات العرض</string>
+    <string name="left_drawer_help">يساعدالاتصال الخاصة بي</string>
+
     <string name="settings_contact_popup_phone_call">مكالمات صوتية</string>
     <string name="manage_my_screen_contact_popup_long_text">تمكين / تعطيل النافذة المنبثقة قبل الاتصال بجهة الاتصال</string>
-    <string name="settings_invite_friend_text">قم بدعوة أصدقائك</string>
     <string name="invite_friend_text">لتجربة اتصال جديدة استخدم  Knock In</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -491,9 +488,15 @@
     <string name="remove_filter">قم بإزالة الفلتر</string>
     <string name="allow_phone_call">أنت لا تسمح بالمكالمة الهاتفية</string>
     <string name="daily_reminder_time">وقت التذكير اليومي</string>
-    <string name="teleworking_settings">إعدادات العمل عن بعد</string>
     <string name="message_from">رسالة من %1$s</string>
     <string name="rate_this_app_title">قيم هذا التطبيق</string>
     <string name="rate_this_app_message">إذا أعجبك هذا التطبيق ، فيرجى أخذ بضع ثوان لتقييمه ، فسيساعدنا كثيرًا. شكرًا</string>
     <string name="handle_one_phone_number_msg">نقوم باستيراد رقم هاتف الاتصال الخاص بك المسمى موبايل من دفتر العناوين الخاص بك. Knock In يتعامل مع رقم هاتف محمول واحد فقط لكل جهة اتصال.</string>
+    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
+    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
+    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="number_unprocessed_notifications">إ%1d علامات لم تتم معالجتها</string>
+    <string name="number_vip_notifications">%1d إخطارات VIP</string>
 </resources>

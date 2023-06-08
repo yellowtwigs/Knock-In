@@ -29,23 +29,20 @@
     <string name="help_activity_contact_terms_of_use">Условия и положения</string>
     <string name="help_activity_contact_generals_informations">Узнать больше</string>
     <!-- endregion-->
+
     <!-- region Left Drawer Titles -->
-    <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Просмотр моих контактов</string>
-    <string name="left_drawer_my_groups">Управление моими группами</string>
-    <string name="left_drawer_information">Мои личные данные</string>
-    <string name="left_drawer_chat">Рассылка сообщений</string>
-    <string name="left_drawer_notification_settings">Управление моими уведомлениями</string>
-    <string name="left_drawer_settings">Настройки</string>
-    <string name="left_drawer_my_screen">Опции отображения</string>
     <string name="left_drawer_in_app">Мои покупки</string>
-    <string name="left_drawer_data_access">Доступ к данным</string>
-    <string name="left_drawer_statistics">Следите за моим выступлением</string>
-    <string name="left_drawer_help">Помощь</string>
+    <string name="left_drawer_notification_settings">Управление моими уведомлениями</string>
+    <string name="teleworking_settings">Мои настройки удаленной работы</string>
+    <string name="left_drawer_statistics">Отслеживайте мою производительность</string>
+    <string name="left_drawer_home">Мои контакты</string>
+    <string name="left_drawer_my_screen">Показать варианты</string>
     <string name="left_drawer_import">Импортировать контакты</string>
+    <string name="settings_invite_friend_text">Пригласить моих друзей</string>
+    <string name="left_drawer_help">Помощь</string>
+
     <string name="settings_contact_popup_phone_call">Всплывающее окно телефонного звонка</string>
     <string name="manage_my_screen_contact_popup_long_text">Включить/отключить всплывающее окно перед вызовом контакта</string>
-    <string name="settings_invite_friend_text">Пригласить своих друзей</string>
     <string name="invite_friend_text">Используйте Knock In для нового общения</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -491,10 +488,16 @@
     <string name="remove_filter">Удалить фильтр</string>
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Ежедневное время напоминания</string>
-    <string name="teleworking_settings">Настройки дистанционной работы</string>
     <string name="message_from">Сообщение от %1$s</string>
     <string name="rate_this_app_title">Оцени это приложение</string>
     <string name="rate_this_app_message">Если вам нравится это приложение, потратьте несколько секунд, чтобы оценить его, это нам очень поможет. Спасибо</string>
     <string name="handle_one_phone_number_msg">Мы импортируем ваш контактный номер телефона с пометкой «Мобильный» из вашей адресной кни</string>
+    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
+    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
+    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="number_unprocessed_notifications">%1d необработанных уведомлений</string>
+    <string name="number_vip_notifications">%1d VIP-уведомления</string>
 
 </resources>

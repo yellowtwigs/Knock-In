@@ -29,23 +29,20 @@
     <string name="help_activity_contact_terms_of_use">Condizioni di Utilizzo</string>
     <string name="help_activity_contact_generals_informations">Per maggiori informazioni</string>
     <!-- endregion-->
+
     <!-- region Left Drawer Titles -->
-    <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Visualizzazione dei miei contatti</string>
-    <string name="left_drawer_my_groups">Gestione gruppi</string>
-    <string name="left_drawer_information">Dati Personali</string>
-    <string name="left_drawer_chat">Messaggi</string>
-    <string name="left_drawer_notification_settings">Gestione Notifiche</string>
-    <string name="left_drawer_settings">Configurazione</string>
-    <string name="left_drawer_my_screen">Opzioni Display</string>
-    <string name="left_drawer_in_app">I Miei Acquisti</string>
-    <string name="left_drawer_data_access">Accesso ai dati</string>
-    <string name="left_drawer_statistics">Segui la mia esibizione</string>
-    <string name="left_drawer_help">Help</string>
-    <string name="left_drawer_import">Contatti importanti</string>
+    <string name="left_drawer_in_app">I miei acquisti</string>
+    <string name="left_drawer_notification_settings">Gestisci le mie notifiche</string>
+    <string name="teleworking_settings">Le mie impostazioni di telelavoro</string>
+    <string name="left_drawer_statistics">Tieni traccia mie prestazioni</string>
+    <string name="left_drawer_home">Miei contatti</string>
+    <string name="left_drawer_my_screen">Opzioni di visualizzazione</string>
+    <string name="left_drawer_import">Importa contatti</string>
+    <string name="settings_invite_friend_text">Invita i miei amici</string>
+    <string name="left_drawer_help">Aiuto</string>
+
     <string name="settings_contact_popup_phone_call">Chiamate vocali</string>
     <string name="manage_my_screen_contact_popup_long_text"> Attiva/Disattiva popup prima di chiamare un contatto</string>
-    <string name="settings_invite_friend_text">Invita i tuoi amici</string>
     <string name="invite_friend_text">Usa Knock In per una nuova esperienza di comunicazione</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -490,9 +487,15 @@
     <string name="remove_filter">No filtro</string>
     <string name="allow_phone_call">Non hai permesso la telefonata</string>
     <string name="daily_reminder_time">Tempo di promemoria giornaliero</string>
-    <string name="teleworking_settings">Mi Impostazioni per il telelavoro</string>
     <string name="message_from">Messaggio da %1$s</string>
     <string name="rate_this_app_title">Valuta questa applicazione</string>
     <string name="rate_this_app_message">Se ti piace questa app, ti preghiamo di dedicare qualche secondo a valutarla, ci aiuterebbe molto. Grazie</string>
     <string name="handle_one_phone_number_msg">Importiamo il tuo numero di telefono di contatto etichettato mobile dalla tua rubrica. Knock In gestisce un solo numero di cellulare per contatto.</string>
+    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
+    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
+    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="number_unprocessed_notifications">%1d notifiche non elaborate</string>
+    <string name="number_vip_notifications">%1d Notifiche VIP</string>
 </resources>

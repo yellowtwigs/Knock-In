@@ -29,23 +29,20 @@
     <string name="help_activity_contact_terms_of_use">Syarat dan ketentuan</string>
     <string name="help_activity_contact_generals_informations">Untuk informasi lebih lanjut</string>
     <!-- endregion-->
+
     <!-- region Left Drawer Titles -->
-    <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Melihat kontak saya</string>
-    <string name="left_drawer_my_groups">Kelola kelompok saya</string>
-    <string name="left_drawer_information">Data pribadi saya</string>
-    <string name="left_drawer_chat">Pesan</string>
+    <string name="left_drawer_in_app">Pembelian saya</string>
     <string name="left_drawer_notification_settings">Kelola notifikasi saya</string>
-    <string name="left_drawer_settings">Pengaturan</string>
-    <string name="left_drawer_my_screen">Opsi tampilan</string>
-    <string name="left_drawer_in_app">Pembelian Saya</string>
-    <string name="left_drawer_data_access">Akses Data</string>
-    <string name="left_drawer_statistics">Ikuti penampilan saya</string>
+    <string name="teleworking_settings">Pengaturan teleworking saya</string>
+    <string name="left_drawer_statistics">Lacak kinerja saya</string>
+    <string name="left_drawer_home">Kontak saya</string>
+    <string name="left_drawer_my_screen">Pilihan tampilan</string>
+    <string name="left_drawer_import">Impor kontak</string>
+    <string name="settings_invite_friend_text">Undang temanku</string>
     <string name="left_drawer_help">Membantu</string>
-    <string name="left_drawer_import">Kontak impor</string>
+
     <string name="settings_contact_popup_phone_call">Panggilan telepon</string>
     <string name="manage_my_screen_contact_popup_long_text">Aktifkan/nonaktifkan popup sebelum memanggil kontak</string>
-    <string name="settings_invite_friend_text">Undang temanmu</string>
     <string name="invite_friend_text">Gunakan Knock In untuk pengalaman komunikasi baru</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -492,10 +489,15 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="remove_filter">Hapus filter</string>
     <string name="allow_phone_call">Anda belum mengizinkan panggilan telepon</string>
     <string name="daily_reminder_time">Waktu pengingat harian</string>
-    <string name="teleworking_settings">Pengaturan telecommuting</string>
     <string name="message_from">Pesan dari %1$s</string>
     <string name="rate_this_app_title">Nilai aplikasi ini</string>
     <string name="rate_this_app_message">Jika Anda menyukai aplikasi ini, luangkan beberapa detik untuk menilainya, itu akan sangat membantu kami. terima kasih</string>
     <string name="handle_one_phone_number_msg">Kami mengimpor nomor telepon kontak Anda yang berlabel ponsel dari buku alamat Anda. Knock In hanya menangani satu nomor ponsel per kontak.</string>
-
+    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
+    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
+    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="number_unprocessed_notifications">%1d notifikasi belum diproses</string>
+    <string name="number_vip_notifications">%1d Notifikasi VIP</string>
 </resources>

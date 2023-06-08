@@ -29,23 +29,20 @@
     <string name="help_activity_contact_terms_of_use">Nutzungsbedingungen</string>
     <string name="help_activity_contact_generals_informations">Allgemeine Informationen</string>
     <!-- endregion-->
+
     <!-- region Left Drawer Titles -->
-    <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Meine Kontakte werden angezeigt</string>
-    <string name="left_drawer_my_groups">Verwalte meine Gruppen</string>
-    <string name="left_drawer_information">Meine persönlichen Informationen</string>
-    <string name="left_drawer_chat">Nachricht</string>
-    <string name="left_drawer_notification_settings">Verwalten Sie meine Benachrichtigungen</string>
-    <string name="left_drawer_settings">Parametern</string>
+    <string name="left_drawer_in_app">Meine einkäufe</string>
+    <string name="left_drawer_notification_settings">Meine benachrichtigungen verwalten</string>
+    <string name="teleworking_settings">Meine telearbeitseinstellungen</string>
+    <string name="left_drawer_statistics">Verfolgen sie meine leistung</string>
+    <string name="left_drawer_home">Meine kontakte</string>
     <string name="left_drawer_my_screen">Anzeigeoptionen</string>
-    <string name="left_drawer_in_app">Meine Einkäufe</string>
-    <string name="left_drawer_data_access">Datenzugriff</string>
-    <string name="left_drawer_statistics">Verfolgen Sie meine Leistung</string>
-    <string name="left_drawer_help">Hilfe</string>
     <string name="left_drawer_import">Kontakte importieren</string>
+    <string name="settings_invite_friend_text">Lade meine freunde ein</string>
+    <string name="left_drawer_help">Hilfe</string>
+
     <string name="settings_contact_popup_phone_call">Telefonanruf</string>
     <string name="manage_my_screen_contact_popup_long_text">Aktivieren/Deaktivieren Sie das Popup, bevor Sie einen Kontakt anrufen</string>
-    <string name="settings_invite_friend_text">Lade meine Freunde ein</string>
     <string name="invite_friend_text">Verwenden Sie Knock In für ein neues Kommunikationserlebnis</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -201,7 +198,7 @@
     <string name="manage_my_screen_toast_grid">Sie haben %1$d Kontakte pro Zeile ausgewählt</string>
     <string name="manage_my_screen_toast_list">Ansicht "Liste" ausgewählt</string>
     <string name="manage_my_screen_toast_list_smaller">Ansicht "Kompakt" ausgewählt</string>
-    
+
     <string name="manage_my_screen_searchbar_pos">Position der Suchleiste</string>
     <string name="manage_my_screen_searchbar_pos_long_text">Positionieren Sie die Suchleiste am unteren Bildschirmrand</string>
     <string name="manage_my_screen_display_for_group_title">Aktivieren Sie die Anzeige bestimmter Gruppen</string>
@@ -488,10 +485,17 @@
     <string name="work_schedule_title">Arbeitsplan (Montag - Freitag)</string>
     <string name="edit_reminder_hour_title">Tägliche Erinnerungszeit für Nicht-VIP-Benachrichtigungen:</string>
     <string name="remove_filter">Filter entfernen</string>
-    <string name="allow_phone_call">Sie haben keinen Anruf zugelassen</string>    <string name="daily_reminder_time">Tägliche Erinnerungszeit</string>
-    <string name="teleworking_settings">Telearbeitseinstellungen</string>
+    <string name="allow_phone_call">Sie haben keinen Anruf zugelassen</string>
+    <string name="daily_reminder_time">Tägliche Erinnerungszeit</string>
     <string name="message_from">Nachricht von %1$s</string>
     <string name="rate_this_app_title">Bewerte diese App</string>
     <string name="rate_this_app_message">Wenn Ihnen diese App gefällt, nehmen Sie sich bitte ein paar Sekunden Zeit, um sie zu bewerten, es würde uns sehr helfen. Vielen Dank</string>
     <string name="handle_one_phone_number_msg">Wir importieren Ihre Kontakttelefonnummer mit der Bezeichnung „mobile“ aus Ihrem Adressbuch. Knock In verarbeitet nur eine Mobiltelefonnummer pro Kontakt.</string>
+    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
+    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
+    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="number_unprocessed_notifications">%1d unverarbeitete Benachrichtigungen</string>
+    <string name="number_vip_notifications">%1d notifications VIP</string>
 </resources>

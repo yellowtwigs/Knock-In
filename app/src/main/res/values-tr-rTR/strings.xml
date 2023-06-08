@@ -29,23 +29,20 @@
     <string name="help_activity_contact_terms_of_use">Şartlar ve koşullar</string>
     <string name="help_activity_contact_generals_informations">Daha fazla bilgi için</string>
     <!-- endregion-->
+
     <!-- region Left Drawer Titles -->
-    <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Kişilerimi görüntüleme</string>
-    <string name="left_drawer_my_groups">Gruplarımı yönet</string>
-    <string name="left_drawer_information">Kişisel verilerim</string>
-    <string name="left_drawer_chat">Mesajlaşma</string>
-    <string name="left_drawer_notification_settings">Bildirimlerimi yönet</string>
-    <string name="left_drawer_settings">Ayarlar</string>
-    <string name="left_drawer_my_screen">Görüntüleme seçenekleri</string>
     <string name="left_drawer_in_app">Satın alımlarım</string>
-    <string name="left_drawer_data_access">Veri erişimi</string>
-    <string name="left_drawer_statistics">performansımı takip et</string>
-    <string name="left_drawer_help">Yardım</string>
+    <string name="left_drawer_notification_settings">Bildirimlerimi yönet</string>
+    <string name="teleworking_settings">Uzaktan çalışma ayarlarım</string>
+    <string name="left_drawer_statistics">Performansımı takip et</string>
+    <string name="left_drawer_home">Kişilerim</string>
+    <string name="left_drawer_my_screen">Görüntüleme seçenekleri</string>
     <string name="left_drawer_import">Kişileri içe aktar</string>
+    <string name="settings_invite_friend_text">Arkadaşlarımı davet et</string>
+    <string name="left_drawer_help">Yardım</string>
+
     <string name="settings_contact_popup_phone_call">Telefon görüşmesi açılır penceresi</string>
     <string name="manage_my_screen_contact_popup_long_text">Bir kişiyi aramadan önce açılır pencereyi etkinleştirme/devre dışı bırakma</string>
-    <string name="settings_invite_friend_text">Arkadaşlarını davet et</string>
     <string name="invite_friend_text">Yeni bir iletişim deneyimi için Knock In\'i kullanın</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -490,9 +487,15 @@
     <string name="remove_filter">Filtreyi kaldır</string>
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Günlük hatırlatma zamanı</string>
-    <string name="teleworking_settings">Uzaktan çalışma ayarları</string>
     <string name="message_from">Gönderen mesaj %1$s</string>
     <string name="rate_this_app_title">Bu uygulamayı oyla</string>
     <string name="rate_this_app_message">Bu uygulamayı beğendiyseniz, lütfen derecelendirmek için birkaç saniye ayırın, bize çok yardımcı olacaktır. teşekkürler</string>
     <string name="handle_one_phone_number_msg">Cep etiketli iletişim telefon numaranızı adres defterinizden içe aktarıyoruz. Knock In, kişi başına yalnızca bir cep telefonu numarasını işler.</string>
+    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
+    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
+    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="number_unprocessed_notifications">%1d işlenmemiş bildirimler</string>
+    <string name="number_vip_notifications">%1d VIP bildirimleri</string>
 </resources>

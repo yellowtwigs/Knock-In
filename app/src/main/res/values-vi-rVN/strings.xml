@@ -29,23 +29,20 @@
     <string name="help_activity_contact_terms_of_use">Các điều khoản và điều kiện</string>
     <string name="help_activity_contact_generals_informations">Để biết thêm thông tin</string>
     <!-- endregion-->
+
     <!-- region Left Drawer Titles -->
-    <string name="left_drawer_knockons">Knockons</string>
-    <string name="left_drawer_home">Xem danh bạ của tôi</string>
-    <string name="left_drawer_my_groups">Quản lý nhóm của tôi</string>
-    <string name="left_drawer_information">Dữ liệu cá nhân của tôi</string>
-    <string name="left_drawer_chat">Nhắn tin</string>
-    <string name="left_drawer_notification_settings">Quản lý thông báo của tôi</string>
-    <string name="left_drawer_settings">Cài đặt</string>
-    <string name="left_drawer_my_screen">Tùy chọn hiển thị</string>
     <string name="left_drawer_in_app">Sự thanh toán của tôi</string>
-    <string name="left_drawer_data_access">Truy cập dữ liệu</string>
+    <string name="left_drawer_notification_settings">Quản lý thông báo của tôi</string>
+    <string name="teleworking_settings">Cài đặt làm việc từ xa của tôi</string>
     <string name="left_drawer_statistics">Theo dõi hiệu suất của tôi</string>
-    <string name="left_drawer_help">Trợ giúp</string>
-    <string name="left_drawer_import">Nhập liên hệ</string>
+    <string name="left_drawer_home">Địa chỉ liên lạc của tôi</string>
+    <string name="left_drawer_my_screen">Tùy chọn hiển thị</string>
+    <string name="left_drawer_import">Nhập danh bạ</string>
+    <string name="settings_invite_friend_text">Mời bạn bè của tôi</string>
+    <string name="left_drawer_help">Giúp đỡ</string>
+
     <string name="settings_contact_popup_phone_call">Gọi điện thoại</string>
     <string name="manage_my_screen_contact_popup_long_text">Bật / tắt cửa sổ bật lên trước khi gọi điện cho một liên hệ </string>
-    <string name="settings_invite_friend_text">Mời bạn bè của bạn</string>
     <string name="invite_friend_text">Sử dụng Knock In để có trải nghiệm giao tiếp mới</string>
     <!-- endregion-->
     <!-- region Main Activity !-->
@@ -489,9 +486,15 @@
     <string name="remove_filter">Xóa bộ lọc</string>
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Thời gian nhắc hàng ngày</string>
-    <string name="teleworking_settings">Cài đặt làm việc từ xa</string>
     <string name="message_from">tin nhắn từ %1$s</string>
     <string name="rate_this_app_title">Đánh giá ứng dụng này</string>
     <string name="rate_this_app_message">Nếu bạn thích ứng dụng này, vui lòng dành vài giây để đánh giá nó, nó sẽ giúp chúng tôi rất nhiều. Cảm ơn</string>
     <string name="handle_one_phone_number_msg">Chúng tôi nhập số điện thoại liên hệ của bạn được gắn nhãn di động từ sổ địa chỉ của bạn. Knock In chỉ xử lý một số điện thoại di động cho mỗi liên hệ.</string>
+    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
+    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
+    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="number_unprocessed_notifications">%1d thông báo chưa được xử lý</string>
+    <string name="number_vip_notifications">%1d thông báo VIP</string>
 </resources>
