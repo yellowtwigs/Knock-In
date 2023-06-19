@@ -21,6 +21,8 @@
         <item name="android:editTextStyle">@style/EditTextStyle</item>
         <item name="spinnerColor">@color/backgroundColor</item>
         <item name="android:listDivider">@color/darkColor</item>
+        <item name="darkBlueMarin">@color/darkBlueMarinColor</item>
+        <item name="prussianBlue">@color/lightPrussianColor</item>
     </style>
 
     <!-- Dark/Night Mode theme. -->
@@ -43,6 +45,8 @@
         <item name="android:editTextStyle">@style/EditTextStyle</item>
         <item name="spinnerColor">@color/lightGreyColorDark</item>
         <item name="android:listDivider">@color/lightColor</item>
+        <item name="darkBlueMarin">@color/lightBlueMarinColor</item>
+        <item name="prussianBlue">@color/darkPrussianColor</item>
     </style>
 
     <style name="windowAnimationTransition">

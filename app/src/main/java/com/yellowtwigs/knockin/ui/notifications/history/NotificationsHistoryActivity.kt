@@ -4,11 +4,14 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +38,7 @@ import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +77,16 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
         binding = ActivityNotificationsHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+//            hideKeyboard(this)
+//            binding.toolbarSearch.isEnabled = false
+//            binding.toolbarSearch.setOnClickListener {
+//                binding.toolbarSearch.requestFocus()
+//                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                imm.showSoftInput(binding.toolbarSearch, InputMethodManager.SHOW_IMPLICIT)
+//            }
+//        }
 
         sharedPreferences = getSharedPreferences("Notification_tri", Context.MODE_PRIVATE)
 
@@ -291,7 +305,8 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     private fun setupDrawerLayout() {
         binding.navView.apply {
-            menu.getItem(0).isChecked = true
+            val menu = binding.navView.menu
+            menu.findItem(R.id.nav_home).isChecked = true
             setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
@@ -357,7 +372,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     //region =========================================== SETUP UI ===========================================
 
     private fun setupBottomNavigationView() {
-        binding.navigation.menu.getItem(R.id.nav_home).isChecked = true
+        binding.navigation.menu.getItem(2).isChecked = true
         binding.navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_contacts -> {
@@ -391,12 +406,31 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     }
 
     private fun setupNotificationsList() {
-        notificationsAdapter = NotificationsListAdapter(this) { phoneNumber, platform ->
+        notificationsAdapter = NotificationsListAdapter(this) { notification, phoneNumber, platform ->
+            Log.i("GET_NOTIFCATION", "phoneNumber : $phoneNumber")
             if (platform == "com.yellowtwigs.Knockin.notification") {
                 startActivity(Intent(this@NotificationsHistoryActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
             } else {
                 convertPackageNameToGoToWithContact(platform, phoneNumber, this)
             }
+
+            notificationsListViewModel.updateNotification(
+                NotificationDB(
+                    notification.id,
+                    notification.title,
+                    notification.contactName,
+                    notification.description,
+                    notification.platform,
+                    notification.timestamp,
+                    1,
+                    notification.idContact,
+                    notification.priority,
+                    notification.phoneNumber,
+                    notification.mail,
+                    "",
+                    notification.isSystem
+                )
+            )
         }
 
         binding.notificationPin.setOnClickListener {
@@ -417,8 +451,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 //                binding.title.text = notificationsHistoryViewState.title
 //                binding.content.text = notificationsHistoryViewState.description
 //                binding.notificationDate.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notificationsHistoryViewState.timestamp))
-//                scrollToPosition(0)
-//                (layoutManager as LinearLayoutManager).scrollToPosition(0)
             }
             layoutManager = LinearLayoutManager(this@NotificationsHistoryActivity)
             recycledViewPool.setMaxRecycledViews(0, 0)

@@ -495,11 +495,17 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="rate_this_app_title">Nilai aplikasi ini</string>
     <string name="rate_this_app_message">Jika Anda menyukai aplikasi ini, luangkan beberapa detik untuk menilainya, itu akan sangat membantu kami. terima kasih</string>
     <string name="handle_one_phone_number_msg">Kami mengimpor nomor telepon kontak Anda yang berlabel ponsel dari buku alamat Anda. Knock In hanya menangani satu nomor ponsel per kontak.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="strong_red_advice">Tinjau kembali pendekatan VIP Anda.\n Diperlukan rata-rata 23 menit untuk memfokuskan kembali setelah interupsi</string>
+    <string name="orange_advice">Anda dapat mengoptimalkan waktu Anda secara signifikan dengan menggunakan mode senyap dengan kontak non VIP</string>
+    <string name="yellow_advice">Anda mungkin melewatkan pesan penting dari beberapa kontak.\n Sebaiknya tambahkan satu atau lebih VIP</string>
+    <string name="light_green_advice">Anda mungkin memiliki lebih banyak VIP untuk dikonfigurasi.\n Sebaiknya beli paket VIP</string>
+    <string name="strong_green_advice"> Kerja bagus, Anda pasti mengoptimalkan waktu Anda! Untuk melakukannya lebih baik lagi, Anda mungkin ingin mempersonalisasikan VIP Anda</string>
     <string name="number_unprocessed_notifications">%1d notifikasi belum diproses</string>
     <string name="number_vip_notifications">%1d Notifikasi VIP</string>
+    <string name="your_daily_performance">Performa Harian Anda</string>
+    <string name="x_notifications_received">%1d Notifikasi diterima</string>
+    <string name="view_new_notifications">Lihat</string>
+    <string name="what_we_suggest">Apa yang kami sarankan :</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Lihat evolusi skor Anda di « Lacak kinerja saya » melalui laci</string>
+    <string name="more_statistics_in_next_releases">Lebih banyak statistik akan ditambahkan dalam rilis berikutnya</string>
 </resources>

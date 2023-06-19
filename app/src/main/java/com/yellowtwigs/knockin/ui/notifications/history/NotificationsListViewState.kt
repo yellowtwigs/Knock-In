@@ -1,11 +1,21 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
+import android.graphics.drawable.Drawable
+
+//data class NotificationsHistoryViewState(
+//    val title: String,
+//    val description: String,
+//    val platform: String,
+//    val timestamp: Long,
+//    val isVisible: Boolean,
+//    val list: List<NotificationsListViewState>
+//)
 data class NotificationsHistoryViewState(
-    val title: String,
-    val description: String,
-    val platform: String,
-    val timestamp: Long,
-    val isVisible: Boolean,
+//    val title: String,
+//    val description: String,
+//    val platform: String,
+//    val timestamp: Long,
+//    val isVisible: Boolean,
     val list: List<NotificationsListViewState>
 )
 
@@ -20,5 +30,8 @@ data class NotificationsListViewState(
     val priority: Int,
     val phoneNumber: String,
     val mail: String,
-    val isSystem: Int
+    val isSystem: Int,
+    val systemPriority: Int = 1,
+    val background: Drawable?,
+    val notificationIcon: Drawable?,
 )

@@ -496,7 +496,7 @@
     <string name="allow_phone_call">You have not allow phone call</string>
     <string name="daily_reminder_time">Daily reminder time</string>
     <string name="message_from">Message from %1$s</string>
-    <string name="rate_this_app_title">Rate this app</string>
+    <string name="rate_this_app_title" translatable="false">Rate this app</string>
     <string name="rate_this_app_message">If you like this app, please take some seconds to rate it, it will help us a lot. Thanks</string>
 
     <string name="two_numbers_dialog_message" translatable="false">You have two phone numbers, which one do you want to use ?</string>
@@ -510,12 +510,18 @@
     </string-array>
 
     <string name="messaging_apps_arrays_prompt" translatable="false">All</string>
-    <string name="handle_one_phone_number_msg">We import your contact phone number labelled mobile from your address book. Knock In handles only one mobile number per contact.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
+    <string name="handle_one_phone_number_msg"><![CDATA[We import your contact phone number labelled mobile from your address book.\n Knock In handles only one mobile number per contact.]]></string>
+    <string name="strong_red_advice"><![CDATA[Revisit your VIP approach.\n It takes 23’ in average to refocus after an interrupt]]></string>
     <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="yellow_advice"><![CDATA[You may miss important messages from several contacts.\n We recommend adding one or more VIPs]]></string>
+    <string name="light_green_advice"><![CDATA[You may have more VIPs to configure.\n We recommend buying a VIP package]]></string>
+    <string name="strong_green_advice"><![CDATA[Great job, you definitely optimize your time!\n To do even better, you may want to personalize your VIPs]]></string>
     <string name="number_unprocessed_notifications">%1d unprocessed notifications</string>
     <string name="number_vip_notifications">%1d VIP notifications</string>
+    <string name="your_daily_performance">Your Daily Performance</string>
+    <string name="x_notifications_received">%1d notifications received</string>
+    <string name="view_new_notifications">View</string>
+    <string name="what_we_suggest">What we suggest :</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Refer to your score evolution in « Track my performance » via the drawer</string>
+    <string name="more_statistics_in_next_releases">More statistics will be added in next releases</string>
 </resources>

@@ -491,11 +491,17 @@
     <string name="rate_this_app_title">Bu uygulamayı oyla</string>
     <string name="rate_this_app_message">Bu uygulamayı beğendiyseniz, lütfen derecelendirmek için birkaç saniye ayırın, bize çok yardımcı olacaktır. teşekkürler</string>
     <string name="handle_one_phone_number_msg">Cep etiketli iletişim telefon numaranızı adres defterinizden içe aktarıyoruz. Knock In, kişi başına yalnızca bir cep telefonu numarasını işler.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="strong_red_advice">VIP yaklaşımınızı yeniden gözden geçirin.\n Bir kesintiden sonra yeniden odaklanmak ortalama 23 dakika sürer </string>
+    <string name="orange_advice">VIP olmayan kişilerle sessiz modu kullanarak zamanınızı önemli ölçüde optimize edebilirsiniz</string>
+    <string name="yellow_advice">Birkaç kişiden gelen önemli mesajları kaçırabilirsiniz.\n Bir veya daha fazla VIP eklemenizi öneririz</string>
+    <string name="light_green_advice">Yapılandırılacak daha fazla VIP\'niz olabilir.\n Bir VIP paketi satın almanızı öneririz</string>
+    <string name="strong_green_advice">Harika iş, kesinlikle zamanınızı optimize ediyorsunuz! Daha da iyisini yapmak için VIP\'lerinizi kişiselleştirmek isteyebilirsiniz</string>
     <string name="number_unprocessed_notifications">%1d işlenmemiş bildirimler</string>
     <string name="number_vip_notifications">%1d VIP bildirimleri</string>
+    <string name="your_daily_performance">Günlük Performansınız</string>
+    <string name="x_notifications_received">%1d Alınan bildirimler</string>
+    <string name="view_new_notifications">Yeni</string>
+    <string name="what_we_suggest">Önerimiz :</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Çekmece aracılığıyla « Performansımı izle » bölümünde puanınızın gelişimine bakın</string>
+    <string name="more_statistics_in_next_releases">Sonraki sürümlerde daha fazla istatistik eklenecek</string>
 </resources>

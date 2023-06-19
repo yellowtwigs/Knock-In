@@ -15,6 +15,10 @@ class NotificationsRepositoryImpl @Inject constructor(private val dao: Notificat
         dao.insertNotification(notification)
     }
 
+    override suspend fun updateNotification(notification: NotificationDB) {
+        dao.updateNotification(notification)
+    }
+
     override suspend fun deleteNotification(notification: NotificationDB) {
         dao.deleteNotification(notification)
     }

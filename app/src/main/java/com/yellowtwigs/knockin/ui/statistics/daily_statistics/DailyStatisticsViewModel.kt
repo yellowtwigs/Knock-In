@@ -217,7 +217,7 @@ class DailyStatisticsViewModel @Inject constructor(
                 DailyStatisticsViewState(
                     icon = icon,
                     numberOfNotificationsUnprocessed = application.getString(
-                        R.string.number_unprocessed_notifications, unprocessedNotifications
+                        R.string.x_notifications_received, unprocessedNotifications
                     ),
                     numberOfNotificationsVip = application.getString(R.string.number_vip_notifications, vipNumbersDaily),
                     adviceMessage = adviceMessage

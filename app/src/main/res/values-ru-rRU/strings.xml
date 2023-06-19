@@ -492,12 +492,18 @@
     <string name="rate_this_app_title">Оцени это приложение</string>
     <string name="rate_this_app_message">Если вам нравится это приложение, потратьте несколько секунд, чтобы оценить его, это нам очень поможет. Спасибо</string>
     <string name="handle_one_phone_number_msg">Мы импортируем ваш контактный номер телефона с пометкой «Мобильный» из вашей адресной кни</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="strong_red_advice">Пересмотрите свой VIP-подход.\n в среднем требуется 23 минуты, чтобы перефокусироваться после прерывания</string>
+    <string name="orange_advice">Вы можете значительно оптимизировать свое время, используя беззвучный режим с не VIP-контактами</string>
+    <string name="yellow_advice">Вы можете пропустить важные сообщения от нескольких контактов.\n Pекомендуем добавить одного или нескольких VIP</string>
+    <string name="light_green_advice">У вас может быть больше VIP для настройки.\n Pекомендуем купить пакет VIP</string>
+    <string name="strong_green_advice">Отличная работа, вы определенно оптимизируете свое время! Чтобы добиться еще большего успеха, вы можете персонализировать своих VIP-клиентов</string>
     <string name="number_unprocessed_notifications">%1d необработанных уведомлений</string>
     <string name="number_vip_notifications">%1d VIP-уведомления</string>
+    <string name="your_daily_performance">Ваша ежедневная производительность</string>
+    <string name="x_notifications_received">%1d Уведомления получены</string>
+    <string name="view_new_notifications">Просмотр</string>
+    <string name="what_we_suggest">Что мы предлагаем :</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Следите за изменением своего балла в разделе «Отслеживание моей эффективности» в выдвижном ящике </string>
+    <string name="more_statistics_in_next_releases">Больше статистики будет добавлено в следующих выпусках</string>
 
 </resources>

@@ -1,32 +1,27 @@
 package com.yellowtwigs.knockin.ui.statistics.dashboard
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.MPPointF
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.databinding.ActivityDashboardBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
@@ -35,7 +30,8 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -47,8 +43,19 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var dataPieChart: PieChart
 
+    private var isThemeDark = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedThemePreferences = getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
+        isThemeDark = sharedThemePreferences.getBoolean("darkTheme", false)
+        if (sharedThemePreferences.getBoolean("darkTheme", false)) {
+            setTheme(R.style.AppThemeDark)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
+        hideKeyboard(this)
 
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -58,8 +65,13 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         setupToolbar()
         setupDrawerLayout()
         setupDataToView()
+        setupSpinner()
 
         dataPieChart.setOnChartValueSelectedListener(this)
+
+        binding.goToDailyPerformance.setOnClickListener {
+            startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
+        }
     }
 
     //region =============================================================== TOOLBAR ================================================================
@@ -68,6 +80,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         setSupportActionBar(binding.toolbar)
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)
+        actionbar?.title = getString(R.string.left_drawer_statistics)
         actionbar?.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
     }
 
@@ -82,7 +95,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
                 return true
             }
             R.id.item_help -> {
-//                startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java))
+//                startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
 //                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
 //                    .setTitle(R.string.help)
 //                    .setMessage(resources.getString(R.string.statistics_help_msg))
@@ -99,9 +112,6 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     }
 
     //endregion
-
-    //region ================================================================ DRAWER ================================================================
-
 
     //region ======================================== DRAWER LAYOUT =========================================
 
@@ -120,7 +130,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
                 }
-                EveryActivityUtils.hideKeyboard(this@DashboardActivity)
+                hideKeyboard(this@DashboardActivity)
                 closeDrawer(GravityCompat.START)
 
                 when (menuItem.itemId) {
@@ -159,14 +169,10 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 
     //endregion
 
-
-    //endregion
-
-    private fun setupDataToView() {
-        dashboardViewModel.dashboardViewStateLiveData.observe(this) {
-            setupPieChart(it.list)
-            binding.allNotificationsTitle.text = it.notificationsTitle
-        }
+    private fun setupSpinner() {
+        val colorList = resources.getStringArray(R.array.messaging_apps_arrays)
+        val colorsSpinnerAdapter = ArrayAdapter(this@DashboardActivity, R.layout.spinner_item, colorList)
+        binding.messagingAppsSpinner.adapter = colorsSpinnerAdapter
 
         binding.messagingAppsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
@@ -178,6 +184,13 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         }
     }
 
+    private fun setupDataToView() {
+        dashboardViewModel.dashboardViewStateLiveData.observe(this) {
+            setupPieChart(it.list)
+            binding.allNotificationsTitle.text = it.notificationsTitle
+        }
+    }
+
     private fun setupPieChart(list: List<PieChartDataViewState>) {
         dataPieChart.setUsePercentValues(true)
         dataPieChart.description.isEnabled = false
@@ -186,10 +199,6 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         dataPieChart.dragDecelerationFrictionCoef = 0.95f
 
         dataPieChart.isDrawHoleEnabled = true
-        dataPieChart.setHoleColor(Color.WHITE)
-
-//        dataPieChart.setTransparentCircleColor(Color.WHITE)
-//        dataPieChart.setTransparentCircleAlpha(110)
 
         dataPieChart.holeRadius = 58f
         dataPieChart.transparentCircleRadius = 61f
@@ -212,12 +221,18 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(false)
+        l.setDrawInside(true)
         l.xEntrySpace = 7f
         l.yEntrySpace = 0f
         l.yOffset = 0f
 
-        dataPieChart.setEntryLabelColor(Color.WHITE)
+        if (isThemeDark) {
+            dataPieChart.setHoleColor(Color.TRANSPARENT)
+            dataPieChart.setEntryLabelColor(Color.WHITE)
+        } else {
+            dataPieChart.setHoleColor(Color.TRANSPARENT)
+            dataPieChart.setEntryLabelColor(Color.WHITE)
+        }
         dataPieChart.setEntryLabelTextSize(12f)
 
         setupDataToPieChart(list)
@@ -227,50 +242,30 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         val colors: ArrayList<Int> = ArrayList()
         val entries: List<PieEntry> = list.map {
             colors.add(it.color)
-            PieEntry(it.number.toFloat(), "${it.platform} : ${it.number}", resources.getDrawable(R.drawable.ic_speedometer_strong_green))
+            PieEntry(1f, "${it.platform} : ${it.number}", resources.getDrawable(R.drawable.ic_speedometer_strong_green))
         }
 
         val dataSet = PieDataSet(entries, "")
         dataSet.setDrawIcons(false)
-        dataSet.sliceSpace = 1f
-//        dataSet.
-        dataSet.selectionShift = 20F
-
-//        for (c in TEST_COLORS) colors.add(c)
-//        for (c in JOYFUL_COLORS) colors.add(c)
-//        for (c in COLORFUL_COLORS) colors.add(c)
-//        for (c in LIBERTY_COLORS) colors.add(c)
-//        for (c in PASTEL_COLORS) colors.add(c)
-
-//        colors.add(ColorTemplate.getHoloBlue())
+        dataSet.sliceSpace = 30f
+        dataSet.selectionShift = 25F
         dataSet.colors = colors
-        //dataSet.setSelectionShift(0f);
+
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter())
         data.setValueTextSize(12f)
-        data.setValueTextColor(Color.BLACK)
+
+        if (isThemeDark) {
+            data.setValueTextColor(Color.WHITE)
+        } else {
+            data.setValueTextColor(Color.WHITE)
+        }
+
         dataPieChart.data = data
 
         dataPieChart.highlightValues(null)
         dataPieChart.invalidate()
     }
-
-    val LIBERTY_COLORS = intArrayOf(
-        Color.rgb(207, 248, 246), Color.rgb(148, 212, 212), Color.rgb(136, 180, 187), Color.rgb(118, 174, 175), Color.rgb(42, 109, 130)
-    )
-    val JOYFUL_COLORS = intArrayOf(
-        Color.rgb(217, 80, 138), Color.rgb(254, 149, 7), Color.rgb(254, 247, 120), Color.rgb(106, 167, 134), Color.rgb(53, 194, 209)
-    )
-    val PASTEL_COLORS = intArrayOf(
-        Color.rgb(64, 89, 128), Color.rgb(149, 165, 124), Color.rgb(217, 184, 162), Color.rgb(191, 134, 134), Color.rgb(179, 48, 80)
-    )
-    val COLORFUL_COLORS = intArrayOf(
-        Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0), Color.rgb(106, 150, 31), Color.rgb(179, 100, 53)
-    )
-    val TEST_COLORS = intArrayOf(Color.rgb(0, 0, 0))
-    val VORDIPLOM_COLORS = intArrayOf(
-        Color.rgb(255, 255, 255), Color.rgb(255, 247, 140), Color.rgb(255, 208, 140), Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
-    )
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
     }

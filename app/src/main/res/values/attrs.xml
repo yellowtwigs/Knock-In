@@ -26,5 +26,7 @@
         <attr name="lightGreyColor" format="color" />
         <attr name="spinnerColor" format="color"/>
         <attr name="spinnerDarkColor" format="color"/>
+        <attr name="darkBlueMarin" format="color"/>
+        <attr name="prussianBlue" format="color"/>
     </declare-styleable>
 </resources>

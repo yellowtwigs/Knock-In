@@ -222,7 +222,7 @@
     <string name="notification_manager_prio_1">Ẩn thông báo ưu tiên cấp 1</string>
     <string name="notification_alert_dialog_title">Lựa chọn liên hệ VIP</string>
     <string name="notification_alert_dialog_message">Bạn có muốn chọn liên hệ ưu tiên cao của bạn không?</string>
-    
+
     <string name="notification_vip_message_tone">Giai điệu thông báo VIP</string>
     <string name="notification_vip_default_message_tone">Giai điệu mặc định</string>
     <string name="vip_jazzy_title">Giai điệu vui nhộn</string>
@@ -490,11 +490,17 @@
     <string name="rate_this_app_title">Đánh giá ứng dụng này</string>
     <string name="rate_this_app_message">Nếu bạn thích ứng dụng này, vui lòng dành vài giây để đánh giá nó, nó sẽ giúp chúng tôi rất nhiều. Cảm ơn</string>
     <string name="handle_one_phone_number_msg">Chúng tôi nhập số điện thoại liên hệ của bạn được gắn nhãn di động từ sổ địa chỉ của bạn. Knock In chỉ xử lý một số điện thoại di động cho mỗi liên hệ.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="strong_red_advice">Xem lại cách tiếp cận VIP của bạn.\n Mất trung bình 23’ để lấy nét lại sau khi bị gián đoạn</string>
+    <string name="orange_advice">Bạn có thể tối ưu hóa đáng kể thời gian của mình bằng cách sử dụng chế độ im lặng với các liên hệ không phải VIP</string>
+    <string name="yellow_advice">Bạn có thể bỏ lỡ các tin nhắn quan trọng từ một số liên hệ.\n Chúng tôi khuyên bạn nên thêm một hoặc nhiều VIP</string>
+    <string name="light_green_advice">Bạn có thể có nhiều VIP hơn để định cấu hình.\n Chúng tôi khuyên bạn nên mua gói VIP</string>
+    <string name="strong_green_advice">Làm tốt lắm, bạn chắc chắn đã tối ưu hóa thời gian của mình! Để làm tốt hơn nữa, bạn có thể muốn cá nhân hóa các VIP của mình</string>
     <string name="number_unprocessed_notifications">%1d thông báo chưa được xử lý</string>
     <string name="number_vip_notifications">%1d thông báo VIP</string>
+    <string name="your_daily_performance">Hiệu suất hàng ngày của bạn</string>
+    <string name="x_notifications_received">%1d Thông báo nhận được </string>
+    <string name="view_new_notifications">Xem</string>
+    <string name="what_we_suggest">Những gì chúng tôi đề xuất:</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Tham khảo diễn biến điểm số của bạn trong « Theo dõi hiệu suất của tôi » qua ngăn kéo</string>
+    <string name="more_statistics_in_next_releases">Nhiều số liệu thống kê sẽ được bổ sung trong các phiên bản tiếp theo</string>
 </resources>

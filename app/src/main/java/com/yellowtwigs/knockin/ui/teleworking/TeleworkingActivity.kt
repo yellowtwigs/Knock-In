@@ -27,6 +27,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebaseBis
 import dagger.hilt.android.AndroidEntryPoint
@@ -167,6 +168,11 @@ class TeleworkingActivity : AppCompatActivity() {
                     R.id.nav_notifications -> startActivity(
                         Intent(
                             this@TeleworkingActivity, NotificationsSettingsActivity::class.java
+                        )
+                    )
+                    R.id.nav_dashboard -> startActivity(
+                        Intent(
+                            this@TeleworkingActivity, DashboardActivity::class.java
                         )
                     )
                     R.id.nav_in_app -> startActivity(

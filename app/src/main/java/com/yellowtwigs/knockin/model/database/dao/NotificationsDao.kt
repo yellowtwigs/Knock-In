@@ -34,6 +34,13 @@ interface NotificationsDao {
 
     //endregion
 
+    //region ============================================ UPDATE ============================================
+
+    @Update
+    suspend fun updateNotification(notification: NotificationDB)
+
+    //endregion
+
     //region ============================================ DELETE ============================================
 
     @Delete

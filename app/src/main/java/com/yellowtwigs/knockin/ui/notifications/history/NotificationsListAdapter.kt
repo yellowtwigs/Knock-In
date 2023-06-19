@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,16 +22,13 @@ import java.util.ArrayList
 import java.util.Date
 
 class NotificationsListAdapter(
-    private val context: Context,
-    private val onClickedCallback: (String, String) -> Unit
-) :
-    ListAdapter<NotificationsListViewState, NotificationsListAdapter.ViewHolder>(ContactComparator()) {
+    private val context: Context, private val onClickedCallback: (NotificationsListViewState, String, String) -> Unit
+) : ListAdapter<NotificationsListViewState, NotificationsListAdapter.ViewHolder>(ContactComparator()) {
 
     private lateinit var notification: NotificationsListViewState
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            ItemNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -39,8 +37,7 @@ class NotificationsListAdapter(
         holder.onBind(getItem(position), context)
     }
 
-    inner class ViewHolder(private val binding: ItemNotificationBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(notification: NotificationsListViewState, context: Context) {
             val text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notification.timestamp))
@@ -60,6 +57,9 @@ class NotificationsListAdapter(
 
                 notification.apply {
                     notificationContent.text = description
+                    mainBackground.setBackgroundDrawable(background)
+                    newIcon.isVisible = notificationIcon != null
+                    newIcon.setImageDrawable(notificationIcon)
 //                    mainBackground.background =
 //                        ResourcesCompat.getDrawable(
 //                            context.resources,
@@ -72,8 +72,7 @@ class NotificationsListAdapter(
 
                     val click = View.OnClickListener {
                         if (modeMultiSelect) {
-                            if (listOfItemSelected.contains(notification)
-                            ) {
+                            if (listOfItemSelected.contains(notification)) {
                                 listOfItemSelected.remove(notification)
                                 notificationImage.setImageDrawable(icon2)
                             } else {
@@ -95,7 +94,7 @@ class NotificationsListAdapter(
                         } else {
                             Log.i("GoToWithContact", "notification : $notification")
 
-                            onClickedCallback(notification.phoneNumber, platform)
+                            onClickedCallback(notification, notification.phoneNumber, platform)
 //                            onClickedCallback
 //                            if (context is NotificationHistoryActivity) {
 //                                context.recyclerSimpleClick(position)
@@ -135,21 +134,15 @@ class NotificationsListAdapter(
 
     class ContactComparator : DiffUtil.ItemCallback<NotificationsListViewState>() {
         override fun areItemsTheSame(
-            oldItem: NotificationsListViewState,
-            newItem: NotificationsListViewState
+            oldItem: NotificationsListViewState, newItem: NotificationsListViewState
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: NotificationsListViewState,
-            newItem: NotificationsListViewState
+            oldItem: NotificationsListViewState, newItem: NotificationsListViewState
         ): Boolean {
-            return oldItem.contactName == newItem.contactName &&
-                    oldItem.description == newItem.description &&
-                    oldItem.idContact == newItem.idContact &&
-                    oldItem.title == newItem.title &&
-                    oldItem.platform == newItem.platform
+            return oldItem.contactName == newItem.contactName && oldItem.description == newItem.description && oldItem.idContact == newItem.idContact && oldItem.title == newItem.title && oldItem.platform == newItem.platform
 
         }
     }

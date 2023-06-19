@@ -491,11 +491,19 @@
     <string name="rate_this_app_title">Bewerte diese App</string>
     <string name="rate_this_app_message">Wenn Ihnen diese App gefällt, nehmen Sie sich bitte ein paar Sekunden Zeit, um sie zu bewerten, es würde uns sehr helfen. Vielen Dank</string>
     <string name="handle_one_phone_number_msg">Wir importieren Ihre Kontakttelefonnummer mit der Bezeichnung „mobile“ aus Ihrem Adressbuch. Knock In verarbeitet nur eine Mobiltelefonnummer pro Kontakt.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+
+    <string name="strong_red_advice">Überdenken Sie Ihren VIP-Ansatz.\n Es dauert durchschnittlich 23 Minuten, um sich nach einer Unterbrechung wieder zu konzentrieren</string>
+    <string name="orange_advice">Sie können Ihre Zeit erheblich optimieren, indem Sie den Silent-Modus mit Nicht-VIP-Kontakten verwenden</string>
+    <string name="yellow_advice">Möglicherweise verpassen Sie wichtige Nachrichten von mehreren Kontakten.\n Wir empfehlen, einen oder mehrere VIPs hinzuzufügen</string>
+    <string name="light_green_advice">Möglicherweise müssen Sie weitere VIPs konfigurieren.\n Wir empfehlen den Kauf eines VIP-Pakets</string>
+    <string name="strong_green_advice">Tolle Arbeit, Sie optimieren definitiv Ihre Zeit! Um es noch besser zu machen, möchten Sie vielleicht Ihre VIPs personalisieren</string>
+
     <string name="number_unprocessed_notifications">%1d unverarbeitete Benachrichtigungen</string>
-    <string name="number_vip_notifications">%1d notifications VIP</string>
+    <string name="number_vip_notifications">%1d VIP-Benachrichtigungen</string>
+    <string name="your_daily_performance">Ihre tägliche Leistung</string>
+    <string name="x_notifications_received">%1d erhaltene benachrichtigungen</string>
+    <string name="view_new_notifications">Neue</string>
+    <string name="what_we_suggest">Was wir vorschlagen :</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Nachricht : Sehen Sie sich Ihre Punkteentwicklung in der Schublade « Meine Leistung verfolgen »</string>
+    <string name="more_statistics_in_next_releases">Weitere Statistiken werden in den nächsten Versionen hinzugefügt</string>
 </resources>

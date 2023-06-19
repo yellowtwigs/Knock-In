@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".ui.statistics.daily_statistics.DailyStatisticsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/backgroundColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/your_daily_performance"
+        app:titleTextColor="?attr/textColor" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/performance_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/ic_speedometer_light_green" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/notifications_unprocessed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="center"
+        android:text="@string/x_notifications_received"
+        android:textAlignment="center"
+        android:textColor="?attr/textColor"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/notifications_vip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/performance_icon" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/notifications_vip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="?attr/textColor"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/to_dashboard_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notifications_unprocessed" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/to_dashboard_button"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_button_color_blue_turquoise"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="@string/view_new_notifications"
+        android:textColor="?attr/backgroundColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notifications_vip" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/advice_message_layout"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_margin="@dimen/daily_performance_message_layout_margin"
+        android:background="@drawable/background_border_rounded_yellow"
+        app:layout_constraintBottom_toTopOf="@+id/track_my_performance_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/to_dashboard_button">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/advice_message_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/daily_performance_message_layout_margin"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/daily_performance_message_layout_margin"
+            android:gravity="center"
+            android:text="@string/what_we_suggest"
+            android:textAlignment="center"
+            android:textColor="?attr/textColor"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/advice_message_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/daily_performance_message_layout_margin"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/daily_performance_message_layout_margin"
+            android:layout_marginBottom="15dp"
+            android:gravity="center|center_vertical"
+            android:textAlignment="center"
+            android:textColor="?attr/textColor"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/advice_message_title"
+            tools:text="Message" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/track_my_performance_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/daily_performance_message_layout_margin"
+        android:layout_marginTop="@dimen/daily_performance_message_layout_margin"
+        android:layout_marginEnd="@dimen/daily_performance_message_layout_margin"
+        android:layout_marginBottom="35dp"
+        android:gravity="center"
+        android:text="@string/more_statistics_in_next_releases"
+        tools:text="@string/refer_to_your_score_evolution_in_track_my_performance_via_the_drawer"
+        android:textAlignment="center"
+        android:textColor="?attr/textColor"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/advice_message_layout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

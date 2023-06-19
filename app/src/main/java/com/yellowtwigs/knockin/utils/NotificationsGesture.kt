@@ -48,6 +48,8 @@ object NotificationsGesture {
     const val TELEGRAM_PACKAGE = "org.telegram.messenger"
     const val TELEGRAM_APP_NAME = "Telegram"
 
+    const val KNOCKIN_PACKAGE = "com.yellowtwigs.Knockin.notification"
+
     const val INSTAGRAM_PACKAGE = "com.instagram.android"
     private const val DISCORD_PACKAGE = "com.discord"
     private const val TIKTOK_PACKAGE = "com.zhiliaoapp.musically"
@@ -130,6 +132,7 @@ object NotificationsGesture {
             OUTLOOK_PACKAGE -> true
             MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE -> true
             Telephony.Sms.getDefaultSmsPackage(context) -> true
+            KNOCKIN_PACKAGE -> true
             SIGNAL_PACKAGE -> true
             TELEGRAM_PACKAGE -> true
             INSTAGRAM_PACKAGE -> true

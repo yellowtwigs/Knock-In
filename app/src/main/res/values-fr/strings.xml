@@ -495,11 +495,17 @@
     <string name="rate_this_app_title">Noter l\'application</string>
     <string name="rate_this_app_message">Si vous aimez cette application, veuillez prendre quelques secondes pour la noter, cela nous aidera beaucoup. Merci</string>
     <string name="handle_one_phone_number_msg">Nous importons votre numéro de téléphone de contact étiqueté mobile à partir de votre carnet d\'adresses. Knock In ne gère qu`\'un seul numéro de mobile par contact.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="strong_red_advice">Revisitez votre approche VIP.\n Il faut en moyenne 23’ pour se recentrer après une interruption</string>
+    <string name="orange_advice">Vous pouvez optimiser considérablement votre temps en utilisant le mode silencieux avec des contacts non VIP</string>
+    <string name="yellow_advice">Vous risquez de manquer des messages importants de plusieurs contacts.\n Nous vous recommandons d\'ajouter un ou plusieurs VIP</string>
+    <string name="light_green_advice"> Vous pouvez avoir plus de VIP à configurer.\n Nous vous recommandons d\'acheter un forfait VIP</string>
+    <string name="strong_green_advice">Excellent travail, vous optimisez définitivement votre temps !\n Pour faire encore mieux, vous pouvez personnaliser vos VIP</string>
     <string name="number_unprocessed_notifications">%1d notifications non traitées</string>
     <string name="number_vip_notifications">%1d notifications VIP</string>
+    <string name="your_daily_performance">Vos performances quotidiennes</string>
+    <string name="x_notifications_received">%1d notifications reçues </string>
+    <string name="view_new_notifications">Afficher</string>
+    <string name="what_we_suggest">Ce que nous proposons :</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Reportez-vous à l\'évolution de votre score dans « Suivre mes performances » via le tiroir</string>
+    <string name="more_statistics_in_next_releases">Plus de statistiques seront ajoutées dans les prochaines versions</string>
 </resources>

@@ -452,7 +452,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="in_app_shop">Tienda Knock In</string>
     <string name="in_app_shop_return_to_notif">Desea volver a la página de Notificationes?</string>
     <!-- endregion-->
- <!-- region In App -->
+    <!-- region In App -->
     <string name="popup_shop_title">Personaliza tus notificaciones</string>
     <string name="popup_shop_message">Visita la Tienda para descubrir las opciones disponibles</string>
     <string name="popup_shop_yes">Ahora</string>
@@ -497,10 +497,17 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="rate_this_app_title">Califica esta aplicación</string>
     <string name="rate_this_app_message">Si te gusta esta aplicación, tómate unos segundos para calificarla, nos ayudaría mucho. Gracias</string>
     <string name="handle_one_phone_number_msg">Importamos su número de teléfono de contacto etiquetado como móvil desde su libreta de direcciones. Knock In maneja solo un número de móvil por contacto.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+    <string name="strong_red_advice">Vuelva a revisar su enfoque VIP: se necesitan 23 minutos en promedio para volver a concentrarse después de una interrupción </string>
+    <string name="orange_advice">Puede optimizar significativamente su tiempo utilizando el modo silencioso con contactos no VIP</string>
+    <string name="yellow_advice">Es posible que pierda mensajes importantes de varios contactos; le recomendamos agregar uno o más VIP</string>
+    <string name="light_green_advice">Es posible que tenga que configurar más VIP.\n Le recomendamos que compre un paquete VIP</string>
+    <string name="strong_green_advice"> ¡Buen trabajo, definitivamente optimizas tu tiempo!\n Para hacerlo aún mejor, es posible que desee personalizar sus VIP</string>
     <string name="number_unprocessed_notifications">%1d notificaciones sin procesar</string>
+    <string name="number_vip_notifications">%1d VIP notifications</string>
+    <string name="your_daily_performance">Tu rendimiento diario</string>
+    <string name="x_notifications_received">%1d Notificaciones recibidas</string>
+    <string name="view_new_notifications">Ver</string>
+    <string name="what_we_suggest">Lo que sugerimos :</string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Consulta la evolución de tu puntuación en « Seguir mi rendimiento » a través del cajón</string>
+    <string name="more_statistics_in_next_releases">More statistics will be added in next releases</string>
 </resources>

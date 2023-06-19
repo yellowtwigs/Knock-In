@@ -9,6 +9,7 @@ interface NotificationsRepository {
     fun getAllNotificationsList(): List<NotificationDB>
 
     suspend fun insertNotification(notification: NotificationDB)
+    suspend fun updateNotification(notification: NotificationDB)
 
     suspend fun deleteNotification(notification: NotificationDB)
     suspend fun deleteAllSystemNotifications()

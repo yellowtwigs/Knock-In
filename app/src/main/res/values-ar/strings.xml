@@ -492,11 +492,19 @@
     <string name="rate_this_app_title">قيم هذا التطبيق</string>
     <string name="rate_this_app_message">إذا أعجبك هذا التطبيق ، فيرجى أخذ بضع ثوان لتقييمه ، فسيساعدنا كثيرًا. شكرًا</string>
     <string name="handle_one_phone_number_msg">نقوم باستيراد رقم هاتف الاتصال الخاص بك المسمى موبايل من دفتر العناوين الخاص بك. Knock In يتعامل مع رقم هاتف محمول واحد فقط لكل جهة اتصال.</string>
-    <string name="strong_red_advice">Revisit your VIP approach – It takes 23’ in average to refocus after an interrupt</string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
-    <string name="yellow_advice">You may miss important messages from several contacts – we recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure - we recommend buying a VIP package</string>
-    <string name="strong_green_advice">Great job, you definitely optimize your time! To do even better, you may want to personalize your VIPs</string>
+
+    <string name="strong_red_advice">الخاص بك - يستغرق الأمر 23 دقيقة لإعادة التركيز بعد مقاطعةمكنك تحسين وقتك بشكل كبير باستخدام الوضع الصامت مع جهات اتصال غير VIP</string>
+    <string name="orange_advice">تفوتك رسائل مهمة من عدة جهات اتصال - نوصي بإضافة واحد أو أكثر من الشخصياتقد يكون لديك المزيد من الشخصيات المهمة لتكوينها - نوصي بشراء حزمة</string>
+    <string name="yellow_advice">تفوتك رسائل مهمة من عدة جهات اتصال - نوصي بإضافة واحد أو أكثر من الشخصياتقد يكون لديك المزيد من الشخصيات المهمة لتكوينها - نوصي بشراء حزمة</string>
+    <string name="light_green_advice">تفوتك رسائل مهمة من عدة جهات اتصال - نوصي بإضافة واحد أو أكثر من الشخصياتقد يكون لديك المزيد من الشخصيات المهمة لتكوينها - نوصي بشراء حزمة</string>
+    <string name="strong_green_advice">تفوتك رسائل مهمة من عدة جهات اتصال - نوصي بإضافة واحد أو أكثر من الشخصياتقد يكون لديك المزيد من الشخصيات المهمة لتكوينها - نوصي بشراء حزمة</string>
+
     <string name="number_unprocessed_notifications">إ%1d علامات لم تتم معالجتها</string>
     <string name="number_vip_notifications">%1d إخطارات VIP</string>
+    <string name="your_daily_performance">إخطارات</string>
+    <string name="x_notifications_received">إ%1d علامات لم تتم معالجتها</string>
+    <string name="view_new_notifications">راجع تطور</string>
+    <string name="what_we_suggest">رسالة : </string>
+    <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">تفوتك رسائل مهمة من عدة جهات اتصال - نوصي بإضافة واحد أو أكثر من الشخصياتقد يكون لديك المزيد من الشخصيات المهمة لتكوينها - نوصي بشراء حزمة</string>
+    <string name="more_statistics_in_next_releases">سيتم إضافة المزيد من الإحصائيات في الإصدارات القادمة</string>
 </resources>

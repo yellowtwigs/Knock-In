@@ -26,4 +26,11 @@
     <!-- StartActivity !-->
     <dimen name="start_activity_button_height">40dp</dimen>
     <dimen name="start_activity_button_width">110dp</dimen>
+
+    <!-- Daily Performance !-->
+    <dimen name="daily_performance_title_size">30sp</dimen>
+    <dimen name="daily_performance_text_size">20sp</dimen>
+    <dimen name="daily_performance_icon_size">120dp</dimen>
+    <dimen name="daily_performance_message_layout_margin">16dp</dimen>
+
 </resources>
