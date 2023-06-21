@@ -3,13 +3,18 @@ package com.yellowtwigs.knockin.ui.statistics.daily_statistics
 import android.app.Application
 import android.provider.Telephony
 import android.util.Log
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
+import com.yellowtwigs.knockin.ui.notifications.history.NotificationParams
+import com.yellowtwigs.knockin.ui.notifications.history.NotificationsListViewState
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardViewState
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
 import com.yellowtwigs.knockin.utils.NotificationsGesture
+import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -51,33 +56,46 @@ class DailyStatisticsViewModel @Inject constructor(
                 else -> ""
             }
 
-            val allVipNumbers = list.filter { notification ->
-                if (platform != "") {
-                    if (platform == "Message") {
-                        notification.isSystem == 0 && notification.priority == 2 && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
-                            application
-                        )
-                    } else {
-                        notification.isSystem == 0 && notification.platform == platform && notification.priority == 2
-                    }
+            val notifications = arrayListOf<NotificationsListViewState>()
+            list.filter {
+                isMessagingApp(it.platform, application)
+            }.map { notification ->
+                addNotificationInList(notifications, notification)
+            }
+
+            val notificationsAfterDistinct = notifications.distinctBy {
+                NotificationParams(
+                    contactName = it.contactName,
+                    description = it.description,
+                    platform = it.platform,
+                    date = it.date,
+                    idContact = it.idContact,
+                    priority = it.priority,
+                    phoneNumber = it.phoneNumber,
+                    mail = it.mail,
+                    isSystem = it.isSystem
+                )
+            }
+
+            val allVipNumbers = notificationsAfterDistinct.filter { notification ->
+                if (platform == "Message") {
+                    notification.isSystem == 0 && notification.priority == 2 && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
+                        application
+                    )
                 } else {
-                    notification.isSystem == 0 && notification.priority == 2
+                    notification.isSystem == 0 && notification.platform == platform && notification.priority == 2
                 }
             }.size.toString()
-            val vipNumbersDaily = list.filter { notification ->
-                if (platform != "") {
-                    if (platform == "Message") {
-                        notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
-                            application
-                        ) && notification.priority == 2
-                    } else {
-                        notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == platform && notification.priority == 2
-                    }
+            val vipNumbersDaily = notificationsAfterDistinct.filter { notification ->
+                if (platform == "Message") {
+                    notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
+                        application
+                    ) && notification.priority == 2
                 } else {
-                    notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.priority == 2
+                    notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == platform && notification.priority == 2
                 }
-            }.size / 2
-            val vipNumbersWeekly = list.filter { notification ->
+            }.size
+            val vipNumbersWeekly = notificationsAfterDistinct.filter { notification ->
                 if (platform != "") {
                     if (platform == "Message") {
                         notification.isSystem == 0 && compareIfNotificationDateIsFromThisWeek(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
@@ -90,7 +108,7 @@ class DailyStatisticsViewModel @Inject constructor(
                     notification.isSystem == 0 && compareIfNotificationDateIsFromThisWeek(notification.timestamp) && notification.priority == 2
                 }
             }.size.toString()
-            val vipNumbersMonthly = list.filter { notification ->
+            val vipNumbersMonthly = notificationsAfterDistinct.filter { notification ->
                 if (platform != "") {
                     if (platform == "Message") {
                         notification.isSystem == 0 && compareIfNotificationDateIsFromThisMonth(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
@@ -104,33 +122,25 @@ class DailyStatisticsViewModel @Inject constructor(
                 }
             }.size.toString()
 
-            val allMessagingNumbers = list.filter { notification ->
-                if (platform != "") {
-                    if (platform == "Message") {
-                        notification.isSystem == 0 && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
-                            application
-                        )
-                    } else {
-                        notification.isSystem == 0 && notification.platform == platform
-                    }
+            val allMessagingNumbers = notificationsAfterDistinct.filter { notification ->
+                if (platform == "Message") {
+                    notification.isSystem == 0 && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
+                        application
+                    )
                 } else {
-                    notification.isSystem == 0
+                    notification.isSystem == 0 && notification.platform == platform
                 }
             }.size.toString()
-            val messagingNumbersDaily = list.filter { notification ->
-                if (platform != "") {
-                    if (platform == "Message") {
-                        notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
-                            application
-                        )
-                    } else {
-                        notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == platform
-                    }
+            val messagingNumbersDaily = notificationsAfterDistinct.filter { notification ->
+                if (platform == "Message") {
+                    notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
+                        application
+                    )
                 } else {
-                    notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp)
+                    notification.isSystem == 0 && compareIfNotificationDateIsToday(notification.timestamp) && notification.platform == platform
                 }
             }.size
-            val messagingNumbersWeekly = list.filter { notification ->
+            val messagingNumbersWeekly = notificationsAfterDistinct.filter { notification ->
                 if (platform != "") {
                     if (platform == "Message") {
                         notification.isSystem == 0 && compareIfNotificationDateIsFromThisWeek(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
@@ -143,7 +153,7 @@ class DailyStatisticsViewModel @Inject constructor(
                     notification.isSystem == 0 && compareIfNotificationDateIsFromThisWeek(notification.timestamp)
                 }
             }.size.toString()
-            val messagingNumbersMonthly = list.filter { notification ->
+            val messagingNumbersMonthly = notificationsAfterDistinct.filter { notification ->
                 if (platform != "") {
                     if (platform == "Message") {
                         notification.isSystem == 0 && compareIfNotificationDateIsFromThisMonth(notification.timestamp) && notification.platform == NotificationsGesture.MESSAGE_PACKAGE || notification.platform == NotificationsGesture.XIAOMI_MESSAGE_PACKAGE || notification.platform == NotificationsGesture.MESSAGE_SAMSUNG_PACKAGE || notification.platform == NotificationsGesture.MESSAGES_PACKAGE || notification.platform == Telephony.Sms.getDefaultSmsPackage(
@@ -168,8 +178,6 @@ class DailyStatisticsViewModel @Inject constructor(
 //                    R.drawable.ic_speedometer_yellow
 //                }
 //            }
-
-            // 5+ non-VIP notifs from other contacts
 
             val nonVipNotificationsNumbers = messagingNumbersDaily.minus(vipNumbersDaily)
 
@@ -211,7 +219,7 @@ class DailyStatisticsViewModel @Inject constructor(
                 application.getString(R.string.yellow_advice)
             }
 
-            val unprocessedNotifications = (messagingNumbersDaily - vipNumbersDaily) / 2
+            val unprocessedNotifications = (messagingNumbersDaily - vipNumbersDaily)
 
             emit(
                 DailyStatisticsViewState(
@@ -224,6 +232,68 @@ class DailyStatisticsViewModel @Inject constructor(
                 )
             )
         }.collect()
+    }
+
+    private fun addNotificationInList(notifications: ArrayList<NotificationsListViewState>, notification: NotificationDB) {
+        val systemPriority = if (notification.platform == NotificationsGesture.KNOCKIN_PACKAGE) {
+            2
+        } else {
+            1
+        }
+
+        val background =
+            if (compareIfNotificationDateIsToday(notification.timestamp) && notification.isCancellable != 1 && isMessagingApp(
+                    notification.platform, application
+                )
+            ) {
+                if (notification.priority == 2) {
+                    AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout_yellow)
+                } else {
+                    AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout_blue_turquoise)
+                }
+            } else {
+                AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout)
+            }
+
+        val icon =
+            if (compareIfNotificationDateIsToday(notification.timestamp) && notification.isCancellable != 1 && isMessagingApp(
+                    notification.platform, application
+                )
+            ) {
+                if (notification.priority == 2) {
+                    AppCompatResources.getDrawable(application, R.drawable.ic_circular_vip_icon)
+                } else {
+                    AppCompatResources.getDrawable(application, R.drawable.ic_new_icon)
+                }
+            } else {
+                null
+            }
+
+        val phoneNumber = if (notification.phoneNumber.contains(":")) {
+            notification.phoneNumber.split(":")[1]
+        } else {
+            notification.phoneNumber
+        }
+
+        notifications.add(
+            NotificationsListViewState(
+                notification.id,
+                notification.title,
+                notification.contactName,
+                notification.description,
+                notification.platform,
+                notification.timestamp,
+                SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notification.timestamp)),
+                notification.idContact,
+                notification.priority,
+                phoneNumber,
+                notification.mail,
+                notification.isSystem,
+                systemPriority,
+                background,
+                icon
+            )
+        )
     }
 
     private fun compareIfNotificationDateIsToday(timestamp: Long): Boolean {

@@ -1,38 +1,31 @@
 package com.yellowtwigs.knockin.model.service
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Resources
-import android.os.Build
-import android.os.Bundle
+import android.icu.text.SimpleDateFormat
 import android.service.notification.StatusBarNotification
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.WindowManager
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import com.yellowtwigs.knockin.model.database.data.ContactDB
-import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
-import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToPhoneNumbersWithSpinner
 import com.yellowtwigs.knockin.utils.NotificationsGesture
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 object NotificationsListenerGesture {
 
     fun vipNotificationWithLockscreen(
-        sbp: StatusBarParcelable,
-        sbn: StatusBarNotification,
-        service: NotificationsListenerService,
-        id: Int
+        sbp: StatusBarParcelable, sbn: StatusBarNotification, service: NotificationsListenerService, id: Int
     ) {
     }
 
     // UTILS
 
     fun cancelWhatsappNotification(
-        sbn: StatusBarNotification,
-        service: NotificationsListenerService
+        sbn: StatusBarNotification, service: NotificationsListenerService
     ) {
         service.activeNotifications.forEach {
             if (it.key.contains("whatsapp") && sbn.key.takeLast(6) == it.key.takeLast(6)) {
@@ -43,10 +36,7 @@ object NotificationsListenerGesture {
 
 
     fun positionXIntoScreen(
-        popupX: Float,
-        deplacementX: Float,
-        popupSizeX: Float,
-        windowManager: WindowManager
+        popupX: Float, deplacementX: Float, popupSizeX: Float, windowManager: WindowManager
     ): Float {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
@@ -64,10 +54,7 @@ object NotificationsListenerGesture {
     }
 
     fun positionYIntoScreen(
-        popupY: Float,
-        deplacementY: Float,
-        popupSizeY: Float,
-        windowManager: WindowManager
+        popupY: Float, deplacementY: Float, popupSizeY: Float, windowManager: WindowManager
     ): Float {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
@@ -87,21 +74,14 @@ object NotificationsListenerGesture {
     fun messagesNotUseless(sbp: StatusBarParcelable, resources: Resources): Boolean {
         val pregMatchString = resources.getString(R.string.new_messages)
         return !(sbp.statusBarNotificationInfo["android.title"].toString().toLowerCase()
-            .contains(pregMatchString.toLowerCase())
-                or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase()
-            .contains(pregMatchString.toLowerCase())
-                or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase()
-            .contains(pregMatchString.toLowerCase())
-                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Chat heads active")//Passer ces messages dans des strings
-                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Messenger")
-                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
+            .contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase()
+            .contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase()
+            .contains(pregMatchString.toLowerCase()) or (sbp.statusBarNotificationInfo["android.title"].toString() == "Chat heads active")//Passer ces messages dans des strings
+                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Messenger") or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
     }
 
     fun addNotificationViewStateToList(
-        list: ArrayList<PopupNotificationViewState>,
-        contactDB: ContactDB,
-        sbp: StatusBarParcelable,
-        context: Context
+        list: ArrayList<PopupNotificationViewState>, contactDB: ContactDB, sbp: StatusBarParcelable, context: Context, time: Long
     ) {
 
         if (contactDB.isCustomSound == 1) {
@@ -112,12 +92,10 @@ object NotificationsListenerGesture {
 
         val platform = if (sbp.appNotifier?.let {
                 NotificationsGesture.convertPackageToString(
-                    it,
-                    context
+                    it, context
                 )
             } != "") {
-            sbp.appNotifier?.let { NotificationsGesture.convertPackageToString(it, context) }
-                .toString()
+            sbp.appNotifier?.let { NotificationsGesture.convertPackageToString(it, context) }.toString()
         } else {
             ""
         }
@@ -129,6 +107,7 @@ object NotificationsListenerGesture {
                 sbp.statusBarNotificationInfo["android.text"].toString(),
                 platform,
                 "${contactDB.firstName} ${contactDB.lastName}",
+                date = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(time)),
                 transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                 contactDB.messengerId,
                 contactDB.listOfMails[0]
@@ -137,9 +116,9 @@ object NotificationsListenerGesture {
     }
 
     fun appNotifiable(sbp: StatusBarParcelable, context: Context): Boolean {
-        return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Messenger" &&
-                sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" &&
-                NotificationsGesture.convertPackageToString(sbp.appNotifier!!, context) != ""
+        return sbp.statusBarNotificationInfo["android.title"] != "Chat heads active" && sbp.statusBarNotificationInfo["android.title"] != "Messenger" && sbp.statusBarNotificationInfo["android.title"] != "Bulles de discussion activées" && NotificationsGesture.convertPackageToString(
+            sbp.appNotifier!!,
+            context
+        ) != ""
     }
 }

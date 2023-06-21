@@ -62,7 +62,9 @@ object NotificationsGesture {
     private const val GOOGLE_PACKAGE = "com.google.android.googlequicksearchbox"
     private const val SCREEN_RECORDER = "com.huawei.screenrecorder"
     const val LINKEDIN_PACKAGE = "com.linkedin.android"
+
     const val TWITTER_PACKAGE = "com.twitter.android"
+    const val TWITTER_APP_NAME = "Twitter"
 
     fun convertPackageToString(packageName: String, context: Context): String {
         when (packageName) {
@@ -90,6 +92,8 @@ object NotificationsGesture {
             YOUTUBE_PACKAGE -> return "YouTube"
             GOOGLE_PACKAGE -> return "Google"
             SCREEN_RECORDER -> return "Screen Recorder"
+
+            TWITTER_PACKAGE -> return TWITTER_APP_NAME
             else -> return ""
         }
     }
@@ -101,6 +105,7 @@ object NotificationsGesture {
             WHATSAPP_PACKAGE -> return R.drawable.rounded_notification_background_whatsapp
             GMAIL_PACKAGE -> return R.drawable.rounded_notification_background_gmail
             OUTLOOK_PACKAGE -> return R.drawable.rounded_notification_background_outlook
+            TWITTER_PACKAGE -> return R.drawable.rounded_notification_background_outlook
 
             MESSAGE_PACKAGE -> return R.drawable.rounded_notification_background_facebook
             XIAOMI_MESSAGE_PACKAGE -> return R.drawable.rounded_notification_background_xiaomi
@@ -142,6 +147,8 @@ object NotificationsGesture {
             REDDIT_PACKAGE -> true
             MESSAGES_PACKAGE -> true
             VIBER_PACKAGE -> true
+            TWITTER_PACKAGE -> true
+            LINKEDIN_PACKAGE -> true
             else -> false
         }
     }
@@ -198,7 +205,9 @@ object NotificationsGesture {
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
-            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(
+                context
+            ) -> {
                 openSms(contact, context)
             }
             else -> {
@@ -255,7 +264,9 @@ object NotificationsGesture {
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
-            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(context) -> {
+            MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(
+                context
+            ) -> {
                 openSms("", context)
             }
         }

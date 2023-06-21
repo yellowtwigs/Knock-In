@@ -26,6 +26,7 @@ data class NotificationsListViewState(
     val description: String,
     val platform: String,
     val timestamp: Long,
+    val date: String,
     val idContact: Int,
     val priority: Int,
     val phoneNumber: String,
@@ -34,4 +35,16 @@ data class NotificationsListViewState(
     val systemPriority: Int = 1,
     val background: Drawable?,
     val notificationIcon: Drawable?,
+)
+
+data class NotificationParams(
+    val contactName: String,
+    val description: String,
+    val platform: String,
+    val date: String,
+    val idContact: Int,
+    val priority: Int,
+    val phoneNumber: String,
+    val mail: String,
+    val isSystem: Int,
 )

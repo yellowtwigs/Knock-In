@@ -407,7 +407,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     private fun setupNotificationsList() {
         notificationsAdapter = NotificationsListAdapter(this) { notification, phoneNumber, platform ->
-            Log.i("GET_NOTIFCATION", "phoneNumber : $phoneNumber")
             if (platform == "com.yellowtwigs.Knockin.notification") {
                 startActivity(Intent(this@NotificationsHistoryActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
             } else {

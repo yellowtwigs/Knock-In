@@ -67,6 +67,7 @@ class NotificationsListViewModel @Inject constructor(
 
         if (allNotifications?.isNotEmpty() == true) {
             allNotifications.map { notification ->
+                Log.i("GetKnockinNotif", "notification : $notification")
                 if (notification.platform == KNOCKIN_PACKAGE) {
                     if (compareIfNotificationDateIsToday(notification.timestamp)) {
                         if (cpt > 1) {
@@ -89,9 +90,20 @@ class NotificationsListViewModel @Inject constructor(
             addNotificationInList(notifications, it)
         }
 
-        viewStateLiveData.value = NotificationsHistoryViewState(
-            list = sortedContactsList(sortedBy, filterBy, input, notifications)
-        )
+        viewStateLiveData.value =
+            NotificationsHistoryViewState(list = sortedContactsList(sortedBy, filterBy, input, notifications).distinctBy {
+                NotificationParams(
+                    contactName = it.contactName,
+                    description = it.description,
+                    platform = it.platform,
+                    date = it.date,
+                    idContact = it.idContact,
+                    priority = it.priority,
+                    phoneNumber = it.phoneNumber,
+                    mail = it.mail,
+                    isSystem = it.isSystem
+                )
+            })
     }
 
     private fun compareIfNotificationDateIsToday(timestamp: Long): Boolean {
@@ -262,9 +274,7 @@ class NotificationsListViewModel @Inject constructor(
         }
     }
 
-    private fun addNotificationInList(
-        notifications: ArrayList<NotificationsListViewState>, notification: NotificationDB
-    ) {
+    private fun addNotificationInList(notifications: ArrayList<NotificationsListViewState>, notification: NotificationDB) {
         val systemPriority = if (notification.platform == KNOCKIN_PACKAGE) {
             2
         } else {
@@ -311,6 +321,7 @@ class NotificationsListViewModel @Inject constructor(
                 notification.description,
                 notification.platform,
                 notification.timestamp,
+                SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notification.timestamp)),
                 notification.idContact,
                 notification.priority,
                 phoneNumber,

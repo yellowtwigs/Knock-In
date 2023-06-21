@@ -40,8 +40,6 @@ class NotificationsListAdapter(
     inner class ViewHolder(private val binding: ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(notification: NotificationsListViewState, context: Context) {
-            val text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notification.timestamp))
-
             val pckManager = context.packageManager
             var icon: Drawable? = null
             try {
@@ -68,7 +66,7 @@ class NotificationsListAdapter(
 //                        )
                     app.text = convertPackageToString(platform, context)
                     notificationSenderName.text = contactName
-                    notificationDate.text = text
+                    notificationDate.text = notification.date
 
                     val click = View.OnClickListener {
                         if (modeMultiSelect) {
