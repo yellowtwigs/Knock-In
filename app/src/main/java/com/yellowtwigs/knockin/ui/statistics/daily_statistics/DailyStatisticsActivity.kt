@@ -32,7 +32,7 @@ class DailyStatisticsActivity : AppCompatActivity() {
 
         val deviceHeight = getDeviceHeight(this)
 
-        if (deviceHeight in 1251..1599) {
+        if (deviceHeight in 1250..1599) {
             activityDailyStatisticsUnder1500Binding = ActivityDailyStatisticsUnder1500Binding.inflate(layoutInflater)
             setContentView(activityDailyStatisticsUnder1500Binding.root)
 
