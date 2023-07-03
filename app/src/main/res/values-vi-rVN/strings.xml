@@ -195,7 +195,7 @@
     <string name="manage_my_screen_number_of_column_group">Hiển thị nhóm</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Tách rời hiển thị liên hệ</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Tách rời hiển thị giữa "nhà - liên hệ" và "nhóm"</string>
-    <string name="manage_my_screen_toast_grid">Bạn đã chọn liên hệ %1$d mỗi hàng</string>
+    <string name="manage_my_screen_toast_grid">Bạn đã chọn liên hệ %1d mỗi hàng</string>
     <string name="manage_my_screen_toast_list">Chế độ xem "Danh sách" được chọn</string>
     <string name="manage_my_screen_toast_list_smaller">Chế độ xem "Nhỏ gọn" được chọn</string>
     <string name="manage_my_screen_searchbar_pos">Vị trí thanh tìm kiếm</string>
@@ -495,12 +495,19 @@
     <string name="yellow_advice">Bạn có thể bỏ lỡ các tin nhắn quan trọng từ một số liên hệ.\n Chúng tôi khuyên bạn nên thêm một hoặc nhiều VIP</string>
     <string name="light_green_advice">Bạn có thể có nhiều VIP hơn để định cấu hình.\n Chúng tôi khuyên bạn nên mua gói VIP</string>
     <string name="strong_green_advice">Làm tốt lắm, bạn chắc chắn đã tối ưu hóa thời gian của mình! Để làm tốt hơn nữa, bạn có thể muốn cá nhân hóa các VIP của mình</string>
+
     <string name="number_unprocessed_notifications">%1d thông báo chưa được xử lý</string>
+    <string name="number_unprocessed_notifications_hint">Thông báo chưa được xử lý</string>
     <string name="number_vip_notifications">%1d thông báo VIP</string>
+    <string name="number_vip_notifications_hint">Thông báo VIP</string>
+
     <string name="your_daily_performance">Hiệu suất hàng ngày của bạn</string>
     <string name="x_notifications_received">%1d Thông báo nhận được </string>
     <string name="view_new_notifications">Xem</string>
     <string name="what_we_suggest">Những gì chúng tôi đề xuất:</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Tham khảo diễn biến điểm số của bạn trong « Theo dõi hiệu suất của tôi » qua ngăn kéo</string>
     <string name="more_statistics_in_next_releases">Nhiều số liệu thống kê sẽ được bổ sung trong các phiên bản tiếp theo</string>
+    <string name="messages_with_number">tin nhắn từ %1d</string>
+    <string name="stats">Số liệu thống kê</string>
+    <string name="actions">hành động</string>
 </resources>

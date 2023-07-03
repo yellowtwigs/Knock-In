@@ -195,7 +195,7 @@
     <string name="manage_my_screen_number_of_column_group">Gruppen werden angezeigt</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Kontaktanzeige entkoppeln</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Anzeige der Kontakte zwischen "Home-Kontakte" und "Gruppen" entkoppeln</string>
-    <string name="manage_my_screen_toast_grid">Sie haben %1$d Kontakte pro Zeile ausgewählt</string>
+    <string name="manage_my_screen_toast_grid">Sie haben %1d Kontakte pro Zeile ausgewählt</string>
     <string name="manage_my_screen_toast_list">Ansicht "Liste" ausgewählt</string>
     <string name="manage_my_screen_toast_list_smaller">Ansicht "Kompakt" ausgewählt</string>
 
@@ -499,11 +499,16 @@
     <string name="strong_green_advice">Tolle Arbeit, Sie optimieren definitiv Ihre Zeit! Um es noch besser zu machen, möchten Sie vielleicht Ihre VIPs personalisieren</string>
 
     <string name="number_unprocessed_notifications">%1d unverarbeitete Benachrichtigungen</string>
+    <string name="number_unprocessed_notifications_hint">Unverarbeitete Benachrichtigungen</string>
     <string name="number_vip_notifications">%1d VIP-Benachrichtigungen</string>
+    <string name="number_vip_notifications_hint">%1d VIP-Benachrichtigungen</string>
     <string name="your_daily_performance">Ihre tägliche Leistung</string>
     <string name="x_notifications_received">%1d erhaltene benachrichtigungen</string>
     <string name="view_new_notifications">Neue</string>
     <string name="what_we_suggest">Was wir vorschlagen :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Nachricht : Sehen Sie sich Ihre Punkteentwicklung in der Schublade « Meine Leistung verfolgen »</string>
     <string name="more_statistics_in_next_releases">Weitere Statistiken werden in den nächsten Versionen hinzugefügt</string>
+    <string name="messages_with_number">%1d Nachrichts</string>
+    <string name="stats">Statistiken</string>
+    <string name="actions">Aktionen</string>
 </resources>

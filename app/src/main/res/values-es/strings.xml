@@ -199,7 +199,7 @@ Perderá todos nuestros datos; ¿De verdad quiere continuar?</string>
     <string name="manage_my_screen_number_of_column_group">Visualización de grupos </string>
     <string name="manage_my_screen_dissociate_number_of_column_title"> Desacoplar pantalla de contactos </string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text"> Desacoplar pantalla de contactos entre "Home-Contactos" y "Grupos"</string>
-    <string name="manage_my_screen_toast_grid">Ha seleccionado %1$d contactos por fila</string>
+    <string name="manage_my_screen_toast_grid">Ha seleccionado %1d contactos por fila</string>
     <string name="manage_my_screen_toast_list">Vista "Lista" seleccionada</string>
     <string name="manage_my_screen_toast_list_smaller"> Vista "Compacta" seleccionada</string>
     <string name="manage_my_screen_searchbar_pos">Posición barra de búsqueda </string>
@@ -502,12 +502,18 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="yellow_advice">Es posible que pierda mensajes importantes de varios contactos; le recomendamos agregar uno o más VIP</string>
     <string name="light_green_advice">Es posible que tenga que configurar más VIP.\n Le recomendamos que compre un paquete VIP</string>
     <string name="strong_green_advice"> ¡Buen trabajo, definitivamente optimizas tu tiempo!\n Para hacerlo aún mejor, es posible que desee personalizar sus VIP</string>
-    <string name="number_unprocessed_notifications">%1d notificaciones sin procesar</string>
+
+    <string name="number_unprocessed_notifications">%1d nuevas notificaciones</string>
+    <string name="number_unprocessed_notifications_hint">Nuevas notificaciones</string>
     <string name="number_vip_notifications">%1d VIP notifications</string>
+    <string name="number_vip_notifications_hint">VIP notifications</string>
     <string name="your_daily_performance">Tu rendimiento diario</string>
     <string name="x_notifications_received">%1d Notificaciones recibidas</string>
     <string name="view_new_notifications">Ver</string>
     <string name="what_we_suggest">Lo que sugerimos :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Consulta la evolución de tu puntuación en « Seguir mi rendimiento » a través del cajón</string>
     <string name="more_statistics_in_next_releases">More statistics will be added in next releases</string>
+    <string name="messages_with_number">%1d mensajes</string>
+    <string name="stats">Estadísticas</string>
+    <string name="actions">Comportamiento</string>
 </resources>

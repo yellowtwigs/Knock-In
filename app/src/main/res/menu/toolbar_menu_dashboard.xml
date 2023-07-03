@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sort"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        android:title="Daily"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/item_daily"
+                    android:checked="true"
+                    android:icon="@drawable/ic_daily"
+                    android:orderInCategory="100"
+                    android:title="Daily"
+                    app:showAsAction="collapseActionView" />
+                <item
+                    android:id="@+id/item_weekly"
+                    android:icon="@drawable/ic_weekly"
+                    android:orderInCategory="100"
+                    android:title="Weekly"
+                    app:showAsAction="collapseActionView" />
+                <item
+                    android:id="@+id/item_monthly"
+                    android:icon="@drawable/ic_monthly"
+                    android:orderInCategory="100"
+                    android:title="Monthly"
+                    app:showAsAction="collapseActionView" />
+            </group>
+        </menu>
+    </item>
+
+    <group
+        android:checkableBehavior="single"
+        android:menuCategory="container">
+
+    </group>
+</menu>

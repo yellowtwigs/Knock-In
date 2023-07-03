@@ -28,8 +28,8 @@
     <color name="transparentColor">#00ffffff</color>
     <color name="transparentColorDark">#00121212</color>
 
-    <color name="lightGreyColor">#88e6e6e6</color>
-    <color name="lightGreyColorDark">@color/darkGreyColor</color>
+    <color name="lightGreyColor">#e6e6e6</color>
+    <color name="lightGreyColorDark">#c8c8c8</color>
 
     <color name="darkGreyColor">#919191</color>
     <color name="darkGreyColorDark">#c3c3c3</color>

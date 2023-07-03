@@ -528,8 +528,6 @@ class NotificationsListenerService : NotificationListenerService() {
                 )
             }
 
-            Log.i("GetKnockinNotif", "$list")
-
             adapterNotifications?.submitList(null)
             adapterNotifications?.submitList(list)
             recyclerView?.adapter = adapterNotifications

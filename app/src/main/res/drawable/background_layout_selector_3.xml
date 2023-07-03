@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/background_layout_no_pressed_3" android:state_selected="true" />
+    <item android:drawable="@drawable/background_layout_pressed" android:state_pressed="true" />
+    <item android:drawable="@drawable/background_layout_pressed" android:state_focused="true" />
+    <item android:drawable="@drawable/background_layout_no_pressed_3" />
+</selector>

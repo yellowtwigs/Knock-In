@@ -4,13 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -21,7 +16,9 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.databinding.ActivityDashboardBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
@@ -30,7 +27,6 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,6 +40,9 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     private lateinit var dataPieChart: PieChart
 
     private var isThemeDark = false
+    private var isVIP = false
+
+    private var adviceMessage = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +64,31 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         setupToolbar()
         setupDrawerLayout()
         setupDataToView()
-        setupSpinner()
 
         dataPieChart.setOnChartValueSelectedListener(this)
 
-        binding.goToDailyPerformance.setOnClickListener {
-            startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
+        setupBottomNavigationView()
+
+        binding.notificationsUnprocessedContent.setOnClickListener {
+            if (isVIP) {
+                isVIP = false
+                dashboardViewModel.changeNewOrVipNotifications(isVIP)
+                binding.notificationsUnprocessedContent.setBackgroundColor(resources.getColor(R.color.darkGreyColor, resources.newTheme()))
+                binding.notificationsVipContent.setBackgroundColor(resources.getColor(R.color.darkGreyColorDark, resources.newTheme()))
+            }
+        }
+        binding.notificationsVipContent.setOnClickListener {
+            if (!isVIP) {
+                isVIP = true
+                dashboardViewModel.changeNewOrVipNotifications(isVIP)
+                binding.notificationsUnprocessedContent.setBackgroundColor(
+                    resources.getColor(
+                        R.color.darkGreyColorDark,
+                        resources.newTheme()
+                    )
+                )
+                binding.notificationsVipContent.setBackgroundColor(resources.getColor(R.color.darkGreyColor, resources.newTheme()))
+            }
         }
     }
 
@@ -94,12 +112,17 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
                 }
                 return true
             }
-            R.id.item_help -> {
-//                startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
-//                MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-//                    .setTitle(R.string.help)
-//                    .setMessage(resources.getString(R.string.statistics_help_msg))
-//                    .show()
+            R.id.item_daily -> {
+                dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_daily)
+                item.isChecked = true
+            }
+            R.id.item_weekly -> {
+                dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_weekly)
+                item.isChecked = true
+            }
+            R.id.item_monthly -> {
+                dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_monthly)
+                item.isChecked = true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -107,7 +130,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.toolbar_menu_help, menu)
+        inflater.inflate(R.menu.toolbar_menu_dashboard, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -169,25 +192,32 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 
     //endregion
 
-    private fun setupSpinner() {
-        val colorList = resources.getStringArray(R.array.messaging_apps_arrays)
-        val colorsSpinnerAdapter = ArrayAdapter(this@DashboardActivity, R.layout.spinner_item, colorList)
-        binding.messagingAppsSpinner.adapter = colorsSpinnerAdapter
-
-        binding.messagingAppsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                dashboardViewModel.updateSpinnerSelectedItem(position)
+    private fun setupBottomNavigationView() {
+        binding.bottomNavigation.menu.getItem(0).isChecked = true
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_daily_stats -> {
+                    startActivity(
+                        Intent(
+                            this@DashboardActivity, DailyStatisticsActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).putExtra("AdviceMessage", adviceMessage)
+                    )
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
+            false
+        })
     }
 
     private fun setupDataToView() {
         dashboardViewModel.dashboardViewStateLiveData.observe(this) {
             setupPieChart(it.list)
+            adviceMessage = it.adviceMessage
+
+            binding.performanceIcon.setImageResource(it.icon)
             binding.allNotificationsTitle.text = it.notificationsTitle
+            binding.notificationsUnprocessedContent.setText(it.numberOfNotificationsUnprocessed)
+            binding.notificationsVipContent.setText(it.numberOfNotificationsVip)
         }
     }
 
@@ -226,12 +256,13 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         l.yEntrySpace = 0f
         l.yOffset = 0f
 
+        dataPieChart.setHoleColor(Color.TRANSPARENT)
+        dataPieChart.setEntryLabelColor(Color.TRANSPARENT)
+
         if (isThemeDark) {
-            dataPieChart.setHoleColor(Color.TRANSPARENT)
-            dataPieChart.setEntryLabelColor(Color.WHITE)
+            dataPieChart.legend.textColor = Color.WHITE
         } else {
-            dataPieChart.setHoleColor(Color.TRANSPARENT)
-            dataPieChart.setEntryLabelColor(Color.WHITE)
+            dataPieChart.legend.textColor = Color.BLACK
         }
         dataPieChart.setEntryLabelTextSize(12f)
 
@@ -242,7 +273,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         val colors: ArrayList<Int> = ArrayList()
         val entries: List<PieEntry> = list.map {
             colors.add(it.color)
-            PieEntry(1f, "${it.platform} : ${it.number}", resources.getDrawable(R.drawable.ic_speedometer_strong_green))
+            PieEntry(it.number.toFloat(), "${it.platform} : ${it.number}", resources.getDrawable(R.drawable.ic_speedometer_strong_green))
         }
 
         val dataSet = PieDataSet(entries, "")
@@ -254,17 +285,17 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter())
         data.setValueTextSize(12f)
+//        data.setValueTextColor(Color.rgb(159, 48, 255))
+        data.setValueTextColor(Color.TRANSPARENT)
 
-        if (isThemeDark) {
-            data.setValueTextColor(Color.WHITE)
-        } else {
-            data.setValueTextColor(Color.WHITE)
-        }
+//        if (isThemeDark) {
+//            data.setValueTextColor(Color.WHITE)
+//        } else {
+//            data.setValueTextColor(Color.WHITE)
+//        }
 
         dataPieChart.data = data
-
-        dataPieChart.highlightValues(null)
-        dataPieChart.invalidate()
+        dataPieChart.setEntryLabelColor(Color.TRANSPARENT)
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {

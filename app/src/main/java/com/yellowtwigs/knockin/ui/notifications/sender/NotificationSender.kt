@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.domain.notifications.NotificationsListenerUseCases
 import com.yellowtwigs.knockin.domain.notifications.sender.GetNotificationsForSenderUseCase
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
@@ -35,7 +34,7 @@ class NotificationSender : BroadcastReceiver() {
 
         val sharedPreferences = context.getSharedPreferences("Notifications_Reminder", Context.MODE_PRIVATE)
 
-        val resultIntent = Intent(context, DailyStatisticsActivity::class.java).putExtra("FromSender", true)
+        val resultIntent = Intent(context, NotificationsHistoryActivity::class.java)
         val pendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(resultIntent)
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)

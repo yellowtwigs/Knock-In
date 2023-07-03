@@ -195,7 +195,7 @@
     <string name="manage_my_screen_number_of_column_group">Display di gruppi</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Separa visualizzazione di contatti </string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Separa visualizzazione contatti tra “Casa” e “Gruppi” </string>
-    <string name="manage_my_screen_toast_grid">Hai selezionato %1$d contatti per riga</string>
+    <string name="manage_my_screen_toast_grid">Hai selezionato %1d contatti per riga</string>
     <string name="manage_my_screen_toast_list">Visualizzazione a Lista selezionata</string>
     <string name="manage_my_screen_toast_list_smaller">Visualizzazione Compatta selezionata </string>
     <string name="manage_my_screen_searchbar_pos"> Posizione barra di ricerca</string>
@@ -496,12 +496,19 @@
     <string name="yellow_advice">Potresti perdere messaggi importanti da diversi contatti: ti consigliamo di aggiungere uno o più VIP</string>
     <string name="light_green_advice">Potresti avere più VIP da configurare: ti consigliamo di acquistare un pacchetto VIP</string>
     <string name="strong_green_advice">Ottimo lavoro, ottimizzi sicuramente il tuo tempo! Per fare ancora meglio, potresti voler personalizzare i tuoi VIP </string>
+
     <string name="number_unprocessed_notifications">%1d notifiche non elaborate</string>
+    <string name="number_unprocessed_notifications_hint">Notifiche non elaborate</string>
     <string name="number_vip_notifications">%1d Notifiche VIP</string>
+    <string name="number_vip_notifications_hint">Notifiche VIP</string>
+
     <string name="your_daily_performance">La tua performance giornaliera</string>
     <string name="x_notifications_received">%1d Notifiche ricevute</string>
     <string name="view_new_notifications">Visualizza</string>
     <string name="what_we_suggest">Cosa suggeriamo :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Fai riferimento all evoluzione del tuo punteggio in Monitora le mie prestazioni tramite il cassetto</string>
     <string name="more_statistics_in_next_releases">Ulteriori statistiche verranno aggiunte nelle prossime versioni</string>
+    <string name="messages_with_number">%1d Messaggio</string>
+    <string name="stats">Statistiche</string>
+    <string name="actions">Azioni</string>
 </resources>

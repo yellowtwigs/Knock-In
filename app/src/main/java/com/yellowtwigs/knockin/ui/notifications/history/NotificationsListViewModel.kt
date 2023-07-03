@@ -11,6 +11,7 @@ import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.KNOCKIN_PACKAGE
 import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSAGE_APP_NAME
+import com.yellowtwigs.knockin.utils.NotificationsGesture.WHATSAPP_PACKAGE
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,7 +68,6 @@ class NotificationsListViewModel @Inject constructor(
 
         if (allNotifications?.isNotEmpty() == true) {
             allNotifications.map { notification ->
-                Log.i("GetKnockinNotif", "notification : $notification")
                 if (notification.platform == KNOCKIN_PACKAGE) {
                     if (compareIfNotificationDateIsToday(notification.timestamp)) {
                         if (cpt > 1) {

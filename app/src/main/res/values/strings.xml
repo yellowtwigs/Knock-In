@@ -205,7 +205,7 @@
     <string name="manage_my_screen_number_of_column_group">Groups display</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Decouple contacts display</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Decouple contacts display between "Home-Contacts" and "Groups"</string>
-    <string name="manage_my_screen_toast_grid">You have selected %1$d contacts per row</string>
+    <string name="manage_my_screen_toast_grid">You have selected %1d contacts per row</string>
     <string name="manage_my_screen_toast_list">"List" view selected</string>
     <string name="manage_my_screen_toast_list_smaller">"Compact" view selected</string>
     <string name="manage_my_screen_searchbar_pos">Search bar position</string>
@@ -516,12 +516,20 @@
     <string name="yellow_advice"><![CDATA[You may miss important messages from several contacts.\n We recommend adding one or more VIPs]]></string>
     <string name="light_green_advice"><![CDATA[You may have more VIPs to configure.\n We recommend buying a VIP package]]></string>
     <string name="strong_green_advice"><![CDATA[Great job, you definitely optimize your time!\n To do even better, you may want to personalize your VIPs]]></string>
-    <string name="number_unprocessed_notifications">%1d unprocessed notifications</string>
+
+    <string name="number_unprocessed_notifications">%1d new notifications</string>
+    <string name="number_unprocessed_notifications_hint">New notifications</string>
     <string name="number_vip_notifications">%1d VIP notifications</string>
+    <string name="number_vip_notifications_hint">VIP notifications</string>
+
     <string name="your_daily_performance">Your Daily Performance</string>
     <string name="x_notifications_received">%1d notifications received</string>
     <string name="view_new_notifications">View</string>
     <string name="what_we_suggest">What we suggest :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Refer to your score evolution in « Track my performance » via the drawer</string>
     <string name="more_statistics_in_next_releases">More statistics will be added in next releases</string>
+
+    <string name="messages_with_number">%1d messages</string>
+    <string name="stats">Stats</string>
+    <string name="actions">Actions</string>
 </resources>

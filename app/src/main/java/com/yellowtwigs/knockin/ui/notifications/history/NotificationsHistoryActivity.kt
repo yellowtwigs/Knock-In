@@ -408,7 +408,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     private fun setupNotificationsList() {
         notificationsAdapter = NotificationsListAdapter(this) { notification, phoneNumber, platform ->
             if (platform == "com.yellowtwigs.Knockin.notification") {
-                startActivity(Intent(this@NotificationsHistoryActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
+                startActivity(Intent(this@NotificationsHistoryActivity, DashboardActivity::class.java))
             } else {
                 convertPackageNameToGoToWithContact(platform, phoneNumber, this)
             }
@@ -433,7 +433,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         }
 
         binding.notificationPin.setOnClickListener {
-            startActivity(Intent(this@NotificationsHistoryActivity, DailyStatisticsActivity::class.java).putExtra("FromSender", true))
+            startActivity(Intent(this@NotificationsHistoryActivity, DashboardActivity::class.java).putExtra("FromSender", true))
         }
 
         binding.recyclerView.apply {

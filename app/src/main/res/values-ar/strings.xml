@@ -500,11 +500,16 @@
     <string name="strong_green_advice">تفوتك رسائل مهمة من عدة جهات اتصال - نوصي بإضافة واحد أو أكثر من الشخصياتقد يكون لديك المزيد من الشخصيات المهمة لتكوينها - نوصي بشراء حزمة</string>
 
     <string name="number_unprocessed_notifications">إ%1d علامات لم تتم معالجتها</string>
+    <string name="number_unprocessed_notifications_hint">إعلامات لم تتم معالجتها</string>
     <string name="number_vip_notifications">%1d إخطارات VIP</string>
+    <string name="number_vip_notifications_hint">إخطارات VIP</string>
     <string name="your_daily_performance">إخطارات</string>
     <string name="x_notifications_received">إ%1d علامات لم تتم معالجتها</string>
     <string name="view_new_notifications">راجع تطور</string>
     <string name="what_we_suggest">رسالة : </string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">تفوتك رسائل مهمة من عدة جهات اتصال - نوصي بإضافة واحد أو أكثر من الشخصياتقد يكون لديك المزيد من الشخصيات المهمة لتكوينها - نوصي بشراء حزمة</string>
     <string name="more_statistics_in_next_releases">سيتم إضافة المزيد من الإحصائيات في الإصدارات القادمة</string>
+    <string name="messages_with_number">%1d سالة من</string>
+    <string name="stats">احصائيات</string>
+    <string name="actions">أجراءات</string>
 </resources>

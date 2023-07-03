@@ -195,7 +195,7 @@
     <string name="manage_my_screen_number_of_column_group">Grupları görüntüleme</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Kişilerin ekranlarını ayırın</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Kişilerin ekranlarını "Ev Kişileri" ve "Grupar" olarak ayırın</string>
-    <string name="manage_my_screen_toast_grid">Satır başına %1$d kişi seçtiniz</string>
+    <string name="manage_my_screen_toast_grid">Satır başına %1d kişi seçtiniz</string>
     <string name="manage_my_screen_toast_list">"Liste" görünümü seçildi</string>
     <string name="manage_my_screen_toast_list_smaller">"Kompakt" görünüm seçildi</string>
     <string name="manage_my_screen_searchbar_pos">Arama çubuğu konumu</string>
@@ -496,12 +496,19 @@
     <string name="yellow_advice">Birkaç kişiden gelen önemli mesajları kaçırabilirsiniz.\n Bir veya daha fazla VIP eklemenizi öneririz</string>
     <string name="light_green_advice">Yapılandırılacak daha fazla VIP\'niz olabilir.\n Bir VIP paketi satın almanızı öneririz</string>
     <string name="strong_green_advice">Harika iş, kesinlikle zamanınızı optimize ediyorsunuz! Daha da iyisini yapmak için VIP\'lerinizi kişiselleştirmek isteyebilirsiniz</string>
+
     <string name="number_unprocessed_notifications">%1d işlenmemiş bildirimler</string>
+    <string name="number_unprocessed_notifications_hint">Işlenmemiş bildirimler</string>
     <string name="number_vip_notifications">%1d VIP bildirimleri</string>
+    <string name="number_vip_notifications_hint">VIP bildirimleri</string>
+
     <string name="your_daily_performance">Günlük Performansınız</string>
     <string name="x_notifications_received">%1d Alınan bildirimler</string>
     <string name="view_new_notifications">Yeni</string>
     <string name="what_we_suggest">Önerimiz :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Çekmece aracılığıyla « Performansımı izle » bölümünde puanınızın gelişimine bakın</string>
     <string name="more_statistics_in_next_releases">Sonraki sürümlerde daha fazla istatistik eklenecek</string>
+    <string name="messages_with_number">%1d mesaj</string>
+    <string name="stats">Istatistikler</string>
+    <string name="actions">Hareketler</string>
 </resources>

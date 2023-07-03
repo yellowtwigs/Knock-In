@@ -195,7 +195,7 @@
     <string name="manage_my_screen_number_of_column_group">Отображение групп</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Разделить отображение контактов</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Разделить отображение контактов между "Домашние контакты" и "Группы"</string>
-    <string name="manage_my_screen_toast_grid">Выбрано контактов на строку: %1$d</string>
+    <string name="manage_my_screen_toast_grid">Выбрано контактов на строку: %1d</string>
     <string name="manage_my_screen_toast_list">Выбран вид "Список"</string>
     <string name="manage_my_screen_toast_list_smaller">Выбран вид "Компактно"</string>
     <string name="manage_my_screen_searchbar_pos">Позиция поисковой строки</string>
@@ -497,13 +497,20 @@
     <string name="yellow_advice">Вы можете пропустить важные сообщения от нескольких контактов.\n Pекомендуем добавить одного или нескольких VIP</string>
     <string name="light_green_advice">У вас может быть больше VIP для настройки.\n Pекомендуем купить пакет VIP</string>
     <string name="strong_green_advice">Отличная работа, вы определенно оптимизируете свое время! Чтобы добиться еще большего успеха, вы можете персонализировать своих VIP-клиентов</string>
+
     <string name="number_unprocessed_notifications">%1d необработанных уведомлений</string>
+    <string name="number_unprocessed_notifications_hint">Hеобработанных уведомлений</string>
     <string name="number_vip_notifications">%1d VIP-уведомления</string>
+    <string name="number_vip_notifications_hint">VIP-уведомления</string>
+
     <string name="your_daily_performance">Ваша ежедневная производительность</string>
     <string name="x_notifications_received">%1d Уведомления получены</string>
     <string name="view_new_notifications">Просмотр</string>
     <string name="what_we_suggest">Что мы предлагаем :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Следите за изменением своего балла в разделе «Отслеживание моей эффективности» в выдвижном ящике </string>
     <string name="more_statistics_in_next_releases">Больше статистики будет добавлено в следующих выпусках</string>
+    <string name="messages_with_number">%1d Сообщение</string>
+    <string name="stats">статистика</string>
+    <string name="actions">Действия</string>
 
 </resources>

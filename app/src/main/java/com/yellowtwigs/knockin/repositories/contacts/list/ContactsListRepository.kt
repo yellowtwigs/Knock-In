@@ -14,10 +14,8 @@ interface ContactsListRepository {
     fun getAllAndroidIds(): List<Int>
 
     fun getNumbersOfContactsVip(): Int
-
-    fun getNumbersOfContactsVipFlow(): Flow<Int>
-    fun getNumbersOfContactsStandardFlow(): Flow<Int>
-    fun getNumbersOfContactsSilentFlow(): Flow<Int>
+    fun getNumbersOfContactsStandard(): Int
+    fun getNumbersOfContactsSilent(): Int
 
     fun getContactsVIPIds(): ArrayList<Int>
 

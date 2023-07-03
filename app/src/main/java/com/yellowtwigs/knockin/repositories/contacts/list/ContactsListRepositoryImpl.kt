@@ -15,10 +15,8 @@ class ContactsListRepositoryImpl @Inject constructor(private val dao: ContactsDa
 
     override fun getAllContactsVIP() = dao.getAllContactsVIP()
     override fun getNumbersOfContactsVip() = dao.getNumbersOfContactsVip()
-
-    override fun getNumbersOfContactsVipFlow() = dao.getNumbersOfContactsVipFlow()
-    override fun getNumbersOfContactsStandardFlow() = dao.getNumbersOfContactsStandardFlow()
-    override fun getNumbersOfContactsSilentFlow() = dao.getNumbersOfContactsSilentFlow()
+    override fun getNumbersOfContactsStandard() = dao.getNumbersOfContactsStandard()
+    override fun getNumbersOfContactsSilent() = dao.getNumbersOfContactsSilent()
 
     override fun getContactsVIPIds(): ArrayList<Int> {
         val arrayList = arrayListOf<Int>()

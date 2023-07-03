@@ -21,57 +21,72 @@
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="?attr/textColor" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/messaging_apps_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:entries="@array/messaging_apps_arrays"
-            android:prompt="@string/messaging_apps_arrays_prompt"
-            android:spinnerMode="dialog"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/go_to_daily_performance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/rounded_button_color_blue_turquoise"
-            android:text="@string/your_daily_performance"
-            android:textColor="@color/lightColor"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/performance_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/messaging_apps_spinner"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            tools:srcCompat="@drawable/ic_speedometer_light_green" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/notifications_unprocessed_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toStartOf="@+id/notifications_vip_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/performance_icon">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/notifications_unprocessed_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:hint="@string/number_unprocessed_notifications_hint"
+                android:background="@color/darkGreyColor"
+                android:inputType="none"
+                android:textColor="?attr/textColor"
+                android:textColorHint="@color/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/notifications_vip_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@+id/notifications_unprocessed_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/notifications_unprocessed_layout"
+            app:layout_constraintTop_toTopOf="@+id/notifications_unprocessed_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/notifications_vip_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:hint="@string/number_vip_notifications_hint"
+                android:background="@color/darkGreyColorDark"
+                android:inputType="none"
+                android:textAlignment="center"
+                android:textColor="?attr/textColor"
+                android:textColorHint="@color/lightColor" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pie_chart_messaging"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintTop_toBottomOf="@+id/go_to_daily_performance" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/track_my_performance_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/daily_performance_message_layout_margin"
-            android:layout_marginTop="@dimen/daily_performance_message_layout_margin"
-            android:layout_marginEnd="@dimen/daily_performance_message_layout_margin"
-            android:layout_marginBottom="35dp"
-            android:gravity="center"
-            android:text="@string/more_statistics_in_next_releases"
-            android:textAlignment="center"
-            android:textColor="?attr/textColor"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pie_chart_messaging"
-            tools:text="@string/refer_to_your_score_evolution_in_track_my_performance_via_the_drawer" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintTop_toBottomOf="@+id/notifications_vip_layout" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/all_notifications_title"
@@ -83,24 +98,21 @@
             app:layout_constraintStart_toStartOf="@+id/pie_chart_messaging"
             app:layout_constraintTop_toTopOf="@+id/pie_chart_messaging" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="0.5dp"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="300dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/view_2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            style="@style/BottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:alpha="0.70"
             android:background="?attr/backgroundColor"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/pie_chart_messaging"
-            app:layout_constraintTop_toTopOf="@+id/pie_chart_messaging" />
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="20dp"
+            app:itemIconTint="@color/bottom_navigation_color"
+            app:itemTextColor="@color/bottom_navigation_color"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/stats_tab_layout_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

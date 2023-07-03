@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/stats" />
+    <item
+        android:id="@+id/navigation_daily_stats"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/actions" />
+</menu>

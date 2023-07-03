@@ -195,7 +195,7 @@
     <string name="manage_my_screen_number_of_column_group">Exibição dos grupos</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Separar exibição de contatos</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Separar exibição dos contratos entre "Contatos domésticos" e "Grupos"</string>
-    <string name="manage_my_screen_toast_grid">Você selecionou %1$d de contatos por linha</string>
+    <string name="manage_my_screen_toast_grid">Você selecionou %1d de contatos por linha</string>
     <string name="manage_my_screen_toast_list"> "Lista" de visualização selecionada</string>
     <string name="manage_my_screen_toast_list_smaller">Vista de "Pacto" selecionada</string>
     <string name="manage_my_screen_searchbar_pos">Posição de bar de pesquisa</string>
@@ -496,12 +496,19 @@
     <string name="yellow_advice">Você pode perder mensagens importantes de vários contatos – recomendamos adicionar um ou mais VIPs</string>
     <string name="light_green_advice">Você pode ter mais VIPs para configurar - recomendamos comprar um pacote VIP</string>
     <string name="strong_green_advice">Ótimo trabalho, você definitivamente otimiza seu tempo! Para fazer ainda melhor, você pode querer personalizar seus VIPs</string>
+
     <string name="number_unprocessed_notifications">%1d notificações não processadas</string>
+    <string name="number_unprocessed_notifications_hint">Notificações não processadas</string>
     <string name="number_vip_notifications">%1d notificações VIP</string>
+    <string name="number_vip_notifications_hint">Notificações VIP</string>
+
     <string name="your_daily_performance">Seu desempenho diário</string>
     <string name="x_notifications_received">%1d Notificações recebidas</string>
     <string name="view_new_notifications">Ver</string>
     <string name="what_we_suggest">O que sugerimos :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Consulte a evolução da sua pontuação em « Acompanhe meu desempenho » através da gaveta</string>
     <string name="more_statistics_in_next_releases">Mais estatísticas serão adicionadas nos próximos lançamentos</string>
+    <string name="messages_with_number">%1d mensagems</string>
+    <string name="stats">Estatísticos</string>
+    <string name="actions">Ações</string>
 </resources>

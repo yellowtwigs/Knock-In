@@ -195,7 +195,7 @@
     <string name="manage_my_screen_number_of_column_group">Tampilkan grup</string>
     <string name="manage_my_screen_dissociate_number_of_column_title">Lepaskan tampilan kontak</string>
     <string name="manage_my_screen_dissociate_number_of_column_long_text">Lepaskan tampilan kontak antara "rumah-kontak" dan "grup"</string>
-    <string name="manage_my_screen_toast_grid">Anda telah memilih %1$d kontak per baris</string>
+    <string name="manage_my_screen_toast_grid">Anda telah memilih %1d kontak per baris</string>
     <string name="manage_my_screen_toast_list">Tampilan "senarai" terpilih</string>
     <string name="manage_my_screen_toast_list_smaller">Tampilan "kompak" dipilih</string>
 
@@ -497,12 +497,19 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="yellow_advice">Anda mungkin melewatkan pesan penting dari beberapa kontak.\n Sebaiknya tambahkan satu atau lebih VIP</string>
     <string name="light_green_advice">Anda mungkin memiliki lebih banyak VIP untuk dikonfigurasi.\n Sebaiknya beli paket VIP</string>
     <string name="strong_green_advice"> Kerja bagus, Anda pasti mengoptimalkan waktu Anda! Untuk melakukannya lebih baik lagi, Anda mungkin ingin mempersonalisasikan VIP Anda</string>
+
     <string name="number_unprocessed_notifications">%1d notifikasi belum diproses</string>
+    <string name="number_unprocessed_notifications_hint">Notifikasi belum diproses</string>
     <string name="number_vip_notifications">%1d Notifikasi VIP</string>
+    <string name="number_vip_notifications_hint">Notifikasi VIP</string>
+
     <string name="your_daily_performance">Performa Harian Anda</string>
     <string name="x_notifications_received">%1d Notifikasi diterima</string>
     <string name="view_new_notifications">Lihat</string>
     <string name="what_we_suggest">Apa yang kami sarankan :</string>
     <string name="refer_to_your_score_evolution_in_track_my_performance_via_the_drawer">Lihat evolusi skor Anda di « Lacak kinerja saya » melalui laci</string>
     <string name="more_statistics_in_next_releases">Lebih banyak statistik akan ditambahkan dalam rilis berikutnya</string>
+    <string name="messages_with_number">%1d Pesans</string>
+    <string name="stats">Statistik</string>
+    <string name="actions">Tindakan</string>
 </resources>
