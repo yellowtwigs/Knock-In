@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,9 +16,7 @@ import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemNotificationBinding
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 
-import java.text.SimpleDateFormat
 import java.util.ArrayList
-import java.util.Date
 
 class NotificationsListAdapter(
     private val context: Context, private val onClickedCallback: (NotificationsListViewState, String, String) -> Unit

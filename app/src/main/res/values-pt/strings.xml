@@ -32,9 +32,9 @@
 
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_in_app">Minhas compras</string>
-    <string name="left_drawer_notification_settings">Gerenciar minhas notificações</string>
-    <string name="teleworking_settings">As minhas configurações de teletrabalho</string>
-    <string name="left_drawer_statistics">Acompanhar meu desempenho</string>
+    <string name="left_drawer_notification_settings">Gerenciar notificações</string>
+    <string name="teleworking_settings">Teletrabalho settings</string>
+    <string name="left_drawer_statistics">Minha performance</string>
     <string name="left_drawer_home">Meus contatos</string>
     <string name="left_drawer_my_screen">Opções de exibição</string>
     <string name="left_drawer_import">Contatos importantes</string>
@@ -58,7 +58,7 @@
     <string name="filter_by">Filtro de notificação:</string>
     <string name="filter_by_all">Todas as notificações</string>
     <string name="filter_by_msg_apps">Mensagem</string>
-    <string name="notif_filtre_systeme">Sistema</string>
+    <string name="filter_by_only_system">Sistema</string>
     <string name="sort_by_date">Data e hora</string>
     <string name="sort_by_contact">Contato</string>
     <string name="main_toast_delete_contact">Você removeu um contato!</string>
@@ -497,8 +497,8 @@
     <string name="light_green_advice">Você pode ter mais VIPs para configurar - recomendamos comprar um pacote VIP</string>
     <string name="strong_green_advice">Ótimo trabalho, você definitivamente otimiza seu tempo! Para fazer ainda melhor, você pode querer personalizar seus VIPs</string>
 
-    <string name="number_unprocessed_notifications">%1d notificações não processadas</string>
-    <string name="number_unprocessed_notifications_hint">Notificações não processadas</string>
+    <string name="number_unprocessed_notifications">%1d novas notificações</string>
+    <string name="number_unprocessed_notifications_hint">Novas notificações</string>
     <string name="number_vip_notifications">%1d notificações VIP</string>
     <string name="number_vip_notifications_hint">Notificações VIP</string>
 
@@ -511,4 +511,13 @@
     <string name="messages_with_number">%1d mensagems</string>
     <string name="stats">Estatísticos</string>
     <string name="actions">Ações</string>
+    <string name="teleworking">Teletrabalho</string>
+    <string name="dashboard_daily">Diário</string>
+    <string name="dashboard_weekly">Semanalmente</string>
+    <string name="dashboard_monthly">Por mês</string>
+    <string name="filter_by_social_media">Redes sociais</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Signal</string>
+    <string name="filter_by_telegram">Telegrama</string>
+    <string name="popup_1_message">1 mensagem</string>
 </resources>

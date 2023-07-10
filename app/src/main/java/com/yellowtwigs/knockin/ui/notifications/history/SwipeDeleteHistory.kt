@@ -1,6 +1,5 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
-import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 

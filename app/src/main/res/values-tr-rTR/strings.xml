@@ -58,7 +58,7 @@
     <string name="filter_by">Bildirim filtresi:</string>
     <string name="filter_by_all">Tüm bildirimler</string>
     <string name="filter_by_msg_apps">Mesaj</string>
-    <string name="notif_filtre_systeme">Sistem</string>
+    <string name="filter_by_only_system">Sistem</string>
     <string name="sort_by_date">Tarih ve saat</string>
     <string name="sort_by_contact">İletişim</string>
     <string name="main_toast_delete_contact">Bir kişiyi kaldırdınız!</string>
@@ -497,8 +497,8 @@
     <string name="light_green_advice">Yapılandırılacak daha fazla VIP\'niz olabilir.\n Bir VIP paketi satın almanızı öneririz</string>
     <string name="strong_green_advice">Harika iş, kesinlikle zamanınızı optimize ediyorsunuz! Daha da iyisini yapmak için VIP\'lerinizi kişiselleştirmek isteyebilirsiniz</string>
 
-    <string name="number_unprocessed_notifications">%1d işlenmemiş bildirimler</string>
-    <string name="number_unprocessed_notifications_hint">Işlenmemiş bildirimler</string>
+    <string name="number_unprocessed_notifications">%1d yeni bildirimler</string>
+    <string name="number_unprocessed_notifications_hint">Yeni bildirimler</string>
     <string name="number_vip_notifications">%1d VIP bildirimleri</string>
     <string name="number_vip_notifications_hint">VIP bildirimleri</string>
 
@@ -511,4 +511,13 @@
     <string name="messages_with_number">%1d mesaj</string>
     <string name="stats">Istatistikler</string>
     <string name="actions">Hareketler</string>
+    <string name="teleworking">Uzaktan</string>
+    <string name="dashboard_daily">Günlük</string>
+    <string name="dashboard_weekly">Haftalık</string>
+    <string name="dashboard_monthly">Aylık</string>
+    <string name="filter_by_social_media">Sosyal medyaya</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Sinyal</string>
+    <string name="filter_by_telegram">Telgraf</string>
+    <string name="popup_1_message">1 mesaj</string>
 </resources>

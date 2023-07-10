@@ -58,7 +58,7 @@
     <string name="filter_by">Bộ lọc thông báo:</string>
     <string name="filter_by_all">Tất cả thông báo</string>
     <string name="filter_by_msg_apps">Tin nhắn</string>
-    <string name="notif_filtre_systeme">Hệ thống</string>
+    <string name="filter_by_only_system">Hệ thống</string>
     <string name="sort_by_date">Ngày và giờ</string>
     <string name="sort_by_contact">Liên hệ </string>
     <string name="main_toast_delete_contact">Bạn đã xóa một liên hệ!</string>
@@ -499,8 +499,8 @@
     <string name="light_green_advice">You may have more VIPs to configure.\n We recommend buying a VIP package</string>
     <string name="strong_green_advice">Great job, you definitely optimize your time!\n To do even better, you may want to personalize your VIPs</string>
 
-    <string name="number_unprocessed_notifications">%1d thông báo chưa được xử lý</string>
-    <string name="number_unprocessed_notifications_hint">Thông báo chưa được xử lý</string>
+    <string name="number_unprocessed_notifications">%1d thông báo mới</string>
+    <string name="number_unprocessed_notifications_hint">Thông báo mới</string>
     <string name="number_vip_notifications">%1d thông báo VIP</string>
     <string name="number_vip_notifications_hint">Thông báo VIP</string>
 
@@ -513,4 +513,13 @@
     <string name="messages_with_number">tin nhắn từ %1d</string>
     <string name="stats">Số liệu thống kê</string>
     <string name="actions">hành động</string>
+    <string name="teleworking">Cài đặt làm</string>
+    <string name="dashboard_daily">Hằng ngày</string>
+    <string name="dashboard_weekly">Hàng tuần</string>
+    <string name="dashboard_monthly">Hàng tháng</string>
+    <string name="filter_by_social_media">Mạng xã hội</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Tín hiệu</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 tin nhắn</string>
 </resources>

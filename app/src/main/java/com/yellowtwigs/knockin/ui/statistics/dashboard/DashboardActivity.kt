@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -29,6 +30,10 @@ import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsAct
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -61,6 +66,16 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 
         dataPieChart = binding.pieChartMessaging
 
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.allNotificationsTitle.isVisible = false
+            binding.pieChartMessaging.isVisible = false
+            delay(3500L)
+
+            binding.pieChartLoading.isVisible = false
+            binding.allNotificationsTitle.isVisible = true
+            binding.pieChartMessaging.isVisible = true
+        }
+
         setupToolbar()
         setupDrawerLayout()
         setupDataToView()
@@ -83,8 +98,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
                 dashboardViewModel.changeNewOrVipNotifications(isVIP)
                 binding.notificationsUnprocessedContent.setBackgroundColor(
                     resources.getColor(
-                        R.color.darkGreyColorDark,
-                        resources.newTheme()
+                        R.color.darkGreyColorDark, resources.newTheme()
                     )
                 )
                 binding.notificationsVipContent.setBackgroundColor(resources.getColor(R.color.darkGreyColor, resources.newTheme()))
@@ -241,11 +255,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 
         dataPieChart.setOnChartValueSelectedListener(this)
 
-//        seekBarX.setProgress(4);
-//        seekBarY.setProgress(10);
-
         dataPieChart.animateY(100, Easing.EaseInOutQuad)
-        // chart.spin(2000, 0, 360);
 
         val l = dataPieChart.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP

@@ -8,19 +8,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NotificationsDao {
 
-//    @Query("SELECT * FROM notifications_table WHERE platform = :platform")
-//    fun getNotificationByPlatform(platform: String): List<NotificationDB>
-//
-//    @Query("SELECT COUNT(*) FROM notifications_table WHERE datetime('now')- datetime(timestamp)<1")
-//    fun getNotificationSinceYesterday(): Int
-//
-//    @Query("SELECT * FROM notifications_table WHERE id = :id")
-//    fun getNotification(id: Int): NotificationDB
-
     //region ============================================= GET ==============================================
 
     @Query("SELECT * FROM notifications_table ORDER BY id DESC")
     fun getAllNotifications(): Flow<List<NotificationDB>>
+
+    @Query("SELECT * FROM notifications_table WHERE is_system = 0 ORDER BY id DESC")
+    fun getMessagingNotifications(): Flow<List<NotificationDB>>
+
+    @Query("SELECT * FROM notifications_table WHERE is_system = 1 ORDER BY id DESC")
+    fun getSystemNotifications(): Flow<List<NotificationDB>>
 
     @Query("SELECT * FROM notifications_table ORDER BY id DESC")
     fun getAllNotificationsList(): List<NotificationDB>

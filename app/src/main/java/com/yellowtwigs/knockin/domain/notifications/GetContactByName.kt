@@ -52,18 +52,36 @@ class GetContactByName @Inject constructor(private val contactsDao: ContactsDao)
                     cpt++
                 }
 
+                val nameList = arrayListOf<Char>()
+                val mailIdList = arrayListOf<Char>()
+
+                if (contact.mail_name != "") {
+                    name.toCharArray().forEach { char ->
+                        Log.i("GetNotification", "name - char: ${char}")
+                        Log.i("GetNotification", "char.isLetter() : ${char.isLetter()}")
+                        if (char.isLetter()) {
+                            nameList.add(char)
+                        }
+                    }
+                    contact.mail_name.toCharArray().forEach { char ->
+                        Log.i("GetNotification", "mail_name - char: ${char}")
+                        Log.i("GetNotification", "char.isLetter() : ${char.isLetter()}")
+                        if (char.isLetter()) {
+                            mailIdList.add(char)
+                        }
+                    }
+//                    Log.i("GetNotification", "GetContactByName - name : ${name.chars()}")
+//                    Log.i("GetNotification", "GetContactByName - contact.mail_name : ${contact.mail_name}")
+//                    Log.i("GetNotification", "GetContactByName - name == contact.mail_name : ${name == contact.mail_name}")
+                }
+
                 for (i in 0 until lastnameList.size) {
                     lastname += lastnameList[i]
                 }
 
-                if (contact.firstName + " " + contact.lastName == name ||
-                    contact.firstName == name || contact.lastName == name ||
-                    " " + contact.firstName + " " + contact.lastName == name ||
-                    name1 == contact.firstName + " " + contact.lastName ||
-                    contact.firstName == name1 || contact.lastName == name1
-                ) {
+                if (contact.firstName + " " + contact.lastName == name || contact.firstName == name || contact.lastName == name || " " + contact.firstName + " " + contact.lastName == name || name1 == contact.firstName + " " + contact.lastName || contact.firstName == name1 || contact.lastName == name1) {
                     contactDB = contact
-                } else if (contact.mail_name == name) {
+                } else if (contact.mail_name == name || nameList.isNotEmpty() && mailIdList.isNotEmpty() && mailIdList == nameList) {
                     contactDB = contact
 
                 } else if (lastname == contact.lastName && firstname == contact.firstName) {
@@ -93,10 +111,7 @@ class GetContactByName @Inject constructor(private val contactsDao: ContactsDao)
                                 cpt2++
                             }
 
-                            if (firstname == firstLetter + lastLetter ||
-                                firstname == firstLetter.lowercase() + lastLetter.lowercase() ||
-                                firstname == firstLetter + lastLetter.lowercase()
-                            ) {
+                            if (firstname == firstLetter + lastLetter || firstname == firstLetter.lowercase() + lastLetter.lowercase() || firstname == firstLetter + lastLetter.lowercase()) {
                                 contactDB = contact
                             }
 
@@ -129,9 +144,7 @@ class GetContactByName @Inject constructor(private val contactsDao: ContactsDao)
             }
             val name1 = String(array2.toCharArray())
             contacts.forEach { contact ->
-                if (contact.firstName == name && contact.lastName == "" || contact.firstName == "" && contact.lastName == name ||
-                    contact.firstName == name1 && contact.lastName == ""
-                ) {
+                if (contact.firstName == name && contact.lastName == "" || contact.firstName == "" && contact.lastName == name || contact.firstName == name1 && contact.lastName == "") {
                     contactDB = contact
                 }
             }
@@ -141,9 +154,7 @@ class GetContactByName @Inject constructor(private val contactsDao: ContactsDao)
                 var entireName = name.replace(name[0], ' ')
                 entireName = entireName.replace(name[entireName.length - 1], ' ')
 
-                if (' ' + contact.firstName + " " + contact.lastName + ' ' == entireName || ' ' +
-                    contact.firstName + ' ' == entireName || ' ' + contact.lastName + ' ' == entireName
-                ) {
+                if (' ' + contact.firstName + " " + contact.lastName + ' ' == entireName || ' ' + contact.firstName + ' ' == entireName || ' ' + contact.lastName + ' ' == entireName) {
                     contactDB = contact
                 }
             }

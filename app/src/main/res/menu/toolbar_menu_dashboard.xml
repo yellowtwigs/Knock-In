@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/sort"
-        android:icon="@drawable/ic_more_vert_black_24dp"
-        android:title="Daily"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter_by"
         app:showAsAction="ifRoom">
         <menu>
             <group android:checkableBehavior="single">
@@ -14,19 +14,19 @@
                     android:checked="true"
                     android:icon="@drawable/ic_daily"
                     android:orderInCategory="100"
-                    android:title="Daily"
+                    android:title="@string/dashboard_daily"
                     app:showAsAction="collapseActionView" />
                 <item
                     android:id="@+id/item_weekly"
                     android:icon="@drawable/ic_weekly"
                     android:orderInCategory="100"
-                    android:title="Weekly"
+                    android:title="@string/dashboard_weekly"
                     app:showAsAction="collapseActionView" />
                 <item
                     android:id="@+id/item_monthly"
                     android:icon="@drawable/ic_monthly"
                     android:orderInCategory="100"
-                    android:title="Monthly"
+                    android:title="@string/dashboard_monthly"
                     app:showAsAction="collapseActionView" />
             </group>
         </menu>

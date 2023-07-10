@@ -33,8 +33,8 @@
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_in_app">Мои покупки</string>
     <string name="left_drawer_notification_settings">Управление моими уведомлениями</string>
-    <string name="teleworking_settings">Мои настройки удаленной работы</string>
-    <string name="left_drawer_statistics">Отслеживайте мою производительность</string>
+    <string name="teleworking_settings">Настройка телеработы</string>
+    <string name="left_drawer_statistics">Мое выступление</string>
     <string name="left_drawer_home">Мои контакты</string>
     <string name="left_drawer_my_screen">Показать варианты</string>
     <string name="left_drawer_import">Импортировать контакты</string>
@@ -58,7 +58,7 @@
     <string name="filter_by">Фильтр уведомлений:</string>
     <string name="filter_by_all">Все уведомления</string>
     <string name="filter_by_msg_apps">Сообщение</string>
-    <string name="notif_filtre_systeme">Система</string>
+    <string name="filter_by_only_system">Система</string>
     <string name="sort_by_date">Дата и время</string>
     <string name="sort_by_contact">Контакт</string>
     <string name="main_toast_delete_contact">Вы удалили контакт!</string>
@@ -498,8 +498,8 @@
     <string name="light_green_advice">У вас может быть больше VIP для настройки.\n Pекомендуем купить пакет VIP</string>
     <string name="strong_green_advice">Отличная работа, вы определенно оптимизируете свое время! Чтобы добиться еще большего успеха, вы можете персонализировать своих VIP-клиентов</string>
 
-    <string name="number_unprocessed_notifications">%1d необработанных уведомлений</string>
-    <string name="number_unprocessed_notifications_hint">Hеобработанных уведомлений</string>
+    <string name="number_unprocessed_notifications">%1d Новые уведомления</string>
+    <string name="number_unprocessed_notifications_hint">Новые уведомления</string>
     <string name="number_vip_notifications">%1d VIP-уведомления</string>
     <string name="number_vip_notifications_hint">VIP-уведомления</string>
 
@@ -512,5 +512,14 @@
     <string name="messages_with_number">%1d Сообщение</string>
     <string name="stats">статистика</string>
     <string name="actions">Действия</string>
+    <string name="teleworking">телеработы</string>
+    <string name="dashboard_daily">Ежедневно</string>
+    <string name="dashboard_weekly">Еженедельно</string>
+    <string name="dashboard_monthly">Ежемесячно</string>
+    <string name="filter_by_social_media">Фильтр по социальным сетям</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Signal</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 cообщение</string>
 
 </resources>

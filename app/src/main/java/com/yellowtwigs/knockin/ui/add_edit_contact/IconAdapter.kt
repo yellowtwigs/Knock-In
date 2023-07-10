@@ -16,7 +16,7 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 
 class IconAdapter(private val context: Context) :
     RecyclerView.Adapter<IconAdapter.ViewHolder>() {
-    private val iconeList: IntArray
+    private val iconsList: IntArray
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -25,11 +25,11 @@ class IconAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        holder.imageViewIcone.setImageResource(iconeList[position])
+        holder.imageViewIcone.setImageResource(iconsList[position])
         holder.iconeLayout.setOnClickListener {
             if (context is EditContactActivity) {
-                val drawable = context.getDrawable(iconeList[position])
-                var bitmap = if (drawable!!.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
+                val drawable = context.getDrawable(iconsList[position])
+                val bitmap = if (drawable!!.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
                     Bitmap.createBitmap(
                         1,
                         1,
@@ -48,7 +48,7 @@ class IconAdapter(private val context: Context) :
                 drawable.draw(canvas)
                 context.addContactIcon(bitmap)
             } else if (context is AddNewContactActivity) {
-                val drawable = context.getDrawable(iconeList[position])
+                val drawable = context.getDrawable(iconsList[position])
                 val bitmap = if (drawable!!.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
                     Bitmap.createBitmap(
                         1,
@@ -71,7 +71,7 @@ class IconAdapter(private val context: Context) :
     }
 
     override fun getItemCount(): Int {
-        return iconeList.size
+        return iconsList.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -86,9 +86,9 @@ class IconAdapter(private val context: Context) :
 
     init {
         val array = context.resources.obtainTypedArray(R.array.icone_ressource)
-        iconeList = IntArray(array.length())
+        iconsList = IntArray(array.length())
         for (i in 0 until array.length()) {
-            iconeList[i] = array.getResourceId(i, 0)
+            iconsList[i] = array.getResourceId(i, 0)
         }
     }
 }

@@ -36,7 +36,10 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/filter_by_all"
-                    android:title="@string/filter_by_all" />
+                    android:title="@string/filter_by_only_system" />
+                <item
+                    android:id="@+id/filter_by_social_media"
+                    android:title="@string/filter_by_social_media" />
                 <item
                     android:id="@+id/filter_by_msg_apps"
                     android:title="@string/filter_by_msg_apps" />
@@ -52,19 +55,13 @@
                     android:title="@string/list_contact_item_whatsapp" />
                 <item
                     android:id="@+id/facebook_filter"
-                    android:title="Facebook" />
+                    android:title="@string/filter_by_messenger" />
                 <item
                     android:id="@+id/signal_filter"
-                    android:title="Signal" />
+                    android:title="@string/filter_by_signal" />
                 <item
                     android:id="@+id/telegram_filter"
-                    android:title="Telegram" />
-                <item
-                    android:id="@+id/discord_filter"
-                    android:title="Discord" />
-                <item
-                    android:id="@+id/viber_filter"
-                    android:title="Viber" />
+                    android:title="@string/filter_by_telegram" />
             </group>
         </menu>
     </item>

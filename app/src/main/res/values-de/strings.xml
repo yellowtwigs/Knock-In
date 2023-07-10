@@ -33,8 +33,8 @@
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_in_app">Meine einkäufe</string>
     <string name="left_drawer_notification_settings">Meine benachrichtigungen verwalten</string>
-    <string name="teleworking_settings">Meine telearbeitseinstellungen</string>
-    <string name="left_drawer_statistics">Verfolgen sie meine leistung</string>
+    <string name="teleworking_settings">Telearbeitsparameter</string>
+    <string name="left_drawer_statistics">Mein Auftritt</string>
     <string name="left_drawer_home">Meine kontakte</string>
     <string name="left_drawer_my_screen">Anzeigeoptionen</string>
     <string name="left_drawer_import">Kontakte importieren</string>
@@ -58,7 +58,7 @@
     <string name="filter_by">Filtern nach :</string>
     <string name="filter_by_all">Anwendungsbenachrichtigung</string>
     <string name="filter_by_msg_apps">Benachrichtigung</string>
-    <string name="notif_filtre_systeme">Systembenachrichtigung</string>
+    <string name="filter_by_only_system">System</string>
     <string name="sort_by_date">Datum und Uhrzeit</string>
     <string name="sort_by_contact">Kontakt</string>
     <string name="main_toast_delete_contact">Sie haben gerade einen Kontakt gelöscht!</string>
@@ -498,10 +498,10 @@
     <string name="light_green_advice">Möglicherweise müssen Sie weitere VIPs konfigurieren.\n Wir empfehlen den Kauf eines VIP-Pakets</string>
     <string name="strong_green_advice">Tolle Arbeit, Sie optimieren definitiv Ihre Zeit! Um es noch besser zu machen, möchten Sie vielleicht Ihre VIPs personalisieren</string>
 
-    <string name="number_unprocessed_notifications">%1d unverarbeitete Benachrichtigungen</string>
-    <string name="number_unprocessed_notifications_hint">Unverarbeitete Benachrichtigungen</string>
+    <string name="number_unprocessed_notifications">%1d neue Benachrichtigungen</string>
+    <string name="number_unprocessed_notifications_hint">Neue Benachrichtigungen</string>
     <string name="number_vip_notifications">%1d VIP-Benachrichtigungen</string>
-    <string name="number_vip_notifications_hint">%1d VIP-Benachrichtigungen</string>
+    <string name="number_vip_notifications_hint">VIP-Benachrichtigungen</string>
     <string name="your_daily_performance">Ihre tägliche Leistung</string>
     <string name="x_notifications_received">%1d erhaltene benachrichtigungen</string>
     <string name="view_new_notifications">Neue</string>
@@ -511,4 +511,13 @@
     <string name="messages_with_number">%1d Nachrichts</string>
     <string name="stats">Statistiken</string>
     <string name="actions">Aktionen</string>
+    <string name="teleworking" translatable="false">Telearbeits</string>
+    <string name="dashboard_daily">Täglich</string>
+    <string name="dashboard_weekly">Wöchentlich</string>
+    <string name="dashboard_monthly">Monatlich</string>
+    <string name="filter_by_social_media">Sozialen Medien</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Signal</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 nachricht</string>
 </resources>

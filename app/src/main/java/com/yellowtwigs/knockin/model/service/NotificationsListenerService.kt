@@ -43,6 +43,8 @@ import com.yellowtwigs.knockin.utils.Converter.convertTimeToHour
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToMinutes
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToStartTime
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
+import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
+import com.yellowtwigs.knockin.utils.NotificationsGesture.isSocialMedia
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -88,15 +90,19 @@ class NotificationsListenerService : NotificationListenerService() {
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
+        context = applicationContext
         sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         durationPreferences = getSharedPreferences("Alarm_Notif_Duration", Context.MODE_PRIVATE)
-
 
         var sbp = StatusBarParcelable(sbn, 0)
         if (sharedPreferences.getBoolean("serviceNotif", true) && messagesNotUseless(sbp, resources)) {
             sbp.castName()
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
+//            Log.i("GetNotification", "name : $name")
+//            Log.i("GetNotification", "message : $message")
+//            Log.i("GetNotification", "sbp.appNotifier : ${sbp.appNotifier}")
+//            Log.i("GetNotification", "sbp.appNotifier : ${(sbp.appNotifier?.let { convertPackageToString(it, this) })}")
 
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
@@ -119,6 +125,14 @@ class NotificationsListenerService : NotificationListenerService() {
                             }
 
                             val time = System.currentTimeMillis()
+                            val isSystem = if (sbp.appNotifier?.let { isMessagingApp(it, applicationContext) } == true) {
+                                0
+                            } else if (sbp.appNotifier?.let { isSocialMedia(it) } == true) {
+                                0
+                            } else {
+                                1
+                            }
+
                             val notification = if (contact != null) {
                                 sbp = StatusBarParcelable(sbn, contact.id)
                                 NotificationDB(
@@ -134,7 +148,7 @@ class NotificationsListenerService : NotificationListenerService() {
                                     phoneNumber = contact.listOfPhoneNumbers[0],
                                     mail = contact.listOfMails[0],
                                     messengerId = contact.messengerId,
-                                    isSystem = 0
+                                    isSystem = isSystem
                                 )
                             } else {
                                 NotificationDB(
@@ -150,7 +164,7 @@ class NotificationsListenerService : NotificationListenerService() {
                                     phoneNumber = sbp.statusBarNotificationInfo["android.title"].toString(),
                                     mail = sbp.statusBarNotificationInfo["android.title"].toString(),
                                     messengerId = "",
-                                    isSystem = 0
+                                    isSystem = isSystem
                                 )
                             }
 
@@ -167,44 +181,24 @@ class NotificationsListenerService : NotificationListenerService() {
                     }
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
-                        notificationsListenerUseCases.apply {
-                            if (!checkDuplicateNotificationUseCase.invoke(
-                                    NotificationDB(
-                                        0,
-                                        sbp.tickerText.toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.text"].toString(),
-                                        sbp.appNotifier!!,
-                                        System.currentTimeMillis(),
-                                        0,
-                                        0,
-                                        0,
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        "",
-                                        1
-                                    )
-                                )
-                            ) {
-                                saveNotification.invoke(
-                                    NotificationDB(
-                                        0,
-                                        sbp.tickerText.toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.text"].toString(),
-                                        sbp.appNotifier!!,
-                                        System.currentTimeMillis(),
-                                        0,
-                                        0,
-                                        0,
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        "",
-                                        1
-                                    )
-                                )
-                            }
-                        }
+
+                        notificationsListenerUseCases.saveNotification.invoke(
+                            NotificationDB(
+                                0,
+                                sbp.tickerText.toString(),
+                                sbp.statusBarNotificationInfo["android.title"].toString(),
+                                sbp.statusBarNotificationInfo["android.text"].toString(),
+                                sbp.appNotifier!!,
+                                System.currentTimeMillis(),
+                                0,
+                                0,
+                                0,
+                                sbp.statusBarNotificationInfo["android.title"].toString(),
+                                sbp.statusBarNotificationInfo["android.title"].toString(),
+                                "",
+                                1
+                            )
+                        )
                     }
                 }
             }
@@ -417,7 +411,7 @@ class NotificationsListenerService : NotificationListenerService() {
                 })
                 recyclerView?.adapter = adapterNotifications
 
-                numberOfMessages?.text = "${popupNotificationViewStates.size} messages"
+                numberOfMessages?.text = context?.getString(R.string.messages_with_number, popupNotificationViewStates.size)
             }
         }
     }
@@ -446,7 +440,7 @@ class NotificationsListenerService : NotificationListenerService() {
 
         numberOfMessages = popupView?.findViewById(R.id.number_of_messages)
 
-        numberOfMessages?.text = "1 message"
+        numberOfMessages?.text = getString(R.string.popup_1_message)
 
         if (windowManager != null && popupView != null) {
             adapterNotifications = PopupNotificationsListAdapter(
@@ -620,6 +614,7 @@ class NotificationsListenerService : NotificationListenerService() {
         val popupNotificationViewStates = arrayListOf<PopupNotificationViewState>()
         var adapterNotifications: PopupNotificationsListAdapter? = null
         private var recyclerView: RecyclerView? = null
+        var context: Context? = null
 
         fun deleteItem(position: Int) {
             if (popupNotificationViewStates.size > position) {
@@ -646,9 +641,9 @@ class NotificationsListenerService : NotificationListenerService() {
             }
 
             if (popupNotificationViewStates.size == 1) {
-                numberOfMessages?.text = "1 message"
+                numberOfMessages?.text = context?.getString(R.string.popup_1_message)
             } else {
-                numberOfMessages?.text = "${popupNotificationViewStates.size} messages"
+                numberOfMessages?.text = context?.getString(R.string.messages_with_number, popupNotificationViewStates.size)
             }
             alarmSound?.stop()
         }

@@ -49,6 +49,7 @@ object NotificationsGesture {
     const val TELEGRAM_APP_NAME = "Telegram"
 
     const val KNOCKIN_PACKAGE = "com.yellowtwigs.Knockin.notification"
+    const val KNOCKIN_NAME = "Knockin"
 
     const val INSTAGRAM_PACKAGE = "com.instagram.android"
     private const val DISCORD_PACKAGE = "com.discord"
@@ -61,7 +62,9 @@ object NotificationsGesture {
     private const val YOUTUBE_PACKAGE = "com.google.android.youtube"
     private const val GOOGLE_PACKAGE = "com.google.android.googlequicksearchbox"
     private const val SCREEN_RECORDER = "com.huawei.screenrecorder"
+
     const val LINKEDIN_PACKAGE = "com.linkedin.android"
+    const val LINKEDIN_NAME = "Linkedin"
 
     const val TWITTER_PACKAGE = "com.twitter.android"
     const val TWITTER_APP_NAME = "Twitter"
@@ -87,12 +90,13 @@ object NotificationsGesture {
             DISCORD_PACKAGE -> return "Discord"
             TIKTOK_PACKAGE -> return "Tiktok"
             SNAPCHAT_PACKAGE -> return "Snapchat"
-            REDDIT_PACKAGE -> return "Reddit"
             VIBER_PACKAGE -> return "Viber"
             YOUTUBE_PACKAGE -> return "YouTube"
-            GOOGLE_PACKAGE -> return "Google"
-            SCREEN_RECORDER -> return "Screen Recorder"
+            LINKEDIN_PACKAGE -> return LINKEDIN_NAME
+            SKYPE_PACKAGE -> return "Skype"
+            REDDIT_PACKAGE -> return "Reddit"
 
+            KNOCKIN_PACKAGE -> return KNOCKIN_NAME
             TWITTER_PACKAGE -> return TWITTER_APP_NAME
             else -> return ""
         }
@@ -130,8 +134,6 @@ object NotificationsGesture {
 
     fun isMessagingApp(packageName: String, context: Context): Boolean {
         return when (packageName) {
-            FACEBOOK_PACKAGE -> true
-            MESSENGER_PACKAGE -> true
             WHATSAPP_PACKAGE -> true
             GMAIL_PACKAGE -> true
             OUTLOOK_PACKAGE -> true
@@ -140,13 +142,21 @@ object NotificationsGesture {
             KNOCKIN_PACKAGE -> true
             SIGNAL_PACKAGE -> true
             TELEGRAM_PACKAGE -> true
+            MESSAGES_PACKAGE -> true
+            VIBER_PACKAGE -> true
+            else -> false
+        }
+    }
+
+    fun isSocialMedia(packageName: String): Boolean {
+        return when (packageName) {
+            FACEBOOK_PACKAGE -> true
+            KNOCKIN_PACKAGE -> true
             INSTAGRAM_PACKAGE -> true
             DISCORD_PACKAGE -> true
             TIKTOK_PACKAGE -> true
             SNAPCHAT_PACKAGE -> true
             REDDIT_PACKAGE -> true
-            MESSAGES_PACKAGE -> true
-            VIBER_PACKAGE -> true
             TWITTER_PACKAGE -> true
             LINKEDIN_PACKAGE -> true
             else -> false

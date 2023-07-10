@@ -46,10 +46,10 @@
                 android:id="@+id/notifications_unprocessed_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/darkGreyColor"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:hint="@string/number_unprocessed_notifications_hint"
-                android:background="@color/darkGreyColor"
                 android:inputType="none"
                 android:textColor="?attr/textColor"
                 android:textColorHint="@color/colorPrimary" />
@@ -70,10 +70,10 @@
                 android:id="@+id/notifications_vip_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/darkGreyColorDark"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:hint="@string/number_vip_notifications_hint"
-                android:background="@color/darkGreyColorDark"
                 android:inputType="none"
                 android:textAlignment="center"
                 android:textColor="?attr/textColor"
@@ -87,6 +87,17 @@
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintTop_toBottomOf="@+id/notifications_vip_layout" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/pie_chart_loading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="@+id/pie_chart_messaging"
+            app:layout_constraintEnd_toEndOf="@+id/pie_chart_messaging"
+            app:layout_constraintStart_toStartOf="@+id/pie_chart_messaging"
+            app:layout_constraintTop_toTopOf="@+id/pie_chart_messaging" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/all_notifications_title"

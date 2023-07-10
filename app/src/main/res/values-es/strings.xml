@@ -32,9 +32,9 @@
 
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_in_app">Mis compras</string>
-    <string name="left_drawer_notification_settings">Administrar mis notificaciones</string>
-    <string name="teleworking_settings">Mi configuración de teletrabajo</string>
-    <string name="left_drawer_statistics">Seguimiento de mi rendimiento</string>
+    <string name="left_drawer_notification_settings">Notificación ajustes</string>
+    <string name="teleworking_settings">Ajustes de teletrabajo</string>
+    <string name="left_drawer_statistics">Mi rendimiento</string>
     <string name="left_drawer_home">Mis contactos</string>
     <string name="left_drawer_my_screen">Opciones de pantalla</string>
     <string name="left_drawer_import">Importar contactos</string>
@@ -58,7 +58,7 @@
     <string name="filter_by">Filtrar notificaciones por:</string>
     <string name="filter_by_all">Todas las notificaciones</string>
     <string name="filter_by_msg_apps">Mensaje</string>
-    <string name="notif_filtre_systeme">Sistema</string>
+    <string name="filter_by_only_system">Sistema</string>
     <string name="sort_by_date">Fecha y hora</string>
     <string name="sort_by_contact">Contactos</string>
     <string name="main_toast_delete_contact"> Contacto borrado! </string>
@@ -516,4 +516,13 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="messages_with_number">%1d mensajes</string>
     <string name="stats">Estadísticas</string>
     <string name="actions">Comportamiento</string>
+    <string name="teleworking">Teletrabajo</string>
+    <string name="dashboard_daily">A diario</string>
+    <string name="dashboard_weekly">Semanalmente</string>
+    <string name="dashboard_monthly">Mensual</string>
+    <string name="filter_by_social_media">Redes sociales</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Signal</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 mensaje</string>
 </resources>

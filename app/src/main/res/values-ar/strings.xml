@@ -59,7 +59,7 @@
     <string name="filter_by">مصنف بواسطة :</string>
     <string name="filter_by_all">جميع الإخطارات</string>
     <string name="filter_by_msg_apps">اشعارات الرسائل</string>
-    <string name="notif_filtre_systeme">اشعارات النظام</string>
+    <string name="filter_by_only_system">اشعارات النظام</string>
     <string name="sort_by_date">التاريخ و الساعة</string>
     <string name="sort_by_contact">جهات الاتصال</string>
     <string name="main_toast_delete_contact">لقد قمت للتو بحذف جهة اتصال !</string>
@@ -512,4 +512,13 @@
     <string name="messages_with_number">%1d سالة من</string>
     <string name="stats">احصائيات</string>
     <string name="actions">أجراءات</string>
+    <string name="teleworking" translatable="false">بعد الخاصة بي</string>
+    <string name="dashboard_daily">يوميًا</string>
+    <string name="dashboard_weekly">أسبوعي</string>
+    <string name="dashboard_monthly">شهريا</string>
+    <string name="filter_by_social_media">الشبكات الاجتماعية</string>
+    <string name="filter_by_messenger">ماسنجر فيسبوك</string>
+    <string name="filter_by_signal">إشارة</string>
+    <string name="filter_by_telegram">تيليجرام</string>
+    <string name="popup_1_message">1 رسالة </string>
 </resources>

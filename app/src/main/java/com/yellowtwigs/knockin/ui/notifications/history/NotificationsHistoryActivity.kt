@@ -4,20 +4,16 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -35,18 +31,14 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
-import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 @AndroidEntryPoint
 class NotificationsHistoryActivity : AppCompatActivity() {
@@ -99,7 +91,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
         saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the NotificationsHistoryActivity")
 
-        //region ======================================== Listeners =========================================
+        //region ============================================================ LISTENERS  ============================================================
 
         binding.apply {
             floatingActionButton.setOnClickListener {
@@ -119,7 +111,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         //endregion
     }
 
-    //region =========================================== TOOLBAR ============================================
+    //region ================================================================ TOOLBAR ===============================================================
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbarMenu)
@@ -241,6 +233,12 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_all)
             }
+            R.id.filter_by_social_media -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.filter_by_social_media)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.filter_by_social_media)
+            }
             R.id.filter_by_msg_apps -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.filter_by_msg_apps)
                 editorFilterBy.apply()
@@ -283,25 +281,13 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.telegram_filter)
             }
-            R.id.discord_filter -> {
-                editorFilterBy.putInt("Notifications_Filter_By", R.id.discord_filter)
-                editorFilterBy.apply()
-                item.isChecked = true
-                notificationsListViewModel.setFilterBy(R.id.discord_filter)
-            }
-            R.id.viber_filter -> {
-                editorFilterBy.putInt("Notifications_Filter_By", R.id.viber_filter)
-                editorFilterBy.apply()
-                item.isChecked = true
-                notificationsListViewModel.setFilterBy(R.id.viber_filter)
-            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     //endregion
 
-    //region ======================================== DRAWER LAYOUT =========================================
+    //region ============================================================ DRAWER LAYOUT =============================================================
 
     private fun setupDrawerLayout() {
         binding.navView.apply {
@@ -439,9 +425,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         binding.recyclerView.apply {
             this.adapter = notificationsAdapter
 
-            notificationsListViewModel.getAllNotifications().observe(
-                this@NotificationsHistoryActivity
-            ) { notificationsHistoryViewState ->
+            notificationsListViewModel.notificationsListViewStateLiveData.observe(this@NotificationsHistoryActivity) { notificationsHistoryViewState ->
                 notificationsAdapter.submitList(null)
                 notificationsAdapter.submitList(notificationsHistoryViewState.list)
 

@@ -61,7 +61,7 @@
     <string name="filter_by">Notification filter:</string>
     <string name="filter_by_all">All Notifications</string>
     <string name="filter_by_msg_apps">Messaging Apps</string>
-    <string name="notif_filtre_systeme">System</string>
+    <string name="filter_by_only_system">System</string>
     <string name="sort_by_date">Date and time</string>
     <string name="sort_by_contact">Contact</string>
     <string name="main_toast_delete_contact"> You removed a contact! </string>
@@ -487,7 +487,7 @@
     <string name="in_app_popup_apps_support_title">Number of apps support reached</string>
     <string name="messenger_identifier_title">Messenger Identifier</string>
     <string name="messenger_identifier_message">Corresponds to the identifier visible on the link of a conversation on the Messenger.com site (or facebook.com, if you authorize messenger from your facebook page)</string>
-    <string name="teleworking" translatable="false">Teleworking</string>
+    <string name="teleworking">Teleworking</string>
     <string name="activate_teleworking_mode">Activate Teleworking mode</string>
     <string name="modify">Modify</string>
     <string name="work_schedule_title">Work schedule (Monday - Friday)</string>
@@ -532,4 +532,12 @@
     <string name="messages_with_number">%1d messages</string>
     <string name="stats">Stats</string>
     <string name="actions">Actions</string>
+    <string name="dashboard_daily">Daily</string>
+    <string name="dashboard_weekly">Weekly</string>
+    <string name="dashboard_monthly">Monthly</string>
+    <string name="filter_by_social_media">Social media</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Signal</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 message</string>
 </resources>

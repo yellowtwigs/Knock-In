@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.repositories.notifications
 import androidx.lifecycle.asLiveData
 import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NotificationsRepositoryImpl @Inject constructor(private val dao: NotificationsDao) :
@@ -10,6 +11,9 @@ class NotificationsRepositoryImpl @Inject constructor(private val dao: Notificat
 
     override fun getAllNotifications() = dao.getAllNotifications().asLiveData()
     override fun getAllNotificationsList() = dao.getAllNotificationsList()
+
+    override fun getMessagingNotifications() = dao.getMessagingNotifications()
+    override fun getSystemNotifications() = dao.getSystemNotifications()
 
     override suspend fun insertNotification(notification: NotificationDB) {
         dao.insertNotification(notification)

@@ -33,8 +33,8 @@
     <!-- region Left Drawer Titles -->
     <string name="left_drawer_in_app">I miei acquisti</string>
     <string name="left_drawer_notification_settings">Gestisci le mie notifiche</string>
-    <string name="teleworking_settings">Le mie impostazioni di telelavoro</string>
-    <string name="left_drawer_statistics">Tieni traccia mie prestazioni</string>
+    <string name="teleworking_settings">Parametri del telelavoro</string>
+    <string name="left_drawer_statistics">La mia performance</string>
     <string name="left_drawer_home">Miei contatti</string>
     <string name="left_drawer_my_screen">Opzioni di visualizzazione</string>
     <string name="left_drawer_import">Importa contatti</string>
@@ -58,7 +58,7 @@
     <string name="filter_by">Filtro notifiche:</string>
     <string name="filter_by_all">Tutte le notifiche</string>
     <string name="filter_by_msg_apps">Messaggio</string>
-    <string name="notif_filtre_systeme">Sistema</string>
+    <string name="filter_by_only_system">Sistema</string>
     <string name="sort_by_date">Data e ora</string>
     <string name="sort_by_contact">Contatto</string>
     <string name="main_toast_delete_contact"> Hai rimosso un contatto </string>
@@ -497,8 +497,8 @@
     <string name="light_green_advice">Potresti avere più VIP da configurare: ti consigliamo di acquistare un pacchetto VIP</string>
     <string name="strong_green_advice">Ottimo lavoro, ottimizzi sicuramente il tuo tempo! Per fare ancora meglio, potresti voler personalizzare i tuoi VIP </string>
 
-    <string name="number_unprocessed_notifications">%1d notifiche non elaborate</string>
-    <string name="number_unprocessed_notifications_hint">Notifiche non elaborate</string>
+    <string name="number_unprocessed_notifications">%1d nuove notifiche</string>
+    <string name="number_unprocessed_notifications_hint">Nuove notifiche</string>
     <string name="number_vip_notifications">%1d Notifiche VIP</string>
     <string name="number_vip_notifications_hint">Notifiche VIP</string>
 
@@ -511,4 +511,13 @@
     <string name="messages_with_number">%1d Messaggio</string>
     <string name="stats">Statistiche</string>
     <string name="actions">Azioni</string>
+    <string name="teleworking" translatable="false">Telelavoro</string>
+    <string name="dashboard_daily">Quotidiano</string>
+    <string name="dashboard_weekly">Settimanalmente</string>
+    <string name="dashboard_monthly">Mensile</string>
+    <string name="filter_by_social_media">Social media</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Signal</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 messaggio</string>
 </resources>

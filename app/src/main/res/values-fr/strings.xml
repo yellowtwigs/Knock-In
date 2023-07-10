@@ -61,7 +61,7 @@
     <string name="filter_by">Filtrer par :</string>
     <string name="filter_by_all">Toutes les notifications</string>
     <string name="filter_by_msg_apps">Applications de Message</string>
-    <string name="notif_filtre_systeme">Notification du système</string>
+    <string name="filter_by_only_system">Système</string>
     <string name="sort_by_date">Date et heure</string>
     <string name="sort_by_contact">Contact</string>
     <string name="main_toast_delete_contact">Vous venez de supprimer un contact !</string>
@@ -515,4 +515,13 @@
     <string name="messages_with_number">%1d messages</string>
     <string name="stats">Statistiques</string>
     <string name="actions">Actions</string>
+    <string name="teleworking" translatable="false">Télétravail</string>
+    <string name="dashboard_daily">Quotidien</string>
+    <string name="dashboard_weekly">Hebdomadaire</string>
+    <string name="dashboard_monthly">Mensuel</string>
+    <string name="filter_by_social_media">Réseaux sociaux</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Signal</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 message</string>
 </resources>

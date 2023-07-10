@@ -58,7 +58,7 @@
     <string name="filter_by">Filter notifikasi:</string>
     <string name="filter_by_all">Semua notifikasi</string>
     <string name="filter_by_msg_apps">Pesan</string>
-    <string name="notif_filtre_systeme">Sistem</string>
+    <string name="filter_by_only_system">Sistem</string>
     <string name="sort_by_date">Tanggal dan waktucomment</string>
     <string name="sort_by_contact">Hubungan</string>
     <string name="main_toast_delete_contact">Kau menghilangkan kontak!</string>
@@ -501,8 +501,8 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="light_green_advice">Anda mungkin memiliki lebih banyak VIP untuk dikonfigurasi.\n Sebaiknya beli paket VIP</string>
     <string name="strong_green_advice"> Kerja bagus, Anda pasti mengoptimalkan waktu Anda! Untuk melakukannya lebih baik lagi, Anda mungkin ingin mempersonalisasikan VIP Anda</string>
 
-    <string name="number_unprocessed_notifications">%1d notifikasi belum diproses</string>
-    <string name="number_unprocessed_notifications_hint">Notifikasi belum diproses</string>
+    <string name="number_unprocessed_notifications">%1d notifikasi baru</string>
+    <string name="number_unprocessed_notifications_hint">Notifikasi baru</string>
     <string name="number_vip_notifications">%1d Notifikasi VIP</string>
     <string name="number_vip_notifications_hint">Notifikasi VIP</string>
 
@@ -515,4 +515,13 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="messages_with_number">%1d Pesans</string>
     <string name="stats">Statistik</string>
     <string name="actions">Tindakan</string>
+    <string name="teleworking" translatable="false">Teleworking</string>
+    <string name="dashboard_daily">Sehari-hari</string>
+    <string name="dashboard_weekly">Mingguan</string>
+    <string name="dashboard_monthly">Bulanan</string>
+    <string name="filter_by_social_media">Media sosial</string>
+    <string name="filter_by_messenger">Messenger</string>
+    <string name="filter_by_signal">Sinyal</string>
+    <string name="filter_by_telegram">Telegram</string>
+    <string name="popup_1_message">1 pesan</string>
 </resources>

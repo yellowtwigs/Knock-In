@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.ui.statistics.dashboard
 
 import android.app.Application
 import android.graphics.Color
+import android.os.Build
 import android.provider.Telephony
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
@@ -330,7 +331,12 @@ class DashboardViewModel @Inject constructor(
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val date = LocalDateTime.now().format(formatter)
 
-            val notificationDate = SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))
+            val configuration = application.resources.configuration
+            val notificationDate = if (configuration.locales.get(0).language == "ar") {
+                translateToEnglish(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))) ?: date
+            } else {
+                SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))
+            }
 
             val dateToday = date?.split("-")
             val notificationDateToday = notificationDate.split("-")
@@ -359,7 +365,12 @@ class DashboardViewModel @Inject constructor(
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val date = LocalDateTime.now().format(formatter)
 
-            val notificationDate = SimpleDateFormat("yyyy-MM-dd").format(Date(timestamp))
+            val configuration = application.resources.configuration
+            val notificationDate = if (configuration.locales.get(0).language == "ar") {
+                translateToEnglish(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))) ?: date
+            } else {
+                SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))
+            }
 
             val dateToday = date?.split("-")
             val notificationDateToday = notificationDate.split("-")
@@ -552,7 +563,15 @@ class DashboardViewModel @Inject constructor(
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val date = LocalDateTime.now().format(formatter)
 
-            val notificationDate = SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))
+            val configuration = application.resources.configuration
+            val notificationDate = if (configuration.locales.get(0).language == "ar") {
+                translateToEnglish(SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))) ?: date
+            } else {
+                SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))
+            }
+
+            Log.i("GetNotification", "date : ${date}")
+            Log.i("GetNotification", "notificationDate : ${notificationDate}")
 
             val dateToday = date?.split("-")
             val notificationDateToday = notificationDate.split("-")
@@ -576,6 +595,19 @@ class DashboardViewModel @Inject constructor(
             Log.i("GetLocalDateTime", "Exception : ${e}")
         }
         return false
+    }
+
+    private fun translateToEnglish(arabicDateTime: String): String? {
+        try {
+            val arabicFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale("ar"))
+            val arabicDate = arabicFormat.parse(arabicDateTime)
+            val englishFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+            return arabicDate?.let { englishFormat.format(it) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return ""
     }
 
     fun changeNewOrVipNotifications(value: Boolean) {
