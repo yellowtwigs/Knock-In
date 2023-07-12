@@ -12,16 +12,46 @@ import android.util.Log
 import android.util.Patterns
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithFlag
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity.Companion.PHONE_CALL_REQUEST_CODE
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.utils.Converter.converter06To33
 import java.sql.DriverManager
 import java.util.*
 
 object ContactGesture {
+
+    fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
+        val fullName = if (contact.firstName.isEmpty() || contact.firstName.isBlank() || contact.firstName == " ") {
+            contact.lastName.uppercase()
+        } else if (contact.lastName.isEmpty() || contact.lastName.isBlank() || contact.lastName == " ") {
+            contact.firstName.uppercase()
+        } else {
+            "${contact.firstName.uppercase()} ${contact.firstName.uppercase()}"
+        }
+
+        return ContactsListViewState(
+            id = contact.id,
+            fullName = fullName,
+            firstName = contact.firstName,
+            lastName = contact.lastName,
+            profilePicture = contact.profilePicture,
+            profilePicture64 = contact.profilePicture64,
+            firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
+            secondPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
+            listOfMails = contact.listOfMails,
+            priority = contact.priority,
+            isFavorite = contact.isFavorite == 1,
+            messengerId = contact.messengerId,
+            hasWhatsapp = contact.listOfMessagingApps.contains("com.whatsapp"),
+            hasTelegram = contact.listOfMessagingApps.contains("org.telegram.messenger"),
+            hasSignal = contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
+        )
+    }
 
     fun handleContactWithMultiplePhoneNumbers(
         cxt: Context,

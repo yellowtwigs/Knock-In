@@ -7,6 +7,7 @@ import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.transformContactDbToContactsListViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,122 +23,43 @@ class ContactsListViewModel @Inject constructor(
     private val deleteContactUseCase: DeleteContactUseCase
 ) : ViewModel() {
 
-    private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
-        return ContactsListViewState(
-            id = contact.id,
-            firstName = contact.firstName,
-            lastName = contact.lastName,
-            profilePicture = contact.profilePicture,
-            profilePicture64 = contact.profilePicture64,
-            firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
-            secondPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
-            listOfMails = contact.listOfMails,
-            priority = contact.priority,
-            isFavorite = contact.isFavorite == 1,
-            messengerId = contact.messengerId,
-            hasWhatsapp = contact.listOfMessagingApps.contains("com.whatsapp"),
-            hasTelegram = contact.listOfMessagingApps.contains("org.telegram.messenger"),
-            hasSignal = contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
-        )
-    }
-
     private val filteringMutableStateFlow = MutableStateFlow(R.id.empty_filter)
+    private val sortingMutableStateFlow = MutableStateFlow(R.id.sort_by_priority)
     private val searchBarTextFlow = MutableStateFlow("")
 
     val contactsListViewStateLiveData = liveData(coroutineDispatcherProvider.io) {
         combine(
-            getAllContactsUseCase.contactsListViewStateLiveData.asFlow(), filteringMutableStateFlow, searchBarTextFlow
-        ) { contacts: List<ContactDB>, filterId: Int, input: String ->
-            emit(filterWithInput(input, filterContactsList(filterId, contacts.map { transformContactDbToContactsListViewState(it) })))
+            getAllContactsUseCase.contactsListViewStateLiveData.asFlow(),
+            sortingMutableStateFlow,
+            filteringMutableStateFlow,
+            searchBarTextFlow
+        ) { contacts: List<ContactDB>, sort: Int, filterId: Int, input: String ->
+            emit(filterWithInput(input, sortContactsList(sort, filterId, contacts.map { transformContactDbToContactsListViewState(it) })))
         }.collect()
     }
 
-
-//    init {
-//        contactsListViewStateLiveData = Transformations.switchMap(sortedByLiveData) { sortBy ->
-//            when (sortBy) {
-//                R.id.sort_by_full_name -> {
-//                    liveData(Dispatchers.IO) {
-//                        getAllContactsSortByFullNameUseCase.invoke().collect { contacts ->
-//                            emit(contacts.map {
-//                                transformContactDbToContactsListViewState(it)
-//                            })
-//                        }
-//                    }
-//                }
-//                R.id.sort_by_priority -> {
-//                    liveData(Dispatchers.IO) {
-//                        getAllContactsUseCase.invoke().collect { contacts ->
-//                            emit(contacts.map {
-//                                transformContactDbToContactsListViewState(it)
-//                            })
-//                        }
-//                    }
-//                }
-//                R.id.sort_by_favorite -> {
-//                    liveData(Dispatchers.IO) {
-//                        getAllContactsSortByFavoriteUseCase.invoke().collect { contacts ->
-//                            emit(contacts.map {
-//                                transformContactDbToContactsListViewState(it)
-//                            })
-//                        }
-//                    }
-//                }
-//                else -> {
-//                    liveData(Dispatchers.IO) {
-//                        getAllContactsUseCase.invoke().collect { contacts ->
-//                            emit(contacts.map {
-//                                transformContactDbToContactsListViewState(it)
-//                            })
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        viewStateLiveData.addSource(contactsListViewStateLiveData) {
-//            combine(it, searchBarTextLiveData.value, filterByLiveData.value)
-//        }
-//        viewStateLiveData.addSource(searchBarTextLiveData) {
-//            combine(contactsListViewStateLiveData.value, it, filterByLiveData.value)
-//        }
-//        viewStateLiveData.addSource(filterByLiveData) {
-//            combine(contactsListViewStateLiveData.value, searchBarTextLiveData.value, it)
-//        }
-//    }
-
-//    private fun combine(
-//        allContacts: List<ContactsListViewState>?, input: String?, filterBy: Int?
-//    ) {
-//        val listOfContacts = arrayListOf<ContactsListViewState>()
-//
-//        if (allContacts != null && allContacts.isNotEmpty() && input != null) {
-//            if (input == "" || input == " " || input.isBlank()) {
-//                if (filterBy != null) {
-//                    listOfContacts.addAll(filterContactsList(filterBy, allContacts))
-//                } else {
-//                    listOfContacts.addAll(allContacts)
-//                }
-//            } else {
-//                if (filterBy != null) {
-//                    listOfContacts.addAll(
-//                        filterContactsList(
-//                            filterBy, filterWithInput(input, allContacts)
-//                        )
-//                    )
-//                } else {
-//                    listOfContacts.addAll(filterWithInput(input, allContacts))
-//                }
-//            }
-//        }
-//
-//        viewStateLiveData.value = listOfContacts
-//    }
 
     private fun filterWithInput(input: String, listOfContacts: List<ContactsListViewState>): List<ContactsListViewState> {
         return listOfContacts.filter { contact ->
             val name = contact.firstName + " " + contact.lastName
             name.contains(input) || name.uppercase().contains(input.uppercase()) || name.lowercase().contains(input.lowercase())
+        }
+    }
+
+    private fun sortContactsList(sortedBy: Int, filterBy: Int, listOfContacts: List<ContactsListViewState>): List<ContactsListViewState> {
+        return when (sortedBy) {
+            R.id.sort_by_full_name -> {
+                filterContactsList(filterBy, listOfContacts.sortedBy { it.fullName })
+            }
+            R.id.sort_by_priority -> {
+                filterContactsList(filterBy, listOfContacts.sortedBy { it.fullName }.sortedByDescending { it.priority })
+            }
+            R.id.sort_by_favorite -> {
+                filterContactsList(filterBy, listOfContacts.sortedBy { it.fullName }.sortedByDescending { it.isFavorite })
+            }
+            else -> {
+                filterContactsList(filterBy, listOfContacts.sortedByDescending { it.priority }.sortedBy { it.fullName })
+            }
         }
     }
 
@@ -170,15 +92,15 @@ class ContactsListViewModel @Inject constructor(
     }
 
     fun setSearchTextChanged(text: String) {
-        searchBarTextFlow.value = text
+        searchBarTextFlow.tryEmit(text)
     }
 
     fun setSortedBy(sortedBy: Int) {
-        getAllContactsUseCase.setSortedBy(sortedBy)
+        sortingMutableStateFlow.tryEmit(sortedBy)
     }
 
     fun setFilterBy(filterBy: Int) {
-        filteringMutableStateFlow.value = filterBy
+        filteringMutableStateFlow.tryEmit(filterBy)
     }
 
     suspend fun deleteContactsSelected(listOfContacts: List<Int>) {

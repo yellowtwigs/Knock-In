@@ -11,10 +11,11 @@ import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import android.graphics.Canvas
 import android.view.View
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 
-class IconAdapter(private val context: Context) :
+class IconAdapter(private val context: Context, private val bottomSheetDialog: BottomSheetDialog) :
     RecyclerView.Adapter<IconAdapter.ViewHolder>() {
     private val iconsList: IntArray
 
@@ -47,6 +48,7 @@ class IconAdapter(private val context: Context) :
                 drawable.setBounds(0, 0, canvas.width, canvas.height)
                 drawable.draw(canvas)
                 context.addContactIcon(bitmap)
+                bottomSheetDialog.dismiss()
             } else if (context is AddNewContactActivity) {
                 val drawable = context.getDrawable(iconsList[position])
                 val bitmap = if (drawable!!.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
@@ -66,6 +68,7 @@ class IconAdapter(private val context: Context) :
                 drawable.setBounds(0, 0, canvas.width, canvas.height)
                 drawable.draw(canvas)
                 context.addContactIcon(bitmap)
+                bottomSheetDialog.dismiss()
             }
         }
     }

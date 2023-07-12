@@ -27,7 +27,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,9 +56,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
@@ -632,7 +628,7 @@ class EditContactActivity : AppCompatActivity() {
             val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerView?.layoutManager = layoutManager
 
-            val adapter = IconAdapter(this@EditContactActivity)
+            val adapter = IconAdapter(this@EditContactActivity, this)
             recyclerView?.adapter = adapter
             gallery?.setOnClickListener {
                 if (ActivityCompat.checkSelfPermission(
@@ -675,11 +671,8 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
         startActivityForResult(
-            Intent.createChooser(
-                intent, this@EditContactActivity.getString(R.string.add_new_contact_intent_title)
-            ), REQUEST_CODE_GALLERY
+            Intent.createChooser(intent, this@EditContactActivity.getString(R.string.add_new_contact_intent_title)), REQUEST_CODE_GALLERY
         )
     }
 
@@ -689,8 +682,6 @@ class EditContactActivity : AppCompatActivity() {
         values.put(MediaStore.Images.Media.DESCRIPTION, R.string.edit_contact_camera_open_description)
         imageUri = null
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-
-        Log.i("PHOTO_URI", "Camera - imageUri : $imageUri")
 
         try {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -736,26 +727,29 @@ class EditContactActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_GALLERY) {
-                data?.data?.let {
-                    imageUri = it
-                    val matrix = Matrix()
-                    val exif = ExifInterface(getRealPathFromUri(this, it))
-                    val rotation = exif.getAttributeInt(
-                        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
-                    )
-                    val rotationInDegrees = exifToDegrees(rotation)
-                    matrix.postRotate(rotationInDegrees.toFloat())
+                CoroutineScope(Dispatchers.IO).launch {
+                    data?.data?.let {
+                        imageUri = it
+                        val matrix = Matrix()
+                        val exif = ExifInterface(getRealPathFromUri(this@EditContactActivity, it))
+                        val rotation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
+                        )
+                        val rotationInDegrees = exifToDegrees(rotation)
+                        matrix.postRotate(rotationInDegrees.toFloat())
 
-                    var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
-                    bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
-                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+                        var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
-                    binding.contactImage.setImageBitmap(bitmap)
-                    contactImageString = Converter.bitmapToBase64(bitmap)
-                    contactImageStringIsChanged = true
+                        withContext(Dispatchers.Main) {
+                            binding.contactImage.setImageURI(it)
+                        }
+                        contactImageString = Converter.bitmapToBase64(bitmap)
+                        contactImageStringIsChanged = true
+                    }
                 }
             } else if (requestCode == REQUEST_CODE_CAMERA) {
-                Log.i("PHOTO_URI", "Camera - imageUri 2 : $imageUri")
                 CoroutineScope(Dispatchers.IO).launch {
                     imageUri?.let { uri ->
                         val matrix = Matrix()
@@ -768,10 +762,6 @@ class EditContactActivity : AppCompatActivity() {
                         var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
                         bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
                         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-
-                        Log.i("PHOTO_URI", "Camera - bitmap : $bitmap")
-
-//                        binding.contactImage.setImageBitmap(bitmap)
 
                         withContext(Dispatchers.Main) {
                             binding.contactImage.setImageURI(uri)

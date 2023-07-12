@@ -18,7 +18,7 @@ class GetAllContactsUseCase @Inject constructor(
     private val sortingMutableStateFlow = MutableStateFlow(R.id.sort_by_priority)
 
     fun setSortedBy(sortedBy: Int) {
-        sortingMutableStateFlow.value = sortedBy
+        sortingMutableStateFlow.tryEmit(sortedBy)
     }
 
     val contactsListViewStateLiveData = liveData(coroutineDispatcherProvider.io) {
@@ -28,22 +28,32 @@ class GetAllContactsUseCase @Inject constructor(
             contactsListRepository.getAllContactsByFullName(),
             sortingMutableStateFlow
         ) { contactsByPriority, contactsByFavorite, contactsByFullName, sortBy ->
-            emit(
-                when (sortBy) {
-                    R.id.sort_by_full_name -> {
-                        contactsByFullName
-                    }
-                    R.id.sort_by_priority -> {
-                        contactsByPriority
-                    }
-                    R.id.sort_by_favorite -> {
-                        contactsByFavorite
-                    }
-                    else -> {
-                        contactsByPriority
+            emit(when (sortBy) {
+                R.id.sort_by_full_name -> {
+                    contactsByPriority.sortedBy {
+                        it.fullName
                     }
                 }
-            )
+                R.id.sort_by_priority -> {
+                    contactsByPriority.sortedByDescending {
+                        it.priority
+                    }.sortedBy {
+                        it.fullName
+                    }
+                }
+                R.id.sort_by_favorite -> {
+                    contactsByPriority.sortedByDescending {
+                        it.isFavorite
+                    }.sortedBy {
+                        it.fullName
+                    }
+                }
+                else -> {
+                    contactsByPriority.sortedBy {
+                        it.fullName
+                    }
+                }
+            })
         }.collectLatest { }
     }
 }

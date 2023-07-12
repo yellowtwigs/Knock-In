@@ -28,8 +28,17 @@ class GetContactsByIds @Inject constructor(
     }
 
     private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
+        val fullName = if (contact.firstName.isEmpty() || contact.firstName.isBlank() || contact.firstName == " ") {
+            contact.lastName
+        } else if (contact.lastName.isEmpty() || contact.lastName.isBlank() || contact.lastName == " ") {
+            contact.firstName
+        } else {
+            "${contact.firstName} ${contact.firstName}"
+        }
+
         return ContactsListViewState(
-            contact.id,
+            id = contact.id,
+            fullName = fullName,
             contact.firstName,
             contact.lastName,
             contact.profilePicture,

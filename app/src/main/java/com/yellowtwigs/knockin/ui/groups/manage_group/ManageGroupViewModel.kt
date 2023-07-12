@@ -10,6 +10,7 @@ import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
 import com.yellowtwigs.knockin.utils.ContactGesture
+import com.yellowtwigs.knockin.utils.ContactGesture.transformContactDbToContactsListViewState
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -51,25 +52,6 @@ class ManageGroupViewModel @Inject constructor(
         viewStateLiveData.addSource(groupById) { group ->
             combine(contactsListViewStateLiveDataSortByFullName.value, group)
         }
-    }
-
-    private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
-        return ContactsListViewState(
-            contact.id,
-            contact.firstName,
-            contact.lastName,
-            contact.profilePicture,
-            contact.profilePicture64,
-            firstPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
-            secondPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
-            contact.listOfMails,
-            contact.priority,
-            contact.isFavorite == 1,
-            contact.messengerId,
-            contact.listOfMessagingApps.contains("com.whatsapp"),
-            contact.listOfMessagingApps.contains("org.telegram.messenger"),
-            contact.listOfMessagingApps.contains("org.thoughtcrime.securesms")
-        )
     }
 
     private fun combine(allContacts: List<ContactsListViewState>?, group: GroupDB?) {

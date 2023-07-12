@@ -37,6 +37,7 @@ import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.IconAdapter
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
+import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
@@ -68,8 +69,8 @@ class AddNewContactActivity : AppCompatActivity() {
     private var avatar = 0
 
     private var imageUri: Uri? = null
-    private var SELECT_FILE = 0
-    private val IMAGE_CAPTURE_CODE = 1001
+    private val REQUEST_CODE_GALLERY = 1
+    private val REQUEST_CODE_CAMERA = 2
 
     private var isFavorite = 0
     private var contact: ContactDB? = null
@@ -412,8 +413,6 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ============================================ Camera =============================================
-
     private fun selectImage() {
         val builderBottom = BottomSheetDialog(this)
         builderBottom.apply {
@@ -424,74 +423,68 @@ class AddNewContactActivity : AppCompatActivity() {
             val layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerView?.layoutManager = layoutManager
 
-            gallery?.let {
-                galleryClick(it, builderBottom)
-            }
-            camera?.let {
-                cameraClick(it, builderBottom)
-            }
-
-            val adapter = IconAdapter(this@AddNewContactActivity)
+            val adapter = IconAdapter(this@AddNewContactActivity, this)
             recyclerView?.adapter = adapter
+            gallery?.setOnClickListener {
+                if (ActivityCompat.checkSelfPermission(
+                        this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this@AddNewContactActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_GALLERY
+                    )
+                    builderBottom.dismiss()
+                } else {
+                    openGallery()
+                    builderBottom.dismiss()
+                }
+            }
+            camera?.setOnClickListener {
+                if (ActivityCompat.checkSelfPermission(
+                        this@AddNewContactActivity, Manifest.permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                        this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    val arrayListPermission = ArrayList<String>()
+                    arrayListPermission.add(Manifest.permission.CAMERA)
+                    arrayListPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ActivityCompat.requestPermissions(
+                        this@AddNewContactActivity,
+                        arrayListPermission.toArray(arrayOfNulls<String>(arrayListPermission.size)),
+                        REQUEST_CODE_CAMERA
+                    )
+                    builderBottom.dismiss()
+                } else {
+                    openCamera()
+                    builderBottom.dismiss()
+                }
+            }
             builderBottom.show()
         }
     }
 
-    private fun galleryClick(gallery: ConstraintLayout, builderBottom: BottomSheetDialog) {
-        gallery.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this@AddNewContactActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1
-                )
-                builderBottom.dismiss()
-            } else {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                intent.type = "image/*"
-                startActivityForResult(
-                    Intent.createChooser(
-                        intent, this@AddNewContactActivity.getString(R.string.add_new_contact_intent_title)
-                    ), SELECT_FILE
-                )
-                builderBottom.dismiss()
-            }
-        }
-    }
-
-    private fun cameraClick(camera: ConstraintLayout, builderBottom: BottomSheetDialog) {
-        camera.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this@AddNewContactActivity, Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                    this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                val arrayListPermission = ArrayList<String>()
-                arrayListPermission.add(Manifest.permission.CAMERA)
-                arrayListPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ActivityCompat.requestPermissions(
-                    this@AddNewContactActivity, arrayListPermission.toArray(arrayOfNulls<String>(arrayListPermission.size)), 2
-                )
-                builderBottom.dismiss()
-            } else {
-                openCamera()
-                builderBottom.dismiss()
-            }
-        }
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(
+            Intent.createChooser(intent, this@AddNewContactActivity.getString(R.string.add_new_contact_intent_title)), REQUEST_CODE_GALLERY
+        )
     }
 
     private fun openCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, R.string.edit_contact_camera_open_title)
-        values.put(
-            MediaStore.Images.Media.DESCRIPTION, R.string.edit_contact_camera_open_description
-        )
+        values.put(MediaStore.Images.Media.DESCRIPTION, R.string.edit_contact_camera_open_description)
+        imageUri = null
         imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
+
+        try {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+            startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
+        } catch (e: Exception) {
+            Log.i("PHOTO_URI", "Exception : $e")
+        }
     }
 
     private fun getRealPathFromUri(context: Context, contentUri: Uri): String {
@@ -507,58 +500,84 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    fun addContactIcon(bitmap: Bitmap) {
+        binding.contactImage.setImageBitmap(bitmap)
+        contactImageString = Converter.bitmapToBase64(bitmap)
+        contactImageStringIsChanged = true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_CODE_GALLERY) {
+            openGallery()
+        } else if (requestCode == REQUEST_CODE_CAMERA) {
+            openCamera()
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_GALLERY) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    data?.data?.let {
+                        imageUri = it
+                        val matrix = Matrix()
+                        val exif = ExifInterface(getRealPathFromUri(this@AddNewContactActivity, it))
+                        val rotation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
+                        )
+                        val rotationInDegrees = exifToDegrees(rotation)
+                        matrix.postRotate(rotationInDegrees.toFloat())
+
+                        var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
+                        withContext(Dispatchers.Main) {
+                            binding.contactImage.setImageURI(it)
+                        }
+                        contactImageString = bitmapToBase64(bitmap)
+                        contactImageStringIsChanged = true
+                    }
+                }
+            } else if (requestCode == REQUEST_CODE_CAMERA) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    imageUri?.let { uri ->
+                        val matrix = Matrix()
+                        val exif = ExifInterface(getRealPathFromUri(this@AddNewContactActivity, uri))
+                        val rotation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
+                        )
+                        val rotationInDegrees = exifToDegrees(rotation)
+                        matrix.postRotate(rotationInDegrees.toFloat())
+                        var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
+                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
+                        withContext(Dispatchers.Main) {
+                            binding.contactImage.setImageURI(uri)
+                        }
+
+                        Log.i("PHOTO_URI", "Camera - binding.contactImage.setImageURI(uri) : ${binding.contactImage.setImageURI(uri)}")
+
+                        contactImageString = Converter.bitmapToBase64(bitmap)
+                        contactImageStringIsChanged = true
+                    }
+                }
+            }
+        }
+    }
+
     private fun exifToDegrees(exifOrientation: Int): Int {
         return when (exifOrientation) {
             ExifInterface.ORIENTATION_ROTATE_90 -> 90
             ExifInterface.ORIENTATION_ROTATE_180 -> 180
             ExifInterface.ORIENTATION_ROTATE_270 -> 270
             else -> 0
-        }
-    }
-
-    fun addContactIcon(bitmap: Bitmap) {
-        Log.i("PHOTO_URI", "bitmap : $bitmap")
-        binding.contactImage.setImageBitmap(bitmap)
-        contactImageString = bitmapToBase64(bitmap)
-        contactImageStringIsChanged = true
-    }
-
-    //endregion
-
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == IMAGE_CAPTURE_CODE) {
-                val matrix = Matrix()
-                val exif = ExifInterface(getRealPathFromUri(this, imageUri!!))
-                val rotation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
-                )
-                val rotationInDegrees = exifToDegrees(rotation)
-                matrix.postRotate(rotationInDegrees.toFloat())
-
-                var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
-                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-                binding.contactImage.setImageBitmap(bitmap)
-                contactImageString = bitmapToBase64(bitmap)
-                contactImageStringIsChanged = true
-            } else if (requestCode == SELECT_FILE) {
-                Log.i("PHOTO_URI", "SELECT_FILE")
-                val matrix = Matrix()
-                val selectedImageUri = data?.data
-                val exif = ExifInterface(getRealPathFromUri(this, selectedImageUri!!))
-                val rotation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
-                )
-                val rotationInDegrees = exifToDegrees(rotation)
-                matrix.postRotate(rotationInDegrees.toFloat())
-                var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 10, bitmap.height / 10, true)
-                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-                binding.contactImage.setImageBitmap(bitmap)
-                contactImageString = bitmapToBase64(bitmap)
-            }
         }
     }
 

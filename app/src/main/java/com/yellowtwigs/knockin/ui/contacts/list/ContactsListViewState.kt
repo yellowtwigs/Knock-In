@@ -4,6 +4,7 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 
 data class ContactsListViewState(
     val id: Int,
+    val fullName: String,
     val firstName: String,
     var lastName: String,
     val profilePicture: Int,
