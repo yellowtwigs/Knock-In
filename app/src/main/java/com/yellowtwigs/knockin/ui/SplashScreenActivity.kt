@@ -4,16 +4,23 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.yellowtwigs.knockin.FirstLaunchActivity
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.background.StatisticsPointWorker
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
@@ -106,10 +113,16 @@ class SplashScreenActivity : AppCompatActivity() {
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 
         //endregion
+
+        recurrentWork()
     }
 
     private fun setContentView() {
         setContentView(R.layout.activity_splash_screen)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+    }
+
+    private fun recurrentWork() {
+
     }
 }

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -96,7 +97,7 @@
         <activity android:name=".ui.premium.PremiumActivity" />
         <receiver android:name=".ui.notifications.sender.NotificationSender" />
         <service
-            android:name=".model.service.NotificationsListenerService"
+            android:name=".background.service.NotificationsListenerService"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
@@ -104,6 +105,15 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge" >
+            <meta-data
+                android:name="androidx.startup"
+                android:value="androidx.startup.sample.MyContentProvider" />
+        </provider>
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -28,7 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
-import com.yellowtwigs.knockin.model.service.NotificationsListenerService
+import com.yellowtwigs.knockin.background.service.NotificationsListenerService
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity

@@ -2,8 +2,10 @@ package com.yellowtwigs.knockin.ui.statistics.daily_statistics
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -31,6 +33,12 @@ class DailyStatisticsActivity : AppCompatActivity() {
     private lateinit var activityDailyStatisticsBinding: ActivityDailyStatisticsBinding
     private lateinit var activityDailyStatisticsUnder1200Binding: ActivityDailyStatisticsUnder1200Binding
     private lateinit var activityDailyStatisticsUnder1500Binding: ActivityDailyStatisticsUnder1500Binding
+
+    companion object {
+        fun navigate(context: Context): Intent {
+            return Intent(context, DailyStatisticsActivity::class.java)
+        }
+    }
 
     private val dailyStatisticsViewModel: DailyStatisticsViewModel by viewModels()
     private var deviceHeight = 0
@@ -304,6 +312,12 @@ class DailyStatisticsActivity : AppCompatActivity() {
             } else {
                 activityDailyStatisticsBinding.adviceMessageContent.text = adviceMessage
             }
+        }
+
+        activityDailyStatisticsBinding.rewardedButton.setOnClickListener {
+            val USER_POINT = "USER_POINT"
+            val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
+            Log.i("GetNotification", "Passe par là : Points : ${sharedPreferences.getInt(USER_POINT, 0)}")
         }
     }
 

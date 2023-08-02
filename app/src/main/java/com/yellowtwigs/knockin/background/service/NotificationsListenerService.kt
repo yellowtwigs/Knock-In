@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model.service
+package com.yellowtwigs.knockin.background.service
 
 import android.app.KeyguardManager
 import android.content.ComponentName
@@ -28,12 +28,12 @@ import com.yellowtwigs.knockin.domain.notifications.NotificationsListenerUseCase
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.addNotificationViewStateToList
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.appNotifiable
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.cancelWhatsappNotification
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.messagesNotUseless
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionXIntoScreen
-import com.yellowtwigs.knockin.model.service.NotificationsListenerGesture.positionYIntoScreen
+import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.addNotificationViewStateToList
+import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.appNotifiable
+import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.cancelWhatsappNotification
+import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.messagesNotUseless
+import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.positionXIntoScreen
+import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.positionYIntoScreen
 import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.isPhoneNumber
 import com.yellowtwigs.knockin.utils.ContactGesture.isValidEmail

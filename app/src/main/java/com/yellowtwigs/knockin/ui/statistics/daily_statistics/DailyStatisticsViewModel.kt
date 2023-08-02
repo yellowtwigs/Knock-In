@@ -1,24 +1,17 @@
 package com.yellowtwigs.knockin.ui.statistics.daily_statistics
 
 import android.app.Application
-import android.provider.Telephony
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.domain.contact.get_number.GetNumberOfContactsUseCase
+import com.yellowtwigs.knockin.domain.contact.get_number.GetNumberOfContactsFlowUseCase
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
-import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationParams
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsListViewState
-import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardViewState
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
-import com.yellowtwigs.knockin.utils.NotificationsGesture
-import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSAGE_APP_NAME
-import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import java.text.SimpleDateFormat
@@ -30,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DailyStatisticsViewModel @Inject constructor(
     private val notificationsRepository: NotificationsRepository,
-    private val getNumberOfContactsUseCase: GetNumberOfContactsUseCase,
+    private val getNumberOfContactsUseCase: GetNumberOfContactsFlowUseCase,
     coroutineDispatcherProvider: CoroutineDispatcherProvider,
     private val application: Application
 ) : ViewModel() {

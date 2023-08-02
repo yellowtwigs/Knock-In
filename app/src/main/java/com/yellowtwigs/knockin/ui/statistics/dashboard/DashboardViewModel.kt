@@ -2,13 +2,12 @@ package com.yellowtwigs.knockin.ui.statistics.dashboard
 
 import android.app.Application
 import android.graphics.Color
-import android.os.Build
 import android.provider.Telephony
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.domain.contact.get_number.GetNumberOfContactsUseCase
+import com.yellowtwigs.knockin.domain.contact.get_number.GetNumberOfContactsFlowUseCase
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationParams
@@ -17,7 +16,6 @@ import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.FACEBOOK_APP_NAME
 import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSAGE_APP_NAME
-import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSENGER_APP_NAME
 import com.yellowtwigs.knockin.utils.NotificationsGesture.SIGNAL_APP_NAME
 import com.yellowtwigs.knockin.utils.NotificationsGesture.TELEGRAM_APP_NAME
 import com.yellowtwigs.knockin.utils.NotificationsGesture.WHATSAPP_APP_NAME
@@ -36,7 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val notificationsRepository: NotificationsRepository,
-    private val getNumberOfContactsUseCase: GetNumberOfContactsUseCase,
+    private val getNumberOfContactsUseCase: GetNumberOfContactsFlowUseCase,
     private val coroutineDispatcherProvider: CoroutineDispatcherProvider,
     private val application: Application
 ) : ViewModel() {

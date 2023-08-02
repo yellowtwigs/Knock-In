@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.Query
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Singleton
 
+@Singleton
 interface NotificationsRepository {
 
     fun getAllNotifications(): LiveData<List<NotificationDB>>

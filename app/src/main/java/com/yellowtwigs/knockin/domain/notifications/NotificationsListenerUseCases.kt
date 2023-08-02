@@ -1,6 +1,6 @@
 package com.yellowtwigs.knockin.domain.notifications
 
-import com.yellowtwigs.knockin.model.service.CheckDuplicateNotificationUseCase
+import com.yellowtwigs.knockin.background.service.CheckDuplicateNotificationUseCase
 
 data class NotificationsListenerUseCases(
     val getContactByName: GetContactByName,

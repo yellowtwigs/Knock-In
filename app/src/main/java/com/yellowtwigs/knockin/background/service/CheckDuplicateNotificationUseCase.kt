@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model.service
+package com.yellowtwigs.knockin.background.service
 
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository

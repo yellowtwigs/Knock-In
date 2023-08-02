@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model.service
+package com.yellowtwigs.knockin.background.service
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.model.service
+package com.yellowtwigs.knockin.background.service
 
 import android.Manifest
 import android.content.ActivityNotFoundException

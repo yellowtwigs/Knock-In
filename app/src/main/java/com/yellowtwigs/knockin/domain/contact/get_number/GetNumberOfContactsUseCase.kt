@@ -9,13 +9,11 @@ import javax.inject.Singleton
 @Singleton
 class GetNumberOfContactsUseCase @Inject constructor(private val contactsListRepository: ContactsListRepository) {
 
-    fun invoke(): Flow<NumberOfContacts> {
-        return flowOf(
-            NumberOfContacts(
-                contactsListRepository.getNumbersOfContactsVip(),
-                contactsListRepository.getNumbersOfContactsStandard(),
-                contactsListRepository.getNumbersOfContactsSilent(),
-            )
+    fun invoke(): NumberOfContacts{
+        return NumberOfContacts(
+            contactsListRepository.getNumbersOfContactsVip(),
+            contactsListRepository.getNumbersOfContactsStandard(),
+            contactsListRepository.getNumbersOfContactsSilent(),
         )
     }
 }

@@ -3,9 +3,10 @@ package com.yellowtwigs.knockin.repositories.notifications
 import androidx.lifecycle.asLiveData
 import com.yellowtwigs.knockin.model.database.dao.NotificationsDao
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class NotificationsRepositoryImpl @Inject constructor(private val dao: NotificationsDao) :
     NotificationsRepository {
 

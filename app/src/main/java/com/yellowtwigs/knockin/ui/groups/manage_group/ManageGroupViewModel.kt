@@ -41,17 +41,17 @@ class ManageGroupViewModel @Inject constructor(
             }
         }
 
-        val groupById = Transformations.switchMap(groupIdLiveData) { id ->
-            return@switchMap groupsListRepository.getGroupById(id)
-        }
-
-        viewStateLiveData.addSource(contactsListViewStateLiveDataSortByFullName) { contacts ->
-            combine(contacts, groupById.value)
-        }
-
-        viewStateLiveData.addSource(groupById) { group ->
-            combine(contactsListViewStateLiveDataSortByFullName.value, group)
-        }
+//        val groupById = Transformations.switchMap(groupIdLiveData) { id ->
+//            return@switchMap groupsListRepository.getGroupById(id)
+//        }
+//
+//        viewStateLiveData.addSource(contactsListViewStateLiveDataSortByFullName) { contacts ->
+//            combine(contacts, groupById.value)
+//        }
+//
+//        viewStateLiveData.addSource(groupById) { group ->
+//            combine(contactsListViewStateLiveDataSortByFullName.value, group)
+//        }
     }
 
     private fun combine(allContacts: List<ContactsListViewState>?, group: GroupDB?) {
