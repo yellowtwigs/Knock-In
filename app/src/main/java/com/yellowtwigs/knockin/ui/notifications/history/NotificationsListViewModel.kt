@@ -367,6 +367,14 @@ class NotificationsListViewModel @Inject constructor(
         }
     }
 
+    fun deleteNotificationById(id : Int) {
+        Log.i("GetPosition", "id - 1 : $id")
+        CoroutineScope(Dispatchers.Default).launch {
+            Log.i("GetPosition", "id - 2 : $id")
+            notificationsRepository.deleteNotificationById(id)
+        }
+    }
+
     fun updateNotification(notification: NotificationDB) {
         CoroutineScope(Dispatchers.IO).launch {
             notificationsRepository.updateNotification(notification)

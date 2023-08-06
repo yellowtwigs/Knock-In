@@ -23,16 +23,15 @@ import com.android.billingclient.api.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityStartActivityBinding
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
-import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 @AndroidEntryPoint
@@ -51,6 +50,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var importationFinished = false
 
     private lateinit var userIdPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
     //endregion
 
@@ -63,7 +63,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
 
         setupBillingClient()
-        setSliderContainer()
 
         val calendar = Calendar.getInstance()
         val oneWeekSharedPreferences = getSharedPreferences("OneWeek", Context.MODE_PRIVATE)
@@ -77,21 +76,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             )
         )
         edit.apply()
-
+        sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val firstTime = getSharedPreferences("FirstTimeInTheApp", Context.MODE_PRIVATE)
         val editFirstTime = firstTime.edit()
         editFirstTime.putBoolean("FirstTimeInTheApp", true)
         editFirstTime.apply()
-
-        if (checkIfGoEdition()) {
-            MaterialAlertDialogBuilder(
-                this,
-                R.style.AlertDialog
-            ).setBackground(getDrawable(R.color.backgroundColor))
-                .setMessage(getString(R.string.start_activity_go_edition_message))
-                .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                }.show()
-        }
 
         userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
 
@@ -99,8 +88,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
         contactsAreImported = importContactPreferences.getBoolean("Import_Contact", false)
-
-        val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         if (isNotificationServiceEnabled()) {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("serviceNotif", true)
@@ -112,72 +99,110 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             edit.apply()
         }
 
-        binding.apply {
-            activateButton.setOnClickListener {
-                when (currentPosition) {
-                    0 -> {
-                        if (!importContactPreferences.getBoolean("Import_Contact", false)) {
-                            saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Try to Import Contact")
+        if (true) {
+//        if (checkIfGoEdition()) {
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
+                .setMessage(getString(R.string.start_activity_go_edition_message))
+                .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                }.show()
+            setSliderContainerWithGoEdichie()
 
-                            ActivityCompat.requestPermissions(
-                                this@StartActivity,
-                                arrayOf(Manifest.permission.READ_CONTACTS),
-                                REQUEST_CODE_READ_CONTACT
-                            )
-                        }
-                    }
-                    1 -> {
-                        activateNotificationsClick()
-                    }
-                    2 -> {
-                        openOverlaySettings()
-                    }
-                    3 -> {
-                        if (checkIfGoEdition()) {
-                            firstLaunchValidate()
-                            val intent =
-                                Intent(this@StartActivity, ContactsListActivity::class.java)
-                            intent.putExtra("fromStartActivity", true)
-                            startActivity(intent)
-                            finish()
+            binding.apply {
+                activateButton.setOnClickListener {
+                    when (currentPosition) {
+                        0 -> {
+                            if (!importContactPreferences.getBoolean("Import_Contact", false)) {
+                                saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Try to Import Contact")
+
+                                ActivityCompat.requestPermissions(
+                                    this@StartActivity,
+                                    arrayOf(Manifest.permission.READ_CONTACTS),
+                                    REQUEST_CODE_READ_CONTACT
+                                )
+                            }
                         }
                     }
                 }
-            }
-            next.setOnClickListener {
-                firstLaunchValidate()
-                startActivity(Intent(this@StartActivity, FirstVipSelectionActivity::class.java))
-                val edit = sharedPreferences.edit()
-                edit.putBoolean("view", true)
-                edit.apply()
-                finish()
-            }
-            skip.setOnClickListener {
-                firstLaunchValidate()
-                val edit = sharedPreferences.edit()
-                edit.putBoolean("view", true)
-                edit.apply()
-                val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
-                intent.putExtra("fromStartActivity", true)
-                startActivity(intent)
-                finish()
-            }
 
-            radioButton1.setOnClickListener {
-                binding.viewPager.currentItem = 0
-                checkRadioButton(radioButton1.id)
+                radioButton2.setOnClickListener {
+                    binding.viewPager.currentItem = 0
+                    checkRadioButton(radioButton2.id)
+                }
+                radioButton3.setOnClickListener {
+                    binding.viewPager.currentItem = 1
+                    checkRadioButton(radioButton3.id)
+                }
             }
-            radioButton2.setOnClickListener {
-                binding.viewPager.currentItem = 1
-                checkRadioButton(radioButton2.id)
-            }
-            radioButton3.setOnClickListener {
-                binding.viewPager.currentItem = 2
-                checkRadioButton(radioButton3.id)
-            }
-            radioButton4.setOnClickListener {
-                binding.viewPager.currentItem = 3
-                checkRadioButton(radioButton4.id)
+        } else {
+            setSliderContainer()
+
+            binding.apply {
+                activateButton.setOnClickListener {
+                    when (currentPosition) {
+                        0 -> {
+                            if (!importContactPreferences.getBoolean("Import_Contact", false)) {
+                                saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Try to Import Contact")
+
+                                ActivityCompat.requestPermissions(
+                                    this@StartActivity,
+                                    arrayOf(Manifest.permission.READ_CONTACTS),
+                                    REQUEST_CODE_READ_CONTACT
+                                )
+                            }
+                        }
+                        1 -> {
+                            activateNotificationsClick()
+                        }
+                        2 -> {
+                            openOverlaySettings()
+                        }
+                        3 -> {
+                            if (checkIfGoEdition()) {
+                                firstLaunchValidate()
+                                val intent =
+                                    Intent(this@StartActivity, ContactsListActivity::class.java)
+                                intent.putExtra("fromStartActivity", true)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
+                    }
+                }
+                next.setOnClickListener {
+                    firstLaunchValidate()
+                    startActivity(Intent(this@StartActivity, FirstVipSelectionActivity::class.java))
+                    val edit = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.apply()
+                    finish()
+                }
+                skip.setOnClickListener {
+                    firstLaunchValidate()
+                    val edit = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.apply()
+                    val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
+                    finish()
+                }
+
+                radioButton1.setOnClickListener {
+                    binding.viewPager.currentItem = 0
+                    checkRadioButton(radioButton1.id)
+                }
+                radioButton2.setOnClickListener {
+                    binding.viewPager.currentItem = 1
+                    checkRadioButton(radioButton2.id)
+                }
+                radioButton3.setOnClickListener {
+                    binding.viewPager.currentItem = 2
+                    checkRadioButton(radioButton3.id)
+                }
+                radioButton4.setOnClickListener {
+                    binding.viewPager.currentItem = 3
+                    checkRadioButton(radioButton4.id)
+                }
             }
         }
     }
@@ -236,8 +261,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             }
                             1 -> {
                                 title.text = getString(R.string.start_activity_notification_title)
-                                subtitle.text =
-                                    getString(R.string.start_activity_notification_subtitle)
+                                subtitle.text = getString(R.string.start_activity_notification_subtitle)
 
                                 checkRadioButton(radioButton2.id)
 
@@ -267,16 +291,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     radioButton4.visibility = View.GONE
 
                                     title.text =
-                                        "${getString(R.string.notif_adapter_show_message_button)} " + "${
-                                            getString(R.string.left_drawer_home)
-                                        }"
+                                        "${getString(R.string.notif_adapter_show_message_button)} " + "${getString(R.string.left_drawer_home)}"
 
                                     subtitle.visibility = View.GONE
                                     activateButton.setText(R.string.start_activity_next)
                                 } else {
                                     title.text = getString(R.string.notification_alert_dialog_title)
-                                    subtitle.text =
-                                        getString(R.string.notification_alert_dialog_message)
+                                    subtitle.text = getString(R.string.notification_alert_dialog_message)
 
                                     checkRadioButton(radioButton4.id)
 
@@ -284,6 +305,64 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     next.visibility = View.VISIBLE
                                     skip.visibility = View.VISIBLE
                                 }
+                            }
+                        }
+                    }
+                }
+            })
+
+            setCurrentItem(currentPosition, true)
+        }
+    }
+
+    private fun setSliderContainerWithGoEdichie() {
+        val viewPager = findViewById<ViewPager2>(R.id.view_pager)
+        val sliderItems = arrayListOf<SliderItem>()
+        sliderItems.add(SliderItem(R.drawable.contacts_list))
+
+        val sliderAdapter = SliderAdapter(sliderItems)
+
+        viewPager.apply {
+            adapter = sliderAdapter
+            clipToPadding = false
+            clipChildren = false
+            offscreenPageLimit = 3
+            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+
+            val compositePageTransformer = CompositePageTransformer()
+            compositePageTransformer.addTransformer(MarginPageTransformer(30))
+            compositePageTransformer.addTransformer { page, position ->
+                val r = 1 - abs(position)
+                page.scaleY = 0.85f + r * 0.25f
+            }
+
+            setPageTransformer(compositePageTransformer)
+
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    currentPosition = position
+
+                    binding.apply {
+                        radioButton1.visibility = View.GONE
+                        radioButton2.visibility = View.GONE
+                        radioButton3.visibility = View.GONE
+                        radioButton4.visibility = View.GONE
+
+                        when (currentPosition) {
+                            0 -> {
+                                title.text = getString(R.string.start_activity_import_title)
+                                subtitle.text = getString(R.string.start_activity_import_subtitle)
+
+                                checkRadioButton(radioButton2.id)
+
+                                activateButton.visibility = View.VISIBLE
+                                subtitle.visibility = View.VISIBLE
+                                activateButtonIsClickable(!contactsAreImported)
+                                activateButton.setText(R.string.start_activity_button_notification)
+                                next.visibility = View.GONE
+                                skip.visibility = View.GONE
                             }
                         }
                     }
@@ -420,7 +499,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private fun checkIfGoEdition(): Boolean {
         val am = baseContext.getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        return am.isLowRamDevice
+        return true
+//        return am.isLowRamDevice
     }
 
     override fun onRequestPermissionsResult(
@@ -429,20 +509,32 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
+            saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Import Contacts Validation")
+
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Import Contacts Validation")
+                if (checkIfGoEdition()) {
+                    firstLaunchValidate()
+                    val edit = sharedPreferences.edit()
+                    edit.putBoolean("view", true)
+                    edit.apply()
+                    val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
+                    intent.putExtra("fromStartActivity", true)
+                    startActivity(intent)
+                    finish()
+                } else {
 
-                CoroutineScope(Dispatchers.Main).launch {
-                    importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+                    checkRadioButton(binding.radioButton2.id)
+                    binding.viewPager.currentItem = 1
+                    contactsAreImported = true
                 }
-
-                val edit = importContactPreferences.edit()
-                edit.putBoolean("Import_Contact", true)
-                edit.apply()
-
-                checkRadioButton(binding.radioButton2.id)
-                binding.viewPager.currentItem = 1
-                contactsAreImported = true
             }
         }
     }

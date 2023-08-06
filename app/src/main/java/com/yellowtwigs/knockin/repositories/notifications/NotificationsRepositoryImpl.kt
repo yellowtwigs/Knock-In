@@ -32,6 +32,10 @@ class NotificationsRepositoryImpl @Inject constructor(private val dao: Notificat
         dao.deleteNotificationsByPlatform(platform)
     }
 
+    override suspend fun deleteNotificationById(id: Int) {
+        dao.deleteNotificationById(id)
+    }
+
     override suspend fun deleteAllNotifications() {
         dao.deleteAllNotifications()
     }

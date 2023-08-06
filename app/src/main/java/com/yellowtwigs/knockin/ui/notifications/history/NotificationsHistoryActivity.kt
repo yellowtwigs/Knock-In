@@ -1,15 +1,18 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
-import android.content.*
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.*
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -21,18 +24,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityNotificationsHistoryBinding
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
-import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
+import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.HelpActivity
+import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
-import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
-import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,10 +46,11 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class NotificationsHistoryActivity : AppCompatActivity() {
 
-    //region ========================================== Val or Var ==========================================
+    companion object {
+        var currentPosition = 1
+    }
 
-    private var notification_history_ToolbarMultiSelectModeLayout: RelativeLayout? = null
-    private var notification_history_ToolbarMultiSelectModeTitle: TextView? = null
+    //region ========================================== Val or Var ==========================================
 
     private var fromPopup: Boolean = false
 
@@ -59,6 +63,10 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     private lateinit var userIdPreferences: SharedPreferences
+
+    private var multiSelectMode = false
+    private var firstClick = true
+    private val listOfIdsSelected = arrayListOf<Int>()
 
     //endregion
 
@@ -99,12 +107,16 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     this@NotificationsHistoryActivity, R.style.AlertDialog
                 ).setTitle(getString(R.string.notification_history_alert_dialog_title))
                     .setMessage(getString(R.string.notification_history_alert_dialog_text))
-                    .setPositiveButton(R.string.notification_history_alert_dialog_delete_button) { _, wich -> deleteAllNotifications() }
+                    .setPositiveButton(R.string.notification_history_alert_dialog_delete_button) { _, _ -> deleteAllNotifications() }
                     .setNegativeButton(
                         R.string.notification_history_alert_dialog_cancel_button, null
                     )
                     .setNeutralButton(R.string.notification_history_alert_dialog_delete_system_button) { _, _ -> deleteAllNotificationsSystem() }
                     .show()
+            }
+            deleteNotifications.setOnClickListener {
+                Log.i("GetPosition", "Passe par là")
+                deleteListOfSelectedNotifications()
             }
         }
 
@@ -355,7 +367,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //endregion
 
-    //region =========================================== SETUP UI ===========================================
+    //region =============================================================== SETUP UI ===============================================================
 
     private fun setupBottomNavigationView() {
         binding.navigation.menu.getItem(2).isChecked = true
@@ -422,31 +434,25 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             startActivity(Intent(this@NotificationsHistoryActivity, DashboardActivity::class.java).putExtra("FromSender", true))
         }
 
-        binding.recyclerView.apply {
-            this.adapter = notificationsAdapter
+        binding.recyclerView.adapter = notificationsAdapter
+        val linearLayoutManager = LinearLayoutManager(this@NotificationsHistoryActivity)
+        binding.recyclerView.layoutManager = linearLayoutManager
 
-            notificationsListViewModel.notificationsListViewStateLiveData.observe(this@NotificationsHistoryActivity) { notificationsHistoryViewState ->
-                notificationsAdapter.submitList(null)
-                notificationsAdapter.submitList(notificationsHistoryViewState.list)
-
-//                binding.notificationPin.isVisible = notificationsHistoryViewState.isVisible
-//                binding.app.text = context.getString(R.string.app_name)
-//                binding.title.text = notificationsHistoryViewState.title
-//                binding.content.text = notificationsHistoryViewState.description
-//                binding.notificationDate.text = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notificationsHistoryViewState.timestamp))
-            }
-            layoutManager = LinearLayoutManager(this@NotificationsHistoryActivity)
-            recycledViewPool.setMaxRecycledViews(0, 0)
-//            setItemViewCacheSize(50)
-            val itemTouchHelper = ItemTouchHelper(SwipeDeleteHistory(notificationsAdapter))
-            itemTouchHelper.attachToRecyclerView(this)
+        notificationsListViewModel.notificationsListViewStateLiveData.observe(this@NotificationsHistoryActivity) { notificationsHistoryViewState ->
+            notificationsAdapter.submitList(null)
+            notificationsAdapter.submitList(notificationsHistoryViewState.list)
+            binding.recyclerView.smoothScrollToPosition(currentPosition)
         }
+        binding.recyclerView.recycledViewPool.setMaxRecycledViews(0, 0)
+        binding.recyclerView.setItemViewCacheSize(250)
+        val itemTouchHelper = ItemTouchHelper(SwipeDeleteHistory(notificationsAdapter))
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     //endregion
 
-//    //region ======================================== recyclerClick =========================================
-//
+    //region ========================================================= RECYCLER VIEW CLICK ==========================================================
+
 //    fun recyclerSimpleClick(position: Int) {
 //        val contactManager = ContactManager(this.applicationContext)
 //
@@ -520,55 +526,40 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 //            "com.linkedin.android" -> goToLinkedin()
 //        }
 //    }
-//
-//    fun recyclerLongClick(position: Int) {
-//        if (listOfItemSelected.contains(listOfNotificationsDB[position])) {
-//            listOfItemSelected.remove(listOfNotificationsDB[position])
-//        } else {
-//            listOfItemSelected.add(listOfNotificationsDB[position])
-//        }
-//
-//        val i = listOfItemSelected.size
-//
-//        binding.apply {
-//            if (listOfItemSelected.size == 1 && firstClick) {
-//                Toast.makeText(
-//                    this@NotificationHistoryActivity,
-//                    R.string.main_toast_multi_select_actived,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                firstClick = false
-//                multiSelectMode = true
-//                toolbarModeMultiSelect.visibility = View.VISIBLE
-//                toolbarLayout.visibility = View.INVISIBLE
-//
-//            } else if (listOfItemSelected.size == 0) {
-//                Toast.makeText(
-//                    this@NotificationHistoryActivity,
-//                    R.string.main_toast_multi_select_deactived,
-//                    Toast.LENGTH_SHORT
-//                )
-//                    .show()
-//
-//                toolbarModeMultiSelect.visibility = View.GONE
-//                toolbarLayout.visibility = View.VISIBLE
-//
-//                firstClick = true
-//            }
-//        }
-//
-//        if (listOfItemSelected.size == 1) {
-//            notification_history_ToolbarMultiSelectModeTitle!!.text =
-//                i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
-//        } else if (listOfItemSelected.size > 1) {
-//            notification_history_ToolbarMultiSelectModeTitle!!.text =
-//                i.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
-//        }
-//    }
-//
-//    //endregion
 
-    fun deleteItem(notification: NotificationsListViewState) {
+    fun recyclerLongClick(id: Int) {
+        if (listOfIdsSelected.contains(id)) {
+            listOfIdsSelected.remove(id)
+        } else {
+            listOfIdsSelected.add(id)
+        }
+
+        if (listOfIdsSelected.size == 1 && firstClick) {
+            firstClick = false
+            multiSelectMode = true
+            binding.toolbarMultiSelect.visibility = View.VISIBLE
+            binding.toolbar.visibility = View.INVISIBLE
+
+        } else if (listOfIdsSelected.size == 0) {
+            binding.toolbarMultiSelect.visibility = View.GONE
+            binding.toolbar.visibility = View.VISIBLE
+
+            firstClick = true
+        }
+
+        if (listOfIdsSelected.size == 1) {
+            binding.toolbarText.text = listOfIdsSelected.size.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected)
+        } else if (listOfIdsSelected.size > 1) {
+            binding.toolbarText.text =
+                listOfIdsSelected.size.toString() + " " + getString(R.string.main_toast_multi_select_mode_selected_more_than_one)
+        }
+    }
+
+    //endregion
+
+    fun deleteItem(notification: NotificationsListViewState, layoutPosition: Int) {
+        Log.i("GetPosition", "layoutPosition : $layoutPosition")
+        currentPosition = layoutPosition
         notificationsListViewModel.deleteNotification(
             NotificationDB(
                 notification.id,
@@ -586,6 +577,18 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 notification.isSystem
             )
         )
+    }
+
+    private fun deleteListOfSelectedNotifications() {
+        listOfIdsSelected.map {
+            Log.i("GetPosition", "it - 1 : $it")
+            notificationsListViewModel.deleteNotificationById(it)
+        }
+        multiSelectMode = false
+        firstClick = true
+        listOfIdsSelected.clear()
+        binding.toolbarMultiSelect.visibility = View.GONE
+        binding.toolbar.visibility = View.VISIBLE
     }
 
     override fun onResume() {

@@ -11,12 +11,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemNotificationBinding
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
-
-import java.util.ArrayList
 
 class NotificationsListAdapter(
     private val context: Context, private val onClickedCallback: (NotificationsListViewState, String, String) -> Unit
@@ -31,12 +28,12 @@ class NotificationsListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         notification = getItem(position)
-        holder.onBind(getItem(position), context)
+        holder.onBind(getItem(position), context, position)
     }
 
     inner class ViewHolder(private val binding: ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(notification: NotificationsListViewState, context: Context) {
+        fun onBind(notification: NotificationsListViewState, context: Context, position: Int) {
             val pckManager = context.packageManager
             var icon: Drawable? = null
             try {
@@ -55,12 +52,6 @@ class NotificationsListAdapter(
                     mainBackground.setBackgroundDrawable(background)
                     newIcon.isVisible = notificationIcon != null
                     newIcon.setImageDrawable(notificationIcon)
-//                    mainBackground.background =
-//                        ResourcesCompat.getDrawable(
-//                            context.resources,
-//                            convertPackageToBackgroundPackage(platform, context),
-//                            null
-//                        )
                     app.text = convertPackageToString(platform, context)
                     notificationSenderName.text = contactName
                     notificationDate.text = notification.date
@@ -75,9 +66,10 @@ class NotificationsListAdapter(
                                 notificationImage.setImageResource(R.drawable.ic_item_selected)
                             }
 
-//                            if (context is NotificationHistoryActivity) {
-//                                context.recyclerLongClick(position)
-//                            }
+                            if (context is NotificationsHistoryActivity) {
+                                context.recyclerLongClick(notification.id)
+                                NotificationsHistoryActivity.currentPosition = position
+                            }
 
                             if (listOfItemSelected.size > 0) {
                                 modeMultiSelect = true
@@ -105,9 +97,10 @@ class NotificationsListAdapter(
                             notificationImage.setImageResource(R.drawable.ic_item_selected)
                         }
 
-//                        if (context is NotificationHistoryActivity) {
-//                            context.recyclerLongClick(position)
-//                        }
+                        if (context is NotificationsHistoryActivity) {
+                            context.recyclerLongClick(notification.id)
+                            NotificationsHistoryActivity.currentPosition = position
+                        }
 
                         if (listOfItemSelected.size > 0) {
                             modeMultiSelect = true
@@ -120,7 +113,7 @@ class NotificationsListAdapter(
                         modeMultiSelect
                     }
 
-//                    root.setOnLongClickListener(longClick)
+                    root.setOnLongClickListener(longClick)
                     root.setOnClickListener(click)
                 }
             }
@@ -138,12 +131,11 @@ class NotificationsListAdapter(
             oldItem: NotificationsListViewState, newItem: NotificationsListViewState
         ): Boolean {
             return oldItem.contactName == newItem.contactName && oldItem.description == newItem.description && oldItem.idContact == newItem.idContact && oldItem.title == newItem.title && oldItem.platform == newItem.platform
-
         }
     }
 
     fun deleteItem(layoutPosition: Int) {
-        (context as NotificationsHistoryActivity).deleteItem(currentList[layoutPosition])
+        (context as NotificationsHistoryActivity).deleteItem(currentList[layoutPosition], layoutPosition)
     }
 
     fun clearAll() {
