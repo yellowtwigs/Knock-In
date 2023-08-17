@@ -540,4 +540,6 @@
     <string name="filter_by_signal">Signal</string>
     <string name="filter_by_telegram">Telegram</string>
     <string name="popup_1_message">1 message</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

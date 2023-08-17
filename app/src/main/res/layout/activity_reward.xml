@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".ui.statistics.reward.RewardActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/backgroundColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Your Reward"
+        app:titleTextColor="?attr/textColor" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="L'utilisation de l'application vous permet de gagner des points tous les jours en fonction du niveau de perfomance atteint"
+        android:textColor="?attr/textColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fifty_points"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="50 points : -50% sur l'achat des options de personnalisation VIP"
+        android:textColor="?attr/textColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/two_hundred_points"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="200 points : -50% sur l'achat des autres options"
+        android:textColor="?attr/textColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fifty_points" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fake_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Fake Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/two_hundred_points" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/redeem_points_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/border_selected_grey_with_red_strokes"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fake_button">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/winning_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Bravo vous avez gagné un CODE PROMO!"
+            android:textColor="?attr/textColor"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/validation_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="1 achat, valide 3 jours"
+            android:textColor="?attr/textColor"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winning_message" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/redeem_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_button_color_green"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="Redeem Points"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/validation_message" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

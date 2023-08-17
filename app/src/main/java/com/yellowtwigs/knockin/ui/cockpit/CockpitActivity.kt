@@ -35,6 +35,8 @@ import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
@@ -208,6 +210,13 @@ class CockpitActivity : AppCompatActivity() {
         val menu = binding.navView.menu
         menu.findItem(R.id.nav_home).isChecked = true
 
+        if (checkIfGoEdition(this@CockpitActivity)) {
+            menu.findItem(R.id.nav_in_app).isVisible = false
+            menu.findItem(R.id.nav_notifications).isVisible = false
+            menu.findItem(R.id.nav_teleworking).isVisible = false
+            menu.findItem(R.id.nav_dashboard).isVisible = false
+        }
+
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                 menuItem.isChecked = true
@@ -281,6 +290,9 @@ class CockpitActivity : AppCompatActivity() {
     private fun setupBottomNavigationView() {
         binding.navigation.apply {
             menu.getItem(3).isChecked = true
+            if (checkIfGoEdition(this@CockpitActivity)) {
+                binding.navigation.menu.getItem(2).isVisible = false
+            }
             setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.navigation_contacts -> {

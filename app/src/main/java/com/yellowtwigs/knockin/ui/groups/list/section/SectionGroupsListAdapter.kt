@@ -20,7 +20,6 @@ import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
-import kotlin.collections.ArrayList
 
 class SectionGroupsListAdapter(
     private val cxt: Context, private val onClickedCallback: (Int) -> Unit, private val onSectionClickedCallback: (Int) -> Unit
@@ -303,11 +302,9 @@ class SectionGroupsListAdapter(
                     popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                         when (item.itemId) {
                             R.id.menu_group_edit_group -> {
-                                cxt.startActivity(
-                                    Intent(
-                                        cxt, ManageGroupActivity::class.java
-                                    ).putExtra("GroupId", section.id)
-                                )
+                                Log.i("GetContactsFromGroup", "section.onClickedCallback()")
+//                                section.onClickedCallback()
+                                cxt.startActivity(Intent(cxt, ManageGroupActivity::class.java).putExtra("SectionId", section.id))
                             }
                             R.id.menu_group_delete_group -> {
                                 deleteGroupAlertDialog(section.title, section.id)

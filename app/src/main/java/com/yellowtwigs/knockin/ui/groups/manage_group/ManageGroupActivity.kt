@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
@@ -18,8 +19,10 @@ import com.yellowtwigs.knockin.databinding.ActivityManageGroupBinding
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
+import com.yellowtwigs.knockin.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +31,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ManageGroupActivity : AppCompatActivity() {
 
-    private val viewModel: ManageGroupViewModel by viewModels()
-    private lateinit var binding: ActivityManageGroupBinding
+    private val binding by viewBinding { ActivityManageGroupBinding.inflate(it) }
+    private val viewModel by viewModels<ManageGroupViewModel>()
+
     private val listOfItemSelected = arrayListOf<String>()
 
     private var groupId = -1
@@ -38,52 +42,42 @@ class ManageGroupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        checkTheme(this)
-
-        binding = ActivityManageGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        groupId = intent.getIntExtra("GroupId", -1)
-
-        viewModel.getManageGroupViewState()
-
-        intent.getIntegerArrayListExtra("contacts")?.forEach { id ->
-            id?.let {
-                listOfItemSelected.add(it.toString())
-            }
-        }
-
-        if (groupId != -1) {
-            viewModel.setGroupById(groupId)
-        }
-
+        checkTheme(this)
         setupToolbar()
+
+        groupId = intent.getIntExtra("SectionId", -1)
+        viewModel.setGroupById(groupId)
         setupRecyclerView()
     }
 
-    //region =========================================== SETUP UI ===========================================
-
     private fun setupToolbar() {
-        binding.toolbar.apply {
-            setSupportActionBar(this)
+            setSupportActionBar(binding.toolbar)
             val actionbar = supportActionBar
             actionbar?.let {
                 it.setDisplayHomeAsUpEnabled(true)
                 it.setHomeAsUpIndicator(R.drawable.ic_close)
                 it.title = ""
             }
-        }
-
     }
+
+    //region =========================================== SETUP UI ===========================================
+
 
     private fun setupRecyclerView() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val nbGrid = sharedPreferences.getInt("gridview", 1)
 
+        Log.i("GetContactsFromGroup", "nbGrid : ${nbGrid}")
+
         if (nbGrid == 1) {
             binding.contacts.apply {
-                viewModel.getManageGroupViewState().observe(this@ManageGroupActivity) { manageGroupViewState ->
+                Log.i("GetContactsFromGroup", "viewModel.manageGroupViewStateLiveData : ${viewModel.manageGroupViewStateLiveData}")
+
+                viewModel.groupViewState.asLiveData().observe(this@ManageGroupActivity) { manageGroupViewState ->
+                    Log.i("GetContactsFromGroup", "activity : manageGroupViewState : $manageGroupViewState")
+
                     currentGroup = manageGroupViewState
                     currentColor = manageGroupViewState.section_color
 
@@ -92,9 +86,7 @@ class ManageGroupActivity : AppCompatActivity() {
                     binding.groupName.setText(manageGroupViewState.groupName)
                     listOfItemSelected.addAll(manageGroupViewState.listOfIds)
 
-                    val manageGroupListAdapter = ContactManageGroupListAdapter(
-                        this@ManageGroupActivity, listOfItemSelected
-                    ) { id ->
+                    val manageGroupListAdapter = ContactManageGroupListAdapter(this@ManageGroupActivity, listOfItemSelected                    ) { id ->
                         hideKeyboard(this@ManageGroupActivity)
                         if (listOfItemSelected.contains(id)) {
                             listOfItemSelected.remove(id)
@@ -113,7 +105,7 @@ class ManageGroupActivity : AppCompatActivity() {
             }
         } else {
             binding.contacts.apply {
-                viewModel.getManageGroupViewState().observe(this@ManageGroupActivity) { manageGroupViewState ->
+                viewModel.manageGroupViewStateLiveData.observe(this@ManageGroupActivity) { manageGroupViewState ->
                     currentGroup = manageGroupViewState
                     currentColor = manageGroupViewState.section_color
 
@@ -123,10 +115,9 @@ class ManageGroupActivity : AppCompatActivity() {
                     listOfItemSelected.addAll(manageGroupViewState.listOfIds)
 
                     val manageGroupGripAdapter = if (nbGrid == 4) {
-                        ContactManageGroupGripFourAdapter(
-                            this@ManageGroupActivity, listOfItemSelected
+                        ContactManageGroupGripFourAdapter(this@ManageGroupActivity, listOfItemSelected
                         ) { id ->
-                            hideKeyboard(this@ManageGroupActivity)
+                            EveryActivityUtils.hideKeyboard(this@ManageGroupActivity)
                             if (listOfItemSelected.contains(id)) {
                                 listOfItemSelected.remove(id)
                             } else {
@@ -134,10 +125,9 @@ class ManageGroupActivity : AppCompatActivity() {
                             }
                         }
                     } else {
-                        ContactManageGroupGripFiveAdapter(
-                            this@ManageGroupActivity, listOfItemSelected
+                        ContactManageGroupGripFiveAdapter(this@ManageGroupActivity, listOfItemSelected
                         ) { id ->
-                            hideKeyboard(this@ManageGroupActivity)
+                            EveryActivityUtils.hideKeyboard(this@ManageGroupActivity)
                             if (listOfItemSelected.contains(id)) {
                                 listOfItemSelected.remove(id)
                             } else {
@@ -211,6 +201,19 @@ class ManageGroupActivity : AppCompatActivity() {
 
     //endregion
 
+    private fun sectionColorClick(imageView: AppCompatImageView) {
+        binding.apply {
+            groupColorBlue.setImageResource(android.R.color.transparent)
+            groupColorRed.setImageResource(android.R.color.transparent)
+            groupColorGreen.setImageResource(android.R.color.transparent)
+            groupColorOrange.setImageResource(android.R.color.transparent)
+            groupColorPurple.setImageResource(android.R.color.transparent)
+            groupColorYellow.setImageResource(android.R.color.transparent)
+
+            imageView.setImageResource(R.drawable.border_selected_yellow)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu_validation, menu)
@@ -258,76 +261,6 @@ class ManageGroupActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun sectionColorClick(imageView: AppCompatImageView) {
-        binding.apply {
-            groupColorBlue.setImageResource(android.R.color.transparent)
-            groupColorRed.setImageResource(android.R.color.transparent)
-            groupColorGreen.setImageResource(android.R.color.transparent)
-            groupColorOrange.setImageResource(android.R.color.transparent)
-            groupColorPurple.setImageResource(android.R.color.transparent)
-            groupColorYellow.setImageResource(android.R.color.transparent)
-
-            imageView.setImageResource(R.drawable.border_selected_yellow)
-        }
-    }
-
-//    fun gridMultiSelectItemClick(position: Int) { ///// duplicata à changer vite
-//        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-//            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-//            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
-//        } else {
-//            listtest++
-//            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-//            //
-//            var contact = gestionnaireContacts!!.contactList[position].contactDB!!
-//            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
-//        }
-//    }
-
-//    fun listMultiSelectItemClick(position: Int) {
-//        if (listOfItemSelected.contains(gestionnaireContacts!!.contactList[position])) {
-//            listOfItemSelected.remove(gestionnaireContacts!!.contactList[position])
-//
-//            selectContact!!.remove(gestionnaireContacts!!.contactList[position].contactDB!!)
-//        } else {
-//            test++
-//            listOfItemSelected.add(gestionnaireContacts!!.contactList[position])
-//
-//            var contact = gestionnaireContacts!!.contactList[position].contactDB!!
-//            selectContact!!.add(gestionnaireContacts!!.contactList[position].contactDB!!)
-//        }
-//    }
-
-//    private fun addToGroup(listContact: List<ContactDB>?, name: String) {
-//        val group = GroupDB(null, name, "", -500138) // création de l'objet groupe
-//        var counter = 0
-//        var alreadyExist = false
-//
-//        while (counter < contactsDatabase?.GroupsDao()!!
-//                .getAllGroupsByNameAZ().size
-//        ) { //Nous vérifions que le nom de groupe ne correspond à aucun autre groupe
-//            if (name == contactsDatabase?.GroupsDao()!!
-//                    .getAllGroupsByNameAZ()[counter].groupDB!!.name
-//            ) {
-//                alreadyExist = true
-//                break
-//            }
-//            counter++
-//        }
-//
-//        if (alreadyExist) {//Si il existe Nous prévenons l'utilisateur sinon nous créons le groupe
-//            Toast.makeText(this, "Ce groupe existe déjà", Toast.LENGTH_LONG).show()
-//        } else {
-//            val groupId = contactsDatabase!!.GroupsDao().insert(group)
-//            listContact!!.forEach {
-//                val link = LinkContactGroup(groupId!!.toInt(), it.id)
-////                println("contact db id" + contactsDatabase!!.LinkContactGroupDao().insert(link))
-//            }
-//            println(contactsDatabase!!.GroupsDao().getAllGroupsByNameAZ())
-//            refreshActivity()
-//        }
-//    }
-
     private fun refreshActivity() {
         startActivity(
             Intent(this@ManageGroupActivity, GroupsListActivity::class.java).addFlags(
@@ -339,5 +272,4 @@ class ManageGroupActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
     }
-
 }

@@ -1,20 +1,20 @@
 package com.yellowtwigs.knockin.ui.groups.manage_group
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
-import com.yellowtwigs.knockin.model.database.data.ContactDB
+import com.yellowtwigs.knockin.domain.group.GetGroupIdFlowUseCase
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
+import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ContactManageGroupViewState
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
-import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.transformContactDbToContactsListViewState
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -23,67 +23,96 @@ import javax.inject.Inject
 class ManageGroupViewModel @Inject constructor(
     private val manageGroupRepository: ManageGroupRepository,
     private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
+//    private val getGroupIdFlowUseCase: GetGroupIdFlowUseCase,
     private val groupsListRepository: GroupsListRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val viewStateLiveData = MediatorLiveData<ManageGroupViewState>()
+    private val _groupViewState = MutableSharedFlow<ManageGroupViewState>(replay = 1)
+    val groupViewState: SharedFlow<ManageGroupViewState> = _groupViewState
 
-    private val groupIdLiveData = MutableLiveData<Int>()
+    private var groupStateMutableSharedFlow = MutableSharedFlow<ManageGroupViewState>(replay = 1)
+    private var groupIdStateMutableSharedFlow = MutableSharedFlow<Int>(replay = 1)
+    private val groupIdFlow = MutableStateFlow(0)
     private val listOfContactsInGroupLiveData = MutableLiveData<List<String>>()
 
-    init {
-        val contactsListViewStateLiveDataSortByFullName = liveData(Dispatchers.IO) {
-            getAllContactsSortByFullNameUseCase.invoke().collect { contacts ->
-                emit(contacts.map {
-                    transformContactDbToContactsListViewState(it)
-                })
+    val manageGroupViewStateLiveData: LiveData<ManageGroupViewState> = liveData(Dispatchers.IO) {
+        combine(getAllContactsSortByFullNameUseCase.invoke(),
+            groupIdFlow,
+            groupStateMutableSharedFlow) { contacts,groupId,   group ->
+            var manageGroupViewState = ManageGroupViewState(
+                group.id,
+                group.groupName,
+                group.section_color,
+                group.listOfContacts,
+                group.listOfIds
+            )
+
+            Log.i("GetContactsFromGroup", "contacts : $contacts")
+            Log.i("GetContactsFromGroup", "groupId : $groupId")
+
+            val allContacts = contacts.map {
+                transformContactDbToContactsListViewState(it)
             }
-        }
 
-//        val groupById = Transformations.switchMap(groupIdLiveData) { id ->
-//            return@switchMap groupsListRepository.getGroupById(id)
-//        }
-//
-//        viewStateLiveData.addSource(contactsListViewStateLiveDataSortByFullName) { contacts ->
-//            combine(contacts, groupById.value)
-//        }
-//
-//        viewStateLiveData.addSource(groupById) { group ->
-//            combine(contactsListViewStateLiveDataSortByFullName.value, group)
-//        }
-    }
-
-    private fun combine(allContacts: List<ContactsListViewState>?, group: GroupDB?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            if (allContacts?.isNotEmpty() == true) {
-                if (group != null) {
-                    withContext(Dispatchers.Main) {
-                        viewStateLiveData.value = ManageGroupViewState(
-                            group.id,
-                            group.name,
-                            group.section_color,
-                            sortedContactsList(
-                                contactsToContactsManageGroupViewState(allContacts)
-                            ),
-                            group.listOfContactsData
-                        )
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        viewStateLiveData.value = ManageGroupViewState(
-                            0,
-                            "",
-                            0,
-                            sortedContactsList(
-                                contactsToContactsManageGroupViewState(allContacts)
-                            ), arrayListOf()
-                        )
-                    }
+            if (allContacts.isNotEmpty()) {
+                withContext(Dispatchers.Default) {
+                    manageGroupViewState = ManageGroupViewState(
+                        group.id,
+                        group.groupName,
+                        group.section_color,
+                        sortedContactsList(
+                            contactsToContactsManageGroupViewState(allContacts)
+                        ),
+                        group.listOfIds
+                    )
                 }
             }
+
+            emit(manageGroupViewState)
         }
     }
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.i("GetContactsFromGroup", "ManageGroupViewModel : Pre Collect")
+//            getGroupIdFlowUseCase.invoke().collect { id ->
+//                Log.i("GetContactsFromGroup", "ManageGroupViewModel : Post Collect")
+//                Log.i("GetContactsFromGroup", "id : $id")
+//
+//            }
+        }
+    }
+
+//    private fun combine(allContacts: List<ContactsListViewState>?, group: GroupDB?) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            if (allContacts?.isNotEmpty() == true) {
+//                if (group != null) {
+//                    withContext(Dispatchers.Main) {
+//                        viewStateLiveData.value = ManageGroupViewState(
+//                            group.id,
+//                            group.name,
+//                            group.section_color,
+//                            sortedContactsList(
+//                                contactsToContactsManageGroupViewState(allContacts)
+//                            ),
+//                            group.listOfContactsData
+//                        )
+//                    }
+//                } else {
+//                    withContext(Dispatchers.Main) {
+//                        viewStateLiveData.value = ManageGroupViewState(
+//                            0,
+//                            "",
+//                            0,
+//                            sortedContactsList(
+//                                contactsToContactsManageGroupViewState(allContacts)
+//                            ), arrayListOf()
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun sortedContactsList(
         list: ArrayList<ContactManageGroupViewState>
@@ -145,10 +174,6 @@ class ManageGroupViewModel @Inject constructor(
         return listOfContactManageGroupViewState
     }
 
-    fun getManageGroupViewState(): LiveData<ManageGroupViewState> {
-        return viewStateLiveData
-    }
-
     suspend fun createNewGroup(group: GroupDB) = viewModelScope.launch {
         manageGroupRepository.insertGroup(group)
     }
@@ -158,7 +183,108 @@ class ManageGroupViewModel @Inject constructor(
     }
 
     fun setGroupById(id: Int) {
-        groupIdLiveData.value = id
+        viewModelScope.launch(Dispatchers.IO) {
+            groupIdStateMutableSharedFlow.tryEmit(id)
+
+            val manageGroupViewState = id.let { groupsListRepository.getGroupById(it).firstOrNull() }
+            val contacts = getAllContactsSortByFullNameUseCase.invoke().firstOrNull()
+
+            Log.i("GetContactsFromGroup", "manageGroupViewState : $manageGroupViewState")
+
+            Log.i("GetContactsFromGroup", "contacts : $contacts")
+            Log.i("GetContactsFromGroup", "groupId : $id")
+
+            if (manageGroupViewState == null) {
+                if (contacts != null) {
+                    val allContacts = contacts.map {
+                        transformContactDbToContactsListViewState(it)
+                    }
+                    _groupViewState.tryEmit(
+                        ManageGroupViewState(
+                            id = 0,
+                            groupName = "",
+                            section_color = 0,
+                            listOfContacts = sortedContactsList(
+                                contactsToContactsManageGroupViewState(allContacts)
+                            ),
+                            listOfIds = listOf(),
+                        )
+                    )
+                    groupStateMutableSharedFlow.emit(
+                        ManageGroupViewState(
+                            id = 0,
+                            groupName = "",
+                            section_color = 0,
+                            listOfContacts = sortedContactsList(
+                                contactsToContactsManageGroupViewState(allContacts)
+                            ),
+                            listOfIds = listOf(),
+                        )
+                    )
+                } else {
+                    _groupViewState.tryEmit(ManageGroupViewState(
+                        id = 0,
+                        groupName = "",
+                        section_color = 0,
+                        listOfContacts = listOf(),
+                        listOfIds = listOf(),
+                    ))
+                    groupStateMutableSharedFlow.emit(
+                        ManageGroupViewState(
+                            id = 0,
+                            groupName = "",
+                            section_color = 0,
+                            listOfContacts = listOf(),
+                            listOfIds = listOf(),
+                        )
+                    )
+                }
+            } else {
+                if (contacts != null) {
+                    val allContacts = contacts.map {
+                        transformContactDbToContactsListViewState(it)
+                    }
+                    _groupViewState.tryEmit(ManageGroupViewState(
+                        id = manageGroupViewState.id,
+                        groupName = manageGroupViewState.name,
+                        section_color = manageGroupViewState.section_color,
+                        listOfContacts = sortedContactsList(
+                            contactsToContactsManageGroupViewState(allContacts)
+                        ),
+                        listOfIds = manageGroupViewState.listOfContactsData,
+                    ))
+                    groupStateMutableSharedFlow.emit(
+                        ManageGroupViewState(
+                            id = manageGroupViewState.id,
+                            groupName = manageGroupViewState.name,
+                            section_color = manageGroupViewState.section_color,
+                            listOfContacts = sortedContactsList(
+                                contactsToContactsManageGroupViewState(allContacts)
+                            ),
+                            listOfIds = manageGroupViewState.listOfContactsData,
+                        )
+                    )
+                } else {
+                    _groupViewState.tryEmit(ManageGroupViewState(
+                        id = manageGroupViewState.id,
+                        groupName = manageGroupViewState.name,
+                        section_color = manageGroupViewState.section_color,
+                        listOfContacts = listOf(),
+                        listOfIds = manageGroupViewState.listOfContactsData,
+                    ))
+                    groupStateMutableSharedFlow.emit(
+                        ManageGroupViewState(
+                            id = manageGroupViewState.id,
+                            groupName = manageGroupViewState.name,
+                            section_color = manageGroupViewState.section_color,
+                            listOfContacts = listOf(),
+                            listOfIds = manageGroupViewState.listOfContactsData,
+                        )
+                    )
+                }
+
+            }
+        }
     }
 
     fun getListOfContactsInGroupLiveData(): LiveData<List<String>> {

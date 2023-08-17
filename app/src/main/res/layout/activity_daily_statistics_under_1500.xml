@@ -28,7 +28,7 @@
             android:layout_height="200dp"
             android:layout_margin="@dimen/daily_performance_message_layout_margin"
             android:background="@drawable/background_border_rounded_yellow"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintBottom_toTopOf="@+id/number_points_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -69,14 +69,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/number_points_icon"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/to_dashboard_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +82,7 @@
             app:srcCompat="@drawable/trophy_25" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/to_dashboard_button"
+            android:id="@+id/reward_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
@@ -92,10 +90,10 @@
             android:background="@drawable/rounded_button_color_yellow"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
-            android:text="Redeem points"
-            android:textSize="12sp"
-            android:visibility="gone"
+            android:text="How i get rewarded"
             android:textColor="@color/textColorDark"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/number_points_icon" />

@@ -45,6 +45,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".RewardActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.statistics.daily_statistics.DailyStatisticsActivity"
             android:exported="false" />
         <activity
@@ -65,9 +72,11 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.statistics.reward.RewardActivity" />
         <activity android:name=".ui.first_launch.start.StartActivity" />
         <activity android:name=".ui.first_launch.first_vip_selection.FirstVipSelectionActivity" />
         <activity android:name=".FirstLaunchActivity" />
@@ -82,7 +91,8 @@
         <activity
             android:name=".ui.contacts.list.ContactsListActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.notifications.history.NotificationsHistoryActivity"
+        <activity
+            android:name=".ui.notifications.history.NotificationsHistoryActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.cockpit.CockpitActivity" />
         <activity android:name=".ui.HelpActivity" />
@@ -95,7 +105,9 @@
             android:name="com.yellowtwigs.knockin.ui.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".ui.premium.PremiumActivity" />
+
         <receiver android:name=".ui.notifications.sender.NotificationSender" />
+
         <service
             android:name=".background.service.NotificationsListenerService"
             android:exported="false"
@@ -105,16 +117,16 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            tools:node="merge" >
+            tools:node="merge">
             <meta-data
                 android:name="androidx.startup"
                 android:value="androidx.startup.sample.MyContentProvider" />
         </provider>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

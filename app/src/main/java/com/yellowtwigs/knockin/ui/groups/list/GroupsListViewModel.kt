@@ -1,20 +1,21 @@
 package com.yellowtwigs.knockin.ui.groups.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
-import com.yellowtwigs.knockin.model.database.data.ContactDB
+import com.yellowtwigs.knockin.domain.group.SetGroupIdFlowUseCase
 import com.yellowtwigs.knockin.model.database.data.GroupDB
-import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
+import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionViewState
-import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.transformContactDbToContactsListViewState
 import com.yellowtwigs.knockin.utils.Converter.unAccent
+import com.yellowtwigs.knockin.utils.EquatableCallback
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -23,8 +24,9 @@ import javax.inject.Inject
 class GroupsListViewModel @Inject constructor(
     groupsListRepository: GroupsListRepository,
     private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
-    private val manageGroupRepository: ManageGroupRepository
-) : ViewModel() {
+    private val manageGroupRepository: ManageGroupRepository,
+    private val setGroupIdFlowUseCase: SetGroupIdFlowUseCase,
+    ) : ViewModel() {
 
     private val viewStateLiveData = MediatorLiveData<List<SectionViewState>>()
 
@@ -99,7 +101,11 @@ class GroupsListViewModel @Inject constructor(
 
                 listOfSections.add(
                     SectionViewState(
-                        group.id, group.name, group.section_color, sortedContactsList(listOfContactsInGroup), phoneNumbers, emails
+                        group.id, group.name, group.section_color, sortedContactsList(listOfContactsInGroup), phoneNumbers, emails,
+                        EquatableCallback {
+                            Log.i("GetContactsFromGroup", "group.id : ${group.id}")
+                            setGroupIdFlowUseCase.invoke(group.id)
+                        }
                     )
                 )
             }

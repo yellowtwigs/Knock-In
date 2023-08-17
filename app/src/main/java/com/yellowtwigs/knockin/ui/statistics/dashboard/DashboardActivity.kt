@@ -13,13 +13,15 @@ import androidx.core.view.isVisible
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.databinding.ActivityDashboardBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
@@ -66,15 +68,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
 
         dataPieChart = binding.pieChartMessaging
 
-        CoroutineScope(Dispatchers.Main).launch {
-            binding.allNotificationsTitle.isVisible = false
-            binding.pieChartMessaging.isVisible = false
-            delay(3500L)
-
-            binding.pieChartLoading.isVisible = false
-            binding.allNotificationsTitle.isVisible = true
-            binding.pieChartMessaging.isVisible = true
-        }
+        showLoadingProgressBar()
 
         setupToolbar()
         setupDrawerLayout()
@@ -128,14 +122,17 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
             }
             R.id.item_daily -> {
                 dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_daily)
+                showLoadingProgressBar()
                 item.isChecked = true
             }
             R.id.item_weekly -> {
                 dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_weekly)
+                showLoadingProgressBar()
                 item.isChecked = true
             }
             R.id.item_monthly -> {
                 dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_monthly)
+                showLoadingProgressBar()
                 item.isChecked = true
             }
         }
@@ -149,6 +146,19 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     }
 
     //endregion
+
+    private fun showLoadingProgressBar() {
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.pieChartLoading.isVisible = true
+            binding.allNotificationsTitle.isVisible = false
+            binding.pieChartMessaging.isVisible = false
+            delay(3500L)
+
+            binding.pieChartLoading.isVisible = false
+            binding.allNotificationsTitle.isVisible = true
+            binding.pieChartMessaging.isVisible = true
+        }
+    }
 
     //region ======================================== DRAWER LAYOUT =========================================
 

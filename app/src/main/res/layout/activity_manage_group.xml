@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="?attr/actionBarSize"
         android:alpha="0.70"
         android:background="?attr/backgroundColor"
         app:layout_constraintTop_toTopOf="parent">
@@ -166,9 +166,10 @@
         android:columnWidth="120dp"
         android:gravity="center"
         android:numColumns="auto_fit"
-        tools:listitem="@layout/item_contact_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_color_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/select_color_layout"
+        tools:listitem="@layout/item_contact_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

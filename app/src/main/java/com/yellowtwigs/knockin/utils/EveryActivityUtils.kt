@@ -1,18 +1,20 @@
 package com.yellowtwigs.knockin.utils
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 
 object EveryActivityUtils {
+
+    fun checkIfGoEdition(cxt: Activity): Boolean {
+        val am = cxt.getSystemService(AppCompatActivity.ACTIVITY_SERVICE) as ActivityManager
+//        return true
+        return am.isLowRamDevice
+    }
 
     fun checkTheme(cxt: Activity) {
         val sharedThemePreferences = cxt.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)

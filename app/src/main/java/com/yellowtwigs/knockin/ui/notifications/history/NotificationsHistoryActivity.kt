@@ -35,6 +35,7 @@ import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
@@ -69,6 +70,11 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     private val listOfIdsSelected = arrayListOf<Int>()
 
     //endregion
+
+    override fun onStop() {
+        super.onStop()
+        currentPosition = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -305,6 +311,14 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         binding.navView.apply {
             val menu = binding.navView.menu
             menu.findItem(R.id.nav_home).isChecked = true
+
+            if (EveryActivityUtils.checkIfGoEdition(this@NotificationsHistoryActivity)) {
+                menu.findItem(R.id.nav_in_app).isVisible = false
+                menu.findItem(R.id.nav_notifications).isVisible = false
+                menu.findItem(R.id.nav_teleworking).isVisible = false
+                menu.findItem(R.id.nav_dashboard).isVisible = false
+            }
+
             setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
@@ -589,6 +603,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         listOfIdsSelected.clear()
         binding.toolbarMultiSelect.visibility = View.GONE
         binding.toolbar.visibility = View.VISIBLE
+        notificationsAdapter.clearAll()
     }
 
     override fun onResume() {

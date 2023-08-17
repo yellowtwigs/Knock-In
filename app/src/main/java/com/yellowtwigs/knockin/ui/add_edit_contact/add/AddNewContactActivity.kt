@@ -39,6 +39,7 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
@@ -305,7 +306,14 @@ class AddNewContactActivity : AppCompatActivity() {
             }
 
             // Settings
-
+            if (EveryActivityUtils.checkIfGoEdition(this@AddNewContactActivity)) {
+                binding.vipSettingsIcon.isVisible = false
+                binding.vipSettingsText.isVisible = false
+                binding.prioritySpinner.isVisible = false
+                binding.priorityExplain.isVisible = false
+                binding.messengerIdLayout.isVisible = false
+                binding.mailIdLayout.isVisible = false
+            }
         }
     }
 

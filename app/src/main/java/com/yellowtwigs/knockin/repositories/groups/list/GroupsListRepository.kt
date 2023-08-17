@@ -9,5 +9,5 @@ interface GroupsListRepository {
     fun getAllGroupsLiveData(): LiveData<List<GroupDB>>
     fun getAllGroupsFlow(): Flow<List<GroupDB>>
 
-    fun getGroupById(id: Int): LiveData<GroupDB>
+    fun getGroupById(id: Int): Flow<GroupDB>
 }

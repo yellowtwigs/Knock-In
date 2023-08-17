@@ -26,6 +26,7 @@ import com.yellowtwigs.knockin.databinding.ActivityStartActivityBinding
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -99,8 +100,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             edit.apply()
         }
 
-        if (true) {
-//        if (checkIfGoEdition()) {
+        if (checkIfGoEdition(this@StartActivity)) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
                 .setMessage(getString(R.string.start_activity_go_edition_message))
                 .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
@@ -157,7 +157,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             openOverlaySettings()
                         }
                         3 -> {
-                            if (checkIfGoEdition()) {
+                            if (checkIfGoEdition(this@StartActivity)) {
                                 firstLaunchValidate()
                                 val intent =
                                     Intent(this@StartActivity, ContactsListActivity::class.java)
@@ -241,7 +241,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                     currentPosition = position
 
-                    if (checkIfGoEdition()) {
+                    if (checkIfGoEdition(this@StartActivity)) {
                         currentPosition = 4
                     }
 
@@ -284,7 +284,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 skip.visibility = View.GONE
                             }
                             3 -> {
-                                if (checkIfGoEdition()) {
+                                if (checkIfGoEdition(this@StartActivity)) {
                                     radioButton1.visibility = View.GONE
                                     radioButton2.visibility = View.GONE
                                     radioButton3.visibility = View.GONE
@@ -497,12 +497,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //endregion
 
-    private fun checkIfGoEdition(): Boolean {
-        val am = baseContext.getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        return true
-//        return am.isLowRamDevice
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
@@ -520,7 +514,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             edit.apply()
 
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (checkIfGoEdition()) {
+                if (checkIfGoEdition(this@StartActivity)) {
                     firstLaunchValidate()
                     val edit = sharedPreferences.edit()
                     edit.putBoolean("view", true)

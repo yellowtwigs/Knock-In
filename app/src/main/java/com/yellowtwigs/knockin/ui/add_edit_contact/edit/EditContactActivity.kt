@@ -443,6 +443,14 @@ class EditContactActivity : AppCompatActivity() {
                 selectImage()
             }
 
+            if (EveryActivityUtils.checkIfGoEdition(this@EditContactActivity)) {
+                binding.vipSettingsIcon.isVisible = false
+                binding.vipSettingsText.isVisible = false
+                binding.prioritySpinner.isVisible = false
+                binding.priorityExplain.isVisible = false
+                binding.messengerIdLayout.isVisible = false
+                binding.mailIdLayout.isVisible = false
+            }
             // Settings
             vipSettingsIcon.setOnClickListener {
                 if (checkIfADataWasChanged()) {

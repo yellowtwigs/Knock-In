@@ -1,6 +1,7 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -27,8 +28,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.yellowtwigs.knockin.R
-import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.background.service.NotificationsListenerService
+import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
@@ -47,6 +48,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
@@ -518,6 +520,13 @@ class ContactsListActivity : AppCompatActivity() {
             val navInviteFriend = menu.findItem(R.id.nav_invite_friend)
             navInviteFriend.isVisible = true
 
+            if (checkIfGoEdition(this@ContactsListActivity)) {
+                menu.findItem(R.id.nav_in_app).isVisible = false
+                menu.findItem(R.id.nav_notifications).isVisible = false
+                menu.findItem(R.id.nav_teleworking).isVisible = false
+                menu.findItem(R.id.nav_dashboard).isVisible = false
+            }
+
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
                     menuItem.isChecked = true
@@ -884,6 +893,9 @@ class ContactsListActivity : AppCompatActivity() {
 
     private fun setupBottomNavigationView(binding: ActivityContactsListBinding) {
         binding.bottomNavigation.menu.getItem(0).isChecked = true
+        if (checkIfGoEdition(this@ContactsListActivity)) {
+            binding.bottomNavigation.menu.getItem(2).isVisible = false
+        }
         binding.bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_groups -> {

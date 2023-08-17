@@ -11,5 +11,5 @@ class GroupsListRepositoryImpl @Inject constructor(
     override fun getAllGroupsLiveData() = dao.getAllGroupsFlow().asLiveData()
     override fun getAllGroupsFlow() = dao.getAllGroupsFlow()
 
-    override fun getGroupById(id: Int) = dao.getGroup(id).asLiveData()
+    override fun getGroupById(id: Int) = dao.getGroup(id)
 }

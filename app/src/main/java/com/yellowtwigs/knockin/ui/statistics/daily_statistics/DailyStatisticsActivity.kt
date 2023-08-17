@@ -22,6 +22,7 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
+import com.yellowtwigs.knockin.ui.statistics.reward.RewardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
@@ -133,6 +134,14 @@ class DailyStatisticsActivity : AppCompatActivity() {
                 activityDailyStatisticsUnder1200Binding.adviceMessageContent.text = adviceMessage
             }
         }
+
+        activityDailyStatisticsUnder1200Binding.rewardButton.setOnClickListener {
+            val USER_POINT = "USER_POINT"
+            val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
+            Log.i("GetNotification", "Passe par là : Points : ${sharedPreferences.getInt(USER_POINT, 0)}")
+
+            startActivity(Intent(this@DailyStatisticsActivity, RewardActivity::class.java))
+        }
     }
 
     private fun setupToolbarUnder1200() {
@@ -222,6 +231,14 @@ class DailyStatisticsActivity : AppCompatActivity() {
             } else {
                 activityDailyStatisticsUnder1500Binding.adviceMessageContent.text = adviceMessage
             }
+        }
+
+        activityDailyStatisticsUnder1500Binding.rewardButton.setOnClickListener {
+            val USER_POINT = "USER_POINT"
+            val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
+            Log.i("GetNotification", "Passe par là : Points : ${sharedPreferences.getInt(USER_POINT, 0)}")
+
+            startActivity(Intent(this@DailyStatisticsActivity, RewardActivity::class.java))
         }
     }
 
@@ -318,6 +335,8 @@ class DailyStatisticsActivity : AppCompatActivity() {
             val USER_POINT = "USER_POINT"
             val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
             Log.i("GetNotification", "Passe par là : Points : ${sharedPreferences.getInt(USER_POINT, 0)}")
+
+            startActivity(Intent(this@DailyStatisticsActivity, RewardActivity::class.java))
         }
     }
 

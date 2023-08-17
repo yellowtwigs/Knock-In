@@ -31,6 +31,7 @@ import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -80,6 +81,13 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
     private fun setupDrawerLayout() {
         binding.navigationView.menu.findItem(R.id.nav_manage_screen).isChecked = true
+
+        if (EveryActivityUtils.checkIfGoEdition(this@ManageMyScreenActivity)) {
+            binding.navigationView.menu.findItem(R.id.nav_in_app).isVisible = false
+            binding.navigationView.menu.findItem(R.id.nav_notifications).isVisible = false
+            binding.navigationView.menu.findItem(R.id.nav_teleworking).isVisible = false
+            binding.navigationView.menu.findItem(R.id.nav_dashboard).isVisible = false
+        }
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {

@@ -36,6 +36,8 @@ import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActi
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -111,6 +113,13 @@ class GroupsListActivity : AppCompatActivity() {
         binding.drawerLayout.apply {
             val menu = binding.navView.menu
             menu.findItem(R.id.nav_home).isChecked = true
+
+            if (checkIfGoEdition(this@GroupsListActivity)) {
+                menu.findItem(R.id.nav_in_app).isVisible = false
+                menu.findItem(R.id.nav_notifications).isVisible = false
+                menu.findItem(R.id.nav_teleworking).isVisible = false
+                menu.findItem(R.id.nav_dashboard).isVisible = false
+            }
 
             binding.navView.setNavigationItemSelectedListener { menuItem ->
                 if (menuItem.itemId != R.id.nav_sync_contact && menuItem.itemId != R.id.nav_invite_friend) {
@@ -190,6 +199,9 @@ class GroupsListActivity : AppCompatActivity() {
 
     private fun setupBottomNavigationView() {
         binding.navigation.menu.getItem(1).isChecked = true
+        if (checkIfGoEdition(this@GroupsListActivity)) {
+            binding.navigation.menu.getItem(2).isVisible = false
+        }
         binding.navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_contacts -> {
