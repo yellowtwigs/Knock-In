@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.model.database.dao
 
+import android.util.Log
 import androidx.room.*
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import kotlinx.coroutines.flow.Flow
@@ -42,6 +43,12 @@ interface NotificationsDao {
 
     @Delete
     suspend fun deleteNotification(notification: NotificationDB)
+
+    @Delete
+    suspend fun deleteNotifications(notifications: List<NotificationDB>)
+
+    @Query("DELETE FROM notifications_table WHERE id in (:ids)")
+    suspend fun deleteNotificationsByIds(ids: List<Int>)
 
     @Query("DELETE FROM notifications_table WHERE id = :id")
     suspend fun deleteNotificationById(id: Int)

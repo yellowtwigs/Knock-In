@@ -49,8 +49,6 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     private var isThemeDark = false
     private var isVIP = false
 
-    private var adviceMessage = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -120,16 +118,19 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
                 }
                 return true
             }
+
             R.id.item_daily -> {
                 dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_daily)
                 showLoadingProgressBar()
                 item.isChecked = true
             }
+
             R.id.item_weekly -> {
                 dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_weekly)
                 showLoadingProgressBar()
                 item.isChecked = true
             }
+
             R.id.item_monthly -> {
                 dashboardViewModel.changeDailyWeeklyMonthly(R.id.item_monthly)
                 showLoadingProgressBar()
@@ -184,18 +185,23 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
                     R.id.nav_home -> startActivity(
                         Intent(this@DashboardActivity, ContactsListActivity::class.java)
                     )
+
                     R.id.nav_notifications -> startActivity(
                         Intent(this@DashboardActivity, NotificationsSettingsActivity::class.java)
                     )
+
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@DashboardActivity, TeleworkingActivity::class.java)
                     )
+
                     R.id.nav_in_app -> startActivity(
                         Intent(this@DashboardActivity, PremiumActivity::class.java)
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(this@DashboardActivity, ManageMyScreenActivity::class.java)
                     )
+
                     R.id.nav_help -> startActivity(Intent(this@DashboardActivity, HelpActivity::class.java))
                     R.id.nav_dashboard -> startActivity(Intent(this@DashboardActivity, DashboardActivity::class.java))
                     R.id.nav_invite_friend -> {
@@ -221,11 +227,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         binding.bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_daily_stats -> {
-                    startActivity(
-                        Intent(
-                            this@DashboardActivity, DailyStatisticsActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).putExtra("AdviceMessage", adviceMessage)
-                    )
+                    startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java))
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -236,8 +238,6 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     private fun setupDataToView() {
         dashboardViewModel.dashboardViewStateLiveData.observe(this) {
             setupPieChart(it.list)
-            adviceMessage = it.adviceMessage
-
             binding.performanceIcon.setImageResource(it.icon)
             binding.allNotificationsTitle.text = it.notificationsTitle
             binding.notificationsUnprocessedContent.setText(it.numberOfNotificationsUnprocessed)

@@ -49,7 +49,6 @@ import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -64,9 +63,6 @@ class EditContactActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditContactBinding
 
     private val editContactViewModel: EditContactViewModel by viewModels()
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
-
-    private lateinit var userIdPreferences: SharedPreferences
 
     private var isChanged = false
 
@@ -170,10 +166,6 @@ class EditContactActivity : AppCompatActivity() {
         val id = intent.getIntExtra("ContactId", 1)
 
         fromVipSettings = intent.getBooleanExtra("fromVipSettings", false)
-
-        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
-
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the EditContactActivity")
 
         fromGroups = intent.getBooleanExtra("FromGroups", false)
         bindingAllDataFromUserId(id)

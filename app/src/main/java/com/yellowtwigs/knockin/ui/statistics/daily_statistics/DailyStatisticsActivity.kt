@@ -35,16 +35,16 @@ class DailyStatisticsActivity : AppCompatActivity() {
     private lateinit var activityDailyStatisticsUnder1200Binding: ActivityDailyStatisticsUnder1200Binding
     private lateinit var activityDailyStatisticsUnder1500Binding: ActivityDailyStatisticsUnder1500Binding
 
+    private val USER_POINT = "USER_POINT"
+
+    private val dailyStatisticsViewModel: DailyStatisticsViewModel by viewModels()
+    private var deviceHeight = 0
+
     companion object {
         fun navigate(context: Context): Intent {
             return Intent(context, DailyStatisticsActivity::class.java)
         }
     }
-
-    private val dailyStatisticsViewModel: DailyStatisticsViewModel by viewModels()
-    private var deviceHeight = 0
-
-    private var adviceMessage = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +52,6 @@ class DailyStatisticsActivity : AppCompatActivity() {
         checkTheme(this)
         hideKeyboard(this)
         deviceHeight = getDeviceHeight(this)
-
-        adviceMessage = intent.getStringExtra("AdviceMessage") ?: ""
 
         if (deviceHeight in 1250..1699) {
             activityDailyStatisticsUnder1500Binding = ActivityDailyStatisticsUnder1500Binding.inflate(layoutInflater)
@@ -82,18 +80,11 @@ class DailyStatisticsActivity : AppCompatActivity() {
         }
     }
 
-    fun getDeviceHeight(context: Context): Int {
+    private fun getDeviceHeight(context: Context): Int {
         val displayMetrics = DisplayMetrics()
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels
-    }
-
-    fun getDeviceWidth(context: Context): Int {
-        val displayMetrics = DisplayMetrics()
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.widthPixels
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -128,18 +119,12 @@ class DailyStatisticsActivity : AppCompatActivity() {
 
     private fun bindingDataToViewFromViewModelUnder1200() {
         dailyStatisticsViewModel.dailyStatisticsViewStateLiveData.observe(this) {
-            if (adviceMessage == "") {
-                activityDailyStatisticsUnder1200Binding.adviceMessageContent.text = it.adviceMessage
-            } else {
-                activityDailyStatisticsUnder1200Binding.adviceMessageContent.text = adviceMessage
-            }
+            activityDailyStatisticsUnder1200Binding.adviceMessageContent.text = it.adviceMessage
         }
 
+        val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
+        activityDailyStatisticsUnder1200Binding.numberPointsText.text = "${sharedPreferences.getInt(USER_POINT, 0)}"
         activityDailyStatisticsUnder1200Binding.rewardButton.setOnClickListener {
-            val USER_POINT = "USER_POINT"
-            val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
-            Log.i("GetNotification", "Passe par là : Points : ${sharedPreferences.getInt(USER_POINT, 0)}")
-
             startActivity(Intent(this@DailyStatisticsActivity, RewardActivity::class.java))
         }
     }
@@ -226,18 +211,12 @@ class DailyStatisticsActivity : AppCompatActivity() {
 
     private fun bindingDataToViewFromViewModelUnder1500() {
         dailyStatisticsViewModel.dailyStatisticsViewStateLiveData.observe(this) {
-            if (adviceMessage == "") {
-                activityDailyStatisticsUnder1500Binding.adviceMessageContent.text = it.adviceMessage
-            } else {
-                activityDailyStatisticsUnder1500Binding.adviceMessageContent.text = adviceMessage
-            }
+            activityDailyStatisticsUnder1500Binding.adviceMessageContent.text = it.adviceMessage
         }
 
+        val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
+        activityDailyStatisticsUnder1500Binding.numberPointsText.text = "${sharedPreferences.getInt(USER_POINT, 0)}"
         activityDailyStatisticsUnder1500Binding.rewardButton.setOnClickListener {
-            val USER_POINT = "USER_POINT"
-            val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
-            Log.i("GetNotification", "Passe par là : Points : ${sharedPreferences.getInt(USER_POINT, 0)}")
-
             startActivity(Intent(this@DailyStatisticsActivity, RewardActivity::class.java))
         }
     }
@@ -324,18 +303,12 @@ class DailyStatisticsActivity : AppCompatActivity() {
 
     private fun bindingDataToViewFromViewModel() {
         dailyStatisticsViewModel.dailyStatisticsViewStateLiveData.observe(this) {
-            if (adviceMessage == "") {
-                activityDailyStatisticsBinding.adviceMessageContent.text = it.adviceMessage
-            } else {
-                activityDailyStatisticsBinding.adviceMessageContent.text = adviceMessage
-            }
+            activityDailyStatisticsBinding.adviceMessageContent.text = it.adviceMessage
         }
 
+        val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
+        activityDailyStatisticsBinding.numberPointsText.text = "${sharedPreferences.getInt(USER_POINT, 0)}"
         activityDailyStatisticsBinding.rewardedButton.setOnClickListener {
-            val USER_POINT = "USER_POINT"
-            val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
-            Log.i("GetNotification", "Passe par là : Points : ${sharedPreferences.getInt(USER_POINT, 0)}")
-
             startActivity(Intent(this@DailyStatisticsActivity, RewardActivity::class.java))
         }
     }

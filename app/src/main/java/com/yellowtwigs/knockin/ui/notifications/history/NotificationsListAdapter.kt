@@ -79,13 +79,7 @@ class NotificationsListAdapter(
                                 lastClick = true
                             }
                         } else {
-                            Log.i("GoToWithContact", "notification : $notification")
-
                             onClickedCallback(notification, notification.phoneNumber, platform)
-//                            onClickedCallback
-//                            if (context is NotificationHistoryActivity) {
-//                                context.recyclerSimpleClick(position)
-//                            }
                         }
                     }
                     val longClick = View.OnLongClickListener {
@@ -109,7 +103,6 @@ class NotificationsListAdapter(
                             modeMultiSelect = false
                             lastClick = true
                         }
-
                         modeMultiSelect
                     }
 
@@ -151,9 +144,5 @@ class NotificationsListAdapter(
         var lastClick = false
 
         private var listOfItemSelected = ArrayList<NotificationsListViewState>()
-            set(listOfItemSelected) {
-                this.listOfItemSelected.clear()
-                this.listOfItemSelected.addAll(listOfItemSelected)
-            }
     }
 }

@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,10 +39,10 @@ import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoToWithContact
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -61,19 +62,19 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     private val notificationsListViewModel: NotificationsListViewModel by viewModels()
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
-
-    private lateinit var userIdPreferences: SharedPreferences
 
     private var multiSelectMode = false
     private var firstClick = true
     private val listOfIdsSelected = arrayListOf<Int>()
 
+    private val currentList = arrayListOf<NotificationsListViewState>()
+    private val duplicates = arrayListOf<NotificationsListViewState>()
+
     //endregion
 
     override fun onStop() {
         super.onStop()
-        currentPosition = 1
+        currentPosition = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,10 +102,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         setupBottomNavigationView()
         setupNotificationsList()
 
-        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
-
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the NotificationsHistoryActivity")
-
         //region ============================================================ LISTENERS  ============================================================
 
         binding.apply {
@@ -121,7 +118,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     .show()
             }
             deleteNotifications.setOnClickListener {
-                Log.i("GetPosition", "Passe par là")
+                Log.i("DeleteNotification", "listOfIdsSelected : $listOfIdsSelected")
                 deleteListOfSelectedNotifications()
             }
         }
@@ -177,14 +174,17 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 menu.findItem(R.id.sort_by_date)?.isChecked = true
                 notificationsListViewModel.setSortedBy(R.id.sort_by_date)
             }
+
             R.id.sort_by_contact -> {
                 menu.findItem(R.id.sort_by_contact)?.isChecked = true
                 notificationsListViewModel.setSortedBy(R.id.sort_by_contact)
             }
+
             R.id.notifications_sort_by_priority -> {
                 menu.findItem(R.id.notifications_sort_by_priority)?.isChecked = true
                 notificationsListViewModel.setSortedBy(R.id.notifications_sort_by_priority)
             }
+
             else -> {
                 menu.findItem(R.id.sort_by_date)?.isChecked = true
                 notificationsListViewModel.setSortedBy(R.id.sort_by_date)
@@ -196,6 +196,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 menu.findItem(R.id.filter_by_all)?.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_all)
             }
+
             R.id.filter_by_msg_apps -> {
                 menu.findItem(R.id.filter_by_msg_apps)?.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_msg_apps)
@@ -218,18 +219,21 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
                 notificationsListViewModel.setSortedBy(R.id.sort_by_date)
             }
+
             R.id.sort_by_priority -> {
                 editorSortBy.putInt("Notifications_Sort_By", R.id.sort_by_priority)
                 editorSortBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setSortedBy(R.id.sort_by_priority)
             }
+
             R.id.sort_by_contact -> {
                 editorSortBy.putInt("Notifications_Sort_By", R.id.sort_by_contact)
                 editorSortBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setSortedBy(R.id.sort_by_contact)
             }
+
             R.id.item_help -> {
                 if (Resources.getSystem().configuration.locale.language == "fr") {
                     val browserIntent = Intent(
@@ -251,48 +255,56 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_all)
             }
+
             R.id.filter_by_social_media -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.filter_by_social_media)
                 editorFilterBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_social_media)
             }
+
             R.id.filter_by_msg_apps -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.filter_by_msg_apps)
                 editorFilterBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_msg_apps)
             }
+
             R.id.sms_filter -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.sms_filter)
                 editorFilterBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.sms_filter)
             }
+
             R.id.mail_filter -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.mail_filter)
                 editorFilterBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.mail_filter)
             }
+
             R.id.whatsapp_filter -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.whatsapp_filter)
                 editorFilterBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.whatsapp_filter)
             }
+
             R.id.facebook_filter -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.facebook_filter)
                 editorFilterBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.facebook_filter)
             }
+
             R.id.signal_filter -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.signal_filter)
                 editorFilterBy.apply()
                 item.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.signal_filter)
             }
+
             R.id.telegram_filter -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.telegram_filter)
                 editorFilterBy.apply()
@@ -331,30 +343,37 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                             this@NotificationsHistoryActivity, NotificationsSettingsActivity::class.java
                         )
                     )
+
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@NotificationsHistoryActivity, TeleworkingActivity::class.java)
                     )
+
                     R.id.nav_dashboard -> startActivity(
                         Intent(this@NotificationsHistoryActivity, DashboardActivity::class.java)
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(
                             this@NotificationsHistoryActivity, ManageMyScreenActivity::class.java
                         )
                     )
+
                     R.id.nav_in_app -> startActivity(
                         Intent(
                             this@NotificationsHistoryActivity, PremiumActivity::class.java
                         )
                     )
+
                     R.id.nav_help -> startActivity(
                         Intent(
                             this@NotificationsHistoryActivity, HelpActivity::class.java
                         )
                     )
+
                     R.id.nav_sync_contact -> {
                         importContacts()
                     }
+
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
                         val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
@@ -395,6 +414,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     )
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.navigation_groups -> {
                     startActivity(
                         Intent(
@@ -403,6 +423,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     )
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.navigation_cockpit -> {
                     startActivity(
                         Intent(
@@ -444,15 +465,13 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             )
         }
 
-        binding.notificationPin.setOnClickListener {
-            startActivity(Intent(this@NotificationsHistoryActivity, DashboardActivity::class.java).putExtra("FromSender", true))
-        }
-
         binding.recyclerView.adapter = notificationsAdapter
         val linearLayoutManager = LinearLayoutManager(this@NotificationsHistoryActivity)
         binding.recyclerView.layoutManager = linearLayoutManager
 
         notificationsListViewModel.notificationsListViewStateLiveData.observe(this@NotificationsHistoryActivity) { notificationsHistoryViewState ->
+            currentList.addAll(notificationsHistoryViewState.list)
+            duplicates.addAll(notificationsHistoryViewState.duplicates)
             notificationsAdapter.submitList(null)
             notificationsAdapter.submitList(notificationsHistoryViewState.list)
             binding.recyclerView.smoothScrollToPosition(currentPosition)
@@ -467,80 +486,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //region ========================================================= RECYCLER VIEW CLICK ==========================================================
 
-//    fun recyclerSimpleClick(position: Int) {
-//        val contactManager = ContactManager(this.applicationContext)
-//
-//        val contact = contactManager.getContact(listOfNotificationsDB[position].contactName)
-//
-//        when (listOfNotificationsDB[position].platform) {
-//            "com.whatsapp" -> {
-//                if (contact != null) {
-//                    openWhatsapp(contact.getFirstPhoneNumber(), this)
-//                } else {
-//                    openWhatsapp(this)
-//                }
-//            }
-//
-//            "com.android.incallui" -> {
-//                phoneCall(listOfNotificationsDB[position].contactName)
-//            }
-//
-//            "com.google.android.gm" -> openGmail(this)
-//
-//            "com.facebook.katana" -> goToFacebook()
-//
-//            "org.telegram.messenger" -> {
-//                if (contact != null) {
-//                    goToTelegram(this, contact.getFirstPhoneNumber())
-//                } else {
-//                    goToTelegram(this)
-//                }
-//            }
-//
-//            "com.facebook.orca" -> {
-//                if (contact != null) {
-//                    openMessenger(contact.getMessengerID(), this)
-//                } else {
-//                    openMessenger("", this)
-//                }
-//            }
-//
-//            "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging", "com.contapps.android" -> {
-//                if (contact != null) {
-//                    val intent = Intent(
-//                        Intent.ACTION_SENDTO,
-//                        Uri.fromParts("sms", contact.getFirstPhoneNumber(), null)
-//                    )
-//                    startActivity(intent)
-//                } else {
-//                    val intent = Intent(
-//                        Intent.ACTION_SENDTO,
-//                        Uri.fromParts(
-//                            "sms",
-//                            listOfNotificationsDB[position].contactName,
-//                            null
-//                        )
-//                    )
-//                    startActivity(intent)
-//                }
-//                val sendIntent = Intent(Intent.ACTION_VIEW)
-//                sendIntent.data = Uri.parse("sms:")
-//            }
-//
-//            "com.instagram.android" -> goToInstagramPage()
-//
-//            "com.microsoft.office.outlook" -> goToOutlook(this)
-//
-//            "com.twitter.android" -> goToTwitter()
-//
-//            "org.thoughtcrime.securesms" -> goToSignal(this)
-//
-//            "com.skype.raider" -> goToSkype()
-//
-//            "com.linkedin.android" -> goToLinkedin()
-//        }
-//    }
-
     fun recyclerLongClick(id: Int) {
         if (listOfIdsSelected.contains(id)) {
             listOfIdsSelected.remove(id)
@@ -551,6 +496,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         if (listOfIdsSelected.size == 1 && firstClick) {
             firstClick = false
             multiSelectMode = true
+            binding.floatingActionButton.visibility = View.INVISIBLE
             binding.toolbarMultiSelect.visibility = View.VISIBLE
             binding.toolbar.visibility = View.INVISIBLE
 
@@ -572,7 +518,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     //endregion
 
     fun deleteItem(notification: NotificationsListViewState, layoutPosition: Int) {
-        Log.i("GetPosition", "layoutPosition : $layoutPosition")
         currentPosition = layoutPosition
         notificationsListViewModel.deleteNotification(
             NotificationDB(
@@ -594,15 +539,67 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     }
 
     private fun deleteListOfSelectedNotifications() {
-        listOfIdsSelected.map {
-            Log.i("GetPosition", "it - 1 : $it")
-            notificationsListViewModel.deleteNotificationById(it)
+        Log.i("DeleteNotification", "duplicates : $duplicates")
+
+        if (duplicates.isNotEmpty()) {
+            duplicates.map { notification ->
+                notificationsListViewModel.deleteNotification(
+                    NotificationDB(
+                        id = notification.id,
+                        notification.title,
+                        notification.contactName,
+                        notification.description,
+                        notification.platform,
+                        notification.timestamp,
+                        isCancellable = 0,
+                        notification.idContact,
+                        notification.priority,
+                        notification.phoneNumber,
+                        notification.mail,
+                        "",
+                        notification.isSystem
+                    )
+                )
+            }
         }
+
+        listOfIdsSelected.map { id ->
+            val test = currentList.find { it.id == id }
+            test?.let {
+                notificationsListViewModel.deleteNotification(
+                    NotificationDB(
+                        id = test.id,
+                        test.title,
+                        test.contactName,
+                        test.description,
+                        test.platform,
+                        test.timestamp,
+                        isCancellable = 0,
+                        test.idContact,
+                        test.priority,
+                        test.phoneNumber,
+                        test.mail,
+                        "",
+                        test.isSystem
+                    )
+                )
+            }
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.pieChartLoading.isVisible = true
+            binding.recyclerView.isVisible = false
+            delay(3000L)
+            binding.pieChartLoading.isVisible = false
+            binding.recyclerView.isVisible = true
+        }
+
         multiSelectMode = false
         firstClick = true
         listOfIdsSelected.clear()
         binding.toolbarMultiSelect.visibility = View.GONE
         binding.toolbar.visibility = View.VISIBLE
+        binding.floatingActionButton.visibility = View.VISIBLE
         notificationsAdapter.clearAll()
     }
 
@@ -610,7 +607,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         super.onResume()
 
         if (fromPopup) {
-//            refreshActivity()
         }
     }
 

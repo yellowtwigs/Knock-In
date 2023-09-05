@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
 import android.app.Application
-import android.provider.Telephony
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.*
@@ -13,7 +13,6 @@ import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.KNOCKIN_PACKAGE
 import com.yellowtwigs.knockin.utils.NotificationsGesture.MESSAGE_APP_NAME
-import com.yellowtwigs.knockin.utils.NotificationsGesture.WHATSAPP_PACKAGE
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isSocialMedia
@@ -25,8 +24,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -41,6 +41,8 @@ class NotificationsListViewModel @Inject constructor(
     private val searchBarTextFlow = MutableStateFlow("")
     private val sortedByFlow = MutableStateFlow(R.id.sort_by_date)
     private val filterByFlow = MutableStateFlow(R.id.filter_by_msg_apps)
+
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
 
     val notificationsListViewStateLiveData: LiveData<NotificationsHistoryViewState> = liveData(coroutineDispatcherProvider.io) {
         combine(
@@ -59,7 +61,7 @@ class NotificationsListViewModel @Inject constructor(
             if (messagingNotifications.isNotEmpty()) {
                 messagingNotifications.map { notification ->
                     if (notification.platform == KNOCKIN_PACKAGE) {
-                        if (compareIfNotificationDateIsToday(notification.timestamp)) {
+                        if (compareIfDateIsToday(notification.timestamp)) {
                             if (cpt > 1) {
                                 if (notification.timestamp > pinNotification!!.timestamp) {
                                     pinNotification = notification
@@ -79,7 +81,7 @@ class NotificationsListViewModel @Inject constructor(
             if (systemNotifications.isNotEmpty()) {
                 systemNotifications.map { notification ->
                     if (notification.platform == KNOCKIN_PACKAGE) {
-                        if (compareIfNotificationDateIsToday(notification.timestamp)) {
+                        if (compareIfDateIsToday(notification.timestamp)) {
                             if (cpt > 1) {
                                 if (notification.timestamp > pinNotification!!.timestamp) {
                                     pinNotification = notification
@@ -100,184 +102,94 @@ class NotificationsListViewModel @Inject constructor(
                 addNotificationInList(notifications, it)
             }
 
-            emit(
-                NotificationsHistoryViewState(list = sortedContactsList(
-                    sortedBy, filterBy, searchBarText, notifications, notificationsForSystem
-                ).distinctBy {
-                    NotificationParams(
-                        contactName = it.contactName,
-                        description = it.description,
-                        platform = it.platform,
-                        date = it.date,
-                        idContact = it.idContact,
-                        priority = it.priority,
-                        phoneNumber = it.phoneNumber,
-                        mail = it.mail,
-                        isSystem = it.isSystem
-                    )
-                })
-            )
+            val fullList = sortedContactsList(sortedBy, filterBy, searchBarText, notifications, notificationsForSystem)
+            val listDistinct = fullList.distinctBy {
+                NotificationParams(
+                    contactName = it.contactName,
+                    description = it.description,
+                    platform = it.platform,
+                    date = it.date,
+                    idContact = it.idContact,
+                    priority = it.priority,
+                    phoneNumber = it.phoneNumber,
+                    mail = it.mail,
+                    isSystem = it.isSystem
+                )
+            }
+            val duplicates = fullList.filterNot { it in listDistinct }
+            emit(NotificationsHistoryViewState(list = listDistinct, duplicates = duplicates))
         }.collect()
     }
 
-    private fun compareIfNotificationDateIsToday(timestamp: Long): Boolean {
-        try {
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val date = LocalDateTime.now().format(formatter)
+    private fun compareIfDateIsToday(timestamp: Long): Boolean {
+        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
+        val currentDate = LocalDateTime.now()
 
-            val notificationDate = SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date(timestamp))
-
-            val dateToday = date?.split("-")
-            val notificationDateToday = notificationDate.split("-")
-
-            val todayYear = dateToday?.get(0)?.toInt()
-            val todayMonth = dateToday?.get(1)?.toInt()
-            val todayDay = dateToday?.get(2)?.split(" ")?.get(0)
-
-            val notificationYear = notificationDateToday[0].toInt()
-            val notificationMonth = notificationDateToday[1].toInt()
-            val notificationDay = notificationDateToday[2].split(" ")[0]
-
-            return if (notificationYear != todayYear || notificationMonth != todayMonth) {
-                false
-            } else {
-                if (notificationDay == todayDay) {
-                    true
-                } else {
-                    (todayDay?.toInt()?.minus(notificationDay.toInt())) == 1
-                }
-            }
-        } catch (e: Exception) {
-            Log.i("GetLocalDateTime", "Exception : ${e}")
-        }
-        return false
+        return date.toLocalDate() == currentDate.toLocalDate() || date.toLocalDate().plusDays(1) == currentDate.toLocalDate()
     }
 
     private fun sortedContactsList(
         sortedBy: Int?,
         filterBy: Int?,
         input: String?,
-        notifications: ArrayList<NotificationsListViewState>,
-        notificationsForSystem: ArrayList<NotificationsListViewState>
+        notifications: List<NotificationsListViewState>,
+        systemNotifications: List<NotificationsListViewState>
     ): List<NotificationsListViewState> {
-        if (sortedBy != null) {
-            when (sortedBy) {
-                R.id.sort_by_date -> {
-                    return filterWithInput(filterBy, input, notifications, notificationsForSystem).sortedByDescending {
-                        it.id
-                    }.sortedByDescending {
-                        it.systemPriority
-                    }
-                }
-                R.id.sort_by_contact -> {
-                    return filterWithInput(filterBy, input, notifications, notificationsForSystem).sortedBy {
-                        it.contactName.uppercase().unAccent()
-                    }.sortedByDescending {
-                        it.systemPriority
-                    }
-                }
-                R.id.notifications_sort_by_priority -> {
-                    return filterWithInput(filterBy, input, notifications, notificationsForSystem).sortedBy {
-                        it.id
-                    }.sortedByDescending { it.priority }.sortedByDescending {
-                        it.systemPriority
-                    }
-                }
-                else -> {
-                    return filterWithInput(filterBy, input, notifications, notificationsForSystem).sortedByDescending {
-                        it.id
-                    }.sortedByDescending {
-                        it.systemPriority
-                    }
-                }
-            }
-        } else {
-            return filterWithInput(filterBy, input, notifications, notificationsForSystem).sortedByDescending {
-                it.id
-            }.sortedByDescending {
-                it.systemPriority
-            }
+        val filteredNotifications = filterWithInput(filterBy, input, notifications, systemNotifications)
+        return when (sortedBy) {
+            R.id.sort_by_date -> filteredNotifications.sortedWith(compareByDescending<NotificationsListViewState> { it.id }.thenByDescending { it.systemPriority })
+            R.id.sort_by_contact -> filteredNotifications.sortedWith(compareBy<NotificationsListViewState> {
+                it.contactName.uppercase().unAccent()
+            }.thenByDescending { it.systemPriority })
+
+            R.id.notifications_sort_by_priority -> filteredNotifications.sortedWith(compareBy<NotificationsListViewState> { it.id }.thenByDescending { it.priority }
+                .thenByDescending { it.systemPriority })
+
+            else -> filteredNotifications.sortedWith(compareByDescending<NotificationsListViewState> { it.id }.thenByDescending { it.systemPriority })
         }
     }
 
     private fun filterWithInput(
         filterBy: Int?,
         input: String?,
-        notifications: ArrayList<NotificationsListViewState>,
-        notificationsForSystem: ArrayList<NotificationsListViewState>
+        notifications: List<NotificationsListViewState>,
+        systemNotifications: List<NotificationsListViewState>
     ): List<NotificationsListViewState> {
         return if (input != null) {
             filterNotificationsList(filterBy, notifications.filter { notification ->
                 val notificationText = notification.contactName + " " + notification.title + " " + notification.description
                 notificationText.contains(input) || notificationText.uppercase().contains(input.uppercase()) || notificationText.lowercase()
                     .contains(input.lowercase())
-            }, notificationsForSystem.filter { notification ->
-                val notificationText = notification.contactName + " " + notification.title + " " + notification.description
-                notificationText.contains(input) || notificationText.uppercase().contains(input.uppercase()) || notificationText.lowercase()
-                    .contains(input.lowercase())
-            })
+            }, systemNotifications)
         } else {
-            filterNotificationsList(filterBy, notifications, notificationsForSystem)
+            filterNotificationsList(filterBy, notifications, systemNotifications)
         }
     }
 
     private fun filterNotificationsList(
-        filterBy: Int?, notifications: List<NotificationsListViewState>, notificationsForSystem: List<NotificationsListViewState>
+        filterBy: Int?, notifications: List<NotificationsListViewState>, systemNotifications: List<NotificationsListViewState>
     ): List<NotificationsListViewState> {
-        if (filterBy != null) {
-            when (filterBy) {
-                R.id.filter_by_all -> {
-                    return notificationsForSystem.filter {
-                        convertPackageToString(it.platform, application) != NotificationsGesture.LINKEDIN_NAME
-                    }
-                }
-                R.id.filter_by_social_media -> {
-                    val superList = notifications + notificationsForSystem
-                    return superList.filter { isSocialMedia(it.platform) }
-                }
-                R.id.filter_by_msg_apps -> {
-                    return notifications.filter { isMessagingApp(it.platform, application) }
-                }
-                R.id.sms_filter -> {
-                    return notifications.filter {
-                        convertPackageToString(
-                            it.platform, application
-                        ) == MESSAGE_APP_NAME
-                    }
-                }
-                R.id.mail_filter -> {
-                    return notifications.filter {
-                        convertPackageToString(
-                            it.platform, application
-                        ) == "Gmail" || convertPackageToString(it.platform, application) == "Outlook"
-                    }
-                }
-                R.id.whatsapp_filter -> {
-                    return notifications.filter {
-                        convertPackageToString(it.platform, application) == NotificationsGesture.WHATSAPP_APP_NAME
-                    }
-                }
-                R.id.telegram_filter -> {
-                    return notifications.filter {
-                        convertPackageToString(it.platform, application) == "Telegram"
-                    }
-                }
-                R.id.facebook_filter -> {
-                    return notifications.filter {
-                        convertPackageToString(it.platform, application) == "Messenger"
-                    }
-                }
-                R.id.signal_filter -> {
-                    return notifications.filter {
-                        convertPackageToString(it.platform, application) == "Signal"
-                    }
-                }
-                else -> {
-                    return notifications
-                }
+        return when (filterBy) {
+            R.id.filter_by_all -> systemNotifications
+            R.id.filter_by_social_media -> notifications.filter { isSocialMedia(it.platform) }
+            R.id.filter_by_msg_apps -> notifications.filter { isMessagingApp(it.platform, application) }
+            R.id.sms_filter -> notifications.filter { convertPackageToString(it.platform, application) == MESSAGE_APP_NAME }
+            R.id.mail_filter -> notifications.filter {
+                convertPackageToString(
+                    it.platform, application
+                ) == "Gmail" || convertPackageToString(it.platform, application) == "Outlook"
             }
-        } else {
-            return notifications
+
+            R.id.whatsapp_filter -> notifications.filter {
+                convertPackageToString(
+                    it.platform, application
+                ) == NotificationsGesture.WHATSAPP_APP_NAME
+            }
+
+            R.id.telegram_filter -> notifications.filter { convertPackageToString(it.platform, application) == "Telegram" }
+            R.id.facebook_filter -> notifications.filter { convertPackageToString(it.platform, application) == "Messenger" }
+            R.id.signal_filter -> notifications.filter { convertPackageToString(it.platform, application) == "Signal" }
+            else -> notifications
         }
     }
 
@@ -288,35 +200,24 @@ class NotificationsListViewModel @Inject constructor(
             1
         }
 
-        val background =
-            if (compareIfNotificationDateIsToday(notification.timestamp) && notification.isCancellable != 1 && isMessagingApp(
-                    notification.platform,
-                    application
-                )
-            ) {
-                if (notification.priority == 2) {
-                    AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout_yellow)
-                } else {
-                    AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout_blue_turquoise)
-                }
-            } else {
-                AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout)
-            }
+        val background: Drawable?
+        val icon: Drawable?
 
-        val icon =
-            if (compareIfNotificationDateIsToday(notification.timestamp) && notification.isCancellable != 1 && isMessagingApp(
-                    notification.platform,
-                    application
-                )
-            ) {
-                if (notification.priority == 2) {
-                    AppCompatResources.getDrawable(application, R.drawable.ic_circular_vip_icon)
-                } else {
-                    AppCompatResources.getDrawable(application, R.drawable.ic_new_icon)
-                }
+        if (compareIfDateIsToday(notification.timestamp) && notification.isCancellable != 1 && isMessagingApp(
+                notification.platform, application
+            )
+        ) {
+            if (notification.priority == 2) {
+                background = AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout_yellow)
+                icon = AppCompatResources.getDrawable(application, R.drawable.ic_circular_vip_icon)
             } else {
-                null
+                background = AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout_blue_turquoise)
+                icon = AppCompatResources.getDrawable(application, R.drawable.ic_new_icon)
             }
+        } else {
+            background = AppCompatResources.getDrawable(application, R.drawable.rounded_form_layout)
+            icon = null
+        }
 
         val phoneNumber = if (notification.phoneNumber.contains(":")) {
             notification.phoneNumber.split(":")[1]
@@ -332,7 +233,7 @@ class NotificationsListViewModel @Inject constructor(
                 notification.description,
                 notification.platform,
                 notification.timestamp,
-                SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(notification.timestamp)),
+                dateFormat.format(Date(notification.timestamp)),
                 notification.idContact,
                 notification.priority,
                 phoneNumber,
@@ -345,9 +246,6 @@ class NotificationsListViewModel @Inject constructor(
         )
     }
 
-    fun deleteNotification(notification: NotificationDB) = viewModelScope.launch {
-        notificationsRepository.deleteNotification(notification)
-    }
 
     fun setSearchTextChanged(text: String) {
         searchBarTextFlow.tryEmit(text)
@@ -361,18 +259,29 @@ class NotificationsListViewModel @Inject constructor(
         filterByFlow.tryEmit(filterBy)
     }
 
+    fun deleteNotification(notification: NotificationDB) = viewModelScope.launch {
+        notificationsRepository.deleteNotification(notification)
+    }
+
+    fun deleteNotifications(notifications: List<NotificationDB>) = viewModelScope.launch {
+        Log.i("DeleteNotification", "viewModel - notifications : $notifications")
+        notificationsRepository.deleteNotifications(notifications)
+    }
+
     fun deleteAllNotifications() {
         CoroutineScope(Dispatchers.IO).launch {
             notificationsRepository.deleteAllNotifications()
         }
     }
 
-    fun deleteNotificationById(id : Int) {
-        Log.i("GetPosition", "id - 1 : $id")
-        CoroutineScope(Dispatchers.Default).launch {
-            Log.i("GetPosition", "id - 2 : $id")
+    fun deleteNotificationById(id: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
             notificationsRepository.deleteNotificationById(id)
         }
+    }
+
+    fun deleteNotificationsByIds(ids: List<Int>) = viewModelScope.launch {
+        notificationsRepository.deleteNotificationsByIds(ids)
     }
 
     fun updateNotification(notification: NotificationDB) {

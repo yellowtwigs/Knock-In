@@ -28,8 +28,6 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebaseBis
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -37,9 +35,6 @@ import java.util.*
 class TeleworkingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeleworkingBinding
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
-
-    private lateinit var userIdPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +45,6 @@ class TeleworkingActivity : AppCompatActivity() {
             val viewModel: TeleworkingViewModel by viewModels()
             binding = ActivityTeleworkingBinding.inflate(layoutInflater)
             setContentView(binding.root)
-
-            userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
-
-            saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the Teleworking Activity")
 
             setupContactList(viewModel)
             setupReminder()
@@ -99,7 +90,6 @@ class TeleworkingActivity : AppCompatActivity() {
                 binding.endTimeEditText.setText(convertTimeToEndTime(notificationsHour))
             }
         } catch (e: Exception) {
-            saveUserIdToFirebaseBis(userIdPreferences, firebaseViewModel, "Exception : $e")
         }
     }
 

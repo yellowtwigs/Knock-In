@@ -1,16 +1,14 @@
 package com.yellowtwigs.knockin.di
 
-import android.annotation.SuppressLint
 import android.content.Context
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.room.Room
-import androidx.work.WorkerFactory
 import com.google.firebase.firestore.FirebaseFirestore
+import com.yellowtwigs.knockin.background.DemoWorkerDependencies
+import com.yellowtwigs.knockin.background.alarm.AlarmManagerHelper
 import com.yellowtwigs.knockin.background.service.CheckDuplicateNotificationUseCase
 import com.yellowtwigs.knockin.domain.contact.*
 import com.yellowtwigs.knockin.domain.group.UpdateFavoriteGroupUseCase
 import com.yellowtwigs.knockin.domain.notifications.*
-import com.yellowtwigs.knockin.domain.point_calculation.PointCalculationUseCase
 import com.yellowtwigs.knockin.model.database.ContactsDatabase
 import com.yellowtwigs.knockin.model.database.dao.ContactsDao
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
@@ -44,6 +42,24 @@ class AppModule {
     @Singleton
     fun provideFirebaseFirestore(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
+    }
+
+//    @Provides
+//    @Singleton
+//    fun providePointCalculatorUseCase(@ApplicationContext context: Context): PointCalculationUseCase {
+//        return PointCalculationUseCase(context)
+//    }
+
+    @Provides
+    @Singleton
+    fun provideDemoWorkerDependencies(): DemoWorkerDependencies {
+        return DemoWorkerDependencies()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmManagerHelper(@ApplicationContext context: Context): AlarmManagerHelper {
+        return AlarmManagerHelper(context)
     }
 
     @Provides

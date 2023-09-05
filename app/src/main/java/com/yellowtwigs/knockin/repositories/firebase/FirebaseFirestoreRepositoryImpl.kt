@@ -1,53 +1,53 @@
 package com.yellowtwigs.knockin.repositories.firebase
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
-import java.time.LocalDate
-import java.time.LocalTime
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
+import com.yellowtwigs.knockin.model.database.data.PromotionCode
+import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FirebaseFirestoreRepositoryImpl @Inject constructor(
-    val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore
 ) : FirebaseFirestoreRepository {
 
-    override fun setActivityNameToUserClick(id: String, activityName: String) {
-        val dateToday = LocalDate.now()
+    private val ALL_PROMOTION_CODES = "ALL_PROMOTION_CODES"
 
-        val year = dateToday.year
-        val month = dateToday.monthValue
-        val day = dateToday.dayOfMonth
-        val hour = LocalTime.now().hour
-        val minutes = LocalTime.now().minute
-        val second = LocalTime.now().second
+    override fun getPromotionCodes(): LiveData<List<PromotionCode>> {
+        val promotionCodes = MutableLiveData<List<PromotionCode>>(arrayListOf())
 
-        val nano = LocalTime.now().nano
+        firebaseFirestore.collection(ALL_PROMOTION_CODES).addSnapshotListener { querySnapshot, error ->
+            if (querySnapshot != null) {
+                try {
+                    val list = querySnapshot.toObjects(PromotionCode::class.java)
+                    promotionCodes.value = list
+                } catch (e: Exception) {
+                    Log.e("PromoCodes", "error : $error")
+                }
+            }
+        }
 
-        val today = "$year-$month-$day-$hour-$minutes-$second-$nano"
-
-        val updateMap: MutableMap<String, String> = HashMap()
-        updateMap["$activityName $nano"] = "$activityName $nano"
-
-        firebaseFirestore.collection(id).document(today).set(updateMap)
+        return promotionCodes
     }
 
-    override fun setActivityNameToUserClickBis(id: String, activityName: String) {
-        val dateToday = LocalDate.now()
+    override fun addPromotionToFirestore(id: String, promotionCode: PromotionCode) {
+        firebaseFirestore.collection(ALL_PROMOTION_CODES).document(id).set(promotionCode)
+    }
 
-        val year = dateToday.year
-        val month = dateToday.monthValue
-        val day = dateToday.dayOfMonth
-        val hour = LocalTime.now().hour
-        val minutes = LocalTime.now().minute
-        val second = LocalTime.now().second
-
-        val nano = LocalTime.now().nano
-
-        val today = "$year-$month-$day-$hour-$minutes-$second-$nano"
-
-        val updateMap: MutableMap<String, String> = HashMap()
-        updateMap["$activityName $nano"] = "$activityName $nano"
-
-        firebaseFirestore.collection("BugException-$id").document(today).set(updateMap)
+    override fun editPromotionCodeToIsUsed(promotionCode: PromotionCode) {
+        try {
+            Log.i("PromoCodes", "FirebaseFirestoreRepositoryImpl - promotionCode : ${promotionCode}")
+            Log.i("PromoCodes", "FirebaseFirestoreRepositoryImpl - promotionCode.content : ${promotionCode.content}")
+            if (promotionCode.content.isNotEmpty() && promotionCode.content.isNotBlank()) {
+                firebaseFirestore.collection(ALL_PROMOTION_CODES).document(promotionCode.content).set(promotionCode)
+            }
+        } catch (e: Error) {
+            Log.i("PromoCodes", "$e")
+        }
     }
 }

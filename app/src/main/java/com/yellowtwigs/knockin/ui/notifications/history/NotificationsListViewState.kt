@@ -2,7 +2,7 @@ package com.yellowtwigs.knockin.ui.notifications.history
 
 import android.graphics.drawable.Drawable
 
-data class NotificationsHistoryViewState(val list: List<NotificationsListViewState>)
+data class NotificationsHistoryViewState(val list: List<NotificationsListViewState>, val duplicates: List<NotificationsListViewState>)
 
 data class NotificationsListViewState(
     val id: Int,

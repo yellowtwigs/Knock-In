@@ -19,7 +19,6 @@ import com.yellowtwigs.knockin.databinding.ActivityManageGroupBinding
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.groups.manage_group.data.ManageGroupViewState
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.utils.viewBinding
@@ -53,13 +52,13 @@ class ManageGroupActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-            setSupportActionBar(binding.toolbar)
-            val actionbar = supportActionBar
-            actionbar?.let {
-                it.setDisplayHomeAsUpEnabled(true)
-                it.setHomeAsUpIndicator(R.drawable.ic_close)
-                it.title = ""
-            }
+        setSupportActionBar(binding.toolbar)
+        val actionbar = supportActionBar
+        actionbar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setHomeAsUpIndicator(R.drawable.ic_close)
+            it.title = ""
+        }
     }
 
     //region =========================================== SETUP UI ===========================================
@@ -73,11 +72,7 @@ class ManageGroupActivity : AppCompatActivity() {
 
         if (nbGrid == 1) {
             binding.contacts.apply {
-                Log.i("GetContactsFromGroup", "viewModel.manageGroupViewStateLiveData : ${viewModel.manageGroupViewStateLiveData}")
-
                 viewModel.groupViewState.asLiveData().observe(this@ManageGroupActivity) { manageGroupViewState ->
-                    Log.i("GetContactsFromGroup", "activity : manageGroupViewState : $manageGroupViewState")
-
                     currentGroup = manageGroupViewState
                     currentColor = manageGroupViewState.section_color
 
@@ -86,7 +81,7 @@ class ManageGroupActivity : AppCompatActivity() {
                     binding.groupName.setText(manageGroupViewState.groupName)
                     listOfItemSelected.addAll(manageGroupViewState.listOfIds)
 
-                    val manageGroupListAdapter = ContactManageGroupListAdapter(this@ManageGroupActivity, listOfItemSelected                    ) { id ->
+                    val manageGroupListAdapter = ContactManageGroupListAdapter(this@ManageGroupActivity, listOfItemSelected) { id ->
                         hideKeyboard(this@ManageGroupActivity)
                         if (listOfItemSelected.contains(id)) {
                             listOfItemSelected.remove(id)
@@ -105,7 +100,7 @@ class ManageGroupActivity : AppCompatActivity() {
             }
         } else {
             binding.contacts.apply {
-                viewModel.manageGroupViewStateLiveData.observe(this@ManageGroupActivity) { manageGroupViewState ->
+                viewModel.groupViewState.asLiveData().observe(this@ManageGroupActivity) { manageGroupViewState ->
                     currentGroup = manageGroupViewState
                     currentColor = manageGroupViewState.section_color
 
@@ -115,9 +110,10 @@ class ManageGroupActivity : AppCompatActivity() {
                     listOfItemSelected.addAll(manageGroupViewState.listOfIds)
 
                     val manageGroupGripAdapter = if (nbGrid == 4) {
-                        ContactManageGroupGripFourAdapter(this@ManageGroupActivity, listOfItemSelected
+                        ContactManageGroupGripFourAdapter(
+                            this@ManageGroupActivity, listOfItemSelected
                         ) { id ->
-                            EveryActivityUtils.hideKeyboard(this@ManageGroupActivity)
+                            hideKeyboard(this@ManageGroupActivity)
                             if (listOfItemSelected.contains(id)) {
                                 listOfItemSelected.remove(id)
                             } else {
@@ -125,9 +121,10 @@ class ManageGroupActivity : AppCompatActivity() {
                             }
                         }
                     } else {
-                        ContactManageGroupGripFiveAdapter(this@ManageGroupActivity, listOfItemSelected
+                        ContactManageGroupGripFiveAdapter(
+                            this@ManageGroupActivity, listOfItemSelected
                         ) { id ->
-                            EveryActivityUtils.hideKeyboard(this@ManageGroupActivity)
+                            hideKeyboard(this@ManageGroupActivity)
                             if (listOfItemSelected.contains(id)) {
                                 listOfItemSelected.remove(id)
                             } else {

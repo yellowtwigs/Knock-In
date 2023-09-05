@@ -81,6 +81,20 @@
             app:layout_constraintTop_toBottomOf="@+id/advice_message_layout"
             app:srcCompat="@drawable/trophy_25" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/number_points_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="@color/lightColor"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/number_points_icon"
+            app:layout_constraintStart_toStartOf="@+id/number_points_icon"
+            app:layout_constraintTop_toTopOf="@+id/number_points_icon"
+            tools:text="25" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/rewarded_button"
             android:layout_width="250dp"

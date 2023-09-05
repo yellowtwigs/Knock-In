@@ -9,8 +9,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.*
@@ -26,7 +24,6 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.util.*
@@ -57,9 +54,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var params: SkuDetailsParams.Builder
 
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
-
-    private lateinit var userIdPreferences: SharedPreferences
 
     //endregion
 
@@ -80,10 +74,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         binding = ActivityPremiumBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupBillingClient()
-
-        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
-
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the Premium Activity")
 
         fromManageNotification = intent.getBooleanExtra("fromManageNotification", false)
 
@@ -193,7 +183,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         binding.recyclerProduct.apply {
             layoutManager = LinearLayoutManager(activity)
             myProductAdapter = MyProductAdapter(activity, billingClient) {
-                saveUserIdToFirebase(userIdPreferences, firebaseViewModel, it)
             }
             adapter = myProductAdapter
             myProductAdapter.submitList(skuDetailsList)

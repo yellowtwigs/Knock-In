@@ -35,11 +35,9 @@ import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.NotificationsGesture
 import com.yellowtwigs.knockin.utils.NotificationsGesture.phoneCall
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -171,10 +169,6 @@ class CockpitActivity : AppCompatActivity() {
 
             //endregion
         }
-
-        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
-
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the Cockpit")
     }
 
     //region =========================================== TOOLBAR ============================================

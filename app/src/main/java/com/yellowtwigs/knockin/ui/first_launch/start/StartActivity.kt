@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.ui.first_launch.start
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -27,7 +26,6 @@ import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,14 +41,12 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var currentPosition = 0
     private lateinit var binding: ActivityStartActivityBinding
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     private lateinit var importContactPreferences: SharedPreferences
 
     private var contactsAreImported = false
     private var importationFinished = false
 
-    private lateinit var userIdPreferences: SharedPreferences
     private lateinit var sharedPreferences: SharedPreferences
 
     //endregion
@@ -83,10 +79,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         editFirstTime.putBoolean("FirstTimeInTheApp", true)
         editFirstTime.apply()
 
-        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
-
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter StartActivity")
-
         importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
         contactsAreImported = importContactPreferences.getBoolean("Import_Contact", false)
         if (isNotificationServiceEnabled()) {
@@ -112,8 +104,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     when (currentPosition) {
                         0 -> {
                             if (!importContactPreferences.getBoolean("Import_Contact", false)) {
-                                saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Try to Import Contact")
-
                                 ActivityCompat.requestPermissions(
                                     this@StartActivity,
                                     arrayOf(Manifest.permission.READ_CONTACTS),
@@ -141,8 +131,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     when (currentPosition) {
                         0 -> {
                             if (!importContactPreferences.getBoolean("Import_Contact", false)) {
-                                saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Try to Import Contact")
-
                                 ActivityCompat.requestPermissions(
                                     this@StartActivity,
                                     arrayOf(Manifest.permission.READ_CONTACTS),
@@ -392,8 +380,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun openOverlaySettings() {
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Overlay Settings")
-
         val intent = Intent(
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")
         )
@@ -503,8 +489,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_READ_CONTACT) {
-            saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Import Contacts Validation")
-
             CoroutineScope(Dispatchers.Main).launch {
                 importContactsViewModel.syncAllContactsInDatabase(contentResolver)
             }
@@ -541,8 +525,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun activateNotificationsClick() {
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Activate Notifications")
-
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.yellowtwigs.Knockin.notificationExemple")
@@ -576,6 +558,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onRestart()
 
         val sharedPreferences = getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
+        Log.i("GetNotification", "isNotificationServiceEnabled() : ${isNotificationServiceEnabled()}")
+        Log.i("GetNotification", "Settings.canDrawOverlays(this) : ${Settings.canDrawOverlays(this)}")
         if (isNotificationServiceEnabled()) {
             val edit: SharedPreferences.Editor = sharedPreferences.edit()
             edit.putBoolean("serviceNotif", true)

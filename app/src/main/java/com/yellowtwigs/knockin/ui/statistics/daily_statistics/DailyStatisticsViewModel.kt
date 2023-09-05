@@ -69,14 +69,14 @@ class DailyStatisticsViewModel @Inject constructor(
 
             val adviceMessage = if (numberOfContactsVIP == 0 && numberOfContactsSilent == 0) {
                 application.getString(R.string.strong_red_advice)
+            } else if (numberOfContactsVIP > 1 && isAllOtherContactsSilent) {
+                application.getString(R.string.strong_green_advice)
+            } else if (numberOfContactsVIP == 5 && nonVipNotificationsNumbers >= 5) {
+                application.getString(R.string.light_green_advice)
             } else if (numberOfContactsVIP < 5 && numberOfContactsSilent == 0) {
                 application.getString(R.string.orange_advice)
             } else if (numberOfContactsVIP < 5 && nonVipNotificationsNumbers >= 5) {
                 application.getString(R.string.yellow_advice)
-            } else if (numberOfContactsVIP == 5 && nonVipNotificationsNumbers >= 5) {
-                application.getString(R.string.light_green_advice)
-            } else if (numberOfContactsVIP > 1 && isAllOtherContactsSilent) {
-                application.getString(R.string.strong_green_advice)
             } else {
                 application.getString(R.string.yellow_advice)
             }

@@ -1,10 +1,8 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-    id 'com.google.gms.google-services'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdk 33
@@ -13,8 +11,8 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 33
-        versionCode 241
-        versionName "3.4.0.4"
+        versionCode 246
+        versionName "3.4.0.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -23,12 +21,12 @@ android {
             }
         }
     }
-    buildTypes {
+//    buildTypes {
 //        release {
 //            minifyEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 //        }
-    }
+//    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -112,13 +110,15 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     // Dagger - Hilt
-    implementation 'com.google.dagger:hilt-android:2.47'
-    kapt 'com.google.dagger:hilt-compiler:2.47'
+    implementation 'com.google.dagger:hilt-android:2.38.1'
+    kapt 'com.google.dagger:hilt-compiler:2.38.1'
+    implementation 'androidx.hilt:hilt-work:1.0.0'
     kapt  "androidx.hilt:hilt-compiler:1.0.0"
 
     // WorkManager with Dagger Hilt
-    implementation "androidx.work:work-runtime:2.8.1"
-    implementation 'androidx.hilt:hilt-work:1.0.0'
+    implementation("androidx.work:work-runtime-ktx:2.6.0")
+    implementation "androidx.work:work-runtime:2.7.0"
+
 
     // SwipeRefreshLayout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'

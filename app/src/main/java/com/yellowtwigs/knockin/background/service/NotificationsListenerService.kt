@@ -99,10 +99,10 @@ class NotificationsListenerService : NotificationListenerService() {
             sbp.castName()
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
-//            Log.i("GetNotification", "name : $name")
-//            Log.i("GetNotification", "message : $message")
-//            Log.i("GetNotification", "sbp.appNotifier : ${sbp.appNotifier}")
-//            Log.i("GetNotification", "sbp.appNotifier : ${(sbp.appNotifier?.let { convertPackageToString(it, this) })}")
+            Log.i("GetNotification", "name : $name")
+            Log.i("GetNotification", "message : $message")
+            Log.i("GetNotification", "sbp.appNotifier : ${sbp.appNotifier}")
+            Log.i("GetNotification", "sbp.appNotifier : ${(sbp.appNotifier?.let { convertPackageToString(it, this) })}")
 
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {

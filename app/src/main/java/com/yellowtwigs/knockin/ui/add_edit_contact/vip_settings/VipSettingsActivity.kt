@@ -31,7 +31,6 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewState
-import com.yellowtwigs.knockin.utils.SaveUserIdToFirebase.saveUserIdToFirebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
@@ -41,9 +40,6 @@ class VipSettingsActivity : AppCompatActivity() {
     //region ========================================== Var or Val ==========================================
 
     private val editContactViewModel: EditContactViewModel by viewModels()
-    private val firebaseViewModel: FirebaseViewModel by viewModels()
-
-    private lateinit var userIdPreferences: SharedPreferences
 
     private var alarmSound: MediaPlayer? = null
 
@@ -351,10 +347,6 @@ class VipSettingsActivity : AppCompatActivity() {
                 }
             }
         }
-
-        userIdPreferences = getSharedPreferences("User_Id", Context.MODE_PRIVATE)
-
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Enter the VipSettingsActivity")
     }
 
     //region ========================================== Functions ===========================================
@@ -428,8 +420,6 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun onClickFirstCheckbox(checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean) {
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Click on Checkbox to buy song")
-
         uncheckBoxAll()
         checkBox.isChecked = true
         notificationSound = sound
@@ -444,7 +434,6 @@ class VipSettingsActivity : AppCompatActivity() {
     }
 
     private fun onClickCheckbox(checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean) {
-        saveUserIdToFirebase(userIdPreferences, firebaseViewModel, "Click on Checkbox to buy song")
         uncheckBoxAll()
         checkBox.isChecked = true
 
