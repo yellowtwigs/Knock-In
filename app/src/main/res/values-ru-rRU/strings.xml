@@ -521,5 +521,27 @@
     <string name="filter_by_signal">Signal</string>
     <string name="filter_by_telegram">Telegram</string>
     <string name="popup_1_message">1 cообщение</string>
-
+    <string name="promotion_of_store_products">Продвижение продукции магазина</string>
+    <string name="product_discount_alert_dialog_message">Вы имеете право на скидку 50% на продукт в течение 3 дней. : </string>
+    <string name="reward_points_left">У вас есть баллы: осталось %1d</string>
+    <string name="support_all_messaging_apps">Поддержка всех приложений для обмена сообщениями</string>
+    <string name="unlimited_vip_contacts">Неограниченные VIP контакты</string>
+    <string name="jazzy_ringtones">Джазовый пакет персонализации</string>
+    <string name="funky_ringtones">Веселый пакет персонализации</string>
+    <string name="relaxation_personalization_pack">Пакет персонализации «Расслабление»</string>
+    <string name="today_points_calculation">Сегодня за то, как вы настроили свои контакты, вы получите: %1$s баллов. Ваша сумма составляет %2$s</string>
+    <string name="your_reward">Ваша награда</string>
+    <string name="reward_description">Использование приложения позволяет зарабатывать баллы каждый день в зависимости от достигнутого уровня производительности.</string>
+    <string name="reward_fifty">50 баллов: -50% на покупку опций VIP-индивидуализации.</string>
+    <string name="reward_two_hundreds">200 баллов: -50% на покупку других опций.</string>
+    <string name="reward_congrats">Поздравляем, вы выиграли акцию на товар из магазина!</string>
+    <string name="reward_validation">1 покупка, действительна 3 дня.</string>
+    <string name="redeem_50_points">Обменять 50 баллов</string>
+    <string name="redeem_200_points">Обменять 200 баллов</string>
+    <string name="reward_products">Какие продукты вы хотите получить?</string>
+    <string name="get_unlimited_contacts_discount">Получите скидку на неограниченное количество контактов</string>
+    <string name="messaging_apps_support_discount">Получите скидку на поддержку приложений для обмена сообщениями</string>
+    <string name="get_relax_ringtones_discount">Получите скидку на рингтоны Relax</string>
+    <string name="get_jazzy_ringtones_discount">Получите скидку на джазовые рингтоны</string>
+    <string name="get_funky_ringtones_discount">Получите скидку на прикольные рингтоны</string>
 </resources>

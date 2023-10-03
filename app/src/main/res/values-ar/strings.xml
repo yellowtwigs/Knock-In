@@ -521,4 +521,27 @@
     <string name="filter_by_signal">إشارة</string>
     <string name="filter_by_telegram">تيليجرام</string>
     <string name="popup_1_message">1 رسالة </string>
+    <string name="promotion_of_store_products">الترويج لمنتجات المتجر</string>
+    <string name="product_discount_alert_dialog_message">أنت مؤهل للحصول على عرض ترويجي بنسبة 50% لمدة 3 أيام على المنتج : %</string>
+    <string name="reward_points_left">لديك نقاط: %1$d متبقية</string>
+    <string name="support_all_messaging_apps">دعم جميع تطبيقات المراسلة</string>
+    <string name="unlimited_vip_contacts">غير محدودة VIP جهات اتصال</string>
+    <string name="jazzy_ringtones">حزمة التخصيص Jazzy</string>
+    <string name="funky_ringtones">حزمة التخصيص غير التقليدية</string>
+    <string name="relaxation_personalization_pack">حزمة التخصيص للاسترخاء</string>
+    <string name="today_points_calculation">Today with the way you set your contacts, you receive : %1$s points. Your total is %2$s</string>
+    <string name="your_reward">مكافأتك</string>
+    <string name="reward_description">يتيح لك استخدام التطبيق كسب النقاط كل يوم بناءً على مستوى الأداء الذي تم تحقيقه</string>
+    <string name="reward_fifty">50 نقطة: -50% عند شراء خيارات تخصيص VIP</string>
+    <string name="reward_two_hundreds">200 نقطة: -50% عند شراء الخيارات الأخرى</string>
+    <string name="reward_congrats">تهانينا، لقد فزت بعرض ترويجي على منتج من المتجر!</string>
+    <string name="reward_validation">عملية شراء واحدة صالحة لمدة 3 أيام</string>
+    <string name="redeem_50_points">استبدال 50 نقطة</string>
+    <string name="redeem_200_points">استبدال 200 نقطة</string>
+    <string name="reward_products">ما هي المنتجات التي تريد الحصول عليها؟</string>
+    <string name="get_unlimited_contacts_discount">احصل على خصم غير محدود على جهات الاتصال</string>
+    <string name="messaging_apps_support_discount">احصل على خصم دعم تطبيقات المراسلة</string>
+    <string name="get_relax_ringtones_discount">احصل على خصم على نغمات الاسترخاء</string>
+    <string name="get_jazzy_ringtones_discount">احصل على خصم على نغمات جازي</string>
+    <string name="get_funky_ringtones_discount">احصل على خصم نغمات غير تقليدية</string>
 </resources>

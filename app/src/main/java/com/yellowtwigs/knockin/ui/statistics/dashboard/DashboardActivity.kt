@@ -65,12 +65,11 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         setContentView(binding.root)
 
         dataPieChart = binding.pieChartMessaging
-
+        setupDataToView()
         showLoadingProgressBar()
 
         setupToolbar()
         setupDrawerLayout()
-        setupDataToView()
 
         dataPieChart.setOnChartValueSelectedListener(this)
 

@@ -66,7 +66,7 @@ class ContactsListViewModel @Inject constructor(
     private fun filterContactsList(filterBy: Int, listOfContacts: List<ContactsListViewState>): List<ContactsListViewState> {
         when (filterBy) {
             R.id.sms_filter -> {
-                return listOfContacts.filter { it.firstPhoneNumber.phoneNumber.isNotBlank() && it.secondPhoneNumber.phoneNumber.isNotBlank() }
+                return listOfContacts.filter { it.firstPhoneNumber.phoneNumber.isNotBlank() }
             }
             R.id.mail_filter -> {
                 return listOfContacts.filter { it.listOfMails.isNotEmpty() && it.listOfMails[0].isNotEmpty() }

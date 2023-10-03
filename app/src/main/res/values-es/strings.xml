@@ -525,4 +525,27 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="filter_by_signal">Signal</string>
     <string name="filter_by_telegram">Telegram</string>
     <string name="popup_1_message">1 mensaje</string>
+    <string name="promotion_of_store_products">Promoción de productos de la tienda</string>
+    <string name="product_discount_alert_dialog_message">Eres elegible para una promoción del 50% durante 3 días en el producto : </string>
+    <string name="reward_points_left">Tienes puntos: quedan %1d</string>
+    <string name="support_all_messaging_apps">Admite todas las aplicaciones de mensajería</string>
+    <string name="unlimited_vip_contacts">Contactos VIP ilimitados</string>
+    <string name="jazzy_ringtones">Paquete de personalización Jazzy</string>
+    <string name="funky_ringtones">Paquete de personalización Funky</string>
+    <string name="relaxation_personalization_pack">Paquete de personalización de Relajación</string>
+    <string name="today_points_calculation">Hoy, con la forma en que configuras tus contactos, recibes: %1$s puntos. Tu total es %2$s</string>
+    <string name="your_reward">Tu recompensa</string>
+    <string name="reward_description">El uso de la aplicación te permite ganar puntos todos los días según el nivel de rendimiento alcanzado.</string>
+    <string name="reward_fifty">50 puntos: -50% en la compra de opciones de personalización VIP</string>
+    <string name="reward_two_hundreds">200 puntos: -50% en la compra de otras opciones</string>
+    <string name="reward_congrats">¡Felicitaciones, ha ganado una promoción en un producto de la tienda!</string>
+    <string name="reward_validation">1 compra, válida por 3 días</string>
+    <string name="redeem_50_points">Canjear 50 puntos</string>
+    <string name="redeem_200_points">Canjear 200 puntos</string>
+    <string name="reward_products">¿Qué productos desea obtener?</string>
+    <string name="get_unlimited_contacts_discount">Obtenga descuento en contactos ilimitados</string>
+    <string name="messaging_apps_support_discount">Obtenga un descuento en soporte para aplicaciones de mensajería</string>
+    <string name="get_relax_ringtones_discount">Obtenga descuento en tonos de llamada relajantes</string>
+    <string name="get_jazzy_ringtones_discount">Obtenga descuento en tonos de llamada Jazzy</string>
+    <string name="get_funky_ringtones_discount">Obtenga descuento en tonos de llamada originales</string>
 </resources>

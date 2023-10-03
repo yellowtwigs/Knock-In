@@ -141,6 +141,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 binding.vipSettingsIcon.visibility = View.GONE
                 binding.vipSettingsText.visibility = View.GONE
             }
+
             1 -> {
                 binding.priorityExplain.text = getString(R.string.priority_0_subtitle)
                 binding.contactImage.setBorderColor(
@@ -151,6 +152,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 binding.vipSettingsIcon.visibility = View.GONE
                 binding.vipSettingsText.visibility = View.GONE
             }
+
             2 -> {
                 binding.priorityExplain.text = getString(R.string.priority_2_subtitle)
                 binding.contactImage.setBorderColor(
@@ -220,8 +222,7 @@ class AddNewContactActivity : AppCompatActivity() {
             phoneNumberInformations.setOnClickListener {
                 MaterialAlertDialogBuilder(
                     this@AddNewContactActivity, R.style.AlertDialog
-                ).setTitle(getString(R.string.add_new_contact_phone_number))
-                    .setMessage(getString(R.string.handle_one_phone_number_msg))
+                ).setTitle(getString(R.string.add_new_contact_phone_number)).setMessage(getString(R.string.handle_one_phone_number_msg))
                     .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
                     }.show()
             }
@@ -269,19 +270,13 @@ class AddNewContactActivity : AppCompatActivity() {
                             ""
                         )
 
-                        CoroutineScope(Dispatchers.Default).launch {
+                        CoroutineScope(Dispatchers.Main).launch {
                             if (editContactViewModel.checkDuplicateContact(contact!!)) {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@AddNewContactActivity,
-                                        getString(R.string.add_new_contact_alert_dialog_message),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
+                                Toast.makeText(
+                                    this@AddNewContactActivity, getString(R.string.add_new_contact_alert_dialog_message), Toast.LENGTH_LONG
+                                ).show()
                             } else {
-                                withContext(Dispatchers.Main) {
-                                    retrofitMaterialDialog()
-                                }
+                                retrofitMaterialDialog()
                             }
                         }
                     }

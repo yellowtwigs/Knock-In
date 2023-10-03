@@ -28,7 +28,6 @@
             android:layout_height="200dp"
             android:layout_margin="@dimen/daily_performance_message_layout_margin"
             android:background="@drawable/background_border_rounded_yellow"
-            app:layout_constraintBottom_toTopOf="@+id/number_points_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -68,16 +67,27 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/number_points_icon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title_number_points"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/reward_button"
+            android:gravity="center"
+            android:text="Vos points"
+            android:textAlignment="center"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/advice_message_layout"
+            app:layout_constraintTop_toBottomOf="@+id/advice_message_layout" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/number_points_icon"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_number_points"
             app:srcCompat="@drawable/trophy_25" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -96,16 +106,14 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reward_button"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="15dp"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
             android:background="@drawable/rounded_button_color_yellow"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:text="How i get rewarded"
             android:textColor="@color/textColorDark"
-            android:textSize="13sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

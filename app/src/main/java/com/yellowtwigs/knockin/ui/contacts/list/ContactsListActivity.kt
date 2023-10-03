@@ -579,7 +579,7 @@ class ContactsListActivity : AppCompatActivity() {
     //endregion
 
     private fun importContacts() {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }

@@ -43,6 +43,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
     private var sharedCustomSoundPreferences: SharedPreferences? = null
     private var appsSupportPref: SharedPreferences? = null
+    private var produitFakePref: SharedPreferences? = null
 
     private var fromManageNotification = false
 
@@ -83,6 +84,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         sharedContactsUnlimitedPreferences = getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
         sharedCustomSoundPreferences = getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
         appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
+        produitFakePref = getSharedPreferences("Produits_Fake_Bought", Context.MODE_PRIVATE)
 
         setupLeftDrawerLayout(sharedThemePreferences)
         toolbarClick()
@@ -160,7 +162,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun importContacts() {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }
@@ -221,6 +223,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_jazz_theme")
         skuList.add("notifications_vip_relaxation_theme")
         skuList.add("additional_applications_support")
+        skuList.add("produit_fake_test_promo")
 
         params = SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
 
@@ -333,6 +336,21 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         ).show()
                         val edit = appsSupportPref?.edit()
                         edit?.putBoolean("Apps_Support_Bought", true)
+                        edit?.apply()
+                        backToManageNotifAfterBuying()
+                    }
+                }
+                purchases[0].originalJson.contains("produit_fake_test_promo") -> {
+                    if (purchases[0].purchaseState == Purchase.PurchaseState.PURCHASED) if (!purchases[0].isAcknowledged) {
+                        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchases[0].purchaseToken)
+                        billingClient.acknowledgePurchase(
+                            acknowledgePurchaseParams.build(), acknowledgePurchaseResponseListener
+                        )
+                        Toast.makeText(
+                            this, getString(R.string.in_app_purchase_made_message), Toast.LENGTH_SHORT
+                        ).show()
+                        val edit = appsSupportPref?.edit()
+                        edit?.putBoolean("Produits_Fake_Bought", true)
                         edit?.apply()
                         backToManageNotifAfterBuying()
                     }

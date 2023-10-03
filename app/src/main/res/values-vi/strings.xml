@@ -522,4 +522,27 @@
     <string name="filter_by_signal">Tín hiệu</string>
     <string name="filter_by_telegram">Telegram</string>
     <string name="popup_1_message">1 tin nhắn</string>
+    <string name="promotion_of_store_products">Khuyến mãi sản phẩm của cửa hàng</string>
+    <string name="product_discount_alert_dialog_message">Bạn đủ điều kiện được khuyến mãi 50% trong 3 ngày cho sản phẩm : </string>
+    <string name="reward_points_left">Bạn còn số điểm: %1d</string>
+    <string name="support_all_messaging_apps">Hỗ trợ tất cả các ứng dụng nhắn tin</string>
+    <string name="unlimited_vip_contacts">Liên hệ VIP không giới hạn</string>
+    <string name="jazzy_ringtones">Gói cá nhân hóa Jazzy</string>
+    <string name="funky_ringtones">Gói cá nhân hóa thú vị</string>
+    <string name="relaxation_personalization_pack">Gói cá nhân hóa thư giãn</string>
+    <string name="today_points_calculation">Hôm nay với cách bạn thiết lập danh bạ, bạn nhận được : %1$s điểm. Tổng số của bạn là %2$s</string>
+    <string name="your_reward">Phần thưởng của bạn</string>
+    <string name="reward_description">Sử dụng ứng dụng cho phép bạn kiếm điểm mỗi ngày dựa trên mức hiệu suất đạt được</string>
+    <string name="reward_fifty">50 điểm: -50% khi mua các tùy chọn tùy chỉnh VIP</string>
+    <string name="reward_two_hundreds">200 điểm: -50% khi mua các lựa chọn khác</string>
+    <string name="reward_congrats">Xin chúc mừng, bạn đã giành được khuyến mãi cho một sản phẩm từ cửa hàng!</string>
+    <string name="reward_validation">1 lần mua, có giá trị trong 3 ngày</string>
+    <string name="redeem_50_points">Đổi 50 điểm</string>
+    <string name="redeem_200_points">Đổi 200 điểm</string>
+    <string name="reward_products">Bạn muốn nhận sản phẩm nào?</string>
+    <string name="get_unlimited_contacts_discount">Nhận giảm giá liên hệ không giới hạn</string>
+    <string name="messaging_apps_support_discount">Nhận hỗ trợ ứng dụng nhắn tin Giảm giá</string>
+    <string name="get_relax_ringtones_discount">Nhận giảm giá nhạc chuông thư giãn</string>
+    <string name="get_jazzy_ringtones_discount">Nhận giảm giá nhạc chuông Jazzy</string>
+    <string name="get_funky_ringtones_discount">Nhận giảm giá nhạc chuông sôi nổi</string>
 </resources>

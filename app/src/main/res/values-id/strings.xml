@@ -524,4 +524,27 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="filter_by_signal">Sinyal</string>
     <string name="filter_by_telegram">Telegram</string>
     <string name="popup_1_message">1 pesan</string>
+    <string name="promotion_of_store_products">Promosi produk toko</string>
+    <string name="product_discount_alert_dialog_message">Anda berhak mendapatkan promosi 50% selama 3 hari untuk produk tersebut : %1$d</string>
+    <string name="reward_points_left">Anda memiliki poin: tersisa %1d</string>
+    <string name="support_all_messaging_apps">Mendukung Semua Aplikasi Perpesanan</string>
+    <string name="unlimited_vip_contacts">Kontak VIP Tanpa Batas</string>
+    <string name="jazzy_ringtones">Paket personalisasi jazzy</string>
+    <string name="funky_ringtones">Paket personalisasi yang Funky</string>
+    <string name="relaxation_personalization_pack">Paket personalisasi Relaksasi</string>
+    <string name="today_points_calculation">Hari ini dengan cara Anda mengatur kontak, Anda menerima : %1$s poin. Totalnya adalah %2$s</string>
+    <string name="your_reward">Hadiah Anda</string>
+    <string name="reward_description">Menggunakan aplikasi ini memungkinkan Anda memperoleh poin setiap hari berdasarkan tingkat kinerja yang dicapai</string>
+    <string name="reward_fifty">50 poin: -50% untuk pembelian opsi penyesuaian VIP</string>
+    <string name="reward_two_hundreds">200 poin: -50% untuk pembelian opsi lain</string>
+    <string name="reward_congrats">Selamat, Anda telah memenangkan promosi produk dari toko!</string>
+    <string name="reward_validation">1 pembelian, berlaku selama 3 hari</string>
+    <string name="redeem_50_points">Tukarkan 50 poin</string>
+    <string name="redeem_200_points">Tukarkan 200 poin</string>
+    <string name="reward_products">Produk apa saja yang ingin Anda dapatkan?</string>
+    <string name="get_unlimited_contacts_discount">Dapatkan Diskon Kontak Tanpa Batas</string>
+    <string name="messaging_apps_support_discount">Dapatkan Diskon Dukungan Aplikasi Perpesanan</string>
+    <string name="get_relax_ringtones_discount">Dapatkan Diskon Nada Dering Santai</string>
+    <string name="get_jazzy_ringtones_discount">Dapatkan Diskon Nada Dering Jazzy</string>
+    <string name="get_funky_ringtones_discount">Dapatkan Diskon Nada Dering Funky</string>
 </resources>

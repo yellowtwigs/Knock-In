@@ -220,11 +220,11 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 notificationsListViewModel.setSortedBy(R.id.sort_by_date)
             }
 
-            R.id.sort_by_priority -> {
-                editorSortBy.putInt("Notifications_Sort_By", R.id.sort_by_priority)
+            R.id.notifications_sort_by_priority -> {
+                editorSortBy.putInt("Notifications_Sort_By", R.id.notifications_sort_by_priority)
                 editorSortBy.apply()
                 item.isChecked = true
-                notificationsListViewModel.setSortedBy(R.id.sort_by_priority)
+                notificationsListViewModel.setSortedBy(R.id.notifications_sort_by_priority)
             }
 
             R.id.sort_by_contact -> {
@@ -393,7 +393,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     }
 
     private fun importContacts() {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }

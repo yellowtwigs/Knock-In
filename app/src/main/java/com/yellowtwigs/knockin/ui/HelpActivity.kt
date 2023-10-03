@@ -257,7 +257,7 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun importContacts() {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }

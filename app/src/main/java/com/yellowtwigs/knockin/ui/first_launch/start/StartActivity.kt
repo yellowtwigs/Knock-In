@@ -431,6 +431,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_jazz_theme")
         skuList.add("notifications_vip_relaxation_theme")
         skuList.add("additional_applications_support")
+        skuList.add("produit_fake_test_promo")
 
         val params =
             SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
@@ -466,6 +467,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     }
                     contains("additional_applications_support") -> {
                         sharedPreferencesConfiguration("Apps_Support_Bought")
+                    }
+                    contains("produit_fake_test_promo") -> {
+                        sharedPreferencesConfiguration("Produits_Fake_Bought")
                     }
                 }
             }

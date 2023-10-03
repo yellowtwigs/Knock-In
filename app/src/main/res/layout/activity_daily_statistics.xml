@@ -25,10 +25,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/advice_message_layout"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_margin="@dimen/daily_performance_message_layout_margin"
             android:background="@drawable/background_border_rounded_yellow"
-            app:layout_constraintBottom_toTopOf="@+id/number_points_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -55,9 +54,9 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="@dimen/daily_performance_message_layout_margin"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="@dimen/daily_performance_message_layout_margin"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="?attr/textColor"
@@ -69,16 +68,30 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title_number_points"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Vos points"
+            android:textAlignment="center"
+            android:textSize="@dimen/daily_performance_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/number_points_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/advice_message_layout" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/number_points_icon"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toTopOf="@+id/rewarded_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/advice_message_layout"
+            app:layout_constraintTop_toBottomOf="@+id/title_number_points"
             app:srcCompat="@drawable/trophy_25" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -97,8 +110,9 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/rewarded_button"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="70dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/rounded_button_color_yellow"
             android:paddingStart="15dp"
@@ -107,7 +121,8 @@
             android:textColor="@color/textColorDark"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/number_points_icon" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
@@ -133,6 +148,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/backgroundColor"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"

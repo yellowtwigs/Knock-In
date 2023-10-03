@@ -520,4 +520,27 @@
     <string name="filter_by_signal">Signal</string>
     <string name="filter_by_telegram">Telegram</string>
     <string name="popup_1_message">1 nachricht</string>
+    <string name="promotion_of_store_products">Werbung für Ladenprodukte</string>
+    <string name="product_discount_alert_dialog_message">Sie haben 3 Tage lang Anspruch auf eine 50 %-Aktion für das Produkt : </string>
+    <string name="reward_points_left">Sie haben Punkte: %1d übrig</string>
+    <string name="support_all_messaging_apps">Unterstützt alle Messaging-Apps</string>
+    <string name="unlimited_vip_contacts">Unbegrenzte VIP-Kontakte</string>
+    <string name="jazzy_ringtones">Jazzy Personalisierungspaket</string>
+    <string name="funky_ringtones">Funky Personalisierungspaket</string>
+    <string name="relaxation_personalization_pack">Entspannungs-Personalisierungspaket</string>
+    <string name="today_points_calculation">Heute erhalten Sie mit der Art und Weise, wie Sie Ihre Kontakte festlegen: %1$s Punkte. Ihre Gesamtsumme beträgt %2$s</string>
+    <string name="your_reward">Deine Belohnung</string>
+    <string name="reward_description">Durch die Nutzung der Anwendung können Sie täglich Punkte basierend auf dem erreichten Leistungsniveau sammeln</string>
+    <string name="reward_fifty">50 Punkte: -50 % beim Kauf von VIP-Anpassungsoptionen</string>
+    <string name="reward_two_hundreds">200 Punkte: -50 % beim Kauf anderer Optionen</string>
+    <string name="reward_congrats">Herzlichen Glückwunsch, Sie haben eine Werbeaktion für ein Produkt aus dem Shop gewonnen!</string>
+    <string name="reward_validation">1 Kauf, gültig für 3 Tage</string>
+    <string name="redeem_50_points">50 Punkte einlösen</string>
+    <string name="redeem_200_points">200 Punkte einlösen</string>
+    <string name="reward_products">Welche Produkte möchten Sie erhalten?</string>
+    <string name="get_unlimited_contacts_discount">Erhalten Sie einen unbegrenzten Rabatt auf Kontakte</string>
+    <string name="messaging_apps_support_discount">Erhalten Sie einen Rabatt für den Support von Messaging-Apps</string>
+    <string name="get_relax_ringtones_discount">Erhalten Sie einen Rabatt auf Relax-Klingeltöne</string>
+    <string name="get_jazzy_ringtones_discount">Erhalten Sie einen Rabatt auf Jazzy-Klingeltöne</string>
+    <string name="get_funky_ringtones_discount">Erhalten Sie einen Rabatt auf Funky-Klingeltöne</string>
 </resources>

@@ -75,7 +75,7 @@
             android:exported="false" />
         <activity android:name="com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsActivity" />
         <activity
-            android:name=".ui.SplashScreenActivity"
+            android:name=".ui.splash_screen.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

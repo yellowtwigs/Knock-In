@@ -60,6 +60,9 @@ class MyProductAdapter(
                 val unlimitedPref = cxt.getSharedPreferences("Contacts_Unlimited_Bought", modePrivate)
                 val contactsUnlimitedBought = unlimitedPref.getBoolean("Contacts_Unlimited_Bought", false)
 
+                val codeFakePref = cxt.getSharedPreferences("Produits_Fake_Bought", modePrivate)
+                val codeFakeBought = codeFakePref.getBoolean("Produits_Fake_Bought", false)
+
                 val skuDetailsTitle = skuDetails.title
                 val titleTransformed = skuDetailsTitle.split("\\(").toTypedArray()
                 val productName = titleTransformed[0].split("(").toTypedArray()[0]
@@ -74,6 +77,7 @@ class MyProductAdapter(
                                 changeBackgroundToDarkGrey()
                             }
                         }
+
                         contains("Funky") || contains("funky") || contains("Веселый") -> {
                             productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
 
@@ -81,6 +85,7 @@ class MyProductAdapter(
                                 changeBackgroundToDarkGrey()
                             }
                         }
+
                         contains("Relaxation") || contains("Relajación") || contains("relaxation") || contains("relajación") || contains("Entspannungs") || contains(
                             "Relax"
                         ) || contains("Relaxamento") || contains("Расслабление") -> {
@@ -90,6 +95,7 @@ class MyProductAdapter(
                                 changeBackgroundToDarkGrey()
                             }
                         }
+
                         contains("Custom") || contains("custom") -> {
                             productItemImage.setImageResource(R.drawable.ic_circular_music_icon)
 
@@ -97,6 +103,7 @@ class MyProductAdapter(
                                 changeBackgroundToDarkGrey()
                             }
                         }
+
                         contains("VIP") || contains("vip") -> {
                             productItemImage.setImageResource(R.drawable.ic_circular_vip_icon)
 
@@ -104,12 +111,21 @@ class MyProductAdapter(
                                 changeBackgroundToDarkGrey()
                             }
                         }
+
                         contains("Support") || contains("Supporta") || contains("Suporta") || contains("Поддержка") || contains("Unterstützt") || contains(
                             "support"
                         ) -> {
                             productItemImage.setImageResource(R.drawable.ic_social_media)
 
                             if (appsSupportBought) {
+                                changeBackgroundToDarkGrey()
+                            }
+                        }
+
+                        contains("Test") || contains("Promo") -> {
+                            productItemImage.setImageResource(R.drawable.ic_speedometer_light_green)
+
+                            if (codeFakeBought) {
                                 changeBackgroundToDarkGrey()
                             }
                         }
@@ -131,9 +147,7 @@ class MyProductAdapter(
                 }
 
                 root.setOnClickListener {
-                    Toast.makeText(
-                        cxt, skuDetails.description + " " + skuDetails.price, Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(cxt, skuDetails.description + " " + skuDetails.price, Toast.LENGTH_LONG).show()
                 }
             }
         }

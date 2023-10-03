@@ -10,17 +10,60 @@ import javax.inject.Inject
 @HiltViewModel
 class FirebaseViewModel @Inject constructor(private val firebaseFirestoreRepository: FirebaseFirestoreRepository) : ViewModel() {
 
-    fun getPromotionsCodes(): LiveData<List<PromotionCode>> {
-        return firebaseFirestoreRepository.getPromotionCodes()
+    fun getPromotionCodesRelax(): LiveData<List<PromotionCode>> {
+        return firebaseFirestoreRepository.getPromotionCodesRelax()
     }
 
-    fun addPromotionCodeToFirestore(promotionCode: PromotionCode) {
-        firebaseFirestoreRepository.addPromotionToFirestore(promotionCode.content, promotionCode)
+    fun getPromotionCodesJazzy(): LiveData<List<PromotionCode>> {
+        return firebaseFirestoreRepository.getPromotionCodesJazzy()
     }
 
-    fun editPromotionCodeToIsUsed(promotionCode: PromotionCode) {
-        firebaseFirestoreRepository.editPromotionCodeToIsUsed(promotionCode)
+    fun getPromotionCodesFunky(): LiveData<List<PromotionCode>> {
+        return firebaseFirestoreRepository.getPromotionCodesFunky()
+    }
+
+    fun getPromotionCodesMessaging(): LiveData<List<PromotionCode>> {
+        return firebaseFirestoreRepository.getPromotionCodesMessaging()
+    }
+
+    fun getPromotionCodesContacts(): LiveData<List<PromotionCode>> {
+        return firebaseFirestoreRepository.getPromotionCodesContacts()
+    }
+
+    fun getPromotionCodesFake(): LiveData<List<PromotionCode>> {
+        return firebaseFirestoreRepository.getPromotionCodesFake()
+    }
+
+    fun addPromotionCodeRelaxToFirestore(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.addPromotionCodeRelaxToFirestore(promotionCode.content, promotionCode)
+    }
+
+    fun addPromotionCodeJazzyToFirestore(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.addPromotionCodeJazzyToFirestore(promotionCode.content, promotionCode)
+    }
+
+    fun addPromotionCodeMessagingToFirestore(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.addPromotionCodeMessagingToFirestore(promotionCode.content, promotionCode)
+    }
+
+    fun addPromotionCodeFakeToFirestore(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.addPromotionCodeFakeToFirestore(promotionCode.content, promotionCode)
     }
 
 
+    fun addPromotionCodeContactsToFirestore(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.addPromotionCodeContactsToFirestore(promotionCode.content, promotionCode)
+    }
+
+    fun editPromotionCodeRelaxToIsUsed(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.editPromotionCodeRelaxToIsUsed(promotionCode)
+    }
+
+    fun editPromotionCodeJazzyToIsUsed(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.editPromotionCodeJazzyToIsUsed(promotionCode)
+    }
+
+    fun editPromotionCodeMessagingToIsUsed(promotionCode: PromotionCode) {
+        firebaseFirestoreRepository.editPromotionCodeMessagingToIsUsed(promotionCode)
+    }
 }

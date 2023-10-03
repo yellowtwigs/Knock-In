@@ -520,4 +520,27 @@
     <string name="filter_by_signal">Sinyal</string>
     <string name="filter_by_telegram">Telgraf</string>
     <string name="popup_1_message">1 mesaj</string>
+    <string name="promotion_of_store_products">Mağaza ürünlerinin tanıtımı</string>
+    <string name="product_discount_alert_dialog_message">Üründe 3 gün boyunca %50 promosyona hak kazanırsınız : </string>
+    <string name="reward_points_left">Puanınız var: %1d kaldı</string>
+    <string name="support_all_messaging_apps">Tüm Mesajlaşma Uygulamalarını Destekleyin</string>
+    <string name="unlimited_vip_contacts">Sınırsız VIP Kişileri</string>
+    <string name="jazzy_ringtones">Jazzy kişiselleştirme paketi</string>
+    <string name="funky_ringtones">Funky kişiselleştirme paketi</string>
+    <string name="relaxation_personalization_pack">Gevşeme kişiselleştirme paketi</string>
+    <string name="today_points_calculation">Bugün, kişilerinizi ayarlama şeklinizle şunları alacaksınız: %1$s puan. Toplamınız %2$s</string>
+    <string name="your_reward">Ödülünüz</string>
+    <string name="reward_description">Uygulamayı kullanmak, elde ettiğiniz performans düzeyine göre her gün puan kazanmanıza olanak tanır</string>
+    <string name="reward_fifty">50 puan: VIP özelleştirme seçeneklerinin satın alınmasında -%50</string>
+    <string name="reward_two_hundreds">200 puan: Diğer seçeneklerin satın alınmasında -%50</string>
+    <string name="reward_congrats">Tebrikler, mağazadaki bir üründe promosyon kazandınız!</string>
+    <string name="reward_validation">1 satın alma, 3 gün geçerlidir</string>
+    <string name="redeem_50_points">50 puanı kullanın</string>
+    <string name="redeem_200_points">200 puanı kullanın</string>
+    <string name="reward_products">Hangi ürünleri almak istiyorsunuz?</string>
+    <string name="get_unlimited_contacts_discount">Sınırsız Kişi İndirimi Alın</string>
+    <string name="messaging_apps_support_discount">Mesajlaşma Uygulamaları Desteği İndirimi Alın</string>
+    <string name="get_relax_ringtones_discount">Rahatlatıcı Zil Sesleri İndirimi Alın</string>
+    <string name="get_jazzy_ringtones_discount">Jazzy Zil Sesleri İndirimi Alın</string>
+    <string name="get_funky_ringtones_discount">Funky Zil Sesleri İndirimi Alın</string>
 </resources>

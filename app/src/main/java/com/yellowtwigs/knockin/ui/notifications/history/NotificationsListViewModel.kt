@@ -61,17 +61,21 @@ class NotificationsListViewModel @Inject constructor(
             if (messagingNotifications.isNotEmpty()) {
                 messagingNotifications.map { notification ->
                     if (notification.platform == KNOCKIN_PACKAGE) {
-                        if (compareIfDateIsToday(notification.timestamp)) {
-                            if (cpt > 1) {
-                                if (notification.timestamp > pinNotification!!.timestamp) {
+                        if (!notification.description.contains("Today with the way you set your contacts") || !notification.description.contains(
+                                "grâce à la façon dont vous paramétrez vos contacts, vous recevez"
+                            )
+                        )
+                            if (compareIfDateIsToday(notification.timestamp)) {
+                                if (cpt > 1) {
+                                    if (notification.timestamp > pinNotification!!.timestamp) {
+                                        pinNotification = notification
+                                        cpt += 1
+                                    }
+                                } else {
                                     pinNotification = notification
                                     cpt += 1
                                 }
-                            } else {
-                                pinNotification = notification
-                                cpt += 1
                             }
-                        }
                     } else {
                         addNotificationInList(notifications, notification)
                     }
@@ -81,15 +85,20 @@ class NotificationsListViewModel @Inject constructor(
             if (systemNotifications.isNotEmpty()) {
                 systemNotifications.map { notification ->
                     if (notification.platform == KNOCKIN_PACKAGE) {
-                        if (compareIfDateIsToday(notification.timestamp)) {
-                            if (cpt > 1) {
-                                if (notification.timestamp > pinNotification!!.timestamp) {
+                        if (!notification.description.contains("Today with the way you set your contacts, you receive") || !notification.description.contains(
+                                "grâce à la façon dont vous paramétrez vos contacts, vous recevez"
+                            )
+                        ) {
+                            if (compareIfDateIsToday(notification.timestamp)) {
+                                if (cpt > 1) {
+                                    if (notification.timestamp > pinNotification!!.timestamp) {
+                                        pinNotification = notification
+                                        cpt += 1
+                                    }
+                                } else {
                                     pinNotification = notification
                                     cpt += 1
                                 }
-                            } else {
-                                pinNotification = notification
-                                cpt += 1
                             }
                         }
                     } else {
@@ -142,7 +151,7 @@ class NotificationsListViewModel @Inject constructor(
                 it.contactName.uppercase().unAccent()
             }.thenByDescending { it.systemPriority })
 
-            R.id.notifications_sort_by_priority -> filteredNotifications.sortedWith(compareBy<NotificationsListViewState> { it.id }.thenByDescending { it.priority }
+            R.id.notifications_sort_by_priority -> filteredNotifications.sortedWith(compareByDescending<NotificationsListViewState> { it.priority }
                 .thenByDescending { it.systemPriority })
 
             else -> filteredNotifications.sortedWith(compareByDescending<NotificationsListViewState> { it.id }.thenByDescending { it.systemPriority })

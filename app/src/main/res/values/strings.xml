@@ -540,6 +540,27 @@
     <string name="filter_by_signal">Signal</string>
     <string name="filter_by_telegram">Telegram</string>
     <string name="popup_1_message">1 message</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="promotion_of_store_products">Promotion of store products</string>
+    <string name="product_discount_alert_dialog_message">You are eligible for a 50% promotion for 3 days on the product : </string>
+    <string name="reward_points_left">You have points: %1d left</string>
+    <string name="support_all_messaging_apps">Support All Messaging Apps</string>
+    <string name="unlimited_vip_contacts">Unlimited VIP Contacts</string>
+    <string name="jazzy_ringtones">Jazzy personalization pack</string>
+    <string name="funky_ringtones">Funky personalization pack</string>
+    <string name="relaxation_personalization_pack">Relaxation personalization pack</string>
+    <string name="today_points_calculation">Today with the way you set your contacts, you receive : %1$s points. Your total is %2$s</string>
+    <string name="your_reward">Your Reward</string>
+    <string name="reward_description">Using the application allows you to earn points every day based on the level of performance achieved</string>
+    <string name="reward_fifty">50 points: -50% on the purchase of VIP customization options</string>
+    <string name="reward_two_hundreds">200 points: -50% on the purchase of other options</string>
+    <string name="reward_congrats">Congratulations, you have won a promotion on a product from the store!</string>
+    <string name="reward_validation">1 purchase, valid for 3 days</string>
+    <string name="redeem_50_points">Redeem 50 points</string>
+    <string name="redeem_200_points">Redeem 200 points</string>
+    <string name="reward_products">Which products do you want to get ?</string>
+    <string name="get_unlimited_contacts_discount">Get Unlimited Contacts Discount</string>
+    <string name="messaging_apps_support_discount">Get Messaging Apps Support Discount</string>
+    <string name="get_relax_ringtones_discount">Get Relax Ringtones Discount</string>
+    <string name="get_jazzy_ringtones_discount">Get Jazzy Ringtones Discount</string>
+    <string name="get_funky_ringtones_discount">Get Funky Ringtones Discount</string>
 </resources>

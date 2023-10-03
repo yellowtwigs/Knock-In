@@ -27,6 +27,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -167,7 +168,7 @@ class TeleworkingActivity : AppCompatActivity() {
                     )
                     R.id.nav_in_app -> startActivity(
                         Intent(
-                            this@TeleworkingActivity, TeleworkingActivity::class.java
+                            this@TeleworkingActivity, PremiumActivity::class.java
                         )
                     )
                     R.id.nav_manage_screen -> startActivity(
@@ -246,7 +247,7 @@ class TeleworkingActivity : AppCompatActivity() {
             reminderHourEditText.setText(hourGetString(hour, minute))
             setReminderAlarm(hour, minute)
             reminderHourEditText.setOnClickListener {
-                val timePickerDialog = TimePickerDialog(this@TeleworkingActivity, TimePickerDialog.OnTimeSetListener(function = { _, h, m ->
+                val timePickerDialog = TimePickerDialog(this@TeleworkingActivity, { _, h, m ->
                     val editor = sharedPreferences.edit()
                     editor.putInt("remindHour", h)
                     editor.putInt("remindMinute", m)
@@ -255,7 +256,7 @@ class TeleworkingActivity : AppCompatActivity() {
                     hour = h
                     minute = m
                     setReminderAlarm(hour, minute)
-                }), hour, minute, true)
+                }, hour, minute, true)
                 timePickerDialog.show()
             }
         }
