@@ -11,8 +11,8 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 33
-        versionCode 267
-        versionName "3.4.0.29"
+        versionCode 268
+        versionName "3.4.0.30"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {

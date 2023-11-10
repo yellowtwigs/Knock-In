@@ -528,7 +528,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver, isVoiceMail: Int) {
         val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
+        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, isVoiceMail)
 
         val where = ContactsContract.Contacts._ID + " = ?"
         val whereArgs = arrayOf(contactId)
