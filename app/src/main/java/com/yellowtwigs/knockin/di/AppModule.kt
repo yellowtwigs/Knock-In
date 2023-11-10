@@ -15,6 +15,7 @@ import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
+import com.yellowtwigs.knockin.ui.call.CustomPhoneStateListener
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,10 +45,17 @@ class AppModule {
         return FirebaseFirestore.getInstance()
     }
 
+    @Provides
+    @Singleton
+    fun provideApplicationContext(@ApplicationContext context: Context) = context
+
 //    @Provides
 //    @Singleton
-//    fun providePointCalculatorUseCase(@ApplicationContext context: Context): PointCalculationUseCase {
-//        return PointCalculationUseCase(context)
+//    fun provideCustomPhoneStateListener(
+//        context: Context,
+//        notificationsListenerUseCases: NotificationsListenerUseCases
+//    ): CustomPhoneStateListener {
+//        return CustomPhoneStateListener(context)
 //    }
 
     @Provides

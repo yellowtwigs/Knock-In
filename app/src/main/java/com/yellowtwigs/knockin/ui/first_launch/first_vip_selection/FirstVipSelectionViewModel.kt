@@ -1,5 +1,8 @@
 package com.yellowtwigs.knockin.ui.first_launch.first_vip_selection
 
+import android.content.ContentResolver
+import android.content.ContentValues
+import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.*
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
@@ -50,19 +53,38 @@ class FirstVipSelectionViewModel @Inject constructor(
 
     private fun transformContactDbToFirstVipSelectionViewState(contact: ContactDB): FirstVipSelectionViewState {
         return FirstVipSelectionViewState(
-            contact.id, contact.firstName, contact.lastName, contact.profilePicture, contact.profilePicture64, contact.priority
+            contact.id,
+            contact.androidId,
+            contact.firstName,
+            contact.lastName,
+            contact.profilePicture,
+            contact.profilePicture64,
+            contact.priority
         )
     }
 
-    fun updateContact(ids: ArrayList<Pair<Int, Int>>) {
+    fun updateContact(ids: ArrayList<Triple<Int, Int?, Int>>, contentResolver: ContentResolver) {
         CoroutineScope(Dispatchers.IO).launch {
             ids.forEach { pair ->
                 val id = pair.first
-                val priority = pair.second
+                val androidId = pair.second
+                val priority = pair.third
+
+                androidId?.toString()?.let { setSendToVoicemailFlag(it, contentResolver) }
 
                 updateContactPriorityByIdUseCase.updateContactPriorityById(id, priority)
             }
         }
+    }
+
+    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver) {
+        val contentValues = ContentValues()
+        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
+
+        val where = ContactsContract.Contacts._ID + " = ?"
+        val whereArgs = arrayOf(contactId)
+
+        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
     }
 
     fun getNumbersContactsVipUseCase() = getNumbersContactsVipUseCase.getNumbersOfContactsVip()

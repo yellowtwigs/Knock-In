@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.ui.first_launch.start
 
 import android.content.ContentResolver
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -131,6 +132,16 @@ class ImportContactsViewModel @Inject constructor(
         return phoneContactsList
     }
 
+    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver) {
+        val contentValues = ContentValues()
+        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 1)
+
+        val where = ContactsContract.Contacts._ID + " = ?"
+        val whereArgs = arrayOf(contactId)
+
+        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+    }
+
     private fun getContactDetailsSync(resolver: ContentResolver): List<Map<Int, Any>> {
         val listOfDetails = arrayListOf<MutableMap<Int, Any>>()
         var contactDetails: MutableMap<Int, Any>
@@ -171,6 +182,12 @@ class ImportContactsViewModel @Inject constructor(
                     getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 }
 
+                try {
+                    setSendToVoicemailFlag(phoneId, resolver)
+                } catch (e: Exception) {
+                    Log.i("PhoneCall", "e : $e")
+                }
+
                 var phonePic = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
                 phonePic = if (phonePic == null || phonePic.contains("content://com.android.contactList/contactList/", ignoreCase = true)) {
                     ""
@@ -184,9 +201,6 @@ class ImportContactsViewModel @Inject constructor(
                 }
 
                 if (lastId == "") {
-                    // 01 74 85 96 36
-                    // 067-313-9484
-
                     lastId = phoneId
                     savedPhoneNumberWithType = "$phoneType:$phoneNumber"
                     savedPhoneNumber = phoneNumber
@@ -288,20 +302,6 @@ class ImportContactsViewModel @Inject constructor(
         return listOfDetails
     }
 
-//    fun getContactWithAndroidId(androidId: Int, lastSync: String): ContactWithAllInformation? {
-//        var contact: ContactWithAllInformation? = null
-//        var id = -1
-//        val allId = sliceLastSync(lastSync)
-//        allId.forEach {
-//            if (androidId == it.first)
-//                id = it.second
-//        }
-//        if (id != -1) {
-//            contact = getContact(id).value
-//        }
-//        return contact
-//    }
-
     private fun openPhoto(contactId: Long, resolver: ContentResolver): InputStream? {
         val contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId)
         val photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
@@ -319,7 +319,7 @@ class ImportContactsViewModel @Inject constructor(
         return null
     }
 
-    fun sliceLastSync(lastSync: String): List<Pair<Int, Int>> {
+    private fun sliceLastSync(lastSync: String): List<Pair<Int, Int>> {
         val lastSyncList = arrayListOf<Pair<Int, Int>>()
         var allId: Pair<Int, Int>
         val lastSyncSplit = lastSync.split("|")
@@ -458,154 +458,24 @@ class ImportContactsViewModel @Inject constructor(
                                     ""
                                 )
                             )
-
-
-//                            if (fullName.second.second == "") {
-//                                val contacts = ContactDB(
-//                                    0,
-//                                    fullName.second.first,
-//                                    fullName.second.third,
-//                                    randomDefaultImage(0, context as Context, "Create"),
-//                                    details[4].toString(),
-//                                    details[0].,
-//                                    ,
-//                                    0,
-//                                    "",
-//                                    1,
-//                                    hasWhatsapp,
-//                                    "",
-//                                    defaultTone,
-//                                    0,
-//                                    1,
-//                                    "",
-//                                    "",
-//                                    hasTelegram,
-//                                    hasSignal
-//                                )
-//                                lastSync = sharedPreferences.getString("last_sync_2", "")!!
-//                                if (!isDuplicateContacts(fullName, lastSync)) {
-//                                    contacts.id =
-//                                        contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
-//                                    lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
-//                                    for (details in contactDetails) {
-//                                        details.idContact = contacts.id
-//                                    }
-//                                    for (groups in contactGroups) {
-//                                        val links = LinkContactGroup(0, contacts.id!!.toInt())
-//                                        ContactLinksGroup = Pair(links, groups)
-//                                        listLinkAndGroup.add(ContactLinksGroup)
-//                                    }
-//                                    saveGroupsAndLinks(listLinkAndGroup)
-//                                    listLinkAndGroup.clear()
-//                                    contactsDatabase!!.contactsDao().insertDetails(contactDetails)
-//                                } else {
-//                                    var positionInSet = 3
-//                                    val contact = getContactWithAndroidId(fullName.first, lastSync)
-//                                    if (contact != null) {
-//                                        set.add("0" + contact.contactDB!!.id)
-//                                        set.add("1" + fullName.second.first)
-//                                        if (fullName.second.second == "")
-//                                            set += "2" + fullName.second.third
-//                                        else
-//                                            set += "2" + fullName.second.second + " " + fullName.second.third
-//                                        for (details in contactDetails) {
-//                                            val alldetail =
-//                                                details.type + ":" + details.content + ":" + details.tag
-//                                            set += positionInSet.toString() + alldetail
-//                                            positionInSet++
-//                                        }
-//                                        if (!isSameContact(
-//                                                contact,
-//                                                fullName.second,
-//                                                contactDetails
-//                                            )
-//                                        ) {
-//                                            modifiedContact++
-//                                            edit.putStringSet(modifiedContact.toString(), set)
-//                                            edit.apply()
-//                                        }
-//                                    } else {
-//                                        lastSync =
-//                                            deleteContactFromLastSync(lastSync, fullName.first)
-//                                        edit.putString("last_sync_2", lastSync)
-//                                        edit.apply()
-//                                        contacts.id =
-//                                            contactsDatabase?.contactsDao()?.insert(contacts)!!
-//                                                .toInt()
-//                                        lastSyncId += fullName.first.toString() + ":" + contacts.id.toString() + "|"
-//                                        for (details in contactDetails) {
-//                                            details.idContact = contacts.id
-//                                        }
-//                                        for (groups in contactGroups) {
-//                                            val links = LinkContactGroup(0, contacts.id!!.toInt())
-//                                            ContactLinksGroup = Pair(links, groups)
-//                                            listLinkAndGroup.add(ContactLinksGroup)
-//                                        }
-//                                        saveGroupsAndLinks(listLinkAndGroup)
-//                                        listLinkAndGroup.clear()
-//                                        contactsDatabase?.contactsDao()
-//                                            ?.insertDetails(contactDetails)
-//                                    }
-//                                }
-//                                phoneContactsList.add(contacts)
-//                            } else if (fullName.second.second != "") {
-//                                val contacts = ContactDB(
-//                                    null,
-//                                    fullName.second.first,
-//                                    fullName.second.second + " " + fullName.second.third,
-//                                    "",
-//                                    randomDefaultImage(0, context),
-//                                    1,
-//                                    numberPic[4].toString(),
-//                                    0,
-//                                    "",
-//                                    hasWhatsapp,
-//                                    "",
-//                                    defaultTone,
-//                                    0,
-//                                    1,
-//                                    "",
-//                                    "",
-//                                    hasTelegram,
-//                                    hasSignal
-//                                )
-//                                phoneContactsList.add(contacts)
-//                                if (!isDuplicate(allContacts, contacts)) {
-//                                    contacts.id =
-//                                        contactsDatabase?.contactsDao()?.insert(contacts)!!.toInt()
-//                                    for (details in contactDetails) {
-//                                        details.idContact = contacts.id
-//                                    }
-//                                    contactsDatabase!!.contactsDao().insertDetails(contactDetails)
-//                                }
-//                            }
                         }
                     }
                 }
 
 
             }
-            // Restaurés depuis l'appareil Huawei - BLN-L21
-            // Favorites
-
             var groupIsDone = false
             var groupIsAlreadyInDB = false
             var groupTriple = ""
 
             contactGroup.forEachIndexed { index, triple ->
-                // Index : 1
-                // Importés le 28/06/2022
-
                 if (!groupsName.contains(triple.third!!)) {
-                    // groupsName add Importés le 28/06/2022
                     groupTriple = triple.third.toString()
                     groupsName.add(triple.third!!)
                 }
-                // contactsInGroup add 402
                 contactsInGroup.add(triple.second!!)
 
                 if (index + 1 < contactGroup.size) {
-                    // Importés le 28/06/2022 != Coworkers
                     groupIsDone = contactGroup[index + 1].third!! != triple.third!!
                 }
 

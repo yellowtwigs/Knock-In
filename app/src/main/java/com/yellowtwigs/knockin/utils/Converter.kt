@@ -17,6 +17,14 @@ object Converter {
         } else phoneNumber
     }
 
+    fun converter33To06(phoneNumber: String): String {
+        val cleanPhoneNumber = phoneNumber.replace(Regex("[^0-9]"), "")
+        if (cleanPhoneNumber.startsWith("33")) {
+            return "0" + cleanPhoneNumber.substring(2)
+        }
+        return cleanPhoneNumber
+    }
+
     fun CharSequence.unAccent(): String {
         val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
         return "\\p{InCombiningDiacriticalMarks}+".toRegex().replace(temp, "")

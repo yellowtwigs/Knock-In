@@ -40,8 +40,6 @@ class SplashScreenActivity : AppCompatActivity() {
     private val SPLASH_DISPLAY_LENGHT_ANIMATION = 1000
     private val SPLASH_DISPLAY_LENGHT_INTENT = 3000
 
-    private val viewModel: SplashScreenViewModel by viewModels()
-
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,17 +58,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_splash_screen)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-
-        val sharedPreferences: SharedPreferences = getSharedPreferences("USER_POINT_TIME", Context.MODE_PRIVATE)
-        val time = sharedPreferences.getLong("USER_POINT_TIME", 0L)
-
-//        if (!compareIfDateIsToday(time)) {
-//            val editDate = sharedPreferences.edit()
-//            editDate.putLong("USER_POINT_TIME", localDateTimeToTimestamp(LocalDateTime.now()))
-//            editDate.apply()
-//        }
-
-        viewModel.recurrentWork()
 
         //region ======================================== Animation =========================================
 
@@ -129,15 +116,5 @@ class SplashScreenActivity : AppCompatActivity() {
         }, SPLASH_DISPLAY_LENGHT_INTENT.toLong())
 
         //endregion
-    }
-
-    private fun localDateTimeToTimestamp(localDateTime: LocalDateTime): Long {
-        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli()
-    }
-
-    private fun compareIfDateIsToday(timestamp: Long): Boolean {
-        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
-        val currentDate = LocalDateTime.now()
-        return date.dayOfMonth == currentDate.dayOfMonth && date.year == currentDate.year && date.month == currentDate.month
     }
 }

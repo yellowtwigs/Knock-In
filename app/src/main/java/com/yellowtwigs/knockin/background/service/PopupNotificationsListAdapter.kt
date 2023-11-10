@@ -61,7 +61,7 @@ class PopupNotificationsListAdapter(
     }
 
     fun deleteItem(position: Int) {
-        NotificationsListenerService.deleteItem(position)
+        NotificationsListenerService.deleteItem(getItem(position))
         notifyItemRemoved(position)
 
         if (NotificationsListenerService.popupNotificationViewStates.size == 0) {

@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.ui.add_edit_contact.edit
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -172,7 +173,7 @@ class EditContactActivity : AppCompatActivity() {
         actionOnClickListener()
     }
 
-    //region =========================================== SETUP UI ===========================================
+    //region =============================================================== SETUP UI ===============================================================
 
     private fun bindingAllDataFromUserId(id: Int) {
         editContactViewModel.getSingleContactViewStateById(id).observe(this) { contact ->
@@ -292,6 +293,7 @@ class EditContactActivity : AppCompatActivity() {
                 binding.vipSettingsIcon.visibility = View.GONE
                 binding.vipSettingsText.visibility = View.GONE
             }
+
             1 -> {
                 binding.priorityExplain.text = getString(R.string.priority_0_subtitle)
                 binding.contactImage.setBorderColor(
@@ -302,6 +304,7 @@ class EditContactActivity : AppCompatActivity() {
                 binding.vipSettingsIcon.visibility = View.GONE
                 binding.vipSettingsText.visibility = View.GONE
             }
+
             2 -> {
                 binding.priorityExplain.text = getString(R.string.priority_2_subtitle)
                 binding.contactImage.setBorderColor(
@@ -338,7 +341,7 @@ class EditContactActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ======================================== ACTION LISTENER =======================================
+    //region ============================================================ ACTION LISTENER ===========================================================
 
     private fun actionOnClickListener() {
         binding.apply {
@@ -473,7 +476,7 @@ class EditContactActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ============================================ UPDATE ============================================
+    //region ================================================================ UPDATE ================================================================
 
     private suspend fun updateUser() {
         val fullName = if (isStringTotallyEmpty(binding.firstNameInput.editText?.text.toString())) {
@@ -487,6 +490,15 @@ class EditContactActivity : AppCompatActivity() {
         }
 
         val listOfPhoneNumbers = arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}")
+
+        currentContact.androidId?.toString()?.let {
+
+            if (binding.prioritySpinner.selectedItemPosition == 2) {
+                setSendToVoicemailFlag(it, contentResolver, 0)
+            } else {
+                setSendToVoicemailFlag(it, contentResolver, 1)
+            }
+        }
 
         val contact = ContactDB(
             currentContact.id,
@@ -512,6 +524,16 @@ class EditContactActivity : AppCompatActivity() {
         )
 
         editContactViewModel.updateContact(contact)
+    }
+
+    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver, isVoiceMail: Int) {
+        val contentValues = ContentValues()
+        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
+
+        val where = ContactsContract.Contacts._ID + " = ?"
+        val whereArgs = arrayOf(contactId)
+
+        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
     }
 
     private fun isStringTotallyEmpty(value: String): Boolean {
@@ -576,7 +598,7 @@ class EditContactActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ============================================ UTILS =============================================
+    //region ================================================================ UTILS =================================================================
 
     private fun goToContactsOrGroups() {
         if (fromGroups) {
@@ -672,7 +694,8 @@ class EditContactActivity : AppCompatActivity() {
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(
-            Intent.createChooser(intent, this@EditContactActivity.getString(R.string.add_new_contact_intent_title)), REQUEST_CODE_GALLERY
+            Intent.createChooser(intent, this@EditContactActivity.getString(R.string.add_new_contact_intent_title)),
+            REQUEST_CODE_GALLERY
         )
     }
 

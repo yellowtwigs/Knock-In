@@ -25,7 +25,6 @@ import javax.inject.Inject
 
 class PointCalculatorReceiver @Inject constructor(
     private val applicationContext: Context,
-    private val pointCalculationUseCase: PointCalculationUseCase,
     private val notificationsRepository: NotificationsRepository,
     private val getNumberOfContactsUseCase: GetNumberOfContactsUseCase
 ) : BroadcastReceiver() {
@@ -95,37 +94,10 @@ class PointCalculatorReceiver @Inject constructor(
                     applicationContext.getString(R.string.yellow_advice)
                 }
 
-                pointCalculationUseCase.setStatisticsPoints(points)
-                Log.i("GetNotification", "Passe par là : points : $points")
-                buildNotificationWorker(adviceMessage, pointCalculationUseCase.getStatisticsPoints())
             } catch (e: Exception) {
                 Log.i("GetNotification", "Exception : $e")
             }
         }
-    }
-
-    private fun buildNotificationWorker(adviceMessage: String, points: Int) {
-        val notificationManager = NotificationManagerCompat.from(applicationContext)
-        val CHANNEL_ID = "CHANNEL_ID"
-        notificationManager.createNotificationChannel(
-            NotificationChannel(
-                CHANNEL_ID,
-                applicationContext.getString(R.string.app_name),
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-        )
-
-//        val intent: Intent = DailyStatisticsActivity.navigate(context)
-//        val pendingIntent: PendingIntent? =
-//            TaskStackBuilder.create(context).addNextIntentWithParentStack(intent)
-//                .getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
-//        notificationManager.notify(
-//            1, NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.drawable.ic_knockin_logo)
-//                .setContentTitle(adviceMessage)
-//                .setContentText("Today with the way you set your contacts, you receive : $points points")
-//                .setStyle(NotificationCompat.BigTextStyle()).setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                .setContentIntent(pendingIntent).setAutoCancel(true).build()
-//        )
     }
 
     private fun addNotificationInListDaily(notifications: ArrayList<NotificationsListViewState>, notification: NotificationDB) {

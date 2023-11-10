@@ -439,7 +439,7 @@
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Ulaşılan VIP kişi sayısı</string>
     <string name="in_app_popup_nb_vip_max_message">Freemium sürümünde 5 VIP kişiyi aşamazsınız, mağazaya gitmek ister misiniz?</string>
-    <string name="in_app_popup_tone_available_title">Mağazadan temin edilebilen zil sesleri paketleri</string>
+    <string name="in_app_popup_tone_available_title">Kişiselleştirme temin edilebilen zil sesleri paketleri</string>
     <string name="in_app_popup_tone_available_message">Mağazaya gitmek ister misiniz?</string>
     <string name="in_app_purchase_made_message">Satın alma işlemi yapıldı</string>
     <string name="in_app_load_products">Ürünleri yükle</string>
@@ -540,7 +540,13 @@
     <string name="reward_products">Hangi ürünleri almak istiyorsunuz?</string>
     <string name="get_unlimited_contacts_discount">Sınırsız Kişi İndirimi Alın</string>
     <string name="messaging_apps_support_discount">Mesajlaşma Uygulamaları Desteği İndirimi Alın</string>
-    <string name="get_relax_ringtones_discount">Rahatlatıcı Zil Sesleri İndirimi Alın</string>
-    <string name="get_jazzy_ringtones_discount">Jazzy Zil Sesleri İndirimi Alın</string>
-    <string name="get_funky_ringtones_discount">Funky Zil Sesleri İndirimi Alın</string>
+    <string name="get_relax_ringtones_discount">Rahatlatıcı Zil ambalaj İndirimi Alın</string>
+    <string name="get_jazzy_ringtones_discount">Jazzy Zil ambalaj İndirimi Alın</string>
+    <string name="get_funky_ringtones_discount">Funky Zil ambalaj İndirimi Alın</string>
+    <string name="your_points">Puanlarınız</string>
+    <string name="how_i_get_rewarded">Nasıl ödüllendiriliyorum</string>
+    <string name="losing_message">Puan biriktirmek için Knock In\'i kullanmaya devam edin</string>
+    <string name="pts_title">%1$d puan kazandınız!</string>
+    <string name="pts_message">VIP özelleştirme seçenekleri satın alırken %1$s indirim kazanırsınız</string>
+    <string name="go_the_redeem_page">Git ve Bozdurma Sayfasına Git</string>
 </resources>

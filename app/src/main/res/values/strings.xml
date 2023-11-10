@@ -453,7 +453,7 @@
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Number of VIP contacts reached</string>
     <string name="in_app_popup_nb_vip_max_message">You cannot exceed 5 VIP contacts in the Freemium version, do you want to go to the shop? </string>
-    <string name="in_app_popup_tone_available_title">Ringtones packs available from the shop</string>
+    <string name="in_app_popup_tone_available_title">Personalization packs available from the shop</string>
     <string name="in_app_popup_personalization_available_title" translatable="false">Personalization packs available from the shop</string>
     <string name="in_app_popup_tone_available_message">Would you like to go to the shop? </string>
     <string name="in_app_purchase_made_message">Purchase made</string>
@@ -512,7 +512,7 @@
     <string name="messaging_apps_arrays_prompt" translatable="false">All</string>
     <string name="handle_one_phone_number_msg"><![CDATA[We import your contact phone number labelled mobile from your address book.\n Knock In handles only one mobile number per contact.]]></string>
     <string name="strong_red_advice"><![CDATA[Revisit your VIP approach.\n It takes 23’ in average to refocus after an interrupt]]></string>
-    <string name="orange_advice">You can optimize significantly you time by using silent mode with non VIP contacts</string>
+    <string name="orange_advice">You can optimize significantly your time by using silent mode with non VIP contacts</string>
     <string name="yellow_advice"><![CDATA[You may miss important messages from several contacts.\n We recommend adding one or more VIPs]]></string>
     <string name="light_green_advice"><![CDATA[You may have more VIPs to configure.\n We recommend buying a VIP package]]></string>
     <string name="strong_green_advice"><![CDATA[Great job, you definitely optimize your time!\n To do even better, you may want to personalize your VIPs]]></string>
@@ -560,7 +560,18 @@
     <string name="reward_products">Which products do you want to get ?</string>
     <string name="get_unlimited_contacts_discount">Get Unlimited Contacts Discount</string>
     <string name="messaging_apps_support_discount">Get Messaging Apps Support Discount</string>
-    <string name="get_relax_ringtones_discount">Get Relax Ringtones Discount</string>
-    <string name="get_jazzy_ringtones_discount">Get Jazzy Ringtones Discount</string>
-    <string name="get_funky_ringtones_discount">Get Funky Ringtones Discount</string>
+    <string name="get_relax_ringtones_discount">Get Relax Pack Discount</string>
+    <string name="get_jazzy_ringtones_discount">Get Jazzy Pack Discount</string>
+    <string name="get_funky_ringtones_discount">Get Funky Pack Discount</string>
+    <string name="your_points">Your points</string>
+    <string name="how_i_get_rewarded">How i get rewarded</string>
+    <string name="losing_message">Continue to use Knock In to accumulate points</string>
+    <string name="pts_title">You won %1$d points !</string>
+    <string name="pts_message">You get %1$s off purchasing VIP customization options</string>
+    <string name="go_the_redeem_page">Go the Redeem Page</string>
+
+    <string name="logs" translatable="false">Logs:</string>
+    <string name="global_enable_contact_phone_state_permissions" translatable="false">Please enable contact and read phone state permission</string>
+    <string name="global_message_title" translatable="false">Message</string>
+    <string name="global_call_screening_required_message" translatable="false">You have to select Call Screening app in the following dialog in order for app to work.</string>
 </resources>

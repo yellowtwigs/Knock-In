@@ -443,7 +443,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Jumlah kontak VIP tercapai</string>
     <string name="in_app_popup_nb_vip_max_message">Anda tidak dapat melebihi 5 kontak VIP di Freemium version, apakah anda ingin pergi ke toko?</string>
-    <string name="in_app_popup_tone_available_title">Bungkus nada dering tersedia di toko</string>
+    <string name="in_app_popup_tone_available_title">Personalisasi nada dering tersedia di toko</string>
     <string name="in_app_popup_tone_available_message">Apakah anda ingin pergi ke toko?</string>
     <string name="in_app_purchase_made_message">Pembelian dilakukan</string>
     <string name="in_app_load_products">Isi produk</string>
@@ -547,4 +547,10 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="get_relax_ringtones_discount">Dapatkan Diskon Nada Dering Santai</string>
     <string name="get_jazzy_ringtones_discount">Dapatkan Diskon Nada Dering Jazzy</string>
     <string name="get_funky_ringtones_discount">Dapatkan Diskon Nada Dering Funky</string>
+    <string name="your_points">Poinmu</string>
+    <string name="how_i_get_rewarded">Bagaimana saya mendapatkan imbalan</string>
+    <string name="losing_message">Terus gunakan Knock In untuk mengumpulkan poin</string>
+    <string name="pts_title">Anda memenangkan %1$d poin!</string>
+    <string name="pts_message">Anda mendapatkan diskon %1$s saat membeli opsi kustomisasi VIP</string>
+    <string name="go_the_redeem_page">Pergi ke Halaman Penukaran</string>
 </resources>

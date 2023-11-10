@@ -38,7 +38,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
     private var listOfItemSelected = arrayListOf<Int>()
     private var listOfContactsSelected = arrayListOf<FirstVipSelectionViewState>()
-    private var listOfPairSelected = arrayListOf<Pair<Int, Int>>()
+    private var listOfTripleSelected = arrayListOf<Triple<Int, Int?, Int>>()
 
     private val viewModel: FirstVipSelectionViewModel by viewModels()
 
@@ -141,16 +141,14 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                 viewModel.addItemToList(id)
 
                 listOfContactsSelected.add(contact)
-                listOfPairSelected.add(Pair(id, 2))
-
-
+                listOfTripleSelected.add(Triple(id, contact.androidId, 2))
             } else {
                 if (listOfItemSelected.distinct().contains(id)) {
                     viewModel.addItemToList(id)
 
                     listOfContactsSelected.remove(contact)
-                    listOfPairSelected.remove(Pair(id, 2))
-                    listOfPairSelected.add(Pair(id, 1))
+                    listOfTripleSelected.remove(Triple(id, contact.androidId, 2))
+                    listOfTripleSelected.add(Triple(id, contact.androidId, 1))
                     tooMuch = false
                 } else {
                     if (listOfItemSelected.distinct().size == 5) {
@@ -158,7 +156,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                             viewModel.addItemToList(id)
 
                             listOfContactsSelected.add(contact)
-                            listOfPairSelected.add(Pair(id, 2))
+                            listOfTripleSelected.add(Triple(id, contact.androidId, 2))
                         } else {
                             tooMuch = true
                         }
@@ -166,7 +164,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                         viewModel.addItemToList(id)
 
                         listOfContactsSelected.add(contact)
-                        listOfPairSelected.add(Pair(id, 2))
+                        listOfTripleSelected.add(Triple(id, contact.androidId, 2))
                     }
                 }
             }
@@ -289,7 +287,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     }
 
     private fun setPriorityList() {
-        viewModel.updateContact(listOfPairSelected)
+        viewModel.updateContact(listOfTripleSelected, contentResolver)
     }
 
     private fun goBackToSettings() {

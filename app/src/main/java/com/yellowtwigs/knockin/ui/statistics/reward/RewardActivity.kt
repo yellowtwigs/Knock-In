@@ -64,7 +64,7 @@ class RewardActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = application.getSharedPreferences(USER_POINT, Context.MODE_PRIVATE)
         val points = sharedPreferences.getInt(USER_POINT, 0)
         binding.losingMessage.isVisible = points <= 50
-        binding.redeemPointsLayout.isVisible = points >= 50
+        binding.redeemPointsLayout.visibility = if (points >= 50) View.VISIBLE else View.INVISIBLE
         binding.redeemPoints50.isEnabled = points >= 50 && !jazzySoundBought || !funkySoundBought || !relaxationSoundBought
         binding.redeemPoints200.isEnabled = points >= 200 && !appsSupportBought || !contactsUnlimitedBought
         binding.redeemPoints50.setOnClickListener {
@@ -72,7 +72,7 @@ class RewardActivity : AppCompatActivity() {
             editor.putInt(USER_POINT, points - 50)
             editor.apply()
 
-            Toast.makeText(this, getString(R.string.reward_points_left, points), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.reward_points_left, points - 50), Toast.LENGTH_LONG).show()
 
             binding.jazzyButton.isVisible = true
             binding.jazzyButton.isEnabled = !jazzySoundBought
@@ -88,7 +88,7 @@ class RewardActivity : AppCompatActivity() {
             editor.putInt(USER_POINT, points - 200)
             editor.apply()
 
-            Toast.makeText(this, getString(R.string.reward_points_left, points), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.reward_points_left, points - 200), Toast.LENGTH_LONG).show()
 
             binding.messagingVipButton.isVisible = true
             binding.messagingVipButton.isEnabled = !appsSupportBought

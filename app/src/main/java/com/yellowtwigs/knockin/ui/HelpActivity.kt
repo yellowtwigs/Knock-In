@@ -48,7 +48,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
     private var helpActivityContactUs: RelativeLayout? = null
     private var helpActivityTerms: RelativeLayout? = null
     private var helpActivityInfos: RelativeLayout? = null
-    private var help_activity_BubblesNotifications: RelativeLayout? = null
     private var help_activity_DrawerLayout: DrawerLayout? = null
     private var sensorManager: SensorManager? = null
 
@@ -107,7 +106,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
 
         helpActivityVideoTutorial = findViewById(R.id.help_activity_tutorial_video)
         helpActivityWebsiteTutorial = findViewById(R.id.help_activity_tutorial_website)
-        help_activity_BubblesNotifications = findViewById(R.id.help_activity_bubbles_notifications)
         helpActivityContactUs = findViewById(R.id.help_activity_contact_us_id)
         helpActivityTerms = findViewById(R.id.help_activity_terms_id)
         helpActivityInfos = findViewById(R.id.help_activity_infos_id)
@@ -206,25 +204,10 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
                 helpActivityWebView?.visibility = View.VISIBLE
                 helpActivityWebView?.loadUrl(getString(R.string.help_contact_us_link))
             }
-            if (it.id == help_activity_BubblesNotifications?.id) {
-//                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_bubbles_link))))
+            if (it.id == helpActivityContactUs?.id) {
                 helpActivityLayout?.visibility = View.GONE
                 helpActivityWebView?.visibility = View.VISIBLE
-                helpActivityWebView?.loadUrl(getString(R.string.help_bubbles_link))
-            }
-            if (it.id == helpActivityContactUs?.id) {
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.data = Uri.parse("mailto:")
-                intent.type = "text/html"
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_mail)))
-                intent.putExtra(Intent.EXTRA_SUBJECT, "")
-                intent.putExtra(Intent.EXTRA_TEXT, "")
-                startActivity(
-                    Intent.createChooser(
-                        intent,
-                        getString(R.string.help_contact_us_intent)
-                    )
-                )
+                helpActivityWebView?.loadUrl("https://yellowtwigs.com/contact/")
             }
             if (it.id == helpActivityTerms?.id) {
 //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_contact_us_eula))))
@@ -248,7 +231,6 @@ class HelpActivity : AppCompatActivity(), SensorEventListener {
         helpActivityContactUs?.setOnClickListener(onClick)
         helpActivityInfos?.setOnClickListener(onClick)
         helpActivityWebsiteTutorial?.setOnClickListener(onClick)
-        help_activity_BubblesNotifications?.setOnClickListener(onClick)
         helpActivityTerms?.setOnClickListener(onClick)
         helpActivityVideoTutorial?.setOnClickListener(onClick)
 

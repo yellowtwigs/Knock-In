@@ -544,4 +544,10 @@
     <string name="get_relax_ringtones_discount">احصل على خصم على نغمات الاسترخاء</string>
     <string name="get_jazzy_ringtones_discount">احصل على خصم على نغمات جازي</string>
     <string name="get_funky_ringtones_discount">احصل على خصم نغمات غير تقليدية</string>
+    <string name="your_points">نقاطك</string>
+    <string name="how_i_get_rewarded">كيف يمكنني الحصول على مكافأة؟</string>
+    <string name="losing_message">استمر في استخدام كنوكين لتراكم النقاط</string>
+    <string name="pts_title">لقد فزت بنقاط %1$d !</string>
+    <string name="pts_message">ستحصل على %1$s خصم عند شراء خيارات التخصيص VIP</string>
+    <string name="go_the_redeem_page">اذهب إلى صفحة الاسترداد </string>
 </resources>

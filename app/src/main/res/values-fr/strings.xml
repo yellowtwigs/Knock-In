@@ -443,7 +443,7 @@
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Nombre maximum de contacts VIP atteint</string>
     <string name="in_app_popup_nb_vip_max_message">Vous n\'avez le droit qu\'à 5 contacts VIP en version gratuite, voulez-vous accèder à la boutique ?</string>
-    <string name="in_app_popup_tone_available_title">Pack de sonnerie disponible dans la boutique</string>
+    <string name="in_app_popup_tone_available_title">Pack de personnalisation disponible dans la boutique</string>
     <string name="in_app_popup_tone_available_message">Voulez-vous accèder à la boutique ?</string>
     <string name="in_app_purchase_made_message">Achat effectué</string>
     <string name="in_app_load_products">Charger les produits de la Boutique</string>
@@ -544,7 +544,13 @@
     <string name="reward_products">Quels produits souhaitez-vous obtenir ?</string>
     <string name="get_unlimited_contacts_discount">Obtenez une remise sur les contacts illimités</string>
     <string name="messaging_apps_support_discount">Bénéficiez d\'une réduction sur l\'assistance sur les applications de messagerie</string>
-    <string name="get_relax_ringtones_discount">Obtenez une réduction sur les sonneries Relax</string>
-    <string name="get_jazzy_ringtones_discount">Obtenez une réduction sur les sonneries Jazzy</string>
-    <string name="get_funky_ringtones_discount">Obtenez une réduction sur les sonneries Funky</string>
+    <string name="get_relax_ringtones_discount">Obtenez une réduction sur le pack Relax</string>
+    <string name="get_jazzy_ringtones_discount">Obtenez une réduction sur le pack Jazzy</string>
+    <string name="get_funky_ringtones_discount">Obtenez une réduction sur le pack Funky</string>
+    <string name="your_points">Vos points</string>
+    <string name="how_i_get_rewarded">Comment suis-je récompensé</string>
+    <string name="losing_message">Continuez à utiliser Knock In pour accumuler des points</string>
+    <string name="pts_title">Vous avez gagné %1$d points !</string>
+    <string name="pts_message">Vous obtenez %1$s de réduction pour l\'achat d\'options de personnalisation VIP</string>
+    <string name="go_the_redeem_page">Page de récompense</string>
 </resources>

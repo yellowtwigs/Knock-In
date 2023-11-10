@@ -11,8 +11,8 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 33
-        versionCode 255
-        versionName "3.4.0.18"
+        versionCode 267
+        versionName "3.4.0.29"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -73,6 +73,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
     implementation 'androidx.work:work-runtime-ktx:2.8.1'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.9'
 
     // Test
     testImplementation 'junit:junit:4.13.2'
@@ -118,7 +119,6 @@ dependencies {
     // WorkManager with Dagger Hilt
     implementation("androidx.work:work-runtime-ktx:2.6.0")
     implementation "androidx.work:work-runtime:2.7.0"
-
 
     // SwipeRefreshLayout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'

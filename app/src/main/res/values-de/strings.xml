@@ -439,7 +439,7 @@
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Anzahl der erreichten VIP-Kontakte</string>
     <string name="in_app_popup_nb_vip_max_message">Sie können in der Freemium-Version nicht mehr als 5 VIP-Kontakte haben. Möchten Sie in den Shop gehen?</string>
-    <string name="in_app_popup_tone_available_title">Klingeltöne sind im Shop erhältlich</string>
+    <string name="in_app_popup_tone_available_title">Personalisierung sind im Shop erhältlich</string>
     <string name="in_app_popup_tone_available_message">Möchten Sie in den Shop gehen?</string>
     <string name="in_app_purchase_made_message">Kauf getätigt</string>
     <string name="in_app_load_products">Produkte laden</string>
@@ -540,7 +540,13 @@
     <string name="reward_products">Welche Produkte möchten Sie erhalten?</string>
     <string name="get_unlimited_contacts_discount">Erhalten Sie einen unbegrenzten Rabatt auf Kontakte</string>
     <string name="messaging_apps_support_discount">Erhalten Sie einen Rabatt für den Support von Messaging-Apps</string>
-    <string name="get_relax_ringtones_discount">Erhalten Sie einen Rabatt auf Relax-Klingeltöne</string>
-    <string name="get_jazzy_ringtones_discount">Erhalten Sie einen Rabatt auf Jazzy-Klingeltöne</string>
-    <string name="get_funky_ringtones_discount">Erhalten Sie einen Rabatt auf Funky-Klingeltöne</string>
+    <string name="get_relax_ringtones_discount">Erhalten Sie einen Rabatt auf Relax-die Packung</string>
+    <string name="get_jazzy_ringtones_discount">Erhalten Sie einen Rabatt auf Jazzy-die Packung</string>
+    <string name="get_funky_ringtones_discount">Erhalten Sie einen Rabatt auf Funky-die Packung</string>
+    <string name="your_points">Deine Punkte</string>
+    <string name="how_i_get_rewarded">Wie werde ich belohnt</string>
+    <string name="losing_message">Setzen Sie die Nutzung von Knock In fort, um Punkte zu sammeln</string>
+    <string name="pts_title">Du hast %1$d Punkte gewonnen!</string>
+    <string name="pts_message">Du erhältst %1$s Rabatt beim Kauf von VIP-Anpassungsoptionen</string>
+    <string name="go_the_redeem_page">Gehe zur Einlöseseite</string>
 </resources>

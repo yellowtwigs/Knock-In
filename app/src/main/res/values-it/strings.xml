@@ -439,7 +439,7 @@
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Numero di contatti VIP raggiunto</string>
     <string name="in_app_popup_nb_vip_max_message">Non puoi superare i 5 contatti VIP nella versione Freemium; vuoi accedere al nostro shop? </string>
-    <string name="in_app_popup_tone_available_title">Ulteriori collezioni di suonerie sono disponibile sul nostro shop</string>
+    <string name="in_app_popup_tone_available_title">Ulteriori collezioni di Personalizzazione sono disponibile sul nostro shop</string>
     <string name="in_app_popup_tone_available_message">Vuoi accedere al nostro shop? </string>
     <string name="in_app_purchase_made_message">Acquisto effettuato</string>
     <string name="in_app_load_products">Carica prodotti</string>
@@ -540,7 +540,13 @@
     <string name="reward_products">Quali prodotti vuoi ottenere?</string>
     <string name="get_unlimited_contacts_discount">Ottieni uno sconto illimitato sui contatti</string>
     <string name="messaging_apps_support_discount">Ottieni uno sconto sul supporto per le app di messaggistica</string>
-    <string name="get_relax_ringtones_discount">Ottieni uno sconto sulle suonerie Relax</string>
-    <string name="get_jazzy_ringtones_discount">Ottieni uno sconto sulle suonerie Jazzy</string>
-    <string name="get_funky_ringtones_discount">Ottieni uno sconto sulle suonerie Funky</string>
+    <string name="get_relax_ringtones_discount">Ottieni uno sconto sulle pacchetto Relax</string>
+    <string name="get_jazzy_ringtones_discount">Ottieni uno sconto sulle pacchetto Jazzy</string>
+    <string name="get_funky_ringtones_discount">Ottieni uno sconto sulle pacchetto Funky</string>
+    <string name="your_points">I tuoi punti</string>
+    <string name="how_i_get_rewarded">Come vengo ricompensato</string>
+    <string name="losing_message">Continua a utilizzare Knock In per accumulare punti</string>
+    <string name="pts_title">Hai vinto %1$d punti!</string>
+    <string name="pts_message">Ottieni uno sconto del %1$s sull\'acquisto delle opzioni di personalizzazione VIP</string>
+    <string name="go_the_redeem_page">Vai alla pagina di Riscatto</string>
 </resources>

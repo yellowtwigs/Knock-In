@@ -7,9 +7,11 @@
         android:required="false" />
     <uses-feature
         android:name="android.hardware.telephony"
-        android:required="false" />
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -22,6 +24,9 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -29,7 +34,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SET_ALARM" />
@@ -51,13 +55,15 @@
         android:roundIcon="@drawable/ic_app_image"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-<!--        <activity-->
-<!--            android:name=".ui.statistics.reward.RewardActivity"-->
-<!--            android:exported="false">-->
-<!--            <meta-data-->
-<!--                android:name="android.app.lib_name"-->
-<!--                android:value="" />-->
-<!--        </activity>-->
+        <activity
+            android:name=".ui.call.CallActivity"
+            android:exported="true">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".ui.statistics.daily_statistics.DailyStatisticsActivity"
             android:exported="false" />
@@ -71,9 +77,9 @@
             android:name=".ui.contacts.contact_selected.ContactSelectedWithAppsActivity"
             android:exported="false" />
         <activity
-            android:name="com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity"
+            android:name=".ui.add_edit_contact.edit.EditContactActivity"
             android:exported="false" />
-        <activity android:name="com.yellowtwigs.knockin.ui.add_edit_contact.vip_settings.VipSettingsActivity" />
+        <activity android:name=".ui.add_edit_contact.vip_settings.VipSettingsActivity" />
         <activity
             android:name=".ui.splash_screen.SplashScreenActivity"
             android:exported="true">
@@ -106,10 +112,10 @@
         <activity android:name=".ui.settings.ManageMyScreenActivity" />
         <activity android:name=".ui.notifications.settings.NotificationsSettingsActivity" />
         <activity
-            android:name="com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity"
+            android:name=".ui.add_edit_contact.add.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.yellowtwigs.knockin.ui.EditContactDetailsActivity"
+            android:name=".ui.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".ui.premium.PremiumActivity" />
 
@@ -126,17 +132,26 @@
             </intent-filter>
         </service>
 
+<!--        <receiver-->
+<!--            android:name=".call.CallReceiver"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.PHONE_STATE" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="remove">
-<!--            <meta-data-->
-<!--                android:name="androidx.work.impl.WorkManagerInitializer"-->
-<!--                android:value="androidx.startup"-->
-<!--                tools:node="remove" />-->
-        </provider>
 
+            <!-- <meta-data -->
+            <!-- android:name="androidx.work.impl.WorkManagerInitializer" -->
+            <!-- android:value="androidx.startup" -->
+            <!-- tools:node="remove" /> -->
+        </provider>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

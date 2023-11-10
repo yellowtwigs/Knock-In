@@ -440,7 +440,7 @@
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Достигнуто предельное количество VIP-контактов</string>
     <string name="in_app_popup_nb_vip_max_message">В бесплатной версии Freemium вам доступно только 5 VIP-контактов, вы хотите перейти в магазин?</string>
-    <string name="in_app_popup_tone_available_title">Пакеты рингтонов доступны в магазине</string>
+    <string name="in_app_popup_tone_available_title">Пакеты Персонализация доступны в магазине</string>
     <string name="in_app_popup_tone_available_message">Вы хотите перейти в магазин?</string>
     <string name="in_app_purchase_made_message">Покупка совершена</string>
     <string name="in_app_load_products">Загрузить ассортимент</string>
@@ -541,7 +541,13 @@
     <string name="reward_products">Какие продукты вы хотите получить?</string>
     <string name="get_unlimited_contacts_discount">Получите скидку на неограниченное количество контактов</string>
     <string name="messaging_apps_support_discount">Получите скидку на поддержку приложений для обмена сообщениями</string>
-    <string name="get_relax_ringtones_discount">Получите скидку на рингтоны Relax</string>
-    <string name="get_jazzy_ringtones_discount">Получите скидку на джазовые рингтоны</string>
-    <string name="get_funky_ringtones_discount">Получите скидку на прикольные рингтоны</string>
+    <string name="get_relax_ringtones_discount">Получите скидку на пакет Relax</string>
+    <string name="get_jazzy_ringtones_discount">Получите скидку на джазовые пакет</string>
+    <string name="get_funky_ringtones_discount">Получите скидку на прикольные пакет</string>
+    <string name="your_points">Ваши баллы</string>
+    <string name="how_i_get_rewarded">Как я могу получить вознаграждение</string>
+    <string name="losing_message">Продолжайте использовать Knock In, чтобы накапливать баллы</string>
+    <string name="pts_title">Вы выиграли %1$d очков!</string>
+    <string name="pts_message">Вы получаете скидку %1$s при покупке опций настройки VIP</string>
+    <string name="go_the_redeem_page">Перейти на страницу обмена</string>
 </resources>

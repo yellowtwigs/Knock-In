@@ -439,7 +439,7 @@
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Número de contatos VIP atingido</string>
     <string name="in_app_popup_nb_vip_max_message">Não pode exceder 5 contatos VIP na versão Freemium. Deseja ir à loja?</string>
-    <string name="in_app_popup_tone_available_title">Pacotes de toques disponíveis na loja</string>
+    <string name="in_app_popup_tone_available_title">Pacotes de personalização disponíveis na loja</string>
     <string name="in_app_popup_tone_available_message">Gostaria de ir à loja?</string>
     <string name="in_app_purchase_made_message">Compra efetuada</string>
     <string name="in_app_load_products">Carregar produtos</string>
@@ -543,4 +543,10 @@
     <string name="get_relax_ringtones_discount">Obtenha desconto em toques relaxantes</string>
     <string name="get_jazzy_ringtones_discount">Ganhe desconto em toques jazzísticos</string>
     <string name="get_funky_ringtones_discount">Ganhe desconto em toques funky</string>
+    <string name="your_points">I tuoi punti</string>
+    <string name="how_i_get_rewarded">Como eu sou recompensado</string>
+    <string name="losing_message">Continue usando o Knock In para acumular pontos</string>
+    <string name="pts_title">Você ganhou %1$d pontos!</string>
+    <string name="pts_message">Você recebe %1$s de desconto na compra de opções de personalização VIP</string>
+    <string name="go_the_redeem_page"> Ir para a página de Resgate</string>
 </resources>

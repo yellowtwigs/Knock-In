@@ -10,6 +10,8 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -48,6 +50,37 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var importationFinished = false
 
     private lateinit var sharedPreferences: SharedPreferences
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        Log.i("PhoneCall", "permissions : $permissions")
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true && permissions[Manifest.permission.READ_PHONE_STATE] == true
+            && permissions[Manifest.permission.CALL_PHONE] == true
+        ) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+
+            if (checkIfGoEdition(this@StartActivity)) {
+                firstLaunchValidate()
+                val edit = sharedPreferences.edit()
+                edit.putBoolean("view", true)
+                edit.apply()
+                val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
+                intent.putExtra("fromStartActivity", true)
+                startActivity(intent)
+                finish()
+            } else {
+                checkRadioButton(binding.radioButton2.id)
+                binding.viewPager.currentItem = 1
+                contactsAreImported = true
+            }
+        } else {
+        }
+    }
 
     //endregion
 
@@ -104,10 +137,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     when (currentPosition) {
                         0 -> {
                             if (!importContactPreferences.getBoolean("Import_Contact", false)) {
-                                ActivityCompat.requestPermissions(
-                                    this@StartActivity,
-                                    arrayOf(Manifest.permission.READ_CONTACTS),
-                                    REQUEST_CODE_READ_CONTACT
+                                requestPermissionLauncher.launch(
+                                    arrayOf(
+                                        Manifest.permission.WRITE_CONTACTS,
+                                        Manifest.permission.READ_CONTACTS,
+                                        Manifest.permission.READ_PHONE_STATE,
+                                        Manifest.permission.CALL_PHONE,
+                                    )
                                 )
                             }
                         }
@@ -131,24 +167,29 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     when (currentPosition) {
                         0 -> {
                             if (!importContactPreferences.getBoolean("Import_Contact", false)) {
-                                ActivityCompat.requestPermissions(
-                                    this@StartActivity,
-                                    arrayOf(Manifest.permission.READ_CONTACTS),
-                                    REQUEST_CODE_READ_CONTACT
+                                requestPermissionLauncher.launch(
+                                    arrayOf(
+                                        Manifest.permission.WRITE_CONTACTS,
+                                        Manifest.permission.READ_CONTACTS,
+                                        Manifest.permission.READ_PHONE_STATE,
+                                        Manifest.permission.CALL_PHONE,
+                                    )
                                 )
                             }
                         }
+
                         1 -> {
                             activateNotificationsClick()
                         }
+
                         2 -> {
                             openOverlaySettings()
                         }
+
                         3 -> {
                             if (checkIfGoEdition(this@StartActivity)) {
                                 firstLaunchValidate()
-                                val intent =
-                                    Intent(this@StartActivity, ContactsListActivity::class.java)
+                                val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
                                 intent.putExtra("fromStartActivity", true)
                                 startActivity(intent)
                                 finish()
@@ -196,7 +237,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     //region ========================================== Functions ==========================================
-
     private fun setSliderContainer() {
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
@@ -247,6 +287,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 next.visibility = View.GONE
                                 skip.visibility = View.GONE
                             }
+
                             1 -> {
                                 title.text = getString(R.string.start_activity_notification_title)
                                 subtitle.text = getString(R.string.start_activity_notification_subtitle)
@@ -259,6 +300,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 next.visibility = View.GONE
                                 skip.visibility = View.GONE
                             }
+
                             2 -> {
                                 title.text = getString(R.string.superposition_title)
                                 subtitle.text = getString(R.string.superposition_subtitle)
@@ -271,6 +313,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 next.visibility = View.GONE
                                 skip.visibility = View.GONE
                             }
+
                             3 -> {
                                 if (checkIfGoEdition(this@StartActivity)) {
                                     radioButton1.visibility = View.GONE
@@ -456,18 +499,23 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     contains("notifications_vip_funk_theme") -> {
                         sharedPreferencesConfiguration("Funky_Sound_Bought")
                     }
+
                     contains("notifications_vip_jazz_theme") -> {
                         sharedPreferencesConfiguration("Jazzy_Sound_Bought")
                     }
+
                     contains("notifications_vip_relaxation_theme") -> {
                         sharedPreferencesConfiguration("Relax_Sound_Bought")
                     }
+
                     contains("contacts_vip_unlimited") -> {
                         sharedPreferencesConfiguration("Contacts_Unlimited_Bought")
                     }
+
                     contains("additional_applications_support") -> {
                         sharedPreferencesConfiguration("Apps_Support_Bought")
                     }
+
                     contains("produit_fake_test_promo") -> {
                         sharedPreferencesConfiguration("Produits_Fake_Bought")
                     }
@@ -492,37 +540,18 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == REQUEST_CODE_READ_CONTACT) {
-            CoroutineScope(Dispatchers.Main).launch {
-                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
-            }
+        if (requestCode == REQUEST_CODE_WRITE_READ_CONTACT) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+            ) {
 
-            val edit = importContactPreferences.edit()
-            edit.putBoolean("Import_Contact", true)
-            edit.apply()
-
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (checkIfGoEdition(this@StartActivity)) {
-                    firstLaunchValidate()
-                    val edit = sharedPreferences.edit()
-                    edit.putBoolean("view", true)
-                    edit.apply()
-                    val intent = Intent(this@StartActivity, ContactsListActivity::class.java)
-                    intent.putExtra("fromStartActivity", true)
-                    startActivity(intent)
-                    finish()
-                } else {
-
-                    checkRadioButton(binding.radioButton2.id)
-                    binding.viewPager.currentItem = 1
-                    contactsAreImported = true
-                }
             }
         }
     }
 
     companion object {
-        const val REQUEST_CODE_READ_CONTACT = 2
+        const val REQUEST_CODE_WRITE_READ_CONTACT = 1
+        const val READ_CALL_LOG_PERMISSION_REQUEST = 2
     }
 
     override fun onBackPressed() {

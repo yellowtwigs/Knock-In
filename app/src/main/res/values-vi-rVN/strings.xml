@@ -542,4 +542,10 @@
     <string name="get_relax_ringtones_discount">Nhận giảm giá nhạc chuông thư giãn</string>
     <string name="get_jazzy_ringtones_discount">Nhận giảm giá nhạc chuông Jazzy</string>
     <string name="get_funky_ringtones_discount">Nhận giảm giá nhạc chuông sôi nổi</string>
+    <string name="your_points">Điểm của bạn</string>
+    <string name="how_i_get_rewarded">Làm thế nào để tôi nhận được phần thưởng</string>
+    <string name="losing_message">Tiếp tục sử dụng Knock In để tích lũy điểm</string>
+    <string name="pts_title">Bạn đã giành được %1$d điểm!</string>
+    <string name="pts_message">Bạn được giảm giá %1$s khi mua các tùy chọn tùy chỉnh VIP</string>
+    <string name="go_the_redeem_page">Đi đến Trang Đổi điểm</string>
 </resources>

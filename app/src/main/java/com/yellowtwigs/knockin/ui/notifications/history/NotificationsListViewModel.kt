@@ -61,21 +61,28 @@ class NotificationsListViewModel @Inject constructor(
             if (messagingNotifications.isNotEmpty()) {
                 messagingNotifications.map { notification ->
                     if (notification.platform == KNOCKIN_PACKAGE) {
-                        if (!notification.description.contains("Today with the way you set your contacts") || !notification.description.contains(
-                                "grâce à la façon dont vous paramétrez vos contacts, vous recevez"
-                            )
-                        )
+                        if (notification.contactName.contains(application.getString(R.string.orange_advice)) || notification.contactName.contains(
+                                application.getString(R.string.light_green_advice)
+                            ) || notification.contactName.contains(application.getString(R.string.yellow_advice)) || notification.contactName.contains(
+                                application.getString(R.string.strong_red_advice)
+                            ) || notification.contactName.contains(application.getString(R.string.strong_green_advice))
+                        ) {
+                            addNotificationInList(notifications, notification)
+                        } else {
                             if (compareIfDateIsToday(notification.timestamp)) {
                                 if (cpt > 1) {
                                     if (notification.timestamp > pinNotification!!.timestamp) {
                                         pinNotification = notification
                                         cpt += 1
+                                    } else {
                                     }
                                 } else {
                                     pinNotification = notification
                                     cpt += 1
                                 }
+                            } else {
                             }
+                        }
                     } else {
                         addNotificationInList(notifications, notification)
                     }
@@ -85,10 +92,14 @@ class NotificationsListViewModel @Inject constructor(
             if (systemNotifications.isNotEmpty()) {
                 systemNotifications.map { notification ->
                     if (notification.platform == KNOCKIN_PACKAGE) {
-                        if (!notification.description.contains("Today with the way you set your contacts, you receive") || !notification.description.contains(
-                                "grâce à la façon dont vous paramétrez vos contacts, vous recevez"
-                            )
+                        if (notification.contactName.contains(application.getString(R.string.orange_advice)) || notification.contactName.contains(
+                                application.getString(R.string.light_green_advice)
+                            ) || notification.contactName.contains(application.getString(R.string.yellow_advice)) || notification.contactName.contains(
+                                application.getString(R.string.strong_red_advice)
+                            ) || notification.contactName.contains(application.getString(R.string.strong_green_advice))
                         ) {
+                            addNotificationInList(notificationsForSystem, notification)
+                        } else {
                             if (compareIfDateIsToday(notification.timestamp)) {
                                 if (cpt > 1) {
                                     if (notification.timestamp > pinNotification!!.timestamp) {
@@ -151,8 +162,7 @@ class NotificationsListViewModel @Inject constructor(
                 it.contactName.uppercase().unAccent()
             }.thenByDescending { it.systemPriority })
 
-            R.id.notifications_sort_by_priority -> filteredNotifications.sortedWith(compareByDescending<NotificationsListViewState> { it.priority }
-                .thenByDescending { it.systemPriority })
+            R.id.notifications_sort_by_priority -> filteredNotifications.sortedWith(compareByDescending<NotificationsListViewState> { it.priority }.thenByDescending { it.systemPriority })
 
             else -> filteredNotifications.sortedWith(compareByDescending<NotificationsListViewState> { it.id }.thenByDescending { it.systemPriority })
         }

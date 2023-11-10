@@ -445,7 +445,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <!-- region In App -->
     <string name="in_app_popup_nb_vip_max_title">Número de contactos VIP alcanzados </string>
     <string name="in_app_popup_nb_vip_max_message">No puedes superar los 5 contactos VIP en la versión Freemium, ¿quiere ir a la tienda?</string>
-    <string name="in_app_popup_tone_available_title"> Paquetes RingTonos disponibles en la tienda </string>
+    <string name="in_app_popup_tone_available_title">Paquetes Personalización disponibles en la tienda </string>
     <string name="in_app_popup_tone_available_message">Quiere ir a la tienda? </string>
     <string name="in_app_purchase_made_message">Compra realizada</string>
     <string name="in_app_load_products">Cargar productos</string>
@@ -545,7 +545,13 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="reward_products">¿Qué productos desea obtener?</string>
     <string name="get_unlimited_contacts_discount">Obtenga descuento en contactos ilimitados</string>
     <string name="messaging_apps_support_discount">Obtenga un descuento en soporte para aplicaciones de mensajería</string>
-    <string name="get_relax_ringtones_discount">Obtenga descuento en tonos de llamada relajantes</string>
-    <string name="get_jazzy_ringtones_discount">Obtenga descuento en tonos de llamada Jazzy</string>
-    <string name="get_funky_ringtones_discount">Obtenga descuento en tonos de llamada originales</string>
+    <string name="get_relax_ringtones_discount">Obtenga descuento en embalar de llamada relajantes</string>
+    <string name="get_jazzy_ringtones_discount">Obtenga descuento en embalar de llamada Jazzy</string>
+    <string name="get_funky_ringtones_discount">Obtenga descuento en embalar de llamada originales</string>
+    <string name="your_points">Tus puntos</string>
+    <string name="how_i_get_rewarded">Cómo me recompensan</string>
+    <string name="losing_message">Continúa utilizando Knock In para acumular puntos</string>
+    <string name="pts_title">¡Ganaste %1$d puntos!</string>
+    <string name="pts_message">Obtienes %1$s de descuento en la compra de opciones de personalización VIP</string>
+    <string name="go_the_redeem_page">Ve a la página de Canje</string>
 </resources>

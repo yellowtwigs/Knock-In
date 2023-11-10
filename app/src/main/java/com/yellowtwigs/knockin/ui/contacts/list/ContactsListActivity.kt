@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -10,6 +9,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.telephony.PhoneStateListener
+import android.telephony.TelephonyManager
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -30,11 +31,13 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.background.service.NotificationsListenerService
 import com.yellowtwigs.knockin.databinding.ActivityContactsListBinding
+import com.yellowtwigs.knockin.domain.notifications.NotificationsListenerUseCases
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.add.AddNewContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
+import com.yellowtwigs.knockin.ui.call.CustomPhoneStateListener
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
@@ -46,8 +49,10 @@ import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsAc
 import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
+import com.yellowtwigs.knockin.ui.statistics.reward.RewardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
@@ -58,7 +63,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URLEncoder
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ContactsListActivity : AppCompatActivity() {
@@ -87,10 +98,64 @@ class ContactsListActivity : AppCompatActivity() {
     private lateinit var rateThisAppSharedPreferences: SharedPreferences
     private lateinit var oneWeekSharedPreferences: SharedPreferences
 
+    @Inject
+    lateinit var notificationsListenerUseCases: NotificationsListenerUseCases
+
+    private val telephonyManager: TelephonyManager by lazy {
+        getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    }
+
+    private val phoneStateListener = CustomPhoneStateListener(this)
+
+    override fun onResume() {
+        super.onResume()
+
+        phoneStateListener.injectDependencies(notificationsListenerUseCases)
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         checkTheme(this)
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences("USER_POINT_TIME", Context.MODE_PRIVATE)
+        val time = sharedPreferences.getLong("USER_POINT_TIME", 0L)
+
+        if (!compareIfDateIsToday(time) && !checkIfGoEdition(this@ContactsListActivity)) {
+            contactsListViewModel.recurrentWork()
+            val editDate = sharedPreferences.edit()
+            editDate.putLong("USER_POINT_TIME", localDateTimeToTimestamp(LocalDateTime.now()))
+            editDate.apply()
+        }
+
+        contactsListViewModel.mutableLiveDataPass50.observe(this) {
+            if (it) {
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.pts_title, 50))
+                    .setMessage(getString(R.string.pts_message, "50%"))
+                    .setPositiveButton(getString(R.string.go_the_redeem_page)) { alertDialog, _ ->
+                        startActivity(Intent(this@ContactsListActivity, RewardActivity::class.java))
+                        alertDialog.dismiss()
+                        alertDialog.cancel()
+                    }.show()
+            }
+        }
+        contactsListViewModel.mutableLiveDataPass200.observe(this) {
+            if (it) {
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.pts_title, 200))
+                    .setMessage(getString(R.string.pts_message, "50%"))
+                    .setPositiveButton(getString(R.string.go_the_redeem_page)) { alertDialog, _ ->
+                        startActivity(Intent(this@ContactsListActivity, RewardActivity::class.java))
+                        alertDialog.dismiss()
+                        alertDialog.cancel()
+                    }.show()
+            }
+        }
 
         binding = ActivityContactsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -137,12 +202,15 @@ class ContactsListActivity : AppCompatActivity() {
                             contains("DAY") -> {
                                 day = s.split(":")[1].toInt()
                             }
+
                             contains("MONTH") -> {
                                 month = s.split(":")[1].toInt()
                             }
+
                             contains("YEAR") -> {
                                 year = s.split(":")[1].toInt()
                             }
+
                             else -> {
 
                             }
@@ -175,6 +243,7 @@ class ContactsListActivity : AppCompatActivity() {
                                     return
                                 }
                             }
+
                             26 -> {
                                 if (calendar.get(Calendar.DAY_OF_MONTH) >= 2) {
                                     val editFirstTime = firstTime.edit()
@@ -185,6 +254,7 @@ class ContactsListActivity : AppCompatActivity() {
                                     return
                                 }
                             }
+
                             27 -> {
                                 if (calendar.get(Calendar.DAY_OF_MONTH) >= 3) {
                                     val editFirstTime = firstTime.edit()
@@ -195,6 +265,7 @@ class ContactsListActivity : AppCompatActivity() {
                                     return
                                 }
                             }
+
                             28 -> {
                                 if (calendar.get(Calendar.DAY_OF_MONTH) >= 4) {
                                     val editFirstTime = firstTime.edit()
@@ -205,6 +276,7 @@ class ContactsListActivity : AppCompatActivity() {
                                     return
                                 }
                             }
+
                             29 -> {
                                 if (calendar.get(Calendar.DAY_OF_MONTH) == 5) {
                                     val editFirstTime = firstTime.edit()
@@ -215,6 +287,7 @@ class ContactsListActivity : AppCompatActivity() {
                                     return
                                 }
                             }
+
                             30 -> {
                                 if (calendar.get(Calendar.DAY_OF_MONTH) == 6) {
                                     val editFirstTime = firstTime.edit()
@@ -225,6 +298,7 @@ class ContactsListActivity : AppCompatActivity() {
                                     return
                                 }
                             }
+
                             31 -> {
                                 if (calendar.get(Calendar.DAY_OF_MONTH) == 7) {
                                     val editFirstTime = firstTime.edit()
@@ -263,12 +337,15 @@ class ContactsListActivity : AppCompatActivity() {
                                 contains("DAY") -> {
                                     day = s.split(":")[1].toInt()
                                 }
+
                                 contains("MONTH") -> {
                                     month = s.split(":")[1].toInt()
                                 }
+
                                 contains("YEAR") -> {
                                     year = s.split(":")[1].toInt()
                                 }
+
                                 else -> {
 
                                 }
@@ -294,36 +371,42 @@ class ContactsListActivity : AppCompatActivity() {
                                         return
                                     }
                                 }
+
                                 26 -> {
                                     if (calendar.get(Calendar.DAY_OF_MONTH) >= 2) {
                                         rateThisAppPopup()
                                         return
                                     }
                                 }
+
                                 27 -> {
                                     if (calendar.get(Calendar.DAY_OF_MONTH) >= 3) {
                                         rateThisAppPopup()
                                         return
                                     }
                                 }
+
                                 28 -> {
                                     if (calendar.get(Calendar.DAY_OF_MONTH) >= 4) {
                                         rateThisAppPopup()
                                         return
                                     }
                                 }
+
                                 29 -> {
                                     if (calendar.get(Calendar.DAY_OF_MONTH) == 5) {
                                         rateThisAppPopup()
                                         return
                                     }
                                 }
+
                                 30 -> {
                                     if (calendar.get(Calendar.DAY_OF_MONTH) == 6) {
                                         rateThisAppPopup()
                                         return
                                     }
                                 }
+
                                 31 -> {
                                     if (calendar.get(Calendar.DAY_OF_MONTH) == 7) {
                                         rateThisAppPopup()
@@ -379,14 +462,17 @@ class ContactsListActivity : AppCompatActivity() {
                 menu.findItem(R.id.sort_by_full_name).isChecked = true
                 contactsListViewModel.setSortedBy(R.id.sort_by_full_name)
             }
+
             R.id.sort_by_priority -> {
                 menu.findItem(R.id.sort_by_priority).isChecked = true
                 contactsListViewModel.setSortedBy(R.id.sort_by_priority)
             }
+
             R.id.sort_by_favorite -> {
                 menu.findItem(R.id.sort_by_favorite).isChecked = true
                 contactsListViewModel.setSortedBy(R.id.sort_by_favorite)
             }
+
             else -> {
                 menu.findItem(R.id.sort_by_priority).isChecked = true
                 contactsListViewModel.setSortedBy(R.id.sort_by_priority)
@@ -408,6 +494,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.sort_by_priority -> {
                 val editSortBy = sortByPreferences.edit()
                 editSortBy.putInt("Sort_By_Preferences", R.id.sort_by_priority)
@@ -418,6 +505,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.sort_by_favorite -> {
                 val editSortBy = sortByPreferences.edit()
                 editSortBy.putInt("Sort_By_Preferences", R.id.sort_by_favorite)
@@ -428,6 +516,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.empty_filter -> {
                 val editFilterBy = filterByPreferences.edit()
                 editFilterBy.putInt("Filter_By_Preferences", R.id.empty_filter)
@@ -438,6 +527,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.sms_filter -> {
                 val editFilterBy = filterByPreferences.edit()
                 editFilterBy.putInt("Filter_By_Preferences", R.id.sms_filter)
@@ -448,6 +538,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.mail_filter -> {
                 val editFilterBy = filterByPreferences.edit()
                 editFilterBy.putInt("Filter_By_Preferences", R.id.mail_filter)
@@ -458,6 +549,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.whatsapp_filter -> {
                 val editFilterBy = filterByPreferences.edit()
                 editFilterBy.putInt("Filter_By_Preferences", R.id.whatsapp_filter)
@@ -468,6 +560,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.messenger_filter -> {
                 val editFilterBy = filterByPreferences.edit()
                 editFilterBy.putInt("Filter_By_Preferences", R.id.messenger_filter)
@@ -478,6 +571,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.signal_filter -> {
                 val editFilterBy = filterByPreferences.edit()
                 editFilterBy.putInt("Filter_By_Preferences", R.id.signal_filter)
@@ -488,6 +582,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             R.id.telegram_filter -> {
                 val editFilterBy = filterByPreferences.edit()
                 editFilterBy.putInt("Filter_By_Preferences", R.id.telegram_filter)
@@ -498,6 +593,7 @@ class ContactsListActivity : AppCompatActivity() {
                 item.isChecked = !item.isChecked
                 return true
             }
+
             else -> {
             }
         }
@@ -538,20 +634,25 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_notifications -> startActivity(
                         Intent(this@ContactsListActivity, NotificationsSettingsActivity::class.java)
                     )
+
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@ContactsListActivity, TeleworkingActivity::class.java)
                     )
+
                     R.id.nav_in_app -> startActivity(
                         Intent(this@ContactsListActivity, PremiumActivity::class.java)
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(this@ContactsListActivity, ManageMyScreenActivity::class.java)
                     )
+
                     R.id.nav_help -> startActivity(Intent(this@ContactsListActivity, HelpActivity::class.java))
                     R.id.nav_dashboard -> startActivity(Intent(this@ContactsListActivity, DashboardActivity::class.java))
                     R.id.nav_sync_contact -> {
                         importContacts()
                     }
+
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
                         val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
@@ -906,6 +1007,7 @@ class ContactsListActivity : AppCompatActivity() {
                     )
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.navigation_notifcations -> {
                     startActivity(
                         Intent(
@@ -914,6 +1016,7 @@ class ContactsListActivity : AppCompatActivity() {
                     )
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.navigation_cockpit -> {
                     startActivity(
                         Intent(
@@ -1028,6 +1131,23 @@ class ContactsListActivity : AppCompatActivity() {
                 alertDialog.dismiss()
                 alertDialog.cancel()
             }.show()
+    }
+
+    private fun localDateTimeToTimestamp(localDateTime: LocalDateTime): Long {
+        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli()
+    }
+
+    fun timestampToDayMonthYear(timestamp: Long): String {
+        val instant = Instant.ofEpochMilli(timestamp)
+        val zoneId = ZoneId.systemDefault() // You can change the time zone as needed
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy") // Change the format as needed
+        return instant.atZone(zoneId).format(formatter)
+    }
+
+    private fun compareIfDateIsToday(timestamp: Long): Boolean {
+        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
+        val currentDate = LocalDateTime.now()
+        return date.dayOfMonth == currentDate.dayOfMonth && date.year == currentDate.year && date.month == currentDate.month
     }
 
     companion object {

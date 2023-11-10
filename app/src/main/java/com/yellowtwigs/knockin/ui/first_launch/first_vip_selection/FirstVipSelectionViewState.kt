@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.ui.first_launch.first_vip_selection
 
 data class FirstVipSelectionViewState(
     val id: Int,
+    val androidId: Int?,
     val firstName: String,
     var lastName: String,
     val profilePicture: Int,

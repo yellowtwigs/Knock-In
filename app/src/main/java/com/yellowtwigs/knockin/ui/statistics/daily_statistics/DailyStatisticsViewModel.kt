@@ -33,7 +33,6 @@ class DailyStatisticsViewModel @Inject constructor(
             notificationsRepository.getAllNotifications().asFlow(),
             getNumberOfContactsUseCase.invoke(),
         ) { list, numberOfContacts ->
-
             val notifications = arrayListOf<NotificationsListViewState>()
             list.map { notification ->
                 addNotificationInList(notifications, notification)

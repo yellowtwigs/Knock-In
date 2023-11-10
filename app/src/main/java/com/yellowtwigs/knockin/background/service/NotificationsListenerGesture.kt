@@ -44,9 +44,11 @@ object NotificationsListenerGesture {
             popupX + deplacementX < 0 -> {
                 0.0f
             }
+
             popupX + deplacementX + popupSizeX < metrics.widthPixels -> {
                 popupX + deplacementX
             }
+
             else -> {
                 metrics.widthPixels.toFloat() - popupSizeX
             }
@@ -62,9 +64,11 @@ object NotificationsListenerGesture {
             popupY + deplacementY < 0 -> {
                 0.0f
             }
+
             popupY + deplacementY + popupSizeY < metrics.heightPixels -> {
                 popupY + deplacementY
             }
+
             else -> {
                 metrics.heightPixels.toFloat() - popupSizeY
             }
@@ -77,11 +81,11 @@ object NotificationsListenerGesture {
             .contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.text"].toString().toLowerCase()
             .contains(pregMatchString.toLowerCase()) or sbp.statusBarNotificationInfo["android.description"].toString().toLowerCase()
             .contains(pregMatchString.toLowerCase()) or (sbp.statusBarNotificationInfo["android.title"].toString() == "Chat heads active")//Passer ces messages dans des strings
-                or (sbp.statusBarNotificationInfo["android.title"].toString() == "Messenger") or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
+            or (sbp.statusBarNotificationInfo["android.title"].toString() == "Messenger") or (sbp.statusBarNotificationInfo["android.title"].toString() == "Bulles de discussion activées"))
     }
 
     fun addNotificationViewStateToList(
-        list: ArrayList<PopupNotificationViewState>, contactDB: ContactDB, sbp: StatusBarParcelable, context: Context, time: Long
+        list: MutableSet<PopupNotificationViewState>, contactDB: ContactDB, sbp: StatusBarParcelable, context: Context, time: Long
     ) {
 
         if (contactDB.isCustomSound == 1) {
