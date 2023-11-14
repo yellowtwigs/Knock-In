@@ -553,4 +553,5 @@
     <string name="filter_call">"Звонки "</string>
     <string name="incoming_voice_calls_message">Только звонки от контактов VIP будут проходить, звонки от не-VIP будут перенаправлены на голосовую почту. Вы можете изменить это решение позже. Вы настроите свои VIP-контакты позже в этой установке.</string>
     <string name="incoming_voice_calls_title">Разрешите Knock in управлять входящими голосовыми вызовами</string>
+    <string name="switch_message_disable_call">Все звонки от контактов не входящих в число VIP переадресовываются на голосовую почту</string>
 </resources>

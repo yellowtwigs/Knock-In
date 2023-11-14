@@ -266,12 +266,12 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         voiceCallAllEnabledSwitch.isChecked = voiceCallAllEnabledSwitchChecked.getBoolean(name, false)
         voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
             if (isChecked) {
-                notificationsSettingsViewModel.enabledAllPhoneCallContacts(contentResolver)
+                notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
                 val edit = voiceCallAllEnabledSwitchChecked.edit()
                 edit.putBoolean(name, true)
                 edit.apply()
             } else {
-                notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
+                notificationsSettingsViewModel.enabledAllPhoneCallContacts(contentResolver)
                 val edit = voiceCallAllEnabledSwitchChecked.edit()
                 edit.putBoolean(name, false)
                 edit.apply()

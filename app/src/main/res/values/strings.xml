@@ -574,4 +574,5 @@
     <string name="filter_call">Calls</string>
     <string name="incoming_voice_calls_message">Only calls from VIP contacts will come through, calls from non-VIP will be redirected to voice mailbox. You can change this choice later. You will configure your VIP later in this setup.</string>
     <string name="incoming_voice_calls_title">Allow Knock in to manage your incoming voice calls</string>
+    <string name="switch_message_disable_call">All calls from non-VIP contacts are redirected to voicemail</string>
 </resources>

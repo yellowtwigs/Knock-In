@@ -6,7 +6,6 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -15,6 +14,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
+import android.provider.BlockedNumberContract
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.util.Base64
@@ -46,7 +46,6 @@ import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
-import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
@@ -173,7 +172,7 @@ class EditContactActivity : AppCompatActivity() {
         actionOnClickListener()
     }
 
-    //region =============================================================== SETUP UI ===============================================================
+    //region ==================================================================== SETUP UI ====================================================================
 
     private fun bindingAllDataFromUserId(id: Int) {
         editContactViewModel.getSingleContactViewStateById(id).observe(this) { contact ->
@@ -492,11 +491,17 @@ class EditContactActivity : AppCompatActivity() {
         val listOfPhoneNumbers = arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}")
 
         currentContact.androidId?.toString()?.let {
+            when (binding.prioritySpinner.selectedItemPosition) {
+                2 -> {
+                    setSendToVoicemailFlag(it, contentResolver, 0)
+                }
 
-            if (binding.prioritySpinner.selectedItemPosition == 2) {
-                setSendToVoicemailFlag(it, contentResolver, 0)
-            } else {
-                setSendToVoicemailFlag(it, contentResolver, 1)
+                1 -> {
+                    setSendToVoicemailFlag(it, contentResolver, 1)
+                }
+                else -> {
+                    setSendToVoicemailFlag(it, contentResolver, 1)
+                }
             }
         }
 
@@ -534,6 +539,18 @@ class EditContactActivity : AppCompatActivity() {
         val whereArgs = arrayOf(contactId)
 
         resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+    }
+
+    private fun setContactToBlockedNumbers(phoneNumber: String) {
+        val values = ContentValues().apply {
+            put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, phoneNumber)
+        }
+
+        val uri: Uri? = contentResolver.insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, values)
+
+        if (uri != null) {
+            contentResolver.delete(uri, null, null)
+        }
     }
 
     private fun isStringTotallyEmpty(value: String): Boolean {

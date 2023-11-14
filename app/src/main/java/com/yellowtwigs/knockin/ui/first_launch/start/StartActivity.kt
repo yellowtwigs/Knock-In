@@ -80,6 +80,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private val requestPermissionLauncher2 = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         if (permissions[Manifest.permission.READ_PHONE_STATE] == true && permissions[Manifest.permission.CALL_PHONE] == true) {
+            val name = "switchAllContactsEnabledChecked"
+            val voiceCallAllEnabledSwitchChecked = getSharedPreferences(name, Context.MODE_PRIVATE)
+            val edit = voiceCallAllEnabledSwitchChecked.edit()
+            edit.putBoolean(name, true)
+            edit.apply()
         }
     }
 

@@ -557,4 +557,5 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="filter_call">Llamadas</string>
     <string name="incoming_voice_calls_message">Solo las llamadas de contactos VIP se recibirán; las llamadas de no VIP se redirigirán al buzón de voz. Puedes cambiar esta elección más tarde. Configurarás tus contactos VIP más adelante en esta configuración.</string>
     <string name="incoming_voice_calls_title">Permitir que Knock in gestione sus llamadas de voz entrantes</string>
+    <string name="switch_message_disable_call">Todas las llamadas de contactos no VIP se redirigen al buzón de voz</string>
 </resources>
