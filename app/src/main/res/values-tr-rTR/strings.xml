@@ -549,4 +549,7 @@
     <string name="pts_title">%1$d puan kazandınız!</string>
     <string name="pts_message">VIP özelleştirme seçenekleri satın alırken %1$s indirim kazanırsınız</string>
     <string name="go_the_redeem_page">Git ve Bozdurma Sayfasına Git</string>
+    <string name="filter_call">Aramalar</string>
+    <string name="incoming_voice_calls_message">Yalnızca VIP kişilerden gelen çağrılar kabul edilecek, VIP olmayanlardan gelen çağrılar sesli postaya yönlendirilecektir. Bu seçimi daha sonra değiştirebilirsiniz. VIP kişilerinizi daha sonra bu kurulumda yapılandırırsınız.</string>
+    <string name="incoming_voice_calls_title">Gelen sesli aramalarınızı yönetmek için Knock in\'e izin verin</string>
 </resources>

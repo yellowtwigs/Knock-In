@@ -24,7 +24,6 @@ import com.android.billingclient.api.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityStartActivityBinding
-import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
@@ -47,15 +46,11 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var importContactPreferences: SharedPreferences
 
     private var contactsAreImported = false
-    private var importationFinished = false
 
     private lateinit var sharedPreferences: SharedPreferences
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        Log.i("PhoneCall", "permissions : $permissions")
-        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true && permissions[Manifest.permission.READ_PHONE_STATE] == true
-            && permissions[Manifest.permission.CALL_PHONE] == true
-        ) {
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
             CoroutineScope(Dispatchers.Main).launch {
                 importContactsViewModel.syncAllContactsInDatabase(contentResolver)
             }
@@ -78,7 +73,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 binding.viewPager.currentItem = 1
                 contactsAreImported = true
             }
-        } else {
+
+            readPhoneStateDialog()
+        }
+    }
+
+    private val requestPermissionLauncher2 = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.READ_PHONE_STATE] == true && permissions[Manifest.permission.CALL_PHONE] == true) {
         }
     }
 
@@ -139,10 +140,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             if (!importContactPreferences.getBoolean("Import_Contact", false)) {
                                 requestPermissionLauncher.launch(
                                     arrayOf(
-                                        Manifest.permission.WRITE_CONTACTS,
-                                        Manifest.permission.READ_CONTACTS,
-                                        Manifest.permission.READ_PHONE_STATE,
-                                        Manifest.permission.CALL_PHONE,
+                                        Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS
                                     )
                                 )
                             }
@@ -171,8 +169,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                     arrayOf(
                                         Manifest.permission.WRITE_CONTACTS,
                                         Manifest.permission.READ_CONTACTS,
-                                        Manifest.permission.READ_PHONE_STATE,
-                                        Manifest.permission.CALL_PHONE,
                                     )
                                 )
                             }
@@ -446,8 +442,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region =========================================== BILLING ============================================
 
     private fun setupBillingClient() {
-        val billingClient =
-            BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
+        val billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
         connectToGooglePlayBilling(billingClient)
     }
 
@@ -476,8 +471,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("additional_applications_support")
         skuList.add("produit_fake_test_promo")
 
-        val params =
-            SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+        val params = SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
 
         billingClient.querySkuDetailsAsync(
             params.build()
@@ -541,8 +535,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_WRITE_READ_CONTACT) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_CONTACTS
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_CONTACTS
+                ) == PackageManager.PERMISSION_GRANTED
             ) {
 
             }
@@ -555,6 +554,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     override fun onBackPressed() {
+    }
+
+    private fun readPhoneStateDialog() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
+            .setTitle(getString(R.string.incoming_voice_calls_title)).setMessage(getString(R.string.incoming_voice_calls_message))
+            .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                requestPermissionLauncher2.launch(arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE))
+            }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+            }.show()
     }
 
     private fun activateNotificationsClick() {

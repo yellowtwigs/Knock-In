@@ -571,7 +571,7 @@
     <string name="go_the_redeem_page">Go the Redeem Page</string>
 
     <string name="logs" translatable="false">Logs:</string>
-    <string name="global_enable_contact_phone_state_permissions" translatable="false">Please enable contact and read phone state permission</string>
-    <string name="global_message_title" translatable="false">Message</string>
-    <string name="global_call_screening_required_message" translatable="false">You have to select Call Screening app in the following dialog in order for app to work.</string>
+    <string name="filter_call">Calls</string>
+    <string name="incoming_voice_calls_message">Only calls from VIP contacts will come through, calls from non-VIP will be redirected to voice mailbox. You can change this choice later. You will configure your VIP later in this setup.</string>
+    <string name="incoming_voice_calls_title">Allow Knock in to manage your incoming voice calls</string>
 </resources>

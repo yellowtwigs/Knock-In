@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.ui.notifications.settings
 
+import android.content.ContentResolver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
@@ -17,5 +18,13 @@ class NotificationsSettingsViewModel @Inject constructor(private val editContact
 
     fun updateContactPriority1To0() = viewModelScope.launch {
         editContactRepository.updateContactPriority1To0()
+    }
+
+    fun disabledAllPhoneCallContacts(resolver: ContentResolver) = viewModelScope.launch {
+        editContactRepository.disabledAllPhoneCallContacts(resolver)
+    }
+
+    fun enabledAllPhoneCallContacts(resolver: ContentResolver) = viewModelScope.launch {
+        editContactRepository.enabledAllPhoneCallContacts(resolver)
     }
 }

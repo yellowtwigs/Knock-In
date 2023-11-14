@@ -549,4 +549,7 @@
     <string name="pts_title">Du hast %1$d Punkte gewonnen!</string>
     <string name="pts_message">Du erhältst %1$s Rabatt beim Kauf von VIP-Anpassungsoptionen</string>
     <string name="go_the_redeem_page">Gehe zur Einlöseseite</string>
+    <string name="filter_call">Anrufe</string>
+    <string name="incoming_voice_calls_message">Nur Anrufe von VIP-Kontakten werden durchgestellt, Anrufe von Nicht-VIP werden zur Sprachmailbox umgeleitet. Sie können diese Auswahl später ändern. Sie werden Ihre VIP-Kontakte später in diesem Setup konfigurieren.</string>
+    <string name="incoming_voice_calls_title">Erlaube Knock in, deine eingehenden Sprachanrufe zu verwalten</string>
 </resources>

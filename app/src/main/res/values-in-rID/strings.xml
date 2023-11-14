@@ -550,4 +550,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="pts_title">Anda memenangkan %1$d poin!</string>
     <string name="pts_message">Anda mendapatkan diskon %1$s saat membeli opsi kustomisasi VIP</string>
     <string name="go_the_redeem_page">Pergi ke toko</string>
+    <string name="filter_call">Panggilan</string>
+    <string name="incoming_voice_calls_message">Hanya panggilan dari kontak VIP yang akan diteruskan, panggilan dari non-VIP akan diarahkan ke kotak suara. Anda dapat mengubah pilihan ini nanti. Anda akan mengonfigurasi kontak VIP Anda nanti dalam pengaturan ini.</string>
+    <string name="incoming_voice_calls_title">Izinkan Knock in untuk mengelola panggilan suara masuk Anda</string>
 </resources>

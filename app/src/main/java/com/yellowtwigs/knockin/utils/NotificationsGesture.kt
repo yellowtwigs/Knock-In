@@ -42,6 +42,15 @@ object NotificationsGesture {
     const val MESSAGES_PACKAGE = "com.chating.messages.chat.fun"
     private const val MESSAGES_GO_PACKAGE = "com.messagesgo.messanger"
 
+    const val CALLS_APP_NAME = "Call"
+    const val HUAWEI_SYSTEM_MANAGER_PACKAGE = "com.huawei.systemmanager"
+    const val ANDROID_CONTACTS_PACKAGE = "com.android.contacts"
+    const val ANDROID_DIALER_PACKAGE = "com.android.dialer"
+    const val ANDROID_PHONE_PACKAGE = "com.android.phone"
+    const val SAMSUNG_CONTACTS_PACKAGE = "com.samsung.android.contacts"
+    const val HUAWEI_CONTACTS_PACKAGE = "com.huawei.contacts"
+    const val TRUECALLER_PACKAGE = "com.truecaller"
+
     const val SIGNAL_PACKAGE = "org.thoughtcrime.securesms"
     const val SIGNAL_APP_NAME = "Signal"
 
@@ -96,6 +105,14 @@ object NotificationsGesture {
             SKYPE_PACKAGE -> return "Skype"
             REDDIT_PACKAGE -> return "Reddit"
 
+            HUAWEI_SYSTEM_MANAGER_PACKAGE -> return CALLS_APP_NAME
+            ANDROID_CONTACTS_PACKAGE -> return CALLS_APP_NAME
+            ANDROID_DIALER_PACKAGE -> return CALLS_APP_NAME
+            ANDROID_PHONE_PACKAGE -> return CALLS_APP_NAME
+            SAMSUNG_CONTACTS_PACKAGE -> return CALLS_APP_NAME
+            HUAWEI_CONTACTS_PACKAGE -> return CALLS_APP_NAME
+            TRUECALLER_PACKAGE -> return CALLS_APP_NAME
+
             KNOCKIN_PACKAGE -> return KNOCKIN_NAME
             TWITTER_PACKAGE -> return TWITTER_APP_NAME
             else -> return ""
@@ -148,6 +165,19 @@ object NotificationsGesture {
         }
     }
 
+    fun isPhoneCall(packageName: String): Boolean {
+        return when (packageName) {
+            HUAWEI_SYSTEM_MANAGER_PACKAGE -> true
+            ANDROID_CONTACTS_PACKAGE -> true
+            ANDROID_DIALER_PACKAGE -> true
+            ANDROID_PHONE_PACKAGE -> true
+            SAMSUNG_CONTACTS_PACKAGE -> true
+            HUAWEI_CONTACTS_PACKAGE -> true
+            TRUECALLER_PACKAGE -> true
+            else -> false
+        }
+    }
+
     fun isSocialMedia(packageName: String): Boolean {
         return when (packageName) {
             FACEBOOK_PACKAGE -> true
@@ -168,36 +198,47 @@ object NotificationsGesture {
             FACEBOOK_PACKAGE -> {
                 goToFacebook(context)
             }
+
             MESSENGER_PACKAGE -> {
                 openMessenger(contact, context)
             }
+
             WHATSAPP_PACKAGE -> {
                 openWhatsapp(contact.replace(" ", ""), context)
             }
+
             GMAIL_PACKAGE -> {
                 openGmail(context)
             }
+
             OUTLOOK_PACKAGE -> {
                 goToOutlook(context)
             }
+
             SIGNAL_PACKAGE -> {
                 goToSignal(context)
             }
+
             LINKEDIN_PACKAGE -> {
                 goToLinkedin(context)
             }
+
             SKYPE_PACKAGE -> {
                 goToSkype(context)
             }
+
             TELEGRAM_PACKAGE -> {
                 goToTelegram(context)
             }
+
             INSTAGRAM_PACKAGE -> {
                 goToInstagram(context)
             }
+
             TWITTER_PACKAGE -> {
                 goToTwitter(context)
             }
+
             SNAPCHAT_PACKAGE -> {
                 val intent = context.packageManager.getLaunchIntentForPackage("com.snapchat.android")
                 intent?.let {
@@ -205,6 +246,7 @@ object NotificationsGesture {
                     context.startActivity(it)
                 }
             }
+
             VIBER_PACKAGE -> {
                 val intent = context.packageManager.getLaunchIntentForPackage("com.viber.voip")
                 intent?.let {
@@ -212,14 +254,17 @@ object NotificationsGesture {
                     context.startActivity(it)
                 }
             }
+
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
+
             MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(
                 context
             ) -> {
                 openSms(contact, context)
             }
+
             else -> {
                 val intent = context.packageManager.getLaunchIntentForPackage(packageName)
                 intent?.let {
@@ -235,45 +280,59 @@ object NotificationsGesture {
             FACEBOOK_PACKAGE -> {
                 goToFacebook(context)
             }
+
             MESSENGER_PACKAGE -> {
                 openMessenger("", context)
             }
+
             WHATSAPP_PACKAGE -> {
                 openWhatsapp(context)
             }
+
             GMAIL_PACKAGE -> {
                 openGmail(context)
             }
+
             OUTLOOK_PACKAGE -> {
                 goToOutlook(context)
             }
+
             SIGNAL_PACKAGE -> {
                 goToSignal(context)
             }
+
             LINKEDIN_PACKAGE -> {
                 goToLinkedin(context)
             }
+
             SKYPE_PACKAGE -> {
                 goToSkype(context)
             }
+
             TELEGRAM_PACKAGE -> {
                 goToTelegram(context)
             }
+
             INSTAGRAM_PACKAGE -> {
                 goToInstagram(context)
             }
+
             TWITTER_PACKAGE -> {
                 goToTwitter(context)
             }
+
             SNAPCHAT_PACKAGE -> {
 
             }
+
             VIBER_PACKAGE -> {
 
             }
+
             DISCORD_PACKAGE -> {
                 goToDiscord(context)
             }
+
             MESSAGE_PACKAGE, XIAOMI_MESSAGE_PACKAGE, MESSAGE_SAMSUNG_PACKAGE, MESSAGES_GO_PACKAGE, Telephony.Sms.getDefaultSmsPackage(
                 context
             ) -> {

@@ -549,4 +549,7 @@
     <string name="pts_title">Você ganhou %1$d pontos!</string>
     <string name="pts_message">Você recebe %1$s de desconto na compra de opções de personalização VIP</string>
     <string name="go_the_redeem_page"> Ir para a página de Resgate</string>
+    <string name="filter_call">Chamadas</string>
+    <string name="incoming_voice_calls_message">Apenas chamadas de contatos VIP serão atendidas, chamadas de não VIP serão redirecionadas para a caixa postal de voz. Você pode alterar essa escolha mais tarde. Você configurará seus contatos VIP posteriormente nesta configuração.</string>
+    <string name="incoming_voice_calls_title">Permita que o Knock in gerencie suas chamadas de voz recebidas</string>
 </resources>

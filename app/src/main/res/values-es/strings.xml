@@ -554,4 +554,7 @@ Podrá hacer llamadas telefónicas y enviar SMS desde la aplicación </string>
     <string name="pts_title">¡Ganaste %1$d puntos!</string>
     <string name="pts_message">Obtienes %1$s de descuento en la compra de opciones de personalización VIP</string>
     <string name="go_the_redeem_page">Ve a la página de Canje</string>
+    <string name="filter_call">Llamadas</string>
+    <string name="incoming_voice_calls_message">Solo las llamadas de contactos VIP se recibirán; las llamadas de no VIP se redirigirán al buzón de voz. Puedes cambiar esta elección más tarde. Configurarás tus contactos VIP más adelante en esta configuración.</string>
+    <string name="incoming_voice_calls_title">Permitir que Knock in gestione sus llamadas de voz entrantes</string>
 </resources>

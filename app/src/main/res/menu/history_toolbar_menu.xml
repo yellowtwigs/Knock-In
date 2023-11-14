@@ -44,6 +44,10 @@
                     android:id="@+id/filter_by_msg_apps"
                     android:title="@string/filter_by_msg_apps" />
                 <item
+                    android:id="@+id/call_filter"
+                    android:title="@string/filter_call"
+                    app:showAsAction="collapseActionView" />
+                <item
                     android:id="@+id/sms_filter"
                     android:title="@string/filter_sms"
                     app:showAsAction="collapseActionView" />

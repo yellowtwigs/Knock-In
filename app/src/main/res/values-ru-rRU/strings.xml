@@ -550,4 +550,7 @@
     <string name="pts_title">Вы выиграли %1$d очков!</string>
     <string name="pts_message">Вы получаете скидку %1$s при покупке опций настройки VIP</string>
     <string name="go_the_redeem_page">Перейти на страницу обмена</string>
+    <string name="filter_call">"Звонки "</string>
+    <string name="incoming_voice_calls_message">Только звонки от контактов VIP будут проходить, звонки от не-VIP будут перенаправлены на голосовую почту. Вы можете изменить это решение позже. Вы настроите свои VIP-контакты позже в этой установке.</string>
+    <string name="incoming_voice_calls_title">Разрешите Knock in управлять входящими голосовыми вызовами</string>
 </resources>

@@ -126,7 +126,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
         //endregion
     }
 
-    //region ================================================================ TOOLBAR ===============================================================
+    //region ==================================================================== TOOLBAR =====================================================================
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbarMenu)
@@ -148,19 +148,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
     }
-
-//    private fun setupToolbar() {
-//        setSupportActionBar(binding.toolbar)
-//        val actionbar = supportActionBar
-//        binding.toolbar.overflowIcon =
-//            AppCompatResources.getDrawable(this, R.drawable.ic_toolbar_menu)
-//        actionbar?.let {
-//            it.title = ""
-//            it.setDisplayHomeAsUpEnabled(true)
-//            it.setHomeAsUpIndicator(R.drawable.ic_open_drawer)
-//            it.setBackgroundDrawable(ColorDrawable(Color.parseColor("#ffffff")))
-//        }
-//    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -277,6 +264,13 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 notificationsListViewModel.setFilterBy(R.id.sms_filter)
             }
 
+            R.id.call_filter -> {
+                editorFilterBy.putInt("Notifications_Filter_By", R.id.call_filter)
+                editorFilterBy.apply()
+                item.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.call_filter)
+            }
+
             R.id.mail_filter -> {
                 editorFilterBy.putInt("Notifications_Filter_By", R.id.mail_filter)
                 editorFilterBy.apply()
@@ -317,7 +311,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ============================================================ DRAWER LAYOUT =============================================================
+    //region ================================================================= DRAWER LAYOUT ==================================================================
 
     private fun setupDrawerLayout() {
         binding.navView.apply {
@@ -400,7 +394,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //endregion
 
-    //region =============================================================== SETUP UI ===============================================================
+    //region ==================================================================== SETUP UI ====================================================================
 
     private fun setupBottomNavigationView() {
         binding.navigation.menu.getItem(2).isChecked = true
@@ -484,7 +478,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ========================================================= RECYCLER VIEW CLICK ==========================================================
+    //region ============================================================== RECYCLER VIEW CLICK ===============================================================
 
     fun recyclerLongClick(id: Int) {
         if (listOfIdsSelected.contains(id)) {

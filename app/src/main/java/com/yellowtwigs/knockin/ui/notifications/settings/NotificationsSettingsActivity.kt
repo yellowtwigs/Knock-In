@@ -68,6 +68,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         setupToolbar()
         setupDrawerLayout()
         setupSwitchToPriority1To0()
+        setupSwitchAllContactsEnabled()
         vipReselection()
         setupCheckBoxes()
         setupReminderAlarm()
@@ -253,6 +254,26 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                 notificationsSettingsViewModel.updateContactPriority0To1()
                 val edit = switch1To0Checked.edit()
                 edit.putBoolean("switch1To0Checked", false)
+                edit.apply()
+            }
+        }
+    }
+
+    private fun setupSwitchAllContactsEnabled() {
+        val name = "switchAllContactsEnabledChecked"
+        val voiceCallAllEnabledSwitchChecked = getSharedPreferences(name, Context.MODE_PRIVATE)
+        val voiceCallAllEnabledSwitch = findViewById<SwitchCompat>(R.id.voice_call_all_enabled_switch)
+        voiceCallAllEnabledSwitch.isChecked = voiceCallAllEnabledSwitchChecked.getBoolean(name, false)
+        voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
+            if (isChecked) {
+                notificationsSettingsViewModel.enabledAllPhoneCallContacts(contentResolver)
+                val edit = voiceCallAllEnabledSwitchChecked.edit()
+                edit.putBoolean(name, true)
+                edit.apply()
+            } else {
+                notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
+                val edit = voiceCallAllEnabledSwitchChecked.edit()
+                edit.putBoolean(name, false)
                 edit.apply()
             }
         }

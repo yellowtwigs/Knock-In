@@ -193,6 +193,7 @@ class NotificationsListViewModel @Inject constructor(
             R.id.filter_by_social_media -> notifications.filter { isSocialMedia(it.platform) }
             R.id.filter_by_msg_apps -> notifications.filter { isMessagingApp(it.platform, application) }
             R.id.sms_filter -> notifications.filter { convertPackageToString(it.platform, application) == MESSAGE_APP_NAME }
+            R.id.call_filter -> notifications.filter { convertPackageToString(it.platform, application) == NotificationsGesture.CALLS_APP_NAME }
             R.id.mail_filter -> notifications.filter {
                 convertPackageToString(
                     it.platform, application

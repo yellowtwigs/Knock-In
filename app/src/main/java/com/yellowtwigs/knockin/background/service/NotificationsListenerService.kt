@@ -44,6 +44,7 @@ import com.yellowtwigs.knockin.utils.Converter.convertTimeToMinutes
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToStartTime
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
+import com.yellowtwigs.knockin.utils.NotificationsGesture.isPhoneCall
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isSocialMedia
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -100,6 +101,10 @@ class NotificationsListenerService : NotificationListenerService() {
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
 
+            Log.i("GetNotification", "sbp.appNotifier : ${sbp.appNotifier}")
+            Log.i("GetNotification", "name : $name")
+            Log.i("GetNotification", "message : $message")
+
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
                     if (message.contains("call") || message.contains("Incoming") || message.contains(
@@ -126,6 +131,8 @@ class NotificationsListenerService : NotificationListenerService() {
                             val isSystem = if (sbp.appNotifier?.let { isMessagingApp(it, applicationContext) } == true) {
                                 0
                             } else if (sbp.appNotifier?.let { isSocialMedia(it) } == true) {
+                                0
+                            } else if (sbp.appNotifier?.let { isPhoneCall(it) } == true) {
                                 0
                             } else {
                                 1

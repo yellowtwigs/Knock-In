@@ -551,4 +551,7 @@
     <string name="pts_title">Bạn đã giành được %1$d điểm!</string>
     <string name="pts_message">Bạn được giảm giá %1$s khi mua các tùy chọn tùy chỉnh VIP</string>
     <string name="go_the_redeem_page">Đi đến Trang Đổi điểm</string>
+    <string name="filter_call">Cuộc gọi</string>
+    <string name="incoming_voice_calls_message">Chỉ có cuộc gọi từ danh bạ VIP sẽ được chấp nhận, cuộc gọi từ những người không phải VIP sẽ được chuyển hướng đến hộp thư thoại. Bạn có thể thay đổi lựa chọn này sau này. Bạn sẽ cấu hình danh bạ VIP của mình sau này trong bước thiết lập này.</string>
+    <string name="incoming_voice_calls_title">" Cho phép Knock in quản lý cuộc gọi thoại đến của bạn"</string>
 </resources>

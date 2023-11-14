@@ -549,4 +549,7 @@
     <string name="pts_title">Hai vinto %1$d punti!</string>
     <string name="pts_message">Ottieni uno sconto del %1$s sull\'acquisto delle opzioni di personalizzazione VIP</string>
     <string name="go_the_redeem_page">Vai alla pagina di Riscatto</string>
+    <string name="filter_call">Chiamate</string>
+    <string name="incoming_voice_calls_message">Solo le chiamate dai contatti VIP verranno inoltrate, le chiamate dai non-VIP verranno reindirizzate alla segreteria vocale. Puoi cambiare questa scelta in seguito. Configurerai i tuoi contatti VIP più tardi in questa configurazione.</string>
+    <string name="incoming_voice_calls_title">Consenti a Knock in di gestire le tue chiamate vocali in arrivo</string>
 </resources>
