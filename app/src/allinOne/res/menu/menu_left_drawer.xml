@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notification"
+            android:title="@string/left_drawer_notification_settings" />
+        <item
+            android:id="@+id/nav_teleworking"
+            android:icon="@drawable/ic_teleworking"
+            android:title="@string/teleworking_settings" />
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/left_drawer_statistics" />
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/left_drawer_home" />
+        <item
+            android:id="@+id/nav_manage_screen"
+            android:icon="@drawable/ic_grid"
+            android:title="@string/left_drawer_my_screen" />
+        <item
+            android:id="@+id/nav_sync_contact"
+            android:icon="@drawable/ic_import"
+            android:title="@string/left_drawer_import" />
+        <item
+            android:id="@+id/nav_invite_friend"
+            android:icon="@drawable/ic_invite_friend"
+            android:title="@string/settings_invite_friend_text" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_about"
+            android:title="@string/left_drawer_help" />
+    </group>
+</menu>

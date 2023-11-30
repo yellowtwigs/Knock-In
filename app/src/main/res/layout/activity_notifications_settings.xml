@@ -230,7 +230,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
@@ -296,5 +297,5 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer"/>
+        app:menu="@menu/menu_left_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

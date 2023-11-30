@@ -38,25 +38,17 @@ android {
         viewBinding true
     }
 
-    flavorDimensions "default"
+    flavorDimensions "version"
 
     productFlavors {
         premiumApp {
             applicationId "com.yellowtwigs.Knockin.notification"
             resValue "string", "app_name", "Knock In"
         }
-//        onlyContact {
-//            applicationId "com.yellowtwigs.Knockin.contact"
-//            resValue "string", "app_name", "Knock In Contacts"
-//        }
-//        contactAndHistory {
-//            applicationId "com.yellowtwigs.Knockin.contactAndHistory"
-//            resValue "string", "app_name", "Converser"
-//        }
-//        appComplete {
-//            applicationId "com.yellowtwigs.Knockin"
-//            resValue "string", "app_name", "Knock In"
-//        }
+        allinOne {
+            applicationId "com.yellowtwigs.Knockin.allinOne"
+            resValue "string", "app_name", "Knock In - All in One"
+        }
     }
     namespace 'com.yellowtwigs.knockin'
 }

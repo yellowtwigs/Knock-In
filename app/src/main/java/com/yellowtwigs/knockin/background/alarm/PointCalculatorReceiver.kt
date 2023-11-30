@@ -1,7 +1,5 @@
 package com.yellowtwigs.knockin.background.alarm
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -9,10 +7,8 @@ import android.icu.text.SimpleDateFormat
 import android.provider.Telephony
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.NotificationManagerCompat
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.domain.contact.get_number.GetNumberOfContactsUseCase
-import com.yellowtwigs.knockin.domain.point_calculation.PointCalculationUseCase
 import com.yellowtwigs.knockin.model.database.data.NotificationDB
 import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationParams

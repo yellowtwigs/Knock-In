@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.yellowtwigs.knockin">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -26,7 +27,8 @@
 
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-<!--    <uses-permission android:name="android.permission.CALL_BLOCKING" />-->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CALL_SCREENING_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CALL_BLOCKING" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -58,15 +60,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.call.CallActivity"
-            android:exported="true">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
-        </activity>
-        <activity
             android:name=".ui.statistics.daily_statistics.DailyStatisticsActivity"
             android:exported="false" />
         <activity
@@ -87,14 +80,12 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.statistics.reward.RewardActivity" />
         <activity android:name=".ui.first_launch.start.StartActivity" />
         <activity android:name=".ui.first_launch.first_vip_selection.FirstVipSelectionActivity" />
-        <activity android:name=".FirstLaunchActivity" />
+        <activity android:name=".ui.first_launch.FirstLaunchActivity" />
         <activity android:name=".ui.groups.manage_group.ManageGroupActivity" />
         <activity android:name=".ui.contacts.multi_channel.MultiChannelActivity" />
         <activity
@@ -105,7 +96,13 @@
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
         <activity
             android:name=".ui.contacts.list.ContactsListActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.CALL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.notifications.history.NotificationsHistoryActivity"
             android:windowSoftInputMode="stateHidden" />
@@ -119,10 +116,8 @@
         <activity
             android:name=".ui.EditContactDetailsActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".ui.premium.PremiumActivity" />
 
         <receiver android:name=".ui.notifications.sender.NotificationSender" />
-        <receiver android:name=".background.alarm.PointCalculatorReceiver" />
 
         <service
             android:name=".background.service.NotificationsListenerService"
@@ -134,21 +129,21 @@
             </intent-filter>
         </service>
 
-<!--        <receiver-->
-<!--            android:name=".call.CallReceiver"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.PHONE_STATE" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+        <receiver
+            android:name=".call.UninstallIntentReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="0">
+                <action android:name="android.intent.action.QUERY_PACKAGE_RESTART" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="remove">
-
             <!-- <meta-data -->
             <!-- android:name="androidx.work.impl.WorkManagerInitializer" -->
             <!-- android:value="androidx.startup" -->
