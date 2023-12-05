@@ -14,7 +14,6 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
-import android.provider.BlockedNumberContract
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.util.Base64
@@ -484,20 +483,7 @@ class EditContactActivity : AppCompatActivity() {
 
         val listOfPhoneNumbers = arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}")
 
-//        currentContact.androidId?.toString()?.let {
-//            when (binding.prioritySpinner.selectedItemPosition) {
-//                2 -> {
-//                    setSendToVoicemailFlag(it, contentResolver, 0)
-//                }
-//
-//                1 -> {
-//                    setSendToVoicemailFlag(it, contentResolver, 1)
-//                }
-//                else -> {
-//                    setSendToVoicemailFlag(it, contentResolver, 1)
-//                }
-//            }
-//        }
+        markContactAsFavorite(contentResolver, currentContact.androidId, isFavorite)
 
         val contact = ContactDB(
             currentContact.id,
@@ -525,26 +511,20 @@ class EditContactActivity : AppCompatActivity() {
         editContactViewModel.updateContact(contact)
     }
 
-    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver, isVoiceMail: Int) {
-        val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, isVoiceMail)
-
-        val where = ContactsContract.Contacts._ID + " = ?"
-        val whereArgs = arrayOf(contactId)
-
-        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
-    }
-
-    private fun setContactToBlockedNumbers(phoneNumber: String) {
-        val values = ContentValues().apply {
-            put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, phoneNumber)
+    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
+        val contentValues = ContentValues().apply {
+            put(ContactsContract.Contacts.STARRED, isFavorite)
         }
 
-        val uri: Uri? = contentResolver.insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, values)
+        val whereClause = "${ContactsContract.Contacts._ID} = ?"
+        val whereArgs = arrayOf(contactId.toString())
 
-        if (uri != null) {
-            contentResolver.delete(uri, null, null)
-        }
+        contentResolver.update(
+            ContactsContract.Contacts.CONTENT_URI,
+            contentValues,
+            whereClause,
+            whereArgs
+        )
     }
 
     private fun isStringTotallyEmpty(value: String): Boolean {

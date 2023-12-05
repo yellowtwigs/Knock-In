@@ -553,5 +553,5 @@
     <string name="filter_call">مكالمات</string>
     <string name="incoming_voice_calls_message">سيتم استقبال المكالمات فقط من جهات الاتصال VIP ، سيتم إعادة توجيه المكالمات من غير VIP إلى البريد الصوتي. يمكنك تغيير هذا الاختيار لاحقًا. ستقوم بتكوين قائمة جهات الاتصال VIP الخاصة بك في وقت لاحق في هذا الإعداد.</string>
     <string name="incoming_voice_calls_title">اسمح لـ Knock in بإدارة مكالماتك الصوتية الواردة</string>
-    <string name="switch_message_disable_call">" جميع المكالمات من جهات الاتصال غير VIP يتم توجيهها إلى البريد الصوتي"</string>
+    <string name="do_not_disturb_text">" جميع المكالمات من جهات الاتصال غير VIP يتم توجيهها إلى البريد الصوتي"</string>
 </resources>

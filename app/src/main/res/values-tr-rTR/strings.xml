@@ -552,5 +552,5 @@
     <string name="filter_call">Aramalar</string>
     <string name="incoming_voice_calls_message">Yalnızca VIP kişilerden gelen çağrılar kabul edilecek, VIP olmayanlardan gelen çağrılar sesli postaya yönlendirilecektir. Bu seçimi daha sonra değiştirebilirsiniz. VIP kişilerinizi daha sonra bu kurulumda yapılandırırsınız.</string>
     <string name="incoming_voice_calls_title">Gelen sesli aramalarınızı yönetmek için Knock in\'e izin verin</string>
-    <string name="switch_message_disable_call">VIP olmayan kişilerden gelen tüm aramalar sesli postaya yönlendirilir</string>
+    <string name="do_not_disturb_text">VIP olmayan kişilerden gelen tüm aramalar sesli postaya yönlendirilir</string>
 </resources>

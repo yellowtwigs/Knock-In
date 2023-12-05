@@ -556,5 +556,5 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="filter_call">Panggilan</string>
     <string name="incoming_voice_calls_message">Hanya panggilan dari kontak VIP yang akan diteruskan, panggilan dari non-VIP akan diarahkan ke kotak suara. Anda dapat mengubah pilihan ini nanti. Anda akan mengonfigurasi kontak VIP Anda nanti dalam pengaturan ini.</string>
     <string name="incoming_voice_calls_title">Izinkan Knock in untuk mengelola panggilan suara masuk Anda</string>
-    <string name="switch_message_disable_call">Semua panggilan dari kontak non-VIP dialihkan ke voicemail</string>
+    <string name="do_not_disturb_text">Semua panggilan dari kontak non-VIP dialihkan ke voicemail</string>
 </resources>

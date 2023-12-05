@@ -1,9 +1,14 @@
 package com.yellowtwigs.knockin.ui.notifications.settings
 
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.media.MediaPlayer
 import android.net.Uri
@@ -16,15 +21,18 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.*
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityNotificationsSettingsBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
-import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
+import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.notifications.sender.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
@@ -34,7 +42,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
+
 
 @AndroidEntryPoint
 class NotificationsSettingsActivity : AppCompatActivity() {
@@ -252,21 +261,39 @@ class NotificationsSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupSwitchAllContactsEnabled() {
-        val name = "switchAllContactsEnabledChecked"
+        val name = "DoNotDisturb"
         val voiceCallAllEnabledSwitchChecked = getSharedPreferences(name, Context.MODE_PRIVATE)
-        val voiceCallAllEnabledSwitch = findViewById<SwitchCompat>(R.id.voice_call_all_enabled_switch)
+        val voiceCallAllEnabledSwitch = findViewById<SwitchCompat>(R.id.do_not_disturb_switch)
+
         voiceCallAllEnabledSwitch.isChecked = voiceCallAllEnabledSwitchChecked.getBoolean(name, false)
         voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
             if (isChecked) {
-                notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
+                val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY)
+
+                val policy = NotificationManager.Policy(
+                    NotificationManager.Policy.PRIORITY_CATEGORY_CALLS,
+                    NotificationManager.Policy.PRIORITY_SENDERS_STARRED,
+                    NotificationManager.Policy.PRIORITY_SENDERS_STARRED
+                )
+                mNotificationManager.notificationPolicy = policy
+
                 val edit = voiceCallAllEnabledSwitchChecked.edit()
                 edit.putBoolean(name, true)
                 edit.apply()
             } else {
-                notificationsSettingsViewModel.enabledAllPhoneCallContacts(contentResolver)
+                val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
                 val edit = voiceCallAllEnabledSwitchChecked.edit()
                 edit.putBoolean(name, false)
                 edit.apply()
+
+                val policy = NotificationManager.Policy(
+                    NotificationManager.Policy.PRIORITY_SENDERS_ANY,
+                    NotificationManager.Policy.PRIORITY_SENDERS_ANY,
+                    NotificationManager.Policy.PRIORITY_SENDERS_ANY
+                )
+                mNotificationManager.notificationPolicy = policy
             }
         }
     }
