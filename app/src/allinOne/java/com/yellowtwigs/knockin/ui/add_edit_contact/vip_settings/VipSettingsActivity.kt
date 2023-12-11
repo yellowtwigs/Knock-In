@@ -79,7 +79,7 @@ class VipSettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         binding = ActivityVipSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -470,7 +470,6 @@ class VipSettingsActivity : AppCompatActivity() {
                 putExtra("MailId", intent.getStringExtra("MailId"))
                 putExtra("MessengerId", intent.getStringExtra("MessengerId"))
                 putExtra("Priority", intent.getIntExtra("Priority", 0))
-                putExtra("isFavorite", intent.getIntExtra("isFavorite", 0))
                 putExtra("hasChanged", intent.getBooleanExtra("hasChanged", false))
             }
             putExtra("notificationTone", notificationTone)

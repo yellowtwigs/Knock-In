@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.ContactsContract
@@ -45,7 +46,7 @@ class ImportContactsViewModel @Inject constructor(
         val contactDetails = getContactDetailsSync(contentResolver)
         val contactGroup = getContactGroupSync(contentResolver)
 
-        createListContactsSync(structuredNameSync, contactDetails.toList(), contactGroup)
+        createListContactsSync(contentResolver, structuredNameSync, contactDetails.toList(), contactGroup)
     }
 
     private fun getStructuredNameSync(resolver: ContentResolver): List<Pair<Int, Triple<String, String, String>>> {
@@ -130,16 +131,6 @@ class ImportContactsViewModel @Inject constructor(
             close()
         }
         return phoneContactsList
-    }
-
-    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver) {
-        val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 1)
-
-        val where = ContactsContract.Contacts._ID + " = ?"
-        val whereArgs = arrayOf(contactId)
-
-        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
     }
 
     private fun getContactDetailsSync(resolver: ContentResolver): List<Map<Int, Any>> {
@@ -347,6 +338,7 @@ class ImportContactsViewModel @Inject constructor(
     }
 
     private suspend fun createListContactsSync(
+        contentResolver: ContentResolver,
         phoneStructName: List<Pair<Int, Triple<String, String, String>>>?,
         contactDetails: List<Map<Int, Any>>,
         contactGroup: List<Triple<Int, String?, String?>>
@@ -434,6 +426,10 @@ class ImportContactsViewModel @Inject constructor(
                             } else {
                             }
 
+
+                            Log.i("GetIsStarred", "${fullFullName.uppercase().unAccent().replace("\\s".toRegex(), "")}")
+                            val isStarred = if (isContactStarred(contentResolver, id)) 2 else 1
+
                             createContactUseCase.invoke(
                                 ContactDB(
                                     0,
@@ -446,7 +442,7 @@ class ImportContactsViewModel @Inject constructor(
                                     listOfPhoneNumbers,
                                     listOfMails,
                                     "",
-                                    1,
+                                    isStarred,
                                     0,
                                     "",
                                     listOfApps,
@@ -461,8 +457,6 @@ class ImportContactsViewModel @Inject constructor(
                         }
                     }
                 }
-
-
             }
             var groupIsDone = false
             var groupIsAlreadyInDB = false
@@ -499,6 +493,33 @@ class ImportContactsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun isContactStarred(contentResolver: ContentResolver, contactId: Int): Boolean {
+        val projection = arrayOf(ContactsContract.Contacts.STARRED)
+        val selection = "${ContactsContract.Contacts._ID} = ?"
+        val selectionArgs = arrayOf(contactId.toString())
+
+        val cursor: Cursor? = contentResolver.query(
+            ContactsContract.Contacts.CONTENT_URI,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val columnIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.STARRED)
+                if (columnIndex >= 0) {
+                    val starred = it.getInt(columnIndex)
+                    Log.i("GetIsStarred", "$starred")
+                    return starred == 1
+                }
+            }
+        }
+
+        return false
     }
 
     private fun isStringTotallyEmpty(value: String): Boolean {

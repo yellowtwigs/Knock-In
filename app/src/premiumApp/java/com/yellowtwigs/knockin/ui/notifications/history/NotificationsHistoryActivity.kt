@@ -80,7 +80,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         binding = ActivityNotificationsHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)

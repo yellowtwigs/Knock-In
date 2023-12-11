@@ -131,8 +131,4 @@ class EditContactViewModel @Inject constructor(
     suspend fun addNewContact(contact: ContactDB) = editContactRepository.addNewContact(contact)
 
     suspend fun deleteContactById(id: Int) = editContactRepository.deleteContactById(id)
-
-    suspend fun updateFavorite(contactId: String) {
-//        updateFavoriteGroupUseCase.updateFavoriteGroup(contactId)
-    }
 }

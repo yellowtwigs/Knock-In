@@ -80,7 +80,7 @@ class VipSettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         binding = ActivityVipSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)

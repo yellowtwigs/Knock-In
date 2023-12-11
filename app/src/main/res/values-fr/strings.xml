@@ -557,4 +557,5 @@
     <string name="incoming_voice_calls_message">Seules les appels des contacts VIP seront acceptés, les appels des non-VIP seront redirigés vers la boîte vocale. Vous pouvez modifier ce choix plus tard. Vous configurerez vos contacts VIP plus tard dans cette configuration.</string>
     <string name="incoming_voice_calls_title">Autorisez Knock in à gérer vos appels vocaux entrants</string>
     <string name="do_not_disturb_text">Activer le mode : Ne pas déranger</string>
+    <string name="advice_message_title">Message de conseil</string>
 </resources>

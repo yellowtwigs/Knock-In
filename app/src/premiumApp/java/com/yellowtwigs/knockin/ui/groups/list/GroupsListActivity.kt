@@ -62,7 +62,7 @@ class GroupsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
         binding = ActivityGroupsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

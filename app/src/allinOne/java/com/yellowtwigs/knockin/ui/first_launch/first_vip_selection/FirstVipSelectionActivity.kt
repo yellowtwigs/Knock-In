@@ -48,7 +48,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         val binding = ActivityFirstVipSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -132,7 +132,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
     //endregion
 
-    //region =========================================== SETUP UI ===========================================
+    //region ================================================================= SETUP UI =================================================================
 
     private fun setupRecyclerView(binding: ActivityFirstVipSelectionBinding) {
         firstVipSelectionAdapter = FirstVipSelectionAdapter(this, listOfItemSelected) { id, contact ->

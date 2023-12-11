@@ -76,8 +76,6 @@ class EditContactActivity : AppCompatActivity() {
     private val REQUEST_CODE_GALLERY = 1
     private val REQUEST_CODE_CAMERA = 2
 
-    private var isFavorite = 0
-
     private var contactImageString = ""
     private var contactImageStringIsChanged = false
 
@@ -149,7 +147,7 @@ class EditContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        EveryActivityUtils.checkTheme(this)
+        EveryActivityUtils.checkTheme(this, packageName, contentResolver)
 
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -204,17 +202,6 @@ class EditContactActivity : AppCompatActivity() {
                     currentPhoneNumber1 = it.firstPhoneNumber
                     binding.firstPhoneNumberContent.setText(it.firstPhoneNumber)
                     binding.firstNumberFlag.text = it.firstPhoneNumberFlag
-
-                    isFavorite = it.isFavorite
-                    if (it.isFavorite == 1) {
-                        isFavorite = 1
-                        favoriteContact.visibility = View.INVISIBLE
-                        favoriteContact2.visibility = View.VISIBLE
-                    } else {
-                        isFavorite = 0
-                        favoriteContact.visibility = View.VISIBLE
-                        favoriteContact2.visibility = View.GONE
-                    }
                 }
             }
 
@@ -230,16 +217,6 @@ class EditContactActivity : AppCompatActivity() {
                     mailInput.editText?.setText(intent.getStringExtra("Mail"))
                     mailIdInput.editText?.setText(intent.getStringExtra("MailId"))
                     messengerIdInput.editText?.setText(intent.getStringExtra("MessengerId"))
-
-                    if (intent.getIntExtra("isFavorite", 0) == 1) {
-                        isFavorite = 1
-                        favoriteContact.visibility = View.INVISIBLE
-                        favoriteContact2.visibility = View.VISIBLE
-                    } else {
-                        isFavorite = 0
-                        favoriteContact.visibility = View.VISIBLE
-                        favoriteContact2.visibility = View.GONE
-                    }
                     intent.putExtra("isFavorite", intent.getBooleanExtra("isFavorite", false))
 
                     setupPriority(2)
@@ -363,28 +340,6 @@ class EditContactActivity : AppCompatActivity() {
                     }.setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
                     }.show()
             }
-            favoriteContact.setOnClickListener {
-                if (isFavorite == 1) {
-                    isFavorite = 0
-                    favoriteContact.visibility = View.VISIBLE
-                    favoriteContact2.visibility = View.GONE
-                } else {
-                    isFavorite = 1
-                    favoriteContact.visibility = View.INVISIBLE
-                    favoriteContact2.visibility = View.VISIBLE
-                }
-            }
-            favoriteContact2.setOnClickListener {
-                if (isFavorite == 1) {
-                    isFavorite = 0
-                    favoriteContact.visibility = View.VISIBLE
-                    favoriteContact2.visibility = View.GONE
-                } else {
-                    isFavorite = 1
-                    favoriteContact.visibility = View.INVISIBLE
-                    favoriteContact2.visibility = View.VISIBLE
-                }
-            }
             phoneNumberInformations.setOnClickListener {
                 MaterialAlertDialogBuilder(
                     this@EditContactActivity, R.style.AlertDialog
@@ -400,9 +355,6 @@ class EditContactActivity : AppCompatActivity() {
                     if (fromVipSettingsDataChanged) {
                         CoroutineScope(Dispatchers.IO).launch {
                             updateUser()
-                            if (isFavorite != currentContact.isFavorite) {
-                                updateFavorite()
-                            }
                         }
                         goToContactsOrGroups()
                     } else {
@@ -453,7 +405,6 @@ class EditContactActivity : AppCompatActivity() {
                         putExtra("MailId", mailIdInput.editText?.text.toString())
                         putExtra("MessengerId", messengerIdInput.editText?.text.toString())
                         putExtra("Priority", prioritySpinner.selectedItemPosition)
-                        putExtra("isFavorite", isFavorite)
                     }
                     startActivity(intentToVipSettings)
                 } else {
@@ -483,7 +434,7 @@ class EditContactActivity : AppCompatActivity() {
 
         val listOfPhoneNumbers = arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}")
 
-        markContactAsFavorite(contentResolver, currentContact.androidId, isFavorite)
+        markContactAsFavorite(contentResolver, currentContact.androidId, binding.prioritySpinner.selectedItemPosition)
 
         val contact = ContactDB(
             currentContact.id,
@@ -497,7 +448,7 @@ class EditContactActivity : AppCompatActivity() {
             arrayListOf(binding.mailInput.editText?.text.toString()),
             binding.mailIdInput.editText?.text.toString(),
             binding.prioritySpinner.selectedItemPosition,
-            isFavorite,
+            0,
             binding.messengerIdInput.editText?.text.toString(),
             currentContact.listOfMessagingApps,
             notificationTone,
@@ -511,10 +462,15 @@ class EditContactActivity : AppCompatActivity() {
         editContactViewModel.updateContact(contact)
     }
 
-    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
-        val contentValues = ContentValues().apply {
-            put(ContactsContract.Contacts.STARRED, isFavorite)
+    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isVIP: Int) {
+        val isFavorite = if (isVIP == 2) {
+            1
+        } else {
+            0
         }
+
+        val contentValues = ContentValues()
+        contentValues.put(ContactsContract.Contacts.STARRED, isFavorite)
 
         val whereClause = "${ContactsContract.Contacts._ID} = ?"
         val whereArgs = arrayOf(contactId.toString())
@@ -531,10 +487,6 @@ class EditContactActivity : AppCompatActivity() {
         return value.isEmpty() || value.isBlank() || value == ""
     }
 
-    private suspend fun updateFavorite() {
-        editContactViewModel.updateFavorite(currentContact.id.toString())
-    }
-
     private fun retrofitMaterialDialog() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
             .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
@@ -544,16 +496,10 @@ class EditContactActivity : AppCompatActivity() {
                 addNewUserToAndroidContacts()
                 CoroutineScope(Dispatchers.IO).launch {
                     updateUser()
-                    if (isFavorite != currentContact.isFavorite) {
-                        updateFavorite()
-                    }
                 }
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                 CoroutineScope(Dispatchers.IO).launch {
                     updateUser()
-                    if (isFavorite != currentContact.isFavorite) {
-                        updateFavorite()
-                    }
                 }
 
                 goToContactsOrGroups()
@@ -602,7 +548,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun checkIfADataWasChanged(): Boolean {
         binding.apply {
-            return firstNameInput.editText?.text.toString() != currentContact.firstName || lastNameInput.editText?.text.toString() != currentContact.lastName || currentPhoneNumber1 != firstPhoneNumberContent.text?.toString() || mailInput.editText?.text.toString() != currentContact.listOfMails[0] || isFavorite != currentContact.isFavorite || mailIdInput.editText?.text.toString() != currentContact.mail_name || contactImageStringIsChanged || messengerIdInput.editText?.text.toString() != currentContact.messengerId || prioritySpinner.selectedItemPosition != currentContact.priority
+            return firstNameInput.editText?.text.toString() != currentContact.firstName || lastNameInput.editText?.text.toString() != currentContact.lastName || currentPhoneNumber1 != firstPhoneNumberContent.text?.toString() || mailInput.editText?.text.toString() != currentContact.listOfMails[0] || mailIdInput.editText?.text.toString() != currentContact.mail_name || contactImageStringIsChanged || messengerIdInput.editText?.text.toString() != currentContact.messengerId || prioritySpinner.selectedItemPosition != currentContact.priority
         }
     }
 

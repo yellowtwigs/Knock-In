@@ -35,41 +35,13 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="20dp"
-            android:layout_toStartOf="@+id/favorite_contact"
             android:background="?attr/actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/favorite_contact"
+            app:layout_constraintEnd_toStartOf="@+id/validate"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_garbage" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/favorite_contact"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="20dp"
-            android:background="?attr/actionBarItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/validate"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_star_no_shine" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/favorite_contact_2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="20dp"
-            android:background="?attr/actionBarItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/validate"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_star_shine" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/validate"
@@ -519,8 +491,6 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.178"
-                app:layout_constraintStart_toEndOf="@+id/contact_vip_settings"
                 app:layout_constraintTop_toBottomOf="@+id/priority_explain"
                 app:srcCompat="@drawable/ic_circular_vip_icon"
                 tools:ignore="MissingConstraints" />

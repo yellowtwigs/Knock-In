@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -73,23 +74,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 binding.viewPager.currentItem = 1
                 contactsAreImported = true
             }
-
-//            readPhoneStateDialog()
         }
     }
-
-    private val requestPermissionLauncher2 = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        Log.i("PhoneCall", "Permission granted $permissions")
-        if (permissions[Manifest.permission.READ_PHONE_STATE] == true && permissions[Manifest.permission.CALL_PHONE] == true && permissions[Manifest.permission.READ_CALL_LOG] == true) {
-            Log.i("PhoneCall", "Permission granted")
-        }
-    }
-
-//            val name = "switchAllContactsEnabledChecked"
-//            val voiceCallAllEnabledSwitchChecked = getSharedPreferences(name, Context.MODE_PRIVATE)
-//            val edit = voiceCallAllEnabledSwitchChecked.edit()
-//            edit.putBoolean(name, true)
-//            edit.apply()
 
     //endregion
 
@@ -240,7 +226,8 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
-    //region ========================================== Functions ==========================================
+    //region =================================================================== Functions ====================================================================
+
     private fun setSliderContainer() {
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
@@ -469,9 +456,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //endregion
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_WRITE_READ_CONTACT) {
@@ -494,19 +479,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     override fun onBackPressed() {
-    }
-
-    private fun readPhoneStateDialog() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
-            .setTitle(getString(R.string.incoming_voice_calls_title)).setMessage(getString(R.string.incoming_voice_calls_message))
-            .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                requestPermissionLauncher2.launch(arrayOf(
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_CALL_LOG
-                ))
-            }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-            }.show()
     }
 
     private fun activateNotificationsClick() {

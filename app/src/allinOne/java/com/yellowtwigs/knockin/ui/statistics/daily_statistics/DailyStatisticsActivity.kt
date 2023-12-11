@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -47,7 +46,7 @@ class DailyStatisticsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
         hideKeyboard(this)
         deviceHeight = getDeviceHeight(this)
 

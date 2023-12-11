@@ -151,7 +151,7 @@ class EditContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        EveryActivityUtils.checkTheme(this)
+        EveryActivityUtils.checkTheme(this, packageName, contentResolver)
 
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)

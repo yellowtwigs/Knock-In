@@ -2,6 +2,7 @@ package com.yellowtwigs.knockin.ui.add_edit_contact.add
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -78,7 +79,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -192,28 +193,6 @@ class AddNewContactActivity : AppCompatActivity() {
             returnIcon.setOnClickListener {
                 customOnBackPressed()
             }
-            favoriteContact.setOnClickListener {
-                if (isFavorite == 1) {
-                    isFavorite = 0
-                    favoriteContact.visibility = View.VISIBLE
-                    favoriteContact2.visibility = View.GONE
-                } else {
-                    isFavorite = 1
-                    favoriteContact.visibility = View.INVISIBLE
-                    favoriteContact2.visibility = View.VISIBLE
-                }
-            }
-            favoriteContact2.setOnClickListener {
-                if (isFavorite == 1) {
-                    isFavorite = 0
-                    favoriteContact.visibility = View.VISIBLE
-                    favoriteContact2.visibility = View.GONE
-                } else {
-                    isFavorite = 1
-                    favoriteContact.visibility = View.INVISIBLE
-                    favoriteContact2.visibility = View.VISIBLE
-                }
-            }
             phoneNumberInformations.setOnClickListener {
                 MaterialAlertDialogBuilder(
                     this@AddNewContactActivity, R.style.AlertDialog
@@ -311,10 +290,6 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //region ============================================ UPDATE ============================================
 
-    private suspend fun updateFavorite() {
-        editContactViewModel.updateFavorite("${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}")
-    }
-
     private fun retrofitMaterialDialog() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
             .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
@@ -323,20 +298,43 @@ class AddNewContactActivity : AppCompatActivity() {
 
                 addNewUserToAndroidContacts()
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    editContactViewModel.addNewContact(contact!!)
-
-                    if (isFavorite != 0) {
-                        updateFavorite()
+                contact?.let {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        markContactAsFavorite(contentResolver, it.androidId, binding.prioritySpinner.selectedItemPosition)
+                        editContactViewModel.addNewContact(it)
                     }
                 }
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    editContactViewModel.addNewContact(contact!!)
+                contact?.let {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        markContactAsFavorite(contentResolver, it.androidId, binding.prioritySpinner.selectedItemPosition)
+                        editContactViewModel.addNewContact(it)
+                    }
                 }
-
                 goToContactsListActivity()
             }.show()
+    }
+
+    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isVIP: Int) {
+        val isFavorite = if (isVIP == 2) {
+            1
+        } else {
+            0
+        }
+
+        val contentValues = ContentValues().apply {
+            put(ContactsContract.Contacts.STARRED, isFavorite)
+        }
+
+        val whereClause = "${ContactsContract.Contacts._ID} = ?"
+        val whereArgs = arrayOf(contactId.toString())
+
+        contentResolver.update(
+            ContactsContract.Contacts.CONTENT_URI,
+            contentValues,
+            whereClause,
+            whereArgs
+        )
     }
 
     private fun addNewUserToAndroidContacts() {

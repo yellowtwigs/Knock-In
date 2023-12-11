@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.yellowtwigs.Knockin.allinOne",
+  "variantName": "allinOneRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 269,
+      "versionName": "3.4.0.31",
+      "outputFile": "app-allinOne-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

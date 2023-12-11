@@ -118,8 +118,6 @@ class DashboardViewModel @Inject constructor(
                 application.getString(R.string.yellow_advice)
             }
 
-            Log.i("GetAdviceMessage", "DashboardViewModel - adviceMessage : $adviceMessage")
-
             val listOfPieChartData = arrayListOf<PieChartDataViewState>()
 
             val messagingNumbersSms = notificationsAfterDistinct.filter { notification ->

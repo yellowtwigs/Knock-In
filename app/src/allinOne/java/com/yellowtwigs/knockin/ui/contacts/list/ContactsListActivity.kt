@@ -1,24 +1,18 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -53,13 +47,13 @@ import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.isNotificationServiceEnabled
 import com.yellowtwigs.knockin.utils.RandomDefaultImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Thread.MAX_PRIORITY
 import java.net.URLEncoder
 import java.time.Instant
 import java.time.LocalDateTime
@@ -100,12 +94,12 @@ class ContactsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         binding = ActivityContactsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (isNotificationServiceEnabled()) {
+        if (isNotificationServiceEnabled(packageName, contentResolver)) {
             toggleNotificationListenerService()
         }
 
@@ -131,9 +125,7 @@ class ContactsListActivity : AppCompatActivity() {
         if (firstTime.getBoolean("FirstTimeInTheApp", true)) {
             val set = oneWeekSharedPreferences.getStringSet(
                 "OneWeek", setOf(
-                    calendar.get(Calendar.YEAR).toString(),
-                    calendar.get(Calendar.MONTH).toString(),
-                    calendar.get(Calendar.DAY_OF_MONTH).toString()
+                    calendar.get(Calendar.YEAR).toString(), calendar.get(Calendar.MONTH).toString(), calendar.get(Calendar.DAY_OF_MONTH).toString()
                 )
             )
 
@@ -582,6 +574,7 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@ContactsListActivity, TeleworkingActivity::class.java)
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(this@ContactsListActivity, ManageMyScreenActivity::class.java)
                     )
@@ -972,23 +965,6 @@ class ContactsListActivity : AppCompatActivity() {
     //endregion
 
     //region ======================================== NOTIFICATIONS =========================================
-
-    private fun isNotificationServiceEnabled(): Boolean {
-        val pkgName = packageName
-        val str = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-        if (!TextUtils.isEmpty(str)) {
-            val names = str.split(":")
-            for (i in names.indices) {
-                val cn = ComponentName.unflattenFromString(names[i])
-                if (cn != null) {
-                    if (TextUtils.equals(pkgName, cn.packageName)) {
-                        return true
-                    }
-                }
-            }
-        }
-        return false
-    }
 
     private fun toggleNotificationListenerService() {
         val pm = packageManager

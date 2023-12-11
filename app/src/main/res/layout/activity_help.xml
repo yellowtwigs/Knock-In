@@ -58,7 +58,7 @@
                     android:layout_height="50dp"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="25dp"
-                    android:src="@drawable/ic_video_tutorial" />
+                    android:src="@drawable/ic_multimedia" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                     android:layout_height="50dp"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="25dp"
-                    android:src="@drawable/ic_www" />
+                    android:src="@drawable/ic_website" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,7 +157,7 @@
                     android:layout_height="50dp"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="25dp"
-                    android:src="@drawable/ic_terms_and_conditions" />
+                    android:src="@drawable/ic_contract" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -213,5 +213,5 @@
         app:headerLayout="@layout/nav_header_drawer"
         app:itemIconTint="@color/drawer_navigation_color"
         app:itemTextColor="@color/drawer_navigation_color"
-        app:menu="@menu/menu_left_drawer"/>
+        app:menu="@menu/menu_left_drawer" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -35,7 +35,7 @@ class RewardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRewardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

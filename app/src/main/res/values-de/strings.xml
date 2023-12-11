@@ -553,4 +553,5 @@
     <string name="incoming_voice_calls_message">Nur Anrufe von VIP-Kontakten werden durchgestellt, Anrufe von Nicht-VIP werden zur Sprachmailbox umgeleitet. Sie können diese Auswahl später ändern. Sie werden Ihre VIP-Kontakte später in diesem Setup konfigurieren.</string>
     <string name="incoming_voice_calls_title">Erlaube Knock in, deine eingehenden Sprachanrufe zu verwalten</string>
     <string name="do_not_disturb_text">Alle Anrufe von Nicht-VIP-Kontakten werden zur Mailbox umgeleitet</string>
+    <string name="advice_message_title">Ratschlag Nachricht</string>
 </resources>

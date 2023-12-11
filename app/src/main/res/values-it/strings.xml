@@ -553,4 +553,5 @@
     <string name="incoming_voice_calls_message">Solo le chiamate dai contatti VIP verranno inoltrate, le chiamate dai non-VIP verranno reindirizzate alla segreteria vocale. Puoi cambiare questa scelta in seguito. Configurerai i tuoi contatti VIP più tardi in questa configurazione.</string>
     <string name="incoming_voice_calls_title">Consenti a Knock in di gestire le tue chiamate vocali in arrivo</string>
     <string name="do_not_disturb_text">Tutte le chiamate da contatti non VIP vengono reindirizzate alla segreteria telefonica</string>
+    <string name="advice_message_title">Advice Message</string>
 </resources>

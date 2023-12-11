@@ -555,4 +555,5 @@
     <string name="incoming_voice_calls_message">Chỉ có cuộc gọi từ danh bạ VIP sẽ được chấp nhận, cuộc gọi từ những người không phải VIP sẽ được chuyển hướng đến hộp thư thoại. Bạn có thể thay đổi lựa chọn này sau này. Bạn sẽ cấu hình danh bạ VIP của mình sau này trong bước thiết lập này.</string>
     <string name="incoming_voice_calls_title">" Cho phép Knock in quản lý cuộc gọi thoại đến của bạn"</string>
     <string name="do_not_disturb_text">Tất cả cuộc gọi từ các liên lạc không phải VIP sẽ được chuyển hướng đến hộp thoại thoại</string>
+    <string name="advice_message_title">Advice Message</string>
 </resources>

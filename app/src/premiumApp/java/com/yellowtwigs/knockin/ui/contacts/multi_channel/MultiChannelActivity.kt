@@ -45,7 +45,7 @@ class MultiChannelActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
 
         binding = ActivityMultiChannelBinding.inflate(layoutInflater)
         setContentView(binding.root)

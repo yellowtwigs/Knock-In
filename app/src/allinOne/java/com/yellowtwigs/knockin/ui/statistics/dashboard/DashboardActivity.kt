@@ -20,14 +20,13 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityDashboardBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -215,12 +214,20 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     //endregion
 
     private fun setupDataToView() {
-        dashboardViewModel.dashboardViewStateLiveData.observe(this) {
-            setupPieChart(it.list)
-            binding.performanceIcon.setImageResource(it.icon)
-            binding.allNotificationsTitle.text = it.notificationsTitle
-            binding.notificationsUnprocessedContent.setText(it.numberOfNotificationsUnprocessed)
-            binding.notificationsVipContent.setText(it.numberOfNotificationsVip)
+        dashboardViewModel.dashboardViewStateLiveData.observe(this) { dashboardViewState ->
+            setupPieChart(dashboardViewState.list)
+            binding.performanceIcon.setImageResource(dashboardViewState.icon)
+            binding.allNotificationsTitle.text = dashboardViewState.notificationsTitle
+            binding.notificationsUnprocessedContent.setText(dashboardViewState.numberOfNotificationsUnprocessed)
+            binding.notificationsVipContent.setText(dashboardViewState.numberOfNotificationsVip)
+
+            binding.performanceIcon.setOnClickListener {
+                MaterialAlertDialogBuilder(
+                    this@DashboardActivity, R.style.AlertDialog
+                ).setTitle(getString(R.string.what_we_suggest))
+                    .setMessage(dashboardViewState.adviceMessage)
+                    .show()
+            }
         }
     }
 

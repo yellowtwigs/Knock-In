@@ -43,7 +43,7 @@ class ManageGroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        checkTheme(this)
+        checkTheme(this, packageName, contentResolver)
         setupToolbar()
 
         groupId = intent.getIntExtra("SectionId", -1)
