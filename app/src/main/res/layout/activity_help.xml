@@ -70,8 +70,7 @@
                     android:layout_toEndOf="@+id/help_activity_tutorial_video_icon"
                     android:text="@string/help_activity_tutorial_video"
                     android:textColor="?attr/textColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -102,8 +101,7 @@
                     android:layout_toEndOf="@+id/help_activity_tutorial_website_icon"
                     android:text="@string/help_activity_tutorial_website"
                     android:textColor="?attr/textColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -136,9 +134,7 @@
                     android:layout_toEndOf="@+id/help_activity_contact_us_icon"
                     android:text="@string/help_activity_contact_us"
                     android:textColor="?attr/textColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:ignore="NotSibling" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -167,8 +163,7 @@
                     android:layout_toEndOf="@+id/help_activity_terms_icon"
                     android:text="@string/help_activity_contact_terms_of_use"
                     android:textColor="?attr/textColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -197,8 +192,7 @@
                     android:layout_toEndOf="@+id/help_activity_infos_icon"
                     android:text="@string/help_activity_contact_generals_informations"
                     android:textColor="?attr/textColor"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
