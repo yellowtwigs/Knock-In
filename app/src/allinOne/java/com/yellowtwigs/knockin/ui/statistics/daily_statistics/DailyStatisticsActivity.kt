@@ -46,7 +46,7 @@ class DailyStatisticsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
         hideKeyboard(this)
         deviceHeight = getDeviceHeight(this)
 

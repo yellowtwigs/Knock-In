@@ -552,6 +552,9 @@
     <string name="filter_call">Chamadas</string>
     <string name="incoming_voice_calls_message">Apenas chamadas de contatos VIP serão atendidas, chamadas de não VIP serão redirecionadas para a caixa postal de voz. Você pode alterar essa escolha mais tarde. Você configurará seus contatos VIP posteriormente nesta configuração.</string>
     <string name="incoming_voice_calls_title">Permita que o Knock in gerencie suas chamadas de voz recebidas</string>
-    <string name="do_not_disturb_text">Todas as chamadas de contatos não VIP são redirecionadas para a caixa postal</string>
+    <string name="do_not_disturb_text">Gestão de chamadas de voz (Modo Não perturbar)</string>
     <string name="advice_message_title">Advice Message</string>
+    <string name="voicemail_dialog_title">Atenção!</string>
+    <string name="voicemail_dialog_message">Todas as chamadas dos seus contatos não VIP serão enviadas diretamente para o correio de voz. \n Se pretende desinstalar, desative este interruptor.</string>
+    <string name="switch_message_disable_call">Todas as chamadas de contatos não VIP são redirecionadas para a caixa postal</string>
 </resources>

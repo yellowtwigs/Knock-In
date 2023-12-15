@@ -14,6 +14,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
+import android.provider.BlockedNumberContract
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.util.Base64
@@ -45,6 +46,7 @@ import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
+import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,12 +71,13 @@ class EditContactActivity : AppCompatActivity() {
     private var editInGoogle = false
     private var isRetroFit = false
 
-    private var numberOfContactsVIP = 0
     private var contactsUnlimitedIsBought = false
 
     private var imageUri: Uri? = null
     private val REQUEST_CODE_GALLERY = 1
     private val REQUEST_CODE_CAMERA = 2
+
+    private var isFavorite = 0
 
     private var contactImageString = ""
     private var contactImageStringIsChanged = false
@@ -147,12 +150,10 @@ class EditContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        EveryActivityUtils.checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
 
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        numberOfContactsVIP = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE).getInt("nb_Contacts_VIP", 0)
 
         contactsUnlimitedIsBought =
             getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE).getBoolean("Contacts_Unlimited_Bought", false)
@@ -202,6 +203,17 @@ class EditContactActivity : AppCompatActivity() {
                     currentPhoneNumber1 = it.firstPhoneNumber
                     binding.firstPhoneNumberContent.setText(it.firstPhoneNumber)
                     binding.firstNumberFlag.text = it.firstPhoneNumberFlag
+
+                    isFavorite = it.isFavorite
+                    if (it.isFavorite == 1) {
+                        isFavorite = 1
+                        favoriteContact.visibility = View.INVISIBLE
+                        favoriteContact2.visibility = View.VISIBLE
+                    } else {
+                        isFavorite = 0
+                        favoriteContact.visibility = View.VISIBLE
+                        favoriteContact2.visibility = View.GONE
+                    }
                 }
             }
 
@@ -217,7 +229,16 @@ class EditContactActivity : AppCompatActivity() {
                     mailInput.editText?.setText(intent.getStringExtra("Mail"))
                     mailIdInput.editText?.setText(intent.getStringExtra("MailId"))
                     messengerIdInput.editText?.setText(intent.getStringExtra("MessengerId"))
-                    intent.putExtra("isFavorite", intent.getBooleanExtra("isFavorite", false))
+
+                    if (intent.getIntExtra("isFavorite", 0) == 1) {
+                        isFavorite = 1
+                        favoriteContact.visibility = View.INVISIBLE
+                        favoriteContact2.visibility = View.VISIBLE
+                    } else {
+                        isFavorite = 0
+                        favoriteContact.visibility = View.VISIBLE
+                        favoriteContact2.visibility = View.GONE
+                    }
 
                     setupPriority(2)
                 }
@@ -287,23 +308,8 @@ class EditContactActivity : AppCompatActivity() {
                     )
                 )
 
-                binding.vipSettingsIcon.isVisible = numberOfContactsVIP <= 5
-                binding.vipSettingsText.isVisible = numberOfContactsVIP <= 5
-
-                if (numberOfContactsVIP > 4 && currentContact.priority != binding.prioritySpinner.selectedItemPosition && !contactsUnlimitedIsBought) {
-                    MaterialAlertDialogBuilder(
-                        this@EditContactActivity, R.style.AlertDialog
-                    ).setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
-                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
-                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                            finish()
-                        }.setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                        }.show()
-                }
-                if (numberOfContactsVIP > 5 && contactsUnlimitedIsBought) {
-                    binding.vipSettingsIcon.isVisible = true
-                    binding.vipSettingsText.isVisible = true
-                }
+                binding.vipSettingsIcon.isVisible = true
+                binding.vipSettingsText.isVisible = true
             }
         }
     }
@@ -325,13 +331,6 @@ class EditContactActivity : AppCompatActivity() {
                     .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
                         CoroutineScope(Dispatchers.IO).launch {
                             withContext(Dispatchers.Main) {
-                                if (currentContact.priority == 2) {
-                                    val edit = getSharedPreferences(
-                                        "nb_Contacts_VIP", Context.MODE_PRIVATE
-                                    ).edit()
-                                    edit.putInt("nb_Contacts_VIP", numberOfContactsVIP - 1)
-                                    edit.apply()
-                                }
                                 goToContactsOrGroups()
                             }
 
@@ -339,6 +338,28 @@ class EditContactActivity : AppCompatActivity() {
                         }
                     }.setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
                     }.show()
+            }
+            favoriteContact.setOnClickListener {
+                if (isFavorite == 1) {
+                    isFavorite = 0
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
+                } else {
+                    isFavorite = 1
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
+                }
+            }
+            favoriteContact2.setOnClickListener {
+                if (isFavorite == 1) {
+                    isFavorite = 0
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
+                } else {
+                    isFavorite = 1
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
+                }
             }
             phoneNumberInformations.setOnClickListener {
                 MaterialAlertDialogBuilder(
@@ -355,6 +376,9 @@ class EditContactActivity : AppCompatActivity() {
                     if (fromVipSettingsDataChanged) {
                         CoroutineScope(Dispatchers.IO).launch {
                             updateUser()
+                            if (isFavorite != currentContact.isFavorite) {
+                                updateFavorite()
+                            }
                         }
                         goToContactsOrGroups()
                     } else {
@@ -405,6 +429,7 @@ class EditContactActivity : AppCompatActivity() {
                         putExtra("MailId", mailIdInput.editText?.text.toString())
                         putExtra("MessengerId", messengerIdInput.editText?.text.toString())
                         putExtra("Priority", prioritySpinner.selectedItemPosition)
+                        putExtra("isFavorite", isFavorite)
                     }
                     startActivity(intentToVipSettings)
                 } else {
@@ -434,7 +459,21 @@ class EditContactActivity : AppCompatActivity() {
 
         val listOfPhoneNumbers = arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}")
 
-        markContactAsFavorite(contentResolver, currentContact.androidId, binding.prioritySpinner.selectedItemPosition)
+        currentContact.androidId?.toString()?.let {
+            when (binding.prioritySpinner.selectedItemPosition) {
+                2 -> {
+                    setSendToVoicemailFlag(it, contentResolver, 0)
+                }
+                1 -> {
+                    setSendToVoicemailFlag(it, contentResolver, 1)
+                }
+                else -> {
+                    setSendToVoicemailFlag(it, contentResolver, 1)
+                }
+            }
+        }
+
+        markContactAsFavorite(contentResolver, currentContact.androidId, isFavorite)
 
         val contact = ContactDB(
             currentContact.id,
@@ -448,7 +487,7 @@ class EditContactActivity : AppCompatActivity() {
             arrayListOf(binding.mailInput.editText?.text.toString()),
             binding.mailIdInput.editText?.text.toString(),
             binding.prioritySpinner.selectedItemPosition,
-            0,
+            isFavorite,
             binding.messengerIdInput.editText?.text.toString(),
             currentContact.listOfMessagingApps,
             notificationTone,
@@ -462,29 +501,22 @@ class EditContactActivity : AppCompatActivity() {
         editContactViewModel.updateContact(contact)
     }
 
-    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isVIP: Int) {
-        val isFavorite = if (isVIP == 2) {
-            1
-        } else {
-            0
-        }
-
+    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver, isVoiceMail: Int) {
         val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Contacts.STARRED, isFavorite)
+        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, isVoiceMail)
 
-        val whereClause = "${ContactsContract.Contacts._ID} = ?"
-        val whereArgs = arrayOf(contactId.toString())
+        val where = ContactsContract.Contacts._ID + " = ?"
+        val whereArgs = arrayOf(contactId)
 
-        contentResolver.update(
-            ContactsContract.Contacts.CONTENT_URI,
-            contentValues,
-            whereClause,
-            whereArgs
-        )
+        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
     }
 
     private fun isStringTotallyEmpty(value: String): Boolean {
         return value.isEmpty() || value.isBlank() || value == ""
+    }
+
+    private suspend fun updateFavorite() {
+        editContactViewModel.updateFavorite(currentContact.id.toString())
     }
 
     private fun retrofitMaterialDialog() {
@@ -496,10 +528,16 @@ class EditContactActivity : AppCompatActivity() {
                 addNewUserToAndroidContacts()
                 CoroutineScope(Dispatchers.IO).launch {
                     updateUser()
+                    if (isFavorite != currentContact.isFavorite) {
+                        updateFavorite()
+                    }
                 }
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
                 CoroutineScope(Dispatchers.IO).launch {
                     updateUser()
+                    if (isFavorite != currentContact.isFavorite) {
+                        updateFavorite()
+                    }
                 }
 
                 goToContactsOrGroups()
@@ -533,6 +571,24 @@ class EditContactActivity : AppCompatActivity() {
         startActivity(intentInsertEdit)
     }
 
+    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
+        val contentValues = ContentValues()
+        contentValues.put(ContactsContract.Contacts.STARRED, isFavorite)
+
+        val whereClause = "${ContactsContract.Contacts._ID} = ?"
+
+        contactId?.let {
+            val whereArgs = arrayOf(it.toString())
+
+            contentResolver.update(
+                ContactsContract.Contacts.CONTENT_URI,
+                contentValues,
+                whereClause,
+                whereArgs
+            )
+        }
+    }
+
     //endregion
 
     //region ================================================================ UTILS =================================================================
@@ -548,7 +604,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun checkIfADataWasChanged(): Boolean {
         binding.apply {
-            return firstNameInput.editText?.text.toString() != currentContact.firstName || lastNameInput.editText?.text.toString() != currentContact.lastName || currentPhoneNumber1 != firstPhoneNumberContent.text?.toString() || mailInput.editText?.text.toString() != currentContact.listOfMails[0] || mailIdInput.editText?.text.toString() != currentContact.mail_name || contactImageStringIsChanged || messengerIdInput.editText?.text.toString() != currentContact.messengerId || prioritySpinner.selectedItemPosition != currentContact.priority
+            return firstNameInput.editText?.text.toString() != currentContact.firstName || lastNameInput.editText?.text.toString() != currentContact.lastName || currentPhoneNumber1 != firstPhoneNumberContent.text?.toString() || mailInput.editText?.text.toString() != currentContact.listOfMails[0] || isFavorite != currentContact.isFavorite || mailIdInput.editText?.text.toString() != currentContact.mail_name || contactImageStringIsChanged || messengerIdInput.editText?.text.toString() != currentContact.messengerId || prioritySpinner.selectedItemPosition != currentContact.priority
         }
     }
 
@@ -726,8 +782,6 @@ class EditContactActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             binding.contactImage.setImageURI(uri)
                         }
-
-                        Log.i("PHOTO_URI", "Camera - binding.contactImage.setImageURI(uri) : ${binding.contactImage.setImageURI(uri)}")
 
                         contactImageString = Converter.bitmapToBase64(bitmap)
                         contactImageStringIsChanged = true

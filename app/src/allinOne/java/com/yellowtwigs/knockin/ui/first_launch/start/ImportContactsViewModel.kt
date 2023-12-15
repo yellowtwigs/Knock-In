@@ -173,12 +173,6 @@ class ImportContactsViewModel @Inject constructor(
                     getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 }
 
-//                try {
-//                    setSendToVoicemailFlag(phoneId, resolver)
-//                } catch (e: Exception) {
-//                    Log.i("PhoneCall", "e : $e")
-//                }
-
                 var phonePic = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
                 phonePic = if (phonePic == null || phonePic.contains("content://com.android.contactList/contactList/", ignoreCase = true)) {
                     ""
@@ -324,19 +318,6 @@ class ImportContactsViewModel @Inject constructor(
         return lastSyncList
     }
 
-    fun deleteContactFromLastSync(lastSync: String, id: Int): String {
-        val list = mutableListOf<Pair<Int, Int>>()
-        val allId = sliceLastSync(lastSync)
-        var newList = ""
-        allId.forEach {
-            if (id != it.first) list.add(Pair(it.first, it.second))
-        }
-        list.forEach {
-            newList += it.first.toString() + ":" + it.second.toString() + "|"
-        }
-        return newList
-    }
-
     private suspend fun createListContactsSync(
         contentResolver: ContentResolver,
         phoneStructName: List<Pair<Int, Triple<String, String, String>>>?,
@@ -426,9 +407,7 @@ class ImportContactsViewModel @Inject constructor(
                             } else {
                             }
 
-
-                            Log.i("GetIsStarred", "${fullFullName.uppercase().unAccent().replace("\\s".toRegex(), "")}")
-                            val isStarred = if (isContactStarred(contentResolver, id)) 2 else 1
+                            val isStarred = if (isContactStarred(contentResolver, id)) 1 else 0
 
                             createContactUseCase.invoke(
                                 ContactDB(
@@ -442,8 +421,8 @@ class ImportContactsViewModel @Inject constructor(
                                     listOfPhoneNumbers,
                                     listOfMails,
                                     "",
+                                    1,
                                     isStarred,
-                                    0,
                                     "",
                                     listOfApps,
                                     "",
@@ -457,6 +436,8 @@ class ImportContactsViewModel @Inject constructor(
                         }
                     }
                 }
+
+
             }
             var groupIsDone = false
             var groupIsAlreadyInDB = false
@@ -526,7 +507,7 @@ class ImportContactsViewModel @Inject constructor(
         return value.isEmpty() || value.isBlank() || value == ""
     }
 
-    //region ============================================ GROUP =============================================
+    //region =================================================================== GROUP =============================================
 
     private fun getContactGroupSync(resolver: ContentResolver): List<Triple<Int, String?, String?>> {
         val phoneContact = resolver.query(
@@ -579,40 +560,13 @@ class ImportContactsViewModel @Inject constructor(
 
     //endregion
 
-    //region ========================================= IS DUPLICATE =========================================
+    //region ============================================================= IS DUPLICATE =============================================================
 
     private fun isDuplicate(
         id: Int, phoneNumber: List<Pair<Int, Triple<String, String, String?>>>
     ): Boolean {
         phoneNumber.forEach {
             if (it.first == id) return true
-        }
-        return false
-    }
-
-    private fun isDuplicateContacts(
-        allContacts: Pair<Int, Triple<String, String, String>>?, lastSync: String?
-    ): Boolean {
-        if (lastSync != null) {
-            val allId = sliceLastSync(lastSync)
-            allId.forEach { Id ->
-                if (allContacts?.first == Id.first) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
-    private fun isDuplicateNumber(
-        idAndPhoneNumber: Map<Int, Any>, contactPhoneNumber: List<Map<Int, Any>>
-    ): Boolean {
-        contactPhoneNumber.forEach {
-            if (it[1] == idAndPhoneNumber[1] && it[2].toString().replace("\\s".toRegex(), "") == idAndPhoneNumber[2].toString()
-                    .replace("\\s".toRegex(), "")
-            ) {
-                return true
-            }
         }
         return false
     }

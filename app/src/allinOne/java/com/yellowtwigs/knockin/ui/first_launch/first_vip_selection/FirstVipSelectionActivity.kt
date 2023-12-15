@@ -48,7 +48,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
 
         val binding = ActivityFirstVipSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)

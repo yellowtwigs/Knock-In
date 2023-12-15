@@ -551,6 +551,9 @@
     <string name="filter_call">Cuộc gọi</string>
     <string name="incoming_voice_calls_message">Chỉ có cuộc gọi từ danh bạ VIP sẽ được chấp nhận, cuộc gọi từ những người không phải VIP sẽ được chuyển hướng đến hộp thư thoại. Bạn có thể thay đổi lựa chọn này sau này. Bạn sẽ cấu hình danh bạ VIP của mình sau này trong bước thiết lập này.</string>
     <string name="incoming_voice_calls_title">" Cho phép Knock in quản lý cuộc gọi thoại đến của bạn"</string>
-    <string name="do_not_disturb_text">Tous les appels des contacts non VIP sont redirigés vers la messagerie vocale</string>
+    <string name="do_not_disturb_text">Quản lý cuộc gọi thoại (Chế độ Không làm phiền)</string>
     <string name="advice_message_title">Advice Message</string>
+    <string name="voicemail_dialog_title">Chú ý!</string>
+    <string name="voicemail_dialog_message">Tất cả cuộc gọi từ các liên lạc không phải VIP của bạn sẽ được gửi trực tiếp vào hộp thư thoại. \n Nếu bạn có ý định gỡ cài đặt, vui lòng tắt công tắc này.</string>
+    <string name="switch_message_disable_call">Tất cả cuộc gọi từ các liên lạc không phải VIP sẽ được chuyển hướng đến hộp thoại thoại</string>
 </resources>

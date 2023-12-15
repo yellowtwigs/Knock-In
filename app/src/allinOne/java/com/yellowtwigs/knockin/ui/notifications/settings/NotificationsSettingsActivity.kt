@@ -9,7 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -27,6 +29,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityNotificationsSettingsBinding
@@ -100,7 +103,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         binding.activateNotification.isChecked = isNotificationServiceEnabled()
     }
 
-    //region ======================================= Drawer + Toolbar =======================================
+    //region =========================================================== Drawer + Toolbar ===========================================================
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
@@ -133,12 +136,15 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                         )
                     )
                 }
+
                 R.id.nav_dashboard -> startActivity(
                     Intent(this@NotificationsSettingsActivity, DashboardActivity::class.java)
                 )
+
                 R.id.nav_teleworking -> startActivity(
                     Intent(this@NotificationsSettingsActivity, TeleworkingActivity::class.java)
                 )
+
                 R.id.nav_manage_screen -> {
                     startActivity(
                         Intent(
@@ -146,6 +152,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                         )
                     )
                 }
+
                 R.id.nav_help -> {
                     startActivity(
                         Intent(
@@ -153,9 +160,11 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                         )
                     )
                 }
+
                 R.id.nav_sync_contact -> {
                     importContacts()
                 }
+
                 R.id.nav_invite_friend -> {
                     val intent = Intent(Intent.ACTION_SEND)
                     val messageString = resources.getString(R.string.invite_friend_text) + " \n" + resources.getString(
@@ -191,6 +200,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                 binding.drawerLayout.openDrawer(GravityCompat.START)
                 return true
             }
+
             R.id.item_help -> {
                 if (Resources.getSystem().configuration.locale.language == "fr") {
                     val browserIntent = Intent(
@@ -209,24 +219,6 @@ class NotificationsSettingsActivity : AppCompatActivity() {
     }
 
     //endregion
-
-    private fun activateButtonIsClickable(isClickable: Boolean, button: AppCompatButton) {
-        button.isEnabled = isClickable
-
-        if (isClickable) {
-            button.setBackgroundColor(
-                ResourcesCompat.getColor(
-                    resources, R.color.colorPrimary, null
-                )
-            )
-        } else {
-            button.setBackgroundColor(
-                ResourcesCompat.getColor(
-                    resources, R.color.greyColor, null
-                )
-            )
-        }
-    }
 
     private fun openOverlaySettings() {
         val intent = Intent(
@@ -261,39 +253,47 @@ class NotificationsSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupSwitchAllContactsEnabled() {
-        val name = "DoNotDisturb"
+        val name = "switchAllContactsEnabledChecked"
         val voiceCallAllEnabledSwitchChecked = getSharedPreferences(name, Context.MODE_PRIVATE)
-        val voiceCallAllEnabledSwitch = findViewById<SwitchCompat>(R.id.do_not_disturb_switch)
-
+        val voiceCallAllEnabledSwitch = findViewById<SwitchCompat>(R.id.voice_call_all_enabled_switch)
         voiceCallAllEnabledSwitch.isChecked = voiceCallAllEnabledSwitchChecked.getBoolean(name, false)
+        if (voiceCallAllEnabledSwitch.isChecked) {
+            val trackColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+            val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryVariant))
+
+            voiceCallAllEnabledSwitch.trackTintList = trackColor
+            voiceCallAllEnabledSwitch.thumbTintList = thumbColor
+        }
+
         voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
             if (isChecked) {
-                val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY)
+                MaterialAlertDialogBuilder(
+                    this@NotificationsSettingsActivity, R.style.AlertDialog
+                ).setTitle(getString(R.string.voicemail_dialog_title))
+                    .setMessage(getString(R.string.voicemail_dialog_message))
+                    .show()
 
-                val policy = NotificationManager.Policy(
-                    NotificationManager.Policy.PRIORITY_CATEGORY_CALLS,
-                    NotificationManager.Policy.PRIORITY_SENDERS_STARRED,
-                    NotificationManager.Policy.PRIORITY_SENDERS_STARRED
-                )
-                mNotificationManager.notificationPolicy = policy
-
+                notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
                 val edit = voiceCallAllEnabledSwitchChecked.edit()
                 edit.putBoolean(name, true)
                 edit.apply()
+
+                val trackColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+                val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryVariant))
+
+                voiceCallAllEnabledSwitch.trackTintList = trackColor
+                voiceCallAllEnabledSwitch.thumbTintList = thumbColor
             } else {
-                val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                mNotificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+                notificationsSettingsViewModel.enabledAllPhoneCallContacts(contentResolver)
                 val edit = voiceCallAllEnabledSwitchChecked.edit()
                 edit.putBoolean(name, false)
                 edit.apply()
 
-                val policy = NotificationManager.Policy(
-                    NotificationManager.Policy.PRIORITY_SENDERS_ANY,
-                    NotificationManager.Policy.PRIORITY_SENDERS_ANY,
-                    NotificationManager.Policy.PRIORITY_SENDERS_ANY
-                )
-                mNotificationManager.notificationPolicy = policy
+                val trackColor = ColorStateList.valueOf(resources.getColor(R.color.greyColor))
+                val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.lightGreyColor))
+
+                voiceCallAllEnabledSwitch.trackTintList = trackColor
+                voiceCallAllEnabledSwitch.thumbTintList = thumbColor
             }
         }
     }

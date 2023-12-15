@@ -28,8 +28,6 @@ class FirstVipSelectionViewModel @Inject constructor(
     private val contactsListRepository: ContactsListRepository
 ) : ViewModel() {
 
-    val nbVipContacts = MutableLiveData(getNumbersContactsVipUseCase.getNumbersOfContactsVip())
-
     val contactsIds = contactsListRepository.getContactsVIPIds()
     val listOfItemsSelected: MutableLiveData<ArrayList<Int>> = MutableLiveData(contactsIds)
 
@@ -67,25 +65,10 @@ class FirstVipSelectionViewModel @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             ids.forEach { pair ->
                 val id = pair.first
-                val androidId = pair.second
                 val priority = pair.third
-
-                androidId?.toString()?.let { setSendToVoicemailFlag(it, contentResolver) }
 
                 updateContactPriorityByIdUseCase.updateContactPriorityById(id, priority)
             }
         }
     }
-
-    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver) {
-        val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
-
-        val where = ContactsContract.Contacts._ID + " = ?"
-        val whereArgs = arrayOf(contactId)
-
-        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
-    }
-
-    fun getNumbersContactsVipUseCase() = getNumbersContactsVipUseCase.getNumbersOfContactsVip()
 }

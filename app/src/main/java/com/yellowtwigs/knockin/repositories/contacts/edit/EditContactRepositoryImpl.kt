@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.repositories.contacts.edit
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.lifecycle.asLiveData
 import com.yellowtwigs.knockin.model.database.dao.ContactsDao
 import com.yellowtwigs.knockin.model.database.data.ContactDB
@@ -16,16 +17,29 @@ class EditContactRepositoryImpl @Inject constructor(private val dao: ContactsDao
     override suspend fun disabledAllPhoneCallContacts(resolver: ContentResolver) {
         dao.getAllContacts().collect {
             it.forEach { contact ->
-                val contentValues = ContentValues()
-                contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 1)
+                Log.i("DisabledPhoneCall", "contact.fullName : ${contact.fullName}")
+                Log.i("DisabledPhoneCall", "contact.priority : ${contact.priority}")
+                if (contact.priority != 2) {
+                    val contentValues = ContentValues()
+                    contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 1)
 
-                val where = ContactsContract.Contacts._ID + " = ?"
-                val whereArgs = arrayOf(contact.androidId?.toString())
+                    val where = ContactsContract.Contacts._ID + " = ?"
+                    val whereArgs = arrayOf(contact.androidId?.toString())
 
-                resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                    resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                } else {
+                    val contentValues = ContentValues()
+                    contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
+
+                    val where = ContactsContract.Contacts._ID + " = ?"
+                    val whereArgs = arrayOf(contact.androidId?.toString())
+
+                    resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                }
             }
         }
     }
+
     override suspend fun enabledAllPhoneCallContacts(resolver: ContentResolver) {
         dao.getAllContacts().collect {
             it.forEach { contact ->

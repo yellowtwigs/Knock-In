@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -74,6 +73,13 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 binding.viewPager.currentItem = 1
                 contactsAreImported = true
             }
+
+            readPhoneStateDialog()
+        }
+    }
+
+    private val requestPermissionLauncher2 = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.READ_PHONE_STATE] == true && permissions[Manifest.permission.CALL_PHONE] == true) {
         }
     }
 
@@ -226,8 +232,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
-    //region =================================================================== Functions ====================================================================
-
+    //region ========================================== Functions ==========================================
     private fun setSliderContainer() {
         val viewPager = findViewById<ViewPager2>(R.id.view_pager)
         val sliderItems = arrayListOf<SliderItem>()
@@ -437,12 +442,80 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region =========================================== BILLING ============================================
 
     private fun setupBillingClient() {
-        sharedPreferencesConfiguration("Funky_Sound_Bought")
-        sharedPreferencesConfiguration("Jazzy_Sound_Bought")
-        sharedPreferencesConfiguration("Relax_Sound_Bought")
-        sharedPreferencesConfiguration("Contacts_Unlimited_Bought")
-        sharedPreferencesConfiguration("Apps_Support_Bought")
-        sharedPreferencesConfiguration("Produits_Fake_Bought")
+        val billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
+        connectToGooglePlayBilling(billingClient)
+    }
+
+    private fun connectToGooglePlayBilling(billingClient: BillingClient) {
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    querySkuDetails(billingClient)
+                } else {
+                    Log.i("playBilling", "Fail")
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                connectToGooglePlayBilling(billingClient)
+            }
+        })
+    }
+
+    private fun querySkuDetails(billingClient: BillingClient) {
+        val skuList = ArrayList<String>()
+        skuList.add("contacts_vip_unlimited")
+        skuList.add("notifications_vip_funk_theme")
+        skuList.add("notifications_vip_jazz_theme")
+        skuList.add("notifications_vip_relaxation_theme")
+        skuList.add("additional_applications_support")
+        skuList.add("produit_fake_test_promo")
+
+        val params = SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+
+        billingClient.querySkuDetailsAsync(
+            params.build()
+        ) { _, _ ->
+            billingClient.queryPurchasesAsync(
+                BillingClient.SkuType.INAPP
+            ) { _, listOfPurchases ->
+                if (listOfPurchases.isNotEmpty()) {
+                    fillSharedPreferencesWithListPurchases(listOfPurchases)
+                }
+            }
+        }
+    }
+
+    private fun fillSharedPreferencesWithListPurchases(listOfPurchases: MutableList<Purchase>) {
+        for (purchase in listOfPurchases) {
+            purchase.originalJson.apply {
+                when {
+                    contains("notifications_vip_funk_theme") -> {
+                        sharedPreferencesConfiguration("Funky_Sound_Bought")
+                    }
+
+                    contains("notifications_vip_jazz_theme") -> {
+                        sharedPreferencesConfiguration("Jazzy_Sound_Bought")
+                    }
+
+                    contains("notifications_vip_relaxation_theme") -> {
+                        sharedPreferencesConfiguration("Relax_Sound_Bought")
+                    }
+
+                    contains("contacts_vip_unlimited") -> {
+                        sharedPreferencesConfiguration("Contacts_Unlimited_Bought")
+                    }
+
+                    contains("additional_applications_support") -> {
+                        sharedPreferencesConfiguration("Apps_Support_Bought")
+                    }
+
+                    contains("produit_fake_test_promo") -> {
+                        sharedPreferencesConfiguration("Produits_Fake_Bought")
+                    }
+                }
+            }
+        }
     }
 
     private fun sharedPreferencesConfiguration(sharedPreferencesName: String) {
@@ -456,7 +529,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //endregion
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CODE_WRITE_READ_CONTACT) {
@@ -479,6 +554,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     override fun onBackPressed() {
+    }
+
+    private fun readPhoneStateDialog() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
+            .setTitle(getString(R.string.incoming_voice_calls_title)).setMessage(getString(R.string.incoming_voice_calls_message))
+            .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                requestPermissionLauncher2.launch(arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE))
+            }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+            }.show()
     }
 
     private fun activateNotificationsClick() {
@@ -509,7 +593,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     //endregion
 
-    //region ================================================================ Lifecycle =======================================================================
+    //region =========================================== Lifecycle ==========================================
 
     override fun onRestart() {
         super.onRestart()

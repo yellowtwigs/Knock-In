@@ -43,7 +43,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
         binding = ActivityManageMyScreenBinding.inflate(layoutInflater)
 
         setContentView(binding.root)

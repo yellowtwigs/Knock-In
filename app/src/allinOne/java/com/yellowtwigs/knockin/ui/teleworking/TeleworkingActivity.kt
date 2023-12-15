@@ -39,7 +39,7 @@ class TeleworkingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         try {
-            checkTheme(this, packageName, contentResolver)
+            checkTheme(this)
 
             val viewModel: TeleworkingViewModel by viewModels()
             binding = ActivityTeleworkingBinding.inflate(layoutInflater)

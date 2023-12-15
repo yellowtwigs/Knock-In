@@ -79,7 +79,7 @@ class AddNewContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
 
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -164,34 +164,43 @@ class AddNewContactActivity : AppCompatActivity() {
                 binding.vipSettingsIcon.isVisible = numberOfContactsVIP <= 5
                 binding.vipSettingsText.isVisible = numberOfContactsVIP <= 5
 
-                if (numberOfContactsVIP > 4 && !contactsUnlimitedIsBought) {
-                    MaterialAlertDialogBuilder(
-                        this@AddNewContactActivity, R.style.AlertDialog
-                    ).setTitle(getString(R.string.in_app_popup_nb_vip_max_message))
-                        .setMessage(getString(R.string.in_app_popup_nb_vip_max_message))
-                        .setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-
-                            finish()
-                        }.setNegativeButton(R.string.alert_dialog_later) { _, _ ->
-                        }.show()
-                }
-                if (numberOfContactsVIP > 5 && contactsUnlimitedIsBought) {
-                    binding.vipSettingsIcon.isVisible = true
-                    binding.vipSettingsText.isVisible = true
-                }
+                binding.vipSettingsIcon.isVisible = true
+                binding.vipSettingsText.isVisible = true
             }
         }
     }
 
     //endregion
 
-    //region ======================================== ACTION LISTENER =======================================
+    //region ============================================================ ACTION LISTENER =======================================
 
     private fun actionOnClickListener() {
         binding.apply {
             // Toolbar
             returnIcon.setOnClickListener {
                 customOnBackPressed()
+            }
+            favoriteContact.setOnClickListener {
+                if (isFavorite == 1) {
+                    isFavorite = 0
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
+                } else {
+                    isFavorite = 1
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
+                }
+            }
+            favoriteContact2.setOnClickListener {
+                if (isFavorite == 1) {
+                    isFavorite = 0
+                    favoriteContact.visibility = View.VISIBLE
+                    favoriteContact2.visibility = View.GONE
+                } else {
+                    isFavorite = 1
+                    favoriteContact.visibility = View.INVISIBLE
+                    favoriteContact2.visibility = View.VISIBLE
+                }
             }
             phoneNumberInformations.setOnClickListener {
                 MaterialAlertDialogBuilder(
@@ -244,6 +253,20 @@ class AddNewContactActivity : AppCompatActivity() {
                             ""
                         )
 
+//                        currentContact.androidId?.toString()?.let {
+//                            when (binding.prioritySpinner.selectedItemPosition) {
+//                                2 -> {
+//                                    setSendToVoicemailFlag(it, contentResolver, 0)
+//                                }
+//                                1 -> {
+//                                    setSendToVoicemailFlag(it, contentResolver, 1)
+//                                }
+//                                else -> {
+//                                    setSendToVoicemailFlag(it, contentResolver, 1)
+//                                }
+//                            }
+//                        }
+
                         CoroutineScope(Dispatchers.Main).launch {
                             if (editContactViewModel.checkDuplicateContact(contact!!)) {
                                 Toast.makeText(
@@ -288,7 +311,11 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ============================================ UPDATE ============================================
+    //region ================================================================= UPDATE ============================================
+
+    private suspend fun updateFavorite() {
+        editContactViewModel.updateFavorite("${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}")
+    }
 
     private fun retrofitMaterialDialog() {
         MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
@@ -298,43 +325,32 @@ class AddNewContactActivity : AppCompatActivity() {
 
                 addNewUserToAndroidContacts()
 
-                contact?.let {
+                contact?.let{
                     CoroutineScope(Dispatchers.IO).launch {
-                        markContactAsFavorite(contentResolver, it.androidId, binding.prioritySpinner.selectedItemPosition)
+                        markContactAsFavorite(contentResolver, it.androidId, isFavorite)
                         editContactViewModel.addNewContact(it)
+
+                        if (isFavorite != 0) {
+                            updateFavorite()
+                        }
                     }
                 }
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-                contact?.let {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        markContactAsFavorite(contentResolver, it.androidId, binding.prioritySpinner.selectedItemPosition)
-                        editContactViewModel.addNewContact(it)
+                CoroutineScope(Dispatchers.IO).launch {
+                    contact?.let{
+                        CoroutineScope(Dispatchers.IO).launch {
+                            markContactAsFavorite(contentResolver, it.androidId, isFavorite)
+                            editContactViewModel.addNewContact(it)
+
+                            if (isFavorite != 0) {
+                                updateFavorite()
+                            }
+                        }
                     }
                 }
+
                 goToContactsListActivity()
             }.show()
-    }
-
-    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isVIP: Int) {
-        val isFavorite = if (isVIP == 2) {
-            1
-        } else {
-            0
-        }
-
-        val contentValues = ContentValues().apply {
-            put(ContactsContract.Contacts.STARRED, isFavorite)
-        }
-
-        val whereClause = "${ContactsContract.Contacts._ID} = ?"
-        val whereArgs = arrayOf(contactId.toString())
-
-        contentResolver.update(
-            ContactsContract.Contacts.CONTENT_URI,
-            contentValues,
-            whereClause,
-            whereArgs
-        )
     }
 
     private fun addNewUserToAndroidContacts() {
@@ -362,6 +378,24 @@ class AddNewContactActivity : AppCompatActivity() {
 
         isRetroFit = true
         startActivity(intent)
+    }
+
+    private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
+        val contentValues = ContentValues()
+        contentValues.put(ContactsContract.Contacts.STARRED, isFavorite)
+
+        val whereClause = "${ContactsContract.Contacts._ID} = ?"
+
+        contactId?.let {
+            val whereArgs = arrayOf(it.toString())
+
+            contentResolver.update(
+                ContactsContract.Contacts.CONTENT_URI,
+                contentValues,
+                whereClause,
+                whereArgs
+            )
+        }
     }
 
     //endregion
@@ -557,8 +591,6 @@ class AddNewContactActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             binding.contactImage.setImageURI(uri)
                         }
-
-                        Log.i("PHOTO_URI", "Camera - binding.contactImage.setImageURI(uri) : ${binding.contactImage.setImageURI(uri)}")
 
                         contactImageString = Converter.bitmapToBase64(bitmap)
                         contactImageStringIsChanged = true

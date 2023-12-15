@@ -552,6 +552,9 @@
     <string name="filter_call">Chiamate</string>
     <string name="incoming_voice_calls_message">Solo le chiamate dai contatti VIP verranno inoltrate, le chiamate dai non-VIP verranno reindirizzate alla segreteria vocale. Puoi cambiare questa scelta in seguito. Configurerai i tuoi contatti VIP più tardi in questa configurazione.</string>
     <string name="incoming_voice_calls_title">Consenti a Knock in di gestire le tue chiamate vocali in arrivo</string>
-    <string name="do_not_disturb_text">Tutte le chiamate da contatti non VIP vengono reindirizzate alla segreteria telefonica</string>
+    <string name="do_not_disturb_text">Gestione chiamate vocali (Modalità Non disturbare)</string>
     <string name="advice_message_title">Advice Message</string>
+    <string name="voicemail_dialog_title">Attenzione!</string>
+    <string name="voicemail_dialog_message">Tutte le chiamate dai tuoi contatti non VIP saranno inviate direttamente alla segreteria telefonica. \n Se hai intenzione di disinstallare, disabilita questo interruttore.</string>
+    <string name="switch_message_disable_call">Tutte le chiamate da contatti non VIP vengono reindirizzate alla segreteria telefonica</string>
 </resources>

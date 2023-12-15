@@ -31,46 +31,12 @@ object EveryActivityUtils {
         return false
     }
 
-    private fun checkIfDoNotDisturbActivated(cxt: Activity) {
-        val mNotificationManager = cxt.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
-        val name = "DoNotDisturb"
-        val voiceCallAllEnabledSwitchChecked = cxt.getSharedPreferences(name, Context.MODE_PRIVATE)
-        if (mNotificationManager.currentInterruptionFilter == 2) {
-            val policy = NotificationManager.Policy(
-                NotificationManager.Policy.PRIORITY_CATEGORY_CALLS,
-                NotificationManager.Policy.PRIORITY_SENDERS_STARRED,
-                NotificationManager.Policy.PRIORITY_SENDERS_STARRED
-            )
-            mNotificationManager.notificationPolicy = policy
-
-            val edit = voiceCallAllEnabledSwitchChecked.edit()
-            edit.putBoolean(name, true)
-            edit.apply()
-        } else {
-            val edit = voiceCallAllEnabledSwitchChecked.edit()
-            edit.putBoolean(name, false)
-            edit.apply()
-
-            val policy = NotificationManager.Policy(
-                NotificationManager.Policy.PRIORITY_SENDERS_ANY,
-                NotificationManager.Policy.PRIORITY_SENDERS_ANY,
-                NotificationManager.Policy.PRIORITY_SENDERS_ANY
-            )
-            mNotificationManager.notificationPolicy = policy
-        }
-    }
-
     fun checkIfGoEdition(cxt: Activity): Boolean {
         val am = cxt.getSystemService(AppCompatActivity.ACTIVITY_SERVICE) as ActivityManager
         return am.isLowRamDevice
     }
 
-    fun checkTheme(cxt: Activity, packageName: String, contentResolver: ContentResolver) {
-
-        if (isNotificationServiceEnabled(packageName, contentResolver)) {
-            checkIfDoNotDisturbActivated(cxt)
-        }
-
+    fun checkTheme(cxt: Activity) {
         val sharedThemePreferences = cxt.getSharedPreferences("Knockin_Theme", Context.MODE_PRIVATE)
         if (sharedThemePreferences.getBoolean("darkTheme", false)) {
             cxt.setTheme(R.style.AppThemeDark)

@@ -236,15 +236,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/do_not_disturb_text"
+                    android:text="@string/switch_message_disable_call"
                     android:textColor="?attr/textColor"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/do_not_disturb_switch"
+                    app:layout_constraintEnd_toStartOf="@+id/voice_call_all_enabled_switch"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/do_not_disturb_switch"
+                    android:id="@+id/voice_call_all_enabled_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
