@@ -558,7 +558,7 @@
     <string name="incoming_voice_calls_title">Autorisez Knock in à gérer vos appels vocaux entrants</string>
     <string name="do_not_disturb_text">Gestion des appels vocaux (Mode Ne Pas Déranger)</string>
     <string name="advice_message_title">Message de conseil</string>
-    <string name="voicemail_dialog_title">Attention !</string>
+    <string name="voicemail_dialog_title">Avis important</string>
     <string name="voicemail_dialog_message">Tous les appels de vos contacts non VIP seront envoyés directement vers la messagerie. \n En cas de volonté de désinstallation, veuillez désactiver ce switch.</string>
     <string name="switch_message_disable_call">Tous les appels des contacts non VIP sont redirigés vers la messagerie vocale</string>
 </resources>

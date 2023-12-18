@@ -519,11 +519,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.178"
-                app:layout_constraintStart_toEndOf="@+id/contact_vip_settings"
                 app:layout_constraintTop_toBottomOf="@+id/priority_explain"
-                app:srcCompat="@drawable/ic_circular_vip_icon"
-                tools:ignore="MissingConstraints" />
+                app:srcCompat="@drawable/ic_circular_vip_icon" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/edit_contact_group_constraint_layout"

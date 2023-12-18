@@ -442,80 +442,12 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     //region =========================================== BILLING ============================================
 
     private fun setupBillingClient() {
-        val billingClient = BillingClient.newBuilder(this).setListener(this).enablePendingPurchases().build()
-        connectToGooglePlayBilling(billingClient)
-    }
-
-    private fun connectToGooglePlayBilling(billingClient: BillingClient) {
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    querySkuDetails(billingClient)
-                } else {
-                    Log.i("playBilling", "Fail")
-                }
-            }
-
-            override fun onBillingServiceDisconnected() {
-                connectToGooglePlayBilling(billingClient)
-            }
-        })
-    }
-
-    private fun querySkuDetails(billingClient: BillingClient) {
-        val skuList = ArrayList<String>()
-        skuList.add("contacts_vip_unlimited")
-        skuList.add("notifications_vip_funk_theme")
-        skuList.add("notifications_vip_jazz_theme")
-        skuList.add("notifications_vip_relaxation_theme")
-        skuList.add("additional_applications_support")
-        skuList.add("produit_fake_test_promo")
-
-        val params = SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
-
-        billingClient.querySkuDetailsAsync(
-            params.build()
-        ) { _, _ ->
-            billingClient.queryPurchasesAsync(
-                BillingClient.SkuType.INAPP
-            ) { _, listOfPurchases ->
-                if (listOfPurchases.isNotEmpty()) {
-                    fillSharedPreferencesWithListPurchases(listOfPurchases)
-                }
-            }
-        }
-    }
-
-    private fun fillSharedPreferencesWithListPurchases(listOfPurchases: MutableList<Purchase>) {
-        for (purchase in listOfPurchases) {
-            purchase.originalJson.apply {
-                when {
-                    contains("notifications_vip_funk_theme") -> {
-                        sharedPreferencesConfiguration("Funky_Sound_Bought")
-                    }
-
-                    contains("notifications_vip_jazz_theme") -> {
-                        sharedPreferencesConfiguration("Jazzy_Sound_Bought")
-                    }
-
-                    contains("notifications_vip_relaxation_theme") -> {
-                        sharedPreferencesConfiguration("Relax_Sound_Bought")
-                    }
-
-                    contains("contacts_vip_unlimited") -> {
-                        sharedPreferencesConfiguration("Contacts_Unlimited_Bought")
-                    }
-
-                    contains("additional_applications_support") -> {
-                        sharedPreferencesConfiguration("Apps_Support_Bought")
-                    }
-
-                    contains("produit_fake_test_promo") -> {
-                        sharedPreferencesConfiguration("Produits_Fake_Bought")
-                    }
-                }
-            }
-        }
+        sharedPreferencesConfiguration("Funky_Sound_Bought")
+        sharedPreferencesConfiguration("Jazzy_Sound_Bought")
+        sharedPreferencesConfiguration("Relax_Sound_Bought")
+        sharedPreferencesConfiguration("Contacts_Unlimited_Bought")
+        sharedPreferencesConfiguration("Apps_Support_Bought")
+        sharedPreferencesConfiguration("Produits_Fake_Bought")
     }
 
     private fun sharedPreferencesConfiguration(sharedPreferencesName: String) {

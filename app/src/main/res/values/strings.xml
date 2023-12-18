@@ -576,7 +576,7 @@
     <string name="incoming_voice_calls_title">Allow Knock in to manage your incoming voice calls</string>
     <string name="do_not_disturb_text">Voice Call Management (Do Not Disturb Mode)</string>
     <string name="advice_message_title">Advice Message</string>
-    <string name="voicemail_dialog_title">Warning !</string>
+    <string name="voicemail_dialog_title">Important notice</string>
     <string name="voicemail_dialog_message">All calls from your non-VIP contacts will be sent directly to voicemail. \n If you intend to uninstall, please disable this switch.</string>
     <string name="switch_message_disable_call">All calls from non-VIP contacts are redirected to voicemail</string>
 </resources>

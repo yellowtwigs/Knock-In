@@ -555,7 +555,7 @@
     <string name="incoming_voice_calls_title">اسمح لـ Knock in بإدارة مكالماتك الصوتية الواردة</string>
     <string name="do_not_disturb_text">إدارة المكالمات الصوتية (وضع عدم الإزعاج)</string>
     <string name="advice_message_title">رسالة نصيحة</string>
-    <string name="voicemail_dialog_title">تحذير!</string>
+    <string name="voicemail_dialog_title">إشعار هام</string>
     <string name="voicemail_dialog_message"> VIP سترسل مباشرة إلى البريد الصوتي. \n إذا كنت تعتزم إلغاء التثبيت، يرجى تعطيل هذا التبديل.</string>
     <string name="switch_message_disable_call">" جميع المكالمات من جهات الاتصال غير VIP يتم توجيهها إلى البريد الصوتي"</string>
 </resources>

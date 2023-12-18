@@ -555,7 +555,7 @@
     <string name="incoming_voice_calls_title">Разрешите Knock in управлять входящими голосовыми вызовами</string>
     <string name="do_not_disturb_text">Управление голосовыми вызовами (Режим Не беспокоить)</string>
     <string name="advice_message_title">Advice Message</string>
-    <string name="voicemail_dialog_title">Внимание!</string>
+    <string name="voicemail_dialog_title">Важное уведомление</string>
     <string name="voicemail_dialog_message">Все звуки отключены для ваших VIP-контактов</string>
     <string name="switch_message_disable_call">Все звонки от контактов не входящих в число VIP переадресовываются на голосовую почту</string>
 </resources>
