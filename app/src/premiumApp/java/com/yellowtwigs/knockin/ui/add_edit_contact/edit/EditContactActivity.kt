@@ -490,21 +490,6 @@ class EditContactActivity : AppCompatActivity() {
 
         val listOfPhoneNumbers = arrayListOf("${binding.firstPhoneNumberContent.text?.toString()}")
 
-//        currentContact.androidId?.toString()?.let {
-//            when (binding.prioritySpinner.selectedItemPosition) {
-//                2 -> {
-//                    setSendToVoicemailFlag(it, contentResolver, 0)
-//                }
-//
-//                1 -> {
-//                    setSendToVoicemailFlag(it, contentResolver, 1)
-//                }
-//                else -> {
-//                    setSendToVoicemailFlag(it, contentResolver, 1)
-//                }
-//            }
-//        }
-
         val contact = ContactDB(
             currentContact.id,
             currentContact.androidId,

@@ -17,24 +17,26 @@ class EditContactRepositoryImpl @Inject constructor(private val dao: ContactsDao
     override suspend fun disabledAllPhoneCallContacts(resolver: ContentResolver) {
         dao.getAllContacts().collect {
             it.forEach { contact ->
-                Log.i("DisabledPhoneCall", "contact.fullName : ${contact.fullName}")
-                Log.i("DisabledPhoneCall", "contact.priority : ${contact.priority}")
-                if (contact.priority != 2) {
-                    val contentValues = ContentValues()
-                    contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 1)
+                try {
+                    if (contact.priority != 2) {
+                        val contentValues = ContentValues()
+                        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 1)
 
-                    val where = ContactsContract.Contacts._ID + " = ?"
-                    val whereArgs = arrayOf(contact.androidId?.toString())
+                        val where = ContactsContract.Contacts._ID + " = ?"
+                        val whereArgs = arrayOf(contact.androidId?.toString())
 
-                    resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
-                } else {
-                    val contentValues = ContentValues()
-                    contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
+                        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                    } else {
+                        val contentValues = ContentValues()
+                        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
 
-                    val where = ContactsContract.Contacts._ID + " = ?"
-                    val whereArgs = arrayOf(contact.androidId?.toString())
+                        val where = ContactsContract.Contacts._ID + " = ?"
+                        val whereArgs = arrayOf(contact.androidId?.toString())
 
-                    resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                    }
+                } catch (e: java.lang.Exception) {
+                    Log.e("Exception", "exception : $e")
                 }
             }
         }

@@ -131,17 +131,6 @@ class ImportContactsViewModel @Inject constructor(
         }
         return phoneContactsList
     }
-
-    private fun setSendToVoicemailFlag(contactId: String, resolver: ContentResolver) {
-        val contentValues = ContentValues()
-        contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 1)
-
-        val where = ContactsContract.Contacts._ID + " = ?"
-        val whereArgs = arrayOf(contactId)
-
-        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
-    }
-
     private fun getContactDetailsSync(resolver: ContentResolver): List<Map<Int, Any>> {
         val listOfDetails = arrayListOf<MutableMap<Int, Any>>()
         var contactDetails: MutableMap<Int, Any>
@@ -181,13 +170,6 @@ class ImportContactsViewModel @Inject constructor(
                 } else {
                     getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 }
-
-//                try {
-//                    setSendToVoicemailFlag(phoneId, resolver)
-//                } catch (e: Exception) {
-//                    Log.i("PhoneCall", "e : $e")
-//                }
-
                 var phonePic = getString(getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
                 phonePic = if (phonePic == null || phonePic.contains("content://com.android.contactList/contactList/", ignoreCase = true)) {
                     ""

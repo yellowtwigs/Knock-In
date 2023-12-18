@@ -18,14 +18,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class FirstVipSelectionViewModel @Inject constructor(
-    private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
-    private val updateContactPriorityByIdUseCase: UpdateContactPriorityByIdUseCase,
-    private val getNumbersContactsVipUseCase: GetNumbersContactsVipUseCase,
-    private val contactsListRepository: ContactsListRepository
+        private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
+        private val updateContactPriorityByIdUseCase: UpdateContactPriorityByIdUseCase,
+        private val getNumbersContactsVipUseCase: GetNumbersContactsVipUseCase,
+        private val contactsListRepository: ContactsListRepository
 ) : ViewModel() {
 
     val nbVipContacts = MutableLiveData(getNumbersContactsVipUseCase.getNumbersOfContactsVip())
@@ -53,13 +54,13 @@ class FirstVipSelectionViewModel @Inject constructor(
 
     private fun transformContactDbToFirstVipSelectionViewState(contact: ContactDB): FirstVipSelectionViewState {
         return FirstVipSelectionViewState(
-            contact.id,
-            contact.androidId,
-            contact.firstName,
-            contact.lastName,
-            contact.profilePicture,
-            contact.profilePicture64,
-            contact.priority
+                contact.id,
+                contact.androidId,
+                contact.firstName,
+                contact.lastName,
+                contact.profilePicture,
+                contact.profilePicture64,
+                contact.priority
         )
     }
 
@@ -70,7 +71,11 @@ class FirstVipSelectionViewModel @Inject constructor(
                 val androidId = pair.second
                 val priority = pair.third
 
-                androidId?.toString()?.let { setSendToVoicemailFlag(it, contentResolver) }
+                try {
+                    androidId?.toString()?.let { setSendToVoicemailFlag(it, contentResolver) }
+                } catch (e: Exception) {
+                    Log.e("Exception", "exception : $e")
+                }
 
                 updateContactPriorityByIdUseCase.updateContactPriorityById(id, priority)
             }

@@ -106,12 +106,11 @@ object NotificationsListenerGesture {
 
         list.add(
             PopupNotificationViewState(
-                sbp.id,
                 sbp.statusBarNotificationInfo["android.title"].toString(),
                 sbp.statusBarNotificationInfo["android.text"].toString(),
                 platform,
                 "${contactDB.firstName} ${contactDB.lastName}",
-                date = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(time)),
+                date = time,
                 transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                 contactDB.messengerId,
                 contactDB.listOfMails[0]

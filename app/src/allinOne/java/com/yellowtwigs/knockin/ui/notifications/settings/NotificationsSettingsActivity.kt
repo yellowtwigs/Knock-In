@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.ui.notifications.settings
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.media.AudioManager
@@ -20,6 +22,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -27,6 +30,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -62,6 +66,11 @@ class NotificationsSettingsActivity : AppCompatActivity() {
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
 
     //endregion
+
+    private val requestPermissionLauncher2 = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.READ_PHONE_STATE] == true && permissions[Manifest.permission.CALL_PHONE] == true) {
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -257,44 +266,48 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         val voiceCallAllEnabledSwitchChecked = getSharedPreferences(name, Context.MODE_PRIVATE)
         val voiceCallAllEnabledSwitch = findViewById<SwitchCompat>(R.id.voice_call_all_enabled_switch)
         voiceCallAllEnabledSwitch.isChecked = voiceCallAllEnabledSwitchChecked.getBoolean(name, false)
-        if (voiceCallAllEnabledSwitch.isChecked) {
-            val trackColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
-            val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryVariant))
 
-            voiceCallAllEnabledSwitch.trackTintList = trackColor
-            voiceCallAllEnabledSwitch.thumbTintList = thumbColor
-        }
-
-        voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
-            if (isChecked) {
-                MaterialAlertDialogBuilder(
-                    this@NotificationsSettingsActivity, R.style.AlertDialog
-                ).setTitle(getString(R.string.voicemail_dialog_title))
-                    .setMessage(getString(R.string.voicemail_dialog_message))
-                    .show()
-
-                notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
-                val edit = voiceCallAllEnabledSwitchChecked.edit()
-                edit.putBoolean(name, true)
-                edit.apply()
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            if (voiceCallAllEnabledSwitch.isChecked) {
                 val trackColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
                 val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryVariant))
 
                 voiceCallAllEnabledSwitch.trackTintList = trackColor
                 voiceCallAllEnabledSwitch.thumbTintList = thumbColor
-            } else {
-                notificationsSettingsViewModel.enabledAllPhoneCallContacts(contentResolver)
-                val edit = voiceCallAllEnabledSwitchChecked.edit()
-                edit.putBoolean(name, false)
-                edit.apply()
-
-                val trackColor = ColorStateList.valueOf(resources.getColor(R.color.greyColor))
-                val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.lightGreyColor))
-
-                voiceCallAllEnabledSwitch.trackTintList = trackColor
-                voiceCallAllEnabledSwitch.thumbTintList = thumbColor
             }
+            voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
+                if (isChecked) {
+                    MaterialAlertDialogBuilder(
+                            this@NotificationsSettingsActivity, R.style.AlertDialog
+                    ).setTitle(getString(R.string.voicemail_dialog_title))
+                            .setMessage(getString(R.string.voicemail_dialog_message))
+                            .show()
+
+                    notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
+                    val edit = voiceCallAllEnabledSwitchChecked.edit()
+                    edit.putBoolean(name, true)
+                    edit.apply()
+
+                    val trackColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+                    val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryVariant))
+
+                    voiceCallAllEnabledSwitch.trackTintList = trackColor
+                    voiceCallAllEnabledSwitch.thumbTintList = thumbColor
+                } else {
+                    notificationsSettingsViewModel.enabledAllPhoneCallContacts(contentResolver)
+                    val edit = voiceCallAllEnabledSwitchChecked.edit()
+                    edit.putBoolean(name, false)
+                    edit.apply()
+
+                    val trackColor = ColorStateList.valueOf(resources.getColor(R.color.greyColor))
+                    val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.lightGreyColor))
+
+                    voiceCallAllEnabledSwitch.trackTintList = trackColor
+                    voiceCallAllEnabledSwitch.thumbTintList = thumbColor
+                }
+            }
+        } else {
+            requestPermissionLauncher2.launch(arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE))
         }
     }
 

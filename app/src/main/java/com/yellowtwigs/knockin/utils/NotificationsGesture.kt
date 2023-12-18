@@ -49,6 +49,7 @@ object NotificationsGesture {
     const val GOOGLE_ANDROID_DIALER_PACKAGE = "com.google.android.dialer"
     const val ANDROID_PHONE_PACKAGE = "com.android.phone"
     const val SAMSUNG_CONTACTS_PACKAGE = "com.samsung.android.contacts"
+    const val GOOGLE_CONTACTS_PACKAGE = "com.google.android.contacts"
     const val HUAWEI_CONTACTS_PACKAGE = "com.huawei.contacts"
     const val TRUECALLER_PACKAGE = "com.truecaller"
 
@@ -112,6 +113,7 @@ object NotificationsGesture {
             GOOGLE_ANDROID_DIALER_PACKAGE -> return CALLS_APP_NAME
             ANDROID_PHONE_PACKAGE -> return CALLS_APP_NAME
             SAMSUNG_CONTACTS_PACKAGE -> return CALLS_APP_NAME
+            GOOGLE_CONTACTS_PACKAGE -> return CALLS_APP_NAME
             HUAWEI_CONTACTS_PACKAGE -> return CALLS_APP_NAME
             TRUECALLER_PACKAGE -> return CALLS_APP_NAME
 
@@ -175,6 +177,7 @@ object NotificationsGesture {
             GOOGLE_ANDROID_DIALER_PACKAGE -> true
             ANDROID_PHONE_PACKAGE -> true
             SAMSUNG_CONTACTS_PACKAGE -> true
+            GOOGLE_CONTACTS_PACKAGE -> true
             HUAWEI_CONTACTS_PACKAGE -> true
             TRUECALLER_PACKAGE -> true
             else -> false

@@ -361,7 +361,7 @@ class PopupNotificationsListAdapter(
         override fun areItemsTheSame(
             oldItem: PopupNotificationViewState, newItem: PopupNotificationViewState
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(

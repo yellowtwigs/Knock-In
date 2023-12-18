@@ -187,6 +187,16 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                 menu.findItem(R.id.filter_by_msg_apps)?.isChecked = true
                 notificationsListViewModel.setFilterBy(R.id.filter_by_msg_apps)
             }
+
+            R.id.filter_by_social_media -> {
+                menu.findItem(R.id.filter_by_social_media)?.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.filter_by_social_media)
+            }
+
+            R.id.call_filter -> {
+                menu.findItem(R.id.call_filter)?.isChecked = true
+                notificationsListViewModel.setFilterBy(R.id.call_filter)
+            }
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -525,8 +535,6 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     }
 
     private fun deleteListOfSelectedNotifications() {
-        Log.i("DeleteNotification", "duplicates : $duplicates")
-
         if (duplicates.isNotEmpty()) {
             duplicates.map { notification ->
                 notificationsListViewModel.deleteNotification(

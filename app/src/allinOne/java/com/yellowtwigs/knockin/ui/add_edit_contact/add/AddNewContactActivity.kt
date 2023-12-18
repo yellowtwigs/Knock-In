@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.ui.add_edit_contact.add
 import android.Manifest
 import android.app.Activity
 import android.content.ContentResolver
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -34,9 +35,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityEditContactBinding
 import com.yellowtwigs.knockin.model.database.data.ContactDB
-import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.IconAdapter
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
+import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.bitmapToBase64
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
@@ -49,6 +50,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 @AndroidEntryPoint
 class AddNewContactActivity : AppCompatActivity() {
 
@@ -57,9 +59,6 @@ class AddNewContactActivity : AppCompatActivity() {
     private val editContactViewModel: EditContactViewModel by viewModels()
 
     private var isChanged = false
-    private var editInAndroid = false
-    private var editInGoogle = false
-    private var isRetroFit = false
 
     private var numberOfContactsVIP = 0
     private var contactsUnlimitedIsBought = false
@@ -88,8 +87,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
         numberOfContactsVIP = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE).getInt("nb_Contacts_VIP", 0)
 
-        contactsUnlimitedIsBought =
-            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE).getBoolean("Contacts_Unlimited_Bought", false)
+        contactsUnlimitedIsBought = getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE).getBoolean("Contacts_Unlimited_Bought", false)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         setupUi()
@@ -101,11 +99,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     private fun setupUi() {
         avatar = randomDefaultImage(0, this, "Create")
-        binding.contactImage.setImageResource(
-            randomDefaultImage(
-                randomDefaultImage(0, this, "Create"), this, "Get"
-            )
-        )
+        binding.contactImage.setImageResource(randomDefaultImage(randomDefaultImage(0, this, "Create"), this, "Get"))
     }
 
     private fun setupPriority() {
@@ -118,9 +112,7 @@ class AddNewContactActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?, view: View?, position: Int, id: Long
-                ) {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     changePriorityUI(position)
                 }
             }
@@ -133,33 +125,21 @@ class AddNewContactActivity : AppCompatActivity() {
         when (position) {
             0 -> {
                 binding.priorityExplain.text = getString(R.string.priority_0_subtitle)
-                binding.contactImage.setBorderColor(
-                    resources.getColor(
-                        R.color.priorityZeroColor, null
-                    )
-                )
+                binding.contactImage.setBorderColor(resources.getColor(R.color.priorityZeroColor, null))
                 binding.vipSettingsIcon.visibility = View.GONE
                 binding.vipSettingsText.visibility = View.GONE
             }
 
             1 -> {
                 binding.priorityExplain.text = getString(R.string.priority_0_subtitle)
-                binding.contactImage.setBorderColor(
-                    resources.getColor(
-                        R.color.priorityOneColor, null
-                    )
-                )
+                binding.contactImage.setBorderColor(resources.getColor(R.color.priorityOneColor, null))
                 binding.vipSettingsIcon.visibility = View.GONE
                 binding.vipSettingsText.visibility = View.GONE
             }
 
             2 -> {
                 binding.priorityExplain.text = getString(R.string.priority_2_subtitle)
-                binding.contactImage.setBorderColor(
-                    resources.getColor(
-                        R.color.priorityTwoColor, null
-                    )
-                )
+                binding.contactImage.setBorderColor(resources.getColor(R.color.priorityTwoColor, null))
 
                 binding.vipSettingsIcon.isVisible = numberOfContactsVIP <= 5
                 binding.vipSettingsText.isVisible = numberOfContactsVIP <= 5
@@ -203,11 +183,8 @@ class AddNewContactActivity : AppCompatActivity() {
                 }
             }
             phoneNumberInformations.setOnClickListener {
-                MaterialAlertDialogBuilder(
-                    this@AddNewContactActivity, R.style.AlertDialog
-                ).setTitle(getString(R.string.add_new_contact_phone_number)).setMessage(getString(R.string.handle_one_phone_number_msg))
-                    .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                    }.show()
+                MaterialAlertDialogBuilder(this@AddNewContactActivity, R.style.AlertDialog).setTitle(getString(R.string.add_new_contact_phone_number)).setMessage(getString(R.string.handle_one_phone_number_msg)).setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
+                        }.show()
             }
             validate.setOnClickListener {
                 hideKeyboard(this@AddNewContactActivity)
@@ -230,28 +207,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             }
                         }
 
-                        contact = ContactDB(
-                            0,
-                            null,
-                            fullName,
-                            binding.firstNameInput.editText?.text.toString(),
-                            binding.lastNameInput.editText?.text.toString(),
-                            avatar,
-                            contactImageString,
-                            listOfPhoneNumbers,
-                            arrayListOf(binding.mailInput.editText?.text.toString()),
-                            binding.mailIdInput.editText?.text.toString(),
-                            binding.prioritySpinner.selectedItemPosition,
-                            isFavorite,
-                            binding.messengerIdInput.editText?.text.toString(),
-                            arrayListOf(),
-                            "",
-                            R.raw.sms_ring,
-                            1,
-                            0,
-                            "",
-                            ""
-                        )
+                        contact = ContactDB(0, null, fullName, binding.firstNameInput.editText?.text.toString(), binding.lastNameInput.editText?.text.toString(), avatar, contactImageString, listOfPhoneNumbers, arrayListOf(binding.mailInput.editText?.text.toString()), binding.mailIdInput.editText?.text.toString(), binding.prioritySpinner.selectedItemPosition, isFavorite, binding.messengerIdInput.editText?.text.toString(), arrayListOf(), "", R.raw.sms_ring, 1, 0, "", "")
 
 //                        currentContact.androidId?.toString()?.let {
 //                            when (binding.prioritySpinner.selectedItemPosition) {
@@ -269,9 +225,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
                         CoroutineScope(Dispatchers.Main).launch {
                             if (editContactViewModel.checkDuplicateContact(contact!!)) {
-                                Toast.makeText(
-                                    this@AddNewContactActivity, getString(R.string.add_new_contact_alert_dialog_message), Toast.LENGTH_LONG
-                                ).show()
+                                Toast.makeText(this@AddNewContactActivity, getString(R.string.add_new_contact_alert_dialog_message), Toast.LENGTH_LONG).show()
                             } else {
                                 retrofitMaterialDialog()
                             }
@@ -281,16 +235,10 @@ class AddNewContactActivity : AppCompatActivity() {
             }
 
             mailIdHelp.setOnClickListener {
-                MaterialAlertDialogBuilder(
-                    this@AddNewContactActivity, R.style.AlertDialog
-                ).setTitle(getString(R.string.add_new_contact_mail_identifier)).setView(R.layout.alert_dialog_mail_identifier_help)
-                    .setMessage(getString(R.string.add_new_contact_mail_identifier_help)).show()
+                MaterialAlertDialogBuilder(this@AddNewContactActivity, R.style.AlertDialog).setTitle(getString(R.string.add_new_contact_mail_identifier)).setView(R.layout.alert_dialog_mail_identifier_help).setMessage(getString(R.string.add_new_contact_mail_identifier_help)).show()
             }
             messengerIdHelp.setOnClickListener {
-                MaterialAlertDialogBuilder(
-                    this@AddNewContactActivity, R.style.AlertDialog
-                ).setTitle(getString(R.string.messenger_identifier_title)).setView(R.layout.alert_dialog_messenger_identifier_help)
-                    .setMessage(getString(R.string.messenger_identifier_message)).show()
+                MaterialAlertDialogBuilder(this@AddNewContactActivity, R.style.AlertDialog).setTitle(getString(R.string.messenger_identifier_title)).setView(R.layout.alert_dialog_messenger_identifier_help).setMessage(getString(R.string.messenger_identifier_message)).show()
             }
 
             contactImage.setOnClickListener {
@@ -318,66 +266,49 @@ class AddNewContactActivity : AppCompatActivity() {
     }
 
     private fun retrofitMaterialDialog() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
-            .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
-                editInAndroid = true
-                editInGoogle = true
+        contact?.let { contactNotNull ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val values = ContentValues()
+                values.putNull(ContactsContract.RawContacts.ACCOUNT_TYPE)
+                values.putNull(ContactsContract.RawContacts.ACCOUNT_NAME)
 
-                addNewUserToAndroidContacts()
+                val rawContactUri = contentResolver.insert(ContactsContract.RawContacts.CONTENT_URI, values)
+                rawContactUri?.let { uri ->
+                    val rawContactId = ContentUris.parseId(uri)
 
-                contact?.let{
-                    CoroutineScope(Dispatchers.IO).launch {
-                        markContactAsFavorite(contentResolver, it.androidId, isFavorite)
-                        editContactViewModel.addNewContact(it)
+                    values.clear()
+                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+                    values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contactNotNull.firstName)
+                    values.put(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, contactNotNull.lastName)
+                    contentResolver.insert(ContactsContract.Data.CONTENT_URI, values)
 
-                        if (isFavorite != 0) {
-                            updateFavorite()
-                        }
-                    }
+                    values.clear()
+                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+                    values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                    values.put(ContactsContract.CommonDataKinds.Email.ADDRESS, if (contactNotNull.listOfMails.isNotEmpty()) contactNotNull.listOfMails.first() else "")
+                    contentResolver.insert(ContactsContract.Data.CONTENT_URI, values)
+
+                    values.clear()
+                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+                    values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, if (contactNotNull.listOfPhoneNumbers.isNotEmpty()) contactNotNull.listOfPhoneNumbers.first() else "")
+                    values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    contentResolver.insert(ContactsContract.Data.CONTENT_URI, values)
+
+                    markContactAsFavorite(contentResolver, rawContactId.toInt(), isFavorite)
                 }
-            }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    contact?.let{
-                        CoroutineScope(Dispatchers.IO).launch {
-                            markContactAsFavorite(contentResolver, it.androidId, isFavorite)
-                            editContactViewModel.addNewContact(it)
+                editContactViewModel.addNewContact(contactNotNull)
 
-                            if (isFavorite != 0) {
-                                updateFavorite()
-                            }
-                        }
-                    }
+                if (isFavorite != 0) {
+                    updateFavorite()
                 }
 
-                goToContactsListActivity()
-            }.show()
-    }
-
-    private fun addNewUserToAndroidContacts() {
-        val intent = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
-            type = ContactsContract.RawContacts.CONTENT_ITEM_TYPE
-
-            putExtra(
-                ContactsContract.Intents.Insert.NAME,
-                binding.firstNameInput.editText?.text.toString() + " " + binding.lastNameInput.editText?.text.toString(),
-            )
-            putExtra(
-                ContactsContract.Intents.Insert.EMAIL, binding.mailInput.editText?.text.toString()
-            )
-            putExtra(
-                ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK
-            )
-            putExtra(ContactsContract.Contacts.Photo.PHOTO, contactImageString)
-            putExtra(
-                ContactsContract.Intents.Insert.PHONE, binding.firstPhoneNumberContent.text?.toString()
-            )
-            putExtra(
-                ContactsContract.Intents.Insert.EXTRA_DATA_SET, binding.messengerIdInput.editText?.text.toString()
-            )
+                withContext(Dispatchers.Main) {
+                    goToContactsListActivity()
+                }
+            }
         }
-
-        isRetroFit = true
-        startActivity(intent)
     }
 
     private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
@@ -389,12 +320,7 @@ class AddNewContactActivity : AppCompatActivity() {
         contactId?.let {
             val whereArgs = arrayOf(it.toString())
 
-            contentResolver.update(
-                ContactsContract.Contacts.CONTENT_URI,
-                contentValues,
-                whereClause,
-                whereArgs
-            )
+            contentResolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, whereClause, whereArgs)
         }
     }
 
@@ -413,25 +339,17 @@ class AddNewContactActivity : AppCompatActivity() {
 
     private fun checkIfDataAreEmpty(): Boolean {
         binding.apply {
-            return firstNameInput.editText?.text.toString().isNotEmpty() || lastNameInput.editText?.text.toString()
-                .isNotEmpty() || firstPhoneNumberContent.text?.toString()?.isNotEmpty() == true || mailInput.editText?.text.toString()
-                .isNotEmpty() || mailIdInput.editText?.text.toString().isNotEmpty() || messengerIdInput.editText?.text.toString()
-                .isNotEmpty() || contactImageStringIsChanged
+            return firstNameInput.editText?.text.toString().isNotEmpty() || lastNameInput.editText?.text.toString().isNotEmpty() || firstPhoneNumberContent.text?.toString()?.isNotEmpty() == true || mailInput.editText?.text.toString().isNotEmpty() || mailIdInput.editText?.text.toString().isNotEmpty() || messengerIdInput.editText?.text.toString().isNotEmpty() || contactImageStringIsChanged
         }
     }
 
     private fun customOnBackPressed() {
         hideKeyboard(this)
         if (checkIfDataAreEmpty()) {
-            MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_cancel_title)
-                .setMessage(R.string.edit_contact_alert_dialog_cancel_message).setBackground(
-                    ResourcesCompat.getDrawable(
-                        resources, R.color.backgroundColor, null
-                    )
-                ).setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                    goToContactsListActivity()
-                }.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                }.show()
+            MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_cancel_title).setMessage(R.string.edit_contact_alert_dialog_cancel_message).setBackground(ResourcesCompat.getDrawable(resources, R.color.backgroundColor, null)).setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
+                        goToContactsListActivity()
+                    }.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
+                    }.show()
         } else {
             goToContactsListActivity()
         }
@@ -456,13 +374,8 @@ class AddNewContactActivity : AppCompatActivity() {
             val adapter = IconAdapter(this@AddNewContactActivity, this)
             recyclerView?.adapter = adapter
             gallery?.setOnClickListener {
-                if (ActivityCompat.checkSelfPermission(
-                        this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
-                        this@AddNewContactActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_GALLERY
-                    )
+                if (ActivityCompat.checkSelfPermission(this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this@AddNewContactActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_GALLERY)
                     builderBottom.dismiss()
                 } else {
                     openGallery()
@@ -470,20 +383,11 @@ class AddNewContactActivity : AppCompatActivity() {
                 }
             }
             camera?.setOnClickListener {
-                if (ActivityCompat.checkSelfPermission(
-                        this@AddNewContactActivity, Manifest.permission.CAMERA
-                    ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                        this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
+                if (ActivityCompat.checkSelfPermission(this@AddNewContactActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this@AddNewContactActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     val arrayListPermission = ArrayList<String>()
                     arrayListPermission.add(Manifest.permission.CAMERA)
                     arrayListPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ActivityCompat.requestPermissions(
-                        this@AddNewContactActivity,
-                        arrayListPermission.toArray(arrayOfNulls<String>(arrayListPermission.size)),
-                        REQUEST_CODE_CAMERA
-                    )
+                    ActivityCompat.requestPermissions(this@AddNewContactActivity, arrayListPermission.toArray(arrayOfNulls<String>(arrayListPermission.size)), REQUEST_CODE_CAMERA)
                     builderBottom.dismiss()
                 } else {
                     openCamera()
@@ -496,9 +400,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(
-            Intent.createChooser(intent, this@AddNewContactActivity.getString(R.string.add_new_contact_intent_title)), REQUEST_CODE_GALLERY
-        )
+        startActivityForResult(Intent.createChooser(intent, this@AddNewContactActivity.getString(R.string.add_new_contact_intent_title)), REQUEST_CODE_GALLERY)
     }
 
     private fun openCamera() {
@@ -557,9 +459,7 @@ class AddNewContactActivity : AppCompatActivity() {
                         imageUri = it
                         val matrix = Matrix()
                         val exif = ExifInterface(getRealPathFromUri(this@AddNewContactActivity, it))
-                        val rotation = exif.getAttributeInt(
-                            ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
-                        )
+                        val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                         val rotationInDegrees = exifToDegrees(rotation)
                         matrix.postRotate(rotationInDegrees.toFloat())
 
@@ -579,9 +479,7 @@ class AddNewContactActivity : AppCompatActivity() {
                     imageUri?.let { uri ->
                         val matrix = Matrix()
                         val exif = ExifInterface(getRealPathFromUri(this@AddNewContactActivity, uri))
-                        val rotation = exif.getAttributeInt(
-                            ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
-                        )
+                        val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
                         val rotationInDegrees = exifToDegrees(rotation)
                         matrix.postRotate(rotationInDegrees.toFloat())
                         var bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
@@ -606,13 +504,6 @@ class AddNewContactActivity : AppCompatActivity() {
             ExifInterface.ORIENTATION_ROTATE_180 -> 180
             ExifInterface.ORIENTATION_ROTATE_270 -> 270
             else -> 0
-        }
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        if (isRetroFit) {
-            goToContactsListActivity()
         }
     }
 }
