@@ -3,6 +3,7 @@ package com.yellowtwigs.knockin.utils
 import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ContentProviderOperation
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
@@ -28,49 +29,101 @@ import java.util.*
 
 object ContactGesture {
 
-    fun updateContact(context: Context, rawContactId: Int?, firstName: String, lastName: String, phoneNumber: String?, email: String?) {
-        rawContactId?.let {
-            val resolver: ContentResolver = context.contentResolver
-            updateDisplayName(resolver, rawContactId.toLong(), firstName, lastName)
-            updateFirstName(resolver, rawContactId.toLong(), firstName)
-            updateLastName(resolver, rawContactId.toLong(), lastName)
-            phoneNumber?.let {
-                updatePhoneNumber(resolver, rawContactId, it)
-            }
-            email?.let {
-                updateEmail(resolver, rawContactId, it)
+    fun updateContact(context: Context, rawContactId: Int?, firstName: String, lastName: String, lastPhoneNumber: String, phoneNumber: String?, email:
+    String?) {
+        Log.i("UpdateContact", "rawContactId : $rawContactId")
+        Log.i("UpdateContact", "firstName : $firstName")
+        Log.i("UpdateContact", "lastName : $lastName")
+        Log.i("UpdateContact", "phoneNumber : $phoneNumber")
+        Log.i("UpdateContact", "email : $email")
+
+        phoneNumber?.let { phoneNumberNotNull ->
+            email?.let { mailNotNull ->
+                updateNameAndNumber(
+                        context,
+                        lastPhoneNumber,
+                        firstName,
+                        lastName,
+                        phoneNumberNotNull,
+                        mailNotNull,
+                )
             }
         }
     }
 
-    private fun updateDisplayName(resolver: ContentResolver, rawContactId: Long, firstName: String, lastName: String) {
-        val values = ContentValues()
-        values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "$firstName $lastName")
-        resolver.update(ContactsContract.Data.CONTENT_URI, values, "${ContactsContract.Data.RAW_CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?", arrayOf(rawContactId.toString(), ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE))
+    private val DATA_COLS = arrayOf(
+            ContactsContract.Data.MIMETYPE,
+            ContactsContract.Data.DATA1,
+            ContactsContract.Data.CONTACT_ID
+    )
+
+    private fun updateNameAndNumber(context: Context, number: String, newFirstname: String, newLastname: String, newNumber: String, newEmail: String): Boolean {
+
+        getContactId(context, number)?.let { contactId ->
+            val nameWhere = "${DATA_COLS[0]} = '${ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE}' AND ${DATA_COLS[2]} = ?"
+            val nameArgs = arrayOf(contactId)
+
+            val firstnameOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection(nameWhere, nameArgs)
+                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, newFirstname)
+                    .build()
+
+            val lastnameOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection(nameWhere, nameArgs)
+                    .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, newLastname)
+                    .build()
+
+            val numberWhere = "${DATA_COLS[0]} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}' AND ${DATA_COLS[1]} = ?"
+            val numberArgs = arrayOf(number)
+
+            val numberOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection(numberWhere, numberArgs)
+                    .withValue(DATA_COLS[1], newNumber)
+                    .build()
+
+            val emailWhere = "${DATA_COLS[0]} = '${ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE}' AND ${DATA_COLS[2]} = ?"
+            val emailArgs = arrayOf(contactId)
+
+            val emailOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection(emailWhere, emailArgs)
+                    .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, newEmail)
+                    .build()
+
+            val operations = arrayListOf(firstnameOperation, lastnameOperation, numberOperation, emailOperation)
+
+            try {
+                val results = context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+
+                for (result in results) {
+                    Log.d("Update Result", result.toString())
+                }
+
+                return true
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        return false
     }
 
-    private fun updateFirstName(resolver: ContentResolver, rawContactId: Long, firstName: String) {
-        val values = ContentValues()
-        values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, firstName)
-        resolver.update(ContactsContract.Data.CONTENT_URI, values, "${ContactsContract.Data.RAW_CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?", arrayOf(rawContactId.toString(), ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE))
-    }
+    fun getContactId(context: Context, number: String): String? {
+        val cursor = context.contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                arrayOf(ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER),
+                "${ContactsContract.CommonDataKinds.Phone.NUMBER}=?",
+                arrayOf(number),
+                null
+        )
 
-    private fun updateLastName(resolver: ContentResolver, rawContactId: Long, lastName: String) {
-        val values = ContentValues()
-        values.put(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, lastName)
-        resolver.update(ContactsContract.Data.CONTENT_URI, values, "${ContactsContract.Data.RAW_CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?", arrayOf(rawContactId.toString(), ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE))
-    }
+        if (cursor == null || cursor.count == 0) return null
 
-    private fun updatePhoneNumber(resolver: ContentResolver, rawContactId: Int, phoneNumber: String) {
-        val values = ContentValues()
-        values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
-        resolver.update(ContactsContract.Data.CONTENT_URI, values, "${ContactsContract.Data.RAW_CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?", arrayOf(rawContactId.toString(), ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE))
-    }
+        cursor.moveToFirst()
 
-    private fun updateEmail(resolver: ContentResolver, rawContactId: Int, email: String) {
-        val values = ContentValues()
-        values.put(ContactsContract.CommonDataKinds.Email.ADDRESS, email)
-        resolver.update(ContactsContract.Data.CONTENT_URI, values, "${ContactsContract.Data.RAW_CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?", arrayOf(rawContactId.toString(), ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE))
+        val id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID))
+
+        cursor.close()
+        return id
     }
 
     fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {

@@ -59,6 +59,9 @@ class AddNewContactActivity : AppCompatActivity() {
     private val editContactViewModel: EditContactViewModel by viewModels()
 
     private var isChanged = false
+    private var editInAndroid = false
+    private var editInGoogle = false
+    private var isRetroFit = false
 
     private var numberOfContactsVIP = 0
     private var contactsUnlimitedIsBought = false
@@ -184,7 +187,7 @@ class AddNewContactActivity : AppCompatActivity() {
             }
             phoneNumberInformations.setOnClickListener {
                 MaterialAlertDialogBuilder(this@AddNewContactActivity, R.style.AlertDialog).setTitle(getString(R.string.add_new_contact_phone_number)).setMessage(getString(R.string.handle_one_phone_number_msg)).setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                        }.show()
+                }.show()
             }
             validate.setOnClickListener {
                 hideKeyboard(this@AddNewContactActivity)
@@ -265,7 +268,7 @@ class AddNewContactActivity : AppCompatActivity() {
         editContactViewModel.updateFavorite("${binding.firstNameInput.editText?.text.toString()} ${binding.lastNameInput.editText?.text.toString()}")
     }
 
-    private fun retrofitMaterialDialog() {
+    private fun addContact() {
         contact?.let { contactNotNull ->
             CoroutineScope(Dispatchers.IO).launch {
                 val values = ContentValues()
@@ -311,6 +314,69 @@ class AddNewContactActivity : AppCompatActivity() {
         }
     }
 
+    private fun retrofitMaterialDialog() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
+                .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    editInAndroid = true
+                    editInGoogle = true
+
+                    addNewUserToAndroidContacts()
+
+                    contact?.let {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            markContactAsFavorite(contentResolver, it.androidId, isFavorite)
+                            editContactViewModel.addNewContact(it)
+
+                            if (isFavorite != 0) {
+                                updateFavorite()
+                            }
+                        }
+                    }
+                }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        contact?.let {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                markContactAsFavorite(contentResolver, it.androidId, isFavorite)
+                                editContactViewModel.addNewContact(it)
+
+                                if (isFavorite != 0) {
+                                    updateFavorite()
+                                }
+                            }
+                        }
+                    }
+
+                    goToContactsListActivity()
+                }.show()
+    }
+
+    private fun addNewUserToAndroidContacts() {
+        val intent = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
+            type = ContactsContract.RawContacts.CONTENT_ITEM_TYPE
+
+            putExtra(
+                    ContactsContract.Intents.Insert.NAME,
+                    binding.firstNameInput.editText?.text.toString() + " " + binding.lastNameInput.editText?.text.toString(),
+            )
+            putExtra(
+                    ContactsContract.Intents.Insert.EMAIL, binding.mailInput.editText?.text.toString()
+            )
+            putExtra(
+                    ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK
+            )
+            putExtra(ContactsContract.Contacts.Photo.PHOTO, contactImageString)
+            putExtra(
+                    ContactsContract.Intents.Insert.PHONE, binding.firstPhoneNumberContent.text?.toString()
+            )
+            putExtra(
+                    ContactsContract.Intents.Insert.EXTRA_DATA_SET, binding.messengerIdInput.editText?.text.toString()
+            )
+        }
+
+        isRetroFit = true
+        startActivity(intent)
+    }
+
     private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
         val contentValues = ContentValues()
         contentValues.put(ContactsContract.Contacts.STARRED, isFavorite)
@@ -326,7 +392,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     //endregion
 
-    //region ============================================ UTILS =============================================
+    //region ================================================================== UTILS =================================================================
 
     private fun isStringTotallyEmpty(value: String): Boolean {
         return value.isEmpty() || value.isBlank() || value == ""
@@ -347,9 +413,9 @@ class AddNewContactActivity : AppCompatActivity() {
         hideKeyboard(this)
         if (checkIfDataAreEmpty()) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_cancel_title).setMessage(R.string.edit_contact_alert_dialog_cancel_message).setBackground(ResourcesCompat.getDrawable(resources, R.color.backgroundColor, null)).setPositiveButton(getString(R.string.alert_dialog_yes)) { _, _ ->
-                        goToContactsListActivity()
-                    }.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
-                    }.show()
+                goToContactsListActivity()
+            }.setNegativeButton(getString(R.string.alert_dialog_no)) { _, _ ->
+            }.show()
         } else {
             goToContactsListActivity()
         }
@@ -504,6 +570,13 @@ class AddNewContactActivity : AppCompatActivity() {
             ExifInterface.ORIENTATION_ROTATE_180 -> 180
             ExifInterface.ORIENTATION_ROTATE_270 -> 270
             else -> 0
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (isRetroFit) {
+            goToContactsListActivity()
         }
     }
 }

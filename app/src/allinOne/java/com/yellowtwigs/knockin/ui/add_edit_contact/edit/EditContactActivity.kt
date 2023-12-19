@@ -68,6 +68,9 @@ class EditContactActivity : AppCompatActivity() {
     private var isChanged = false
 
     private var fromGroups = false
+    private var editInAndroid = false
+    private var editInGoogle = false
+    private var isRetroFit = false
 
     private var contactsUnlimitedIsBought = false
 
@@ -369,16 +372,7 @@ class EditContactActivity : AppCompatActivity() {
             validate.setOnClickListener {
                 hideKeyboard(this@EditContactActivity)
                 if (checkIfADataWasChanged() && !checkIfFieldsAreEmpty()) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        updateUser()
-                        if (isFavorite != currentContact.isFavorite) {
-                            updateFavorite()
-                        }
-
-                        withContext(Dispatchers.Main) {
-                            goToContactsOrGroups()
-                        }
-                    }
+                    retrofitMaterialDialog()
                 } else {
                     if (fromVipSettingsDataChanged) {
                         CoroutineScope(Dispatchers.IO).launch {
@@ -489,7 +483,8 @@ class EditContactActivity : AppCompatActivity() {
         markContactAsFavorite(contentResolver, currentContact.androidId, isFavorite)
 
         updateContact(this@EditContactActivity, currentContact.androidId, binding.firstNameInput.editText?.text.toString(), binding.lastNameInput.editText?.text.toString(),
-                if(listOfPhoneNumbers.isNotEmpty()) listOfPhoneNumbers.first() else "", binding.mailInput.editText?.text.toString())
+                currentContact.firstPhoneNumber,
+                if (listOfPhoneNumbers.isNotEmpty()) listOfPhoneNumbers.first() else "", binding.mailInput.editText?.text.toString())
 
         val contact = ContactDB(
                 currentContact.id,
@@ -533,6 +528,58 @@ class EditContactActivity : AppCompatActivity() {
 
     private suspend fun updateFavorite() {
         editContactViewModel.updateFavorite(currentContact.id.toString())
+    }
+
+    private fun retrofitMaterialDialog() {
+        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(R.string.edit_contact_alert_dialog_sync_contact_title)
+                .setMessage(R.string.edit_contact_alert_dialog_sync_contact_message).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->
+                    editInAndroid = true
+                    editInGoogle = true
+
+                    addNewUserToAndroidContacts()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        updateUser()
+                        if (isFavorite != currentContact.isFavorite) {
+                            updateFavorite()
+                        }
+                    }
+                }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        updateUser()
+                        if (isFavorite != currentContact.isFavorite) {
+                            updateFavorite()
+                        }
+                    }
+
+                    goToContactsOrGroups()
+                }.show()
+    }
+
+    private fun addNewUserToAndroidContacts() {
+        val intentInsertEdit = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
+            type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
+
+            putExtra(
+                    ContactsContract.Intents.Insert.NAME,
+                    binding.firstNameInput.editText?.text.toString() + " " + binding.lastNameInput.editText?.text.toString(),
+            )
+            putExtra(
+                    ContactsContract.Intents.Insert.EMAIL, binding.mailInput.editText?.text.toString()
+            )
+            putExtra(
+                    ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK
+            )
+            putExtra(
+                    ContactsContract.Contacts.Photo.PHOTO, contactImageString
+            )
+
+            putExtra(ContactsContract.Intents.Insert.PHONE, binding.firstPhoneNumberContent.text?.toString())
+            putExtra(
+                    ContactsContract.Intents.Insert.EXTRA_DATA_SET, binding.messengerIdInput.editText?.text.toString()
+            )
+        }
+        isRetroFit = true
+        startActivity(intentInsertEdit)
     }
 
     private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
@@ -761,6 +808,20 @@ class EditContactActivity : AppCompatActivity() {
             ExifInterface.ORIENTATION_ROTATE_180 -> 180
             ExifInterface.ORIENTATION_ROTATE_270 -> 270
             else -> 0
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (isRetroFit) {
+            goToContactsOrGroups()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (editInGoogle) {
+            goToContactsOrGroups()
         }
     }
 
