@@ -495,7 +495,7 @@ Untuk melihat pop-up notifikasi VIP dengan Android 10, Anda perlu mengaktifkan "
     <string name="strong_red_advice">Tinjau kembali pendekatan VIP Anda.\n Diperlukan rata-rata 23 menit untuk memfokuskan kembali setelah interupsi</string>
     <string name="orange_advice">Anda dapat mengoptimalkan waktu Anda secara signifikan dengan menggunakan mode senyap dengan kontak non VIP</string>
     <string name="yellow_advice">Anda mungkin melewatkan pesan penting dari beberapa kontak.\n Sebaiknya tambahkan satu atau lebih VIP</string>
-    <string name="light_green_advice">Anda mungkin memiliki lebih banyak VIP untuk dikonfigurasi.\n Sebaiknya beli paket VIP</string>
+    <string name="light_green_advice">Anda mungkin memiliki lebih banyak VIP untuk dikonfigurasi.</string>
     <string name="strong_green_advice"> Kerja bagus, Anda pasti mengoptimalkan waktu Anda! Untuk melakukannya lebih baik lagi, Anda mungkin ingin mempersonalisasikan VIP Anda</string>
 
     <string name="number_unprocessed_notifications">%1d notifikasi baru</string>

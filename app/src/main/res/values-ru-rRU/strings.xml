@@ -495,7 +495,7 @@
     <string name="strong_red_advice">Пересмотрите свой VIP-подход.\n в среднем требуется 23 минуты, чтобы перефокусироваться после прерывания</string>
     <string name="orange_advice">Вы можете значительно оптимизировать свое время, используя беззвучный режим с не VIP-контактами</string>
     <string name="yellow_advice">Вы можете пропустить важные сообщения от нескольких контактов.\n Pекомендуем добавить одного или нескольких VIP</string>
-    <string name="light_green_advice">У вас может быть больше VIP для настройки.\n Pекомендуем купить пакет VIP</string>
+    <string name="light_green_advice">У вас может быть больше VIP для настройки.</string>
     <string name="strong_green_advice">Отличная работа, вы определенно оптимизируете свое время! Чтобы добиться еще большего успеха, вы можете персонализировать своих VIP-клиентов</string>
 
     <string name="number_unprocessed_notifications">%1d Новые уведомления</string>

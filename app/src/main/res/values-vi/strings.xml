@@ -496,7 +496,7 @@
     <string name="strong_red_advice">Revisit your VIP approach.\n It takes 23’ in average to refocus after an interrupt</string>
     <string name="orange_advice">Bạn có thể tối ưu hóa đáng kể thời gian của mình bằng cách sử dụng chế độ im lặng với các liên hệ không phải VIP</string>
     <string name="yellow_advice">You may miss important messages from several contacts.\n We recommend adding one or more VIPs</string>
-    <string name="light_green_advice">You may have more VIPs to configure.\n We recommend buying a VIP package</string>
+    <string name="light_green_advice">You may have more VIPs to configure.</string>
     <string name="strong_green_advice">Great job, you definitely optimize your time!\n To do even better, you may want to personalize your VIPs</string>
 
     <string name="number_unprocessed_notifications">%1d thông báo mới</string>

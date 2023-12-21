@@ -291,14 +291,7 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter())
         data.setValueTextSize(12f)
-//        data.setValueTextColor(Color.rgb(159, 48, 255))
         data.setValueTextColor(Color.TRANSPARENT)
-
-//        if (isThemeDark) {
-//            data.setValueTextColor(Color.WHITE)
-//        } else {
-//            data.setValueTextColor(Color.WHITE)
-//        }
 
         dataPieChart.data = data
         dataPieChart.setEntryLabelColor(Color.TRANSPARENT)

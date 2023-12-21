@@ -494,7 +494,7 @@
     <string name="strong_red_advice">Rivisita il tuo approccio VIP: ci vogliono in media 23 per rimettere a fuoco dopo un interruzione</string>
     <string name="orange_advice">Puoi ottimizzare notevolmente il tuo tempo utilizzando la modalità silenziosa con contatti non VIP</string>
     <string name="yellow_advice">Potresti perdere messaggi importanti da diversi contatti: ti consigliamo di aggiungere uno o più VIP</string>
-    <string name="light_green_advice">Potresti avere più VIP da configurare: ti consigliamo di acquistare un pacchetto VIP</string>
+    <string name="light_green_advice">Potresti avere più VIP da configurare</string>
     <string name="strong_green_advice">Ottimo lavoro, ottimizzi sicuramente il tuo tempo! Per fare ancora meglio, potresti voler personalizzare i tuoi VIP </string>
 
     <string name="number_unprocessed_notifications">%1d nuove notifiche</string>

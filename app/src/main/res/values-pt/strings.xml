@@ -494,7 +494,7 @@
     <string name="strong_red_advice">Revise sua abordagem VIP – Leva 23\' em média para reorientar após uma interrupção</string>
     <string name="orange_advice">Você pode otimizar significativamente seu tempo usando o modo silencioso com contatos não VIP</string>
     <string name="yellow_advice">Você pode perder mensagens importantes de vários contatos – recomendamos adicionar um ou mais VIPs</string>
-    <string name="light_green_advice">Você pode ter mais VIPs para configurar - recomendamos comprar um pacote VIP</string>
+    <string name="light_green_advice">Você pode ter mais VIPs para configurar</string>
     <string name="strong_green_advice">Ótimo trabalho, você definitivamente otimiza seu tempo! Para fazer ainda melhor, você pode querer personalizar seus VIPs</string>
 
     <string name="number_unprocessed_notifications">%1d novas notificações</string>

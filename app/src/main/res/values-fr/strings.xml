@@ -498,7 +498,7 @@
     <string name="strong_red_advice">Revisitez votre approche VIP.\n Il faut en moyenne 23’ pour se recentrer après une interruption</string>
     <string name="orange_advice">Vous pouvez optimiser considérablement votre temps en utilisant le mode silencieux avec des contacts non VIP</string>
     <string name="yellow_advice">Vous risquez de manquer des messages importants de plusieurs contacts.\n Nous vous recommandons d\'ajouter un ou plusieurs VIP</string>
-    <string name="light_green_advice"> Vous pouvez avoir plus de VIP à configurer.\n Nous vous recommandons d\'acheter un forfait VIP</string>
+    <string name="light_green_advice"> Vous pouvez avoir plus de VIP à configurer.</string>
     <string name="strong_green_advice">Excellent travail, vous optimisez définitivement votre temps !\n Pour faire encore mieux, vous pouvez personnaliser vos VIP</string>
 
     <string name="number_unprocessed_notifications">%1d nouvelles notifications</string>

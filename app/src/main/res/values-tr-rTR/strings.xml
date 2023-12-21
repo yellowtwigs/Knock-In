@@ -494,7 +494,7 @@
     <string name="strong_red_advice">VIP yaklaşımınızı yeniden gözden geçirin.\n Bir kesintiden sonra yeniden odaklanmak ortalama 23 dakika sürer </string>
     <string name="orange_advice">VIP olmayan kişilerle sessiz modu kullanarak zamanınızı önemli ölçüde optimize edebilirsiniz</string>
     <string name="yellow_advice">Birkaç kişiden gelen önemli mesajları kaçırabilirsiniz.\n Bir veya daha fazla VIP eklemenizi öneririz</string>
-    <string name="light_green_advice">Yapılandırılacak daha fazla VIP\'niz olabilir.\n Bir VIP paketi satın almanızı öneririz</string>
+    <string name="light_green_advice">Yapılandırılacak daha fazla VIP\'niz olabilir.</string>
     <string name="strong_green_advice">Harika iş, kesinlikle zamanınızı optimize ediyorsunuz! Daha da iyisini yapmak için VIP\'lerinizi kişiselleştirmek isteyebilirsiniz</string>
 
     <string name="number_unprocessed_notifications">%1d yeni bildirimler</string>

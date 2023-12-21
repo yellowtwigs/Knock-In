@@ -103,35 +103,42 @@ class NotificationsListenerService : NotificationListenerService() {
 
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
-                    notificationsListenerUseCases.apply {
-                        val contact = when {
-                            isPhoneNumber(name) -> {
-                                getContactByPhoneNumber.invoke(name)
+
+                    if (message.contains("call") || message.contains("Incoming") || message.contains(
+                            "Incoming Call"
+                        ) || message.contains("Appel entrant") || message.contains("Dialing") || message.contains("appel entrant")
+                        || message.contains("dialing")
+                    ) {
+                    } else {
+                        notificationsListenerUseCases.apply {
+                            val contact = when {
+                                isPhoneNumber(name) -> {
+                                    getContactByPhoneNumber.invoke(name)
+                                }
+
+                                isValidEmail(name) -> {
+                                    getContactByMail.invoke(name)
+                                }
+
+                                else -> {
+                                    getContactByName.invoke(name)
+                                }
                             }
 
-                            isValidEmail(name) -> {
-                                getContactByMail.invoke(name)
+                            val time = System.currentTimeMillis()
+                            val isSystem = if (sbp.appNotifier?.let { isMessagingApp(it, applicationContext) } == true) {
+                                0
+                            } else if (sbp.appNotifier?.let { isSocialMedia(it) } == true) {
+                                0
+                            } else if (sbp.appNotifier?.let { isPhoneCall(it) } == true) {
+                                0
+                            } else {
+                                1
                             }
 
-                            else -> {
-                                getContactByName.invoke(name)
-                            }
-                        }
-
-                        val time = System.currentTimeMillis()
-                        val isSystem = if (sbp.appNotifier?.let { isMessagingApp(it, applicationContext) } == true) {
-                            0
-                        } else if (sbp.appNotifier?.let { isSocialMedia(it) } == true) {
-                            0
-                        } else if (sbp.appNotifier?.let { isPhoneCall(it) } == true) {
-                            0
-                        } else {
-                            1
-                        }
-
-                        val notification = if (contact != null) {
-                            sbp = StatusBarParcelable(sbn, contact.id)
-                            NotificationDB(
+                            val notification = if (contact != null) {
+                                sbp = StatusBarParcelable(sbn, contact.id)
+                                NotificationDB(
                                     id = 0,
                                     title = "",
                                     contactName = sbp.statusBarNotificationInfo["android.title"].toString(),
@@ -145,9 +152,9 @@ class NotificationsListenerService : NotificationListenerService() {
                                     mail = contact.listOfMails[0],
                                     messengerId = contact.messengerId,
                                     isSystem = isSystem
-                            )
-                        } else {
-                            NotificationDB(
+                                )
+                            } else {
+                                NotificationDB(
                                     id = 0,
                                     title = "",
                                     contactName = sbp.statusBarNotificationInfo["android.title"].toString(),
@@ -161,38 +168,38 @@ class NotificationsListenerService : NotificationListenerService() {
                                     mail = sbp.statusBarNotificationInfo["android.title"].toString(),
                                     messengerId = "",
                                     isSystem = isSystem
-                            )
-                        }
-
-                        if (sbp.appNotifier != "com.samsung.android.incallui") {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                saveNotification.invoke(notification)
+                                )
                             }
-                            cancelWhatsappNotification(sbn, this@NotificationsListenerService)
-                            contact?.let {
-                                displayNotification(sbp, sbn, it, time)
+
+                            if (sbp.appNotifier != "com.samsung.android.incallui") {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    saveNotification.invoke(notification)
+                                }
+                                cancelWhatsappNotification(sbn, this@NotificationsListenerService)
+                                contact?.let {
+                                    displayNotification(sbp, sbn, it, time)
+                                }
                             }
                         }
                     }
-
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         notificationsListenerUseCases.saveNotification.invoke(
-                                NotificationDB(
-                                        0,
-                                        sbp.tickerText.toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.text"].toString(),
-                                        sbp.appNotifier!!,
-                                        System.currentTimeMillis(),
-                                        0,
-                                        0,
-                                        0,
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                                        "",
-                                        1
-                                )
+                            NotificationDB(
+                                0,
+                                sbp.tickerText.toString(),
+                                sbp.statusBarNotificationInfo["android.title"].toString(),
+                                sbp.statusBarNotificationInfo["android.text"].toString(),
+                                sbp.appNotifier!!,
+                                System.currentTimeMillis(),
+                                0,
+                                0,
+                                0,
+                                sbp.statusBarNotificationInfo["android.title"].toString(),
+                                sbp.statusBarNotificationInfo["android.title"].toString(),
+                                "",
+                                1
+                            )
                         )
                     }
                 }
@@ -212,7 +219,7 @@ class NotificationsListenerService : NotificationListenerService() {
                     val today = cal.get(Calendar.DAY_OF_WEEK)
 
                     val vipScheduleValueSharedPreferences = getSharedPreferences(
-                            "VipScheduleValue", Context.MODE_PRIVATE
+                        "VipScheduleValue", Context.MODE_PRIVATE
                     )
 
                     val startTime = convertTimeToStartTime(hourLimitForNotification)
@@ -232,24 +239,24 @@ class NotificationsListenerService : NotificationListenerService() {
                                             if (hourEnd.toInt() == hours) {
                                                 if (minutes <= minutesEnd.toInt()) {
                                                     vipNotificationsDeployment(
-                                                            sbp, sbn, contact, time
+                                                        sbp, sbn, contact, time
                                                     )
                                                 }
                                             } else {
                                                 vipNotificationsDeployment(
-                                                        sbp, sbn, contact, time
+                                                    sbp, sbn, contact, time
                                                 )
                                             }
                                         }
                                     } else if (hourEnd.toInt() == hours) {
                                         if (minutes <= minutesEnd.toInt()) {
                                             vipNotificationsDeployment(
-                                                    sbp, sbn, contact, time
+                                                sbp, sbn, contact, time
                                             )
                                         }
                                     } else {
                                         vipNotificationsDeployment(
-                                                sbp, sbn, contact, time
+                                            sbp, sbn, contact, time
                                         )
                                     }
                                 }
@@ -286,14 +293,14 @@ class NotificationsListenerService : NotificationListenerService() {
 
                         else -> {
                             if (vipScheduleValueSharedPreferences.getBoolean(
-                                            "VipScheduleValue", false
-                                    )
+                                    "VipScheduleValue", false
+                                )
                             ) {
                                 if (today == 5 || today == 6) {
                                     val notificationsHour = getSharedPreferences(
-                                            "TeleworkingReminder", Context.MODE_PRIVATE
+                                        "TeleworkingReminder", Context.MODE_PRIVATE
                                     ).getString(
-                                            "TeleworkingReminder", ""
+                                        "TeleworkingReminder", ""
                                     )
 
                                     if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
@@ -302,7 +309,7 @@ class NotificationsListenerService : NotificationListenerService() {
                                                 if (hourEnd.toInt() == hours) {
                                                     if (minutes <= minutesEnd.toInt()) {
                                                         vipNotificationsDeployment(
-                                                                sbp, sbn, contact, time
+                                                            sbp, sbn, contact, time
                                                         )
                                                     }
                                                 } else {
@@ -383,28 +390,28 @@ class NotificationsListenerService : NotificationListenerService() {
                 displayLayout(sbp, contactDB, time)
             } else {
                 popupNotificationViewStates.add(
-                        PopupNotificationViewState(
-                                sbp.statusBarNotificationInfo["android.title"].toString(),
-                                sbp.statusBarNotificationInfo["android.text"].toString(),
-                                convertPackageToString(sbp.appNotifier!!, this),
-                                contactName = "${contactDB.firstName} ${contactDB.lastName}",
-                                date = time,
-                                transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
-                                contactDB.messengerId,
-                                contactDB.listOfMails[0]
-                        )
+                    PopupNotificationViewState(
+                        sbp.statusBarNotificationInfo["android.title"].toString(),
+                        sbp.statusBarNotificationInfo["android.text"].toString(),
+                        convertPackageToString(sbp.appNotifier!!, this),
+                        contactName = "${contactDB.firstName} ${contactDB.lastName}",
+                        date = time,
+                        transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
+                        contactDB.messengerId,
+                        contactDB.listOfMails[0]
+                    )
                 )
 
                 adapterNotifications?.submitList(popupNotificationViewStates.sortedByDescending {
                     it.date
                 }.distinctBy {
                     PopupNotificationParams(
-                            contactName = it.contactName,
-                            description = it.description,
-                            platform = it.platform,
-                            date = it.date,
-                            listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                            mail = it.email
+                        contactName = it.contactName,
+                        description = it.description,
+                        platform = it.platform,
+                        date = it.date,
+                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
+                        mail = it.email
                     )
                 })
                 recyclerView?.adapter = adapterNotifications
@@ -419,7 +426,7 @@ class NotificationsListenerService : NotificationListenerService() {
     }
 
     private fun displayLayout(
-            sbp: StatusBarParcelable, contactDB: ContactDB, time: Long
+        sbp: StatusBarParcelable, contactDB: ContactDB, time: Long
     ) {
         val flag = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -427,7 +434,7 @@ class NotificationsListenerService : NotificationListenerService() {
             WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         }
         val parameters = WindowManager.LayoutParams(
-                flag, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.TRANSLUCENT
+            flag, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, PixelFormat.TRANSLUCENT
         )
         parameters.gravity = Gravity.RIGHT or Gravity.TOP
         parameters.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
@@ -446,7 +453,7 @@ class NotificationsListenerService : NotificationListenerService() {
 
         if (windowManager != null && popupView != null) {
             adapterNotifications = PopupNotificationsListAdapter(
-                    applicationContext, windowManager!!, popupView!!
+                applicationContext, windowManager!!, popupView!!
             )
         }
 
@@ -484,13 +491,13 @@ class NotificationsListenerService : NotificationListenerService() {
                     val deplacementY = y - oldPosY
 
                     container?.x = positionXIntoScreen(
-                            container?.x!!, deplacementX, container?.width?.toFloat()
+                        container?.x!!, deplacementX, container?.width?.toFloat()
                             ?: 0F, windowManager!!
                     )
                     oldPosX = x - deplacementX
 
                     container?.y = positionYIntoScreen(
-                            container?.y ?: 0F, deplacementY, container?.height?.toFloat()
+                        container?.y ?: 0F, deplacementY, container?.height?.toFloat()
                             ?: 0F, windowManager!!
                     )
                     oldPosY = y - deplacementY
@@ -502,16 +509,16 @@ class NotificationsListenerService : NotificationListenerService() {
         if (sharedPreferences.getBoolean("first_notif", true)) {
             contactDB.let {
                 popupNotificationViewStates.add(
-                        PopupNotificationViewState(
-                                title = sbp.statusBarNotificationInfo["android.title"].toString(),
-                                description = sbp.statusBarNotificationInfo["android.text"].toString(),
-                                platform = convertPackageToString(sbp.appNotifier!!, this),
-                                contactName = "${it.firstName} ${it.lastName}",
-                                date = time,
-                                listOfPhoneNumbersWithSpinner = transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
-                                messengerId = it.messengerId,
-                                email = it.listOfMails[0]
-                        )
+                    PopupNotificationViewState(
+                        title = sbp.statusBarNotificationInfo["android.title"].toString(),
+                        description = sbp.statusBarNotificationInfo["android.text"].toString(),
+                        platform = convertPackageToString(sbp.appNotifier!!, this),
+                        contactName = "${it.firstName} ${it.lastName}",
+                        date = time,
+                        listOfPhoneNumbersWithSpinner = transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
+                        messengerId = it.messengerId,
+                        email = it.listOfMails[0]
+                    )
                 )
             }
 
@@ -519,12 +526,12 @@ class NotificationsListenerService : NotificationListenerService() {
                 it.date
             }.distinctBy {
                 PopupNotificationParams(
-                        contactName = it.contactName,
-                        description = it.description,
-                        platform = it.platform,
-                        date = it.date,
-                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                        mail = it.email
+                    contactName = it.contactName,
+                    description = it.description,
+                    platform = it.platform,
+                    date = it.date,
+                    listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
+                    mail = it.email
                 )
             }
 
@@ -547,12 +554,12 @@ class NotificationsListenerService : NotificationListenerService() {
                 notification.date
             }.distinctBy {
                 PopupNotificationParams(
-                        contactName = it.contactName,
-                        description = it.description,
-                        platform = it.platform,
-                        date = it.date,
-                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                        mail = it.email
+                    contactName = it.contactName,
+                    description = it.description,
+                    platform = it.platform,
+                    date = it.date,
+                    listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
+                    mail = it.email
                 )
             })
             recyclerView?.adapter = it
@@ -619,15 +626,15 @@ class NotificationsListenerService : NotificationListenerService() {
 
         fun deleteItem(notification: PopupNotificationViewState) {
             if (popupNotificationViewStates.distinctBy {
-                        PopupNotificationParams(
-                                contactName = it.contactName,
-                                description = it.description,
-                                platform = it.platform,
-                                date = it.date,
-                                listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                                mail = it.email
-                        )
-                    }.size > 0) {
+                    PopupNotificationParams(
+                        contactName = it.contactName,
+                        description = it.description,
+                        platform = it.platform,
+                        date = it.date,
+                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
+                        mail = it.email
+                    )
+                }.size > 0) {
                 popupNotificationViewStates.remove(notification)
             }
 
@@ -645,15 +652,15 @@ class NotificationsListenerService : NotificationListenerService() {
             }
 
             if (popupNotificationViewStates.distinctBy {
-                        PopupNotificationParams(
-                                contactName = it.contactName,
-                                description = it.description,
-                                platform = it.platform,
-                                date = it.date,
-                                listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                                mail = it.email
-                        )
-                    }.size == 1) {
+                    PopupNotificationParams(
+                        contactName = it.contactName,
+                        description = it.description,
+                        platform = it.platform,
+                        date = it.date,
+                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
+                        mail = it.email
+                    )
+                }.size == 1) {
                 numberOfMessages?.text = context?.getString(R.string.popup_1_message)
             } else {
                 numberOfMessages?.text = context?.getString(R.string.messages_with_number, popupNotificationViewStates.size)

@@ -493,7 +493,7 @@
     <string name="strong_red_advice">Xem lại cách tiếp cận VIP của bạn.\n Mất trung bình 23’ để lấy nét lại sau khi bị gián đoạn</string>
     <string name="orange_advice">Bạn có thể tối ưu hóa đáng kể thời gian của mình bằng cách sử dụng chế độ im lặng với các liên hệ không phải VIP</string>
     <string name="yellow_advice">Bạn có thể bỏ lỡ các tin nhắn quan trọng từ một số liên hệ.\n Chúng tôi khuyên bạn nên thêm một hoặc nhiều VIP</string>
-    <string name="light_green_advice">Bạn có thể có nhiều VIP hơn để định cấu hình.\n Chúng tôi khuyên bạn nên mua gói VIP</string>
+    <string name="light_green_advice">Bạn có thể có nhiều VIP hơn để định cấu hình.</string>
     <string name="strong_green_advice">Làm tốt lắm, bạn chắc chắn đã tối ưu hóa thời gian của mình! Để làm tốt hơn nữa, bạn có thể muốn cá nhân hóa các VIP của mình</string>
 
     <string name="number_unprocessed_notifications">%1d thông báo mới</string>

@@ -514,7 +514,7 @@
     <string name="strong_red_advice"><![CDATA[Revisit your VIP approach.\n It takes 23’ in average to refocus after an interrupt]]></string>
     <string name="orange_advice">You can optimize significantly your time by using silent mode with non VIP contacts</string>
     <string name="yellow_advice"><![CDATA[You may miss important messages from several contacts.\n We recommend adding one or more VIPs]]></string>
-    <string name="light_green_advice"><![CDATA[You may have more VIPs to configure.\n We recommend buying a VIP package]]></string>
+    <string name="light_green_advice"><![CDATA[You may have more VIPs to configure.]]></string>
     <string name="strong_green_advice"><![CDATA[Great job, you definitely optimize your time!\n To do even better, you may want to personalize your VIPs]]></string>
 
     <string name="number_unprocessed_notifications">%1d new notifications</string>
