@@ -44,9 +44,67 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission
-        android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission" />
+
+    <!--    <uses-permission-->
+    <!--        android:name="android.permission.QUERY_ALL_PACKAGES"-->
+    <!--        tools:ignore="QueryAllPackagesPermission" />-->
+
+    <queries>
+        <package android:name="com.facebook.katana" />
+        <package android:name="com.facebook.orca" />
+        <package android:name="com.whatsapp" />
+        <package android:name="com.google.android.gm" />
+        <package android:name="com.microsoft.office.outlook" />
+        <package android:name="com.google.android.apps.messaging" />
+        <package android:name="com.android.mms" />
+        <package android:name="com.samsung.android.messaging" />
+        <package android:name="com.chating.messages.chat.fun" />
+        <package android:name="com.messagesgo.messanger" />
+        <package android:name="com.android.contacts" />
+        <package android:name="com.android.dialer" />
+        <package android:name="com.google.android.dialer" />
+        <package android:name="com.easycontactvdailer.icontact" />
+        <package android:name="com.android.phone" />
+        <package android:name="com.samsung.android.contacts" />
+        <package android:name="com.samsung.android.dialer" />
+        <package android:name="com.google.android.contacts" />
+        <package android:name="com.huawei.contacts" />
+        <package android:name="com.truecaller" />
+        <package android:name="org.thoughtcrime.securesms" />
+        <package android:name="org.telegram.messenger" />
+        <package android:name="com.yellowtwigs.Knockin.notification" />
+        <package android:name="com.instagram.android" />
+        <package android:name="com.discord" />
+        <package android:name="com.zhiliaoapp.musically" />
+        <package android:name="com.snapchat.android" />
+        <package android:name="com.skype.raider" />
+        <package android:name="com.reddit.frontpage" />
+        <package android:name="com.viber.voip" />
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.google.android.googlequicksearchbox" />
+        <package android:name="com.huawei.screenrecorder" />
+        <package android:name="com.linkedin.android" />
+        <package android:name="com.reddit.frontpage" />
+        <package android:name="com.zhiliaoapp.musically" />
+        <package android:name="com.twitter.android" />
+        <package android:name="com.android.vending" />
+        <package android:name="com.android.settings" />
+        <package android:name="com.amazon.mShop.android.shopping" />
+        <package android:name="com.android.gallery3d" />
+        <package android:name="com.google.android.apps.photos" />
+        <package android:name="com.android.camera2" />
+        <package android:name="com.google.android.GoogleCamera" />
+        <package android:name="com.android.chrome" />
+        <package android:name="com.android.calendar" />
+        <package android:name="com.android.deskclock" />
+        <package android:name="com.google.android.apps.maps" />
+        <package android:name="com.google.android.music" />
+        <package android:name="com.google.android.videos" />
+        <package android:name="com.google.android.apps.docs" />
+        <package android:name="com.android.calculator2" />
+        <package android:name="com.android.documentsui" />
+        <package android:name="com.google.android.googlequicksearchbox" />
+    </queries>
 
     <application
         android:name=".di.App"

@@ -31,11 +31,6 @@ object ContactGesture {
 
     fun updateContact(context: Context, rawContactId: Int?, firstName: String, lastName: String, lastPhoneNumber: String, phoneNumber: String?, email:
     String?) {
-        Log.i("UpdateContact", "rawContactId : $rawContactId")
-        Log.i("UpdateContact", "firstName : $firstName")
-        Log.i("UpdateContact", "lastName : $lastName")
-        Log.i("UpdateContact", "phoneNumber : $phoneNumber")
-        Log.i("UpdateContact", "email : $email")
 
         phoneNumber?.let { phoneNumberNotNull ->
             email?.let { mailNotNull ->

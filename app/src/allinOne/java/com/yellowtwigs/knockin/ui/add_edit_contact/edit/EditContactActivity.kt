@@ -373,6 +373,14 @@ class EditContactActivity : AppCompatActivity() {
                 hideKeyboard(this@EditContactActivity)
                 if (checkIfADataWasChanged() && !checkIfFieldsAreEmpty()) {
                     retrofitMaterialDialog()
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        updateUser()
+//                        if (isFavorite != currentContact.isFavorite) {
+//                            updateFavorite()
+//                        }
+//                    }
+//
+//                    goToContactsOrGroups()
                 } else {
                     if (fromVipSettingsDataChanged) {
                         CoroutineScope(Dispatchers.IO).launch {
@@ -482,9 +490,9 @@ class EditContactActivity : AppCompatActivity() {
 
         markContactAsFavorite(contentResolver, currentContact.androidId, isFavorite)
 
-        updateContact(this@EditContactActivity, currentContact.androidId, binding.firstNameInput.editText?.text.toString(), binding.lastNameInput.editText?.text.toString(),
-                currentContact.firstPhoneNumber,
-                if (listOfPhoneNumbers.isNotEmpty()) listOfPhoneNumbers.first() else "", binding.mailInput.editText?.text.toString())
+//        updateContact(this@EditContactActivity, currentContact.androidId, binding.firstNameInput.editText?.text.toString(), binding.lastNameInput.editText?.text.toString(),
+//                currentContact.firstPhoneNumber,
+//                if (listOfPhoneNumbers.isNotEmpty()) listOfPhoneNumbers.first() else "", binding.mailInput.editText?.text.toString())
 
         val contact = ContactDB(
                 currentContact.id,
