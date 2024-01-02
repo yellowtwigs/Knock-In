@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.ui.notifications.history
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -70,6 +72,21 @@ class NotificationsHistoryActivity : AppCompatActivity() {
     private val duplicates = arrayListOf<NotificationsListViewState>()
 
     //endregion
+
+    private lateinit var importContactPreferences: SharedPreferences
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+        }
+    }
 
     override fun onStop() {
         super.onStop()
@@ -367,7 +384,7 @@ class NotificationsHistoryActivity : AppCompatActivity() {
                     )
 
                     R.id.nav_sync_contact -> {
-                        importContacts()
+                        requestPermissionLauncher.launch(arrayOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS))
                     }
 
                     R.id.nav_invite_friend -> {

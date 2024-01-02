@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.ui.settings
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -39,6 +41,21 @@ class ManageMyScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManageMyScreenBinding
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
+
+    private lateinit var importContactPreferences: SharedPreferences
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,7 +125,7 @@ class ManageMyScreenActivity : AppCompatActivity() {
                     )
                 )
                 R.id.nav_sync_contact -> {
-                    importContacts()
+                    requestPermissionLauncher.launch(arrayOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS))
                 }
                 R.id.nav_invite_friend -> {
                     val intent = Intent(Intent.ACTION_SEND)

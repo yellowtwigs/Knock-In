@@ -67,8 +67,25 @@ class NotificationsSettingsActivity : AppCompatActivity() {
 
     //endregion
 
+    private lateinit var importContactPreferences: SharedPreferences
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+        }
+    }
+
     private val requestPermissionLauncher2 = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         if (permissions[Manifest.permission.READ_PHONE_STATE] == true && permissions[Manifest.permission.CALL_PHONE] == true) {
+        } else {
+            binding.voiceCallAllEnabledSwitch.isChecked = false
         }
     }
 
@@ -171,7 +188,7 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_sync_contact -> {
-                    importContacts()
+                    requestPermissionLauncher.launch(arrayOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS))
                 }
 
                 R.id.nav_invite_friend -> {
@@ -267,21 +284,19 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         val voiceCallAllEnabledSwitch = findViewById<SwitchCompat>(R.id.voice_call_all_enabled_switch)
         voiceCallAllEnabledSwitch.isChecked = voiceCallAllEnabledSwitchChecked.getBoolean(name, false)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            if (voiceCallAllEnabledSwitch.isChecked) {
-                val trackColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
-                val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryVariant))
+        if (voiceCallAllEnabledSwitch.isChecked) {
+            val trackColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+            val thumbColor = ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryVariant))
 
-                voiceCallAllEnabledSwitch.trackTintList = trackColor
-                voiceCallAllEnabledSwitch.thumbTintList = thumbColor
-            }
-            voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
+            voiceCallAllEnabledSwitch.trackTintList = trackColor
+            voiceCallAllEnabledSwitch.thumbTintList = thumbColor
+        }
+        voiceCallAllEnabledSwitch.setOnCheckedChangeListener { button, isChecked ->
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                 if (isChecked) {
                     MaterialAlertDialogBuilder(
-                            this@NotificationsSettingsActivity, R.style.AlertDialog
-                    ).setTitle(getString(R.string.voicemail_dialog_title))
-                            .setMessage(getString(R.string.voicemail_dialog_message))
-                            .show()
+                        this@NotificationsSettingsActivity, R.style.AlertDialog
+                    ).setTitle(getString(R.string.voicemail_dialog_title)).setMessage(getString(R.string.voicemail_dialog_message)).show()
 
                     notificationsSettingsViewModel.disabledAllPhoneCallContacts(contentResolver)
                     val edit = voiceCallAllEnabledSwitchChecked.edit()
@@ -305,9 +320,9 @@ class NotificationsSettingsActivity : AppCompatActivity() {
                     voiceCallAllEnabledSwitch.trackTintList = trackColor
                     voiceCallAllEnabledSwitch.thumbTintList = thumbColor
                 }
+            } else {
+                requestPermissionLauncher2.launch(arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE))
             }
-        } else {
-            requestPermissionLauncher2.launch(arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE))
         }
     }
 
