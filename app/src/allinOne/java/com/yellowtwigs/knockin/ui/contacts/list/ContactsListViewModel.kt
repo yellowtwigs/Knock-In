@@ -1,54 +1,26 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
-import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.provider.Telephony
-import android.util.Log
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.TaskStackBuilder
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.liveData
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
-import com.yellowtwigs.knockin.domain.contact.get_number.GetNumberOfContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
-import com.yellowtwigs.knockin.model.database.data.NotificationDB
-import com.yellowtwigs.knockin.repositories.notifications.NotificationsRepository
-import com.yellowtwigs.knockin.ui.notifications.history.NotificationParams
-import com.yellowtwigs.knockin.ui.notifications.history.NotificationsListViewState
-import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
-import com.yellowtwigs.knockin.utils.ContactGesture.transformContactDbToContactsListViewState
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
-import com.yellowtwigs.knockin.utils.NotificationsGesture
+import com.yellowtwigs.knockin.utils.EquatableCallback
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class ContactsListViewModel @Inject constructor(
     private val getAllContactsUseCase: GetAllContactsUseCase,
+    private val deleteContactUseCase: DeleteContactUseCase,
     coroutineDispatcherProvider: CoroutineDispatcherProvider,
-    private val deleteContactUseCase: DeleteContactUseCase
 ) : ViewModel() {
 
     private val filteringMutableStateFlow = MutableStateFlow(R.id.empty_filter)
@@ -64,6 +36,34 @@ class ContactsListViewModel @Inject constructor(
         ) { contacts: List<ContactDB>, sort: Int, filterId: Int, input: String ->
             emit(filterWithInput(input, sortContactsList(sort, filterId, contacts.map { transformContactDbToContactsListViewState(it) })))
         }.collect()
+    }
+
+    private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
+        val fullName = if (contact.firstName.isEmpty() || contact.firstName.isBlank() || contact.firstName == " ") {
+            contact.lastName.uppercase()
+        } else if (contact.lastName.isEmpty() || contact.lastName.isBlank() || contact.lastName == " ") {
+            contact.firstName.uppercase()
+        } else {
+            "${contact.firstName.uppercase()} ${contact.firstName.uppercase()}"
+        }
+
+        return ContactsListViewState(
+            id = contact.id,
+            fullName = fullName,
+            firstName = contact.firstName,
+            lastName = contact.lastName,
+            profilePicture = contact.profilePicture,
+            profilePicture64 = contact.profilePicture64,
+            firstPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
+            secondPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
+            listOfMails = contact.listOfMails,
+            priority = contact.priority,
+            isFavorite = contact.isFavorite == 1,
+            messengerId = contact.messengerId,
+            hasWhatsapp = contact.listOfMessagingApps.contains("com.whatsapp"),
+            hasTelegram = contact.listOfMessagingApps.contains("org.telegram.messenger"),
+            hasSignal = contact.listOfMessagingApps.contains("org.thoughtcrime.securesms"),
+        )
     }
 
 

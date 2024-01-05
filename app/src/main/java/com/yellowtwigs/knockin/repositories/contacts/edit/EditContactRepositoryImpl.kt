@@ -45,13 +45,22 @@ class EditContactRepositoryImpl @Inject constructor(private val dao: ContactsDao
     override suspend fun enabledAllPhoneCallContacts(resolver: ContentResolver) {
         dao.getAllContacts().collect {
             it.forEach { contact ->
-                val contentValues = ContentValues()
-                contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
+                try {
+                    val contentValues = ContentValues()
+                    contentValues.put(ContactsContract.Contacts.SEND_TO_VOICEMAIL, 0)
 
-                val where = ContactsContract.Contacts._ID + " = ?"
-                val whereArgs = arrayOf(contact.androidId?.toString())
+                    val where = ContactsContract.Contacts._ID + " = ?"
+                    val whereArgs = arrayOf(contact.androidId?.toString())
+                    Log.i("PhoneCallContacts", "contact.fullName : ${contact.fullName}")
+                    Log.i("PhoneCallContacts", "whereArgs : $whereArgs")
 
-                resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                    if (whereArgs != null) {
+                        resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
+                    }
+
+                } catch (e: Exception) {
+                    Log.i("PhoneCallContacts", "Exception : $e")
+                }
             }
         }
     }

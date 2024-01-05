@@ -147,7 +147,7 @@
         <activity android:name=".ui.groups.manage_group.ManageGroupActivity" />
         <activity android:name=".ui.contacts.multi_channel.MultiChannelActivity" />
         <activity
-            android:name=".ui.notifications.NotificationAlarmActivity"
+            android:name=".ui.notifications.alarm.NotificationAlarmActivity"
             android:turnScreenOn="false"
             tools:targetApi="o_mr1" />
         <activity android:name=".ui.groups.list.GroupsListActivity" />

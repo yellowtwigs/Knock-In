@@ -1,7 +1,6 @@
 package com.yellowtwigs.knockin.ui.cockpit
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.ItemCockpitAppBinding
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageNameToGoTo
 
-class CockpitListAdapter(private val cxt: Context) :
-    ListAdapter<CockpitViewState, CockpitListAdapter.ViewHolder>(IntComparator()) {
+class CockpitListAdapter(private val cxt: Context) : ListAdapter<CockpitViewState, CockpitListAdapter.ViewHolder>(IntComparator()) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

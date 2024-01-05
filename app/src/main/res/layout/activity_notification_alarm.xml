@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_background"
-    tools:context=".ui.notifications.NotificationAlarmActivity">
+    tools:context=".ui.notifications.alarm.NotificationAlarmActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/receive_message_layout"
@@ -30,30 +30,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_app_image" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/message_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/message_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/message_content"
-            app:srcCompat="@drawable/ic_micon" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/message_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:textColor="@color/lightColor"
-            android:textSize="20sp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/message_image"
-            app:layout_constraintTop_toBottomOf="@+id/icon"
-            tools:text="Special variation of ViewManager.removeView(View) that immediately invokes the given view hierarchy's View.onDetachedFromWindow() methods before returning. " />
+            app:layout_constraintTop_toBottomOf="@+id/icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

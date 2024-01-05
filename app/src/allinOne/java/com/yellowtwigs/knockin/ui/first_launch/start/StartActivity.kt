@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -468,11 +467,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         if (requestCode == REQUEST_CODE_WRITE_READ_CONTACT) {
             if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_CONTACTS
+                    this, Manifest.permission.WRITE_CONTACTS
                 ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_CONTACTS
+                    this, Manifest.permission.READ_CONTACTS
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
 
@@ -489,12 +486,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun readPhoneStateDialog() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
+        val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
             .setTitle(getString(R.string.incoming_voice_calls_title)).setMessage(getString(R.string.incoming_voice_calls_message))
             .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
                 requestPermissionLauncher2.launch(arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE))
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-            }.show()
+            }
+
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 
     private fun activateNotificationsClick() {

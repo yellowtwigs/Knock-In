@@ -5,14 +5,14 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
-        targetSdk 33
-        versionCode 274
-        versionName "1.0.0"
+        targetSdk 34
+        versionCode 275
+        versionName "1.0.1"
 //        versionName "3.4.0.32"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

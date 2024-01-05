@@ -17,5 +17,5 @@ data class ContactsListViewState(
     val messengerId: String,
     val hasWhatsapp: Boolean,
     val hasTelegram: Boolean,
-    val hasSignal: Boolean
-)
+    val hasSignal: Boolean,
+    )

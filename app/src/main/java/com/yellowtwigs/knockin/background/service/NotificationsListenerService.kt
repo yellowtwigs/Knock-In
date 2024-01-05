@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.PixelFormat
-import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -34,7 +33,7 @@ import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.c
 import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.messagesNotUseless
 import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.positionXIntoScreen
 import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.positionYIntoScreen
-import com.yellowtwigs.knockin.ui.notifications.NotificationAlarmActivity
+import com.yellowtwigs.knockin.ui.notifications.alarm.NotificationAlarmActivity
 import com.yellowtwigs.knockin.utils.ContactGesture.isPhoneNumber
 import com.yellowtwigs.knockin.utils.ContactGesture.isValidEmail
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToPhoneNumbersWithSpinner
@@ -53,6 +52,7 @@ import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class NotificationsListenerService : NotificationListenerService() {
@@ -345,18 +345,22 @@ class NotificationsListenerService : NotificationListenerService() {
 
     private fun vipNotificationsDeployment(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB, time: Long) {
         val screenListener = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        notificationsList.add(sbp)
+        Log.i("AlarmMessages", "notificationsList : $notificationsList")
         if (screenListener.isKeyguardLocked) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                 val i = Intent(this, NotificationAlarmActivity::class.java)
                 i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                i.putExtra("notification", sbp)
+                i.putParcelableArrayListExtra("ListOfNotifications", notificationsList)
+//                i.putExtra("notification", sbp)
 
                 cancelNotification(sbn.key)
                 cancelWhatsappNotification(sbn, this)
                 startActivity(i)
             } else {
                 val i = Intent(this, NotificationAlarmActivity::class.java)
-                i.putExtra("notification", sbp)
+                i.putParcelableArrayListExtra("ListOfNotifications", notificationsList)
+//                i.putExtra("notification", sbp)
                 cancelNotification(sbn.key)
                 cancelWhatsappNotification(sbn, this)
                 startActivity(i)
@@ -425,9 +429,7 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    private fun displayLayout(
-        sbp: StatusBarParcelable, contactDB: ContactDB, time: Long
-    ) {
+    private fun displayLayout(sbp: StatusBarParcelable, contactDB: ContactDB, time: Long) {
         val flag = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
@@ -620,6 +622,7 @@ class NotificationsListenerService : NotificationListenerService() {
         var alarmSound: MediaPlayer? = null
         var numberOfMessages: TextView? = null
         val popupNotificationViewStates = mutableSetOf<PopupNotificationViewState>()
+        val notificationsList = ArrayList<StatusBarParcelable>()
         var adapterNotifications: PopupNotificationsListAdapter? = null
         private var recyclerView: RecyclerView? = null
         var context: Context? = null
@@ -634,7 +637,7 @@ class NotificationsListenerService : NotificationListenerService() {
                         listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
                         mail = it.email
                     )
-                }.size > 0) {
+                }.isNotEmpty()) {
                 popupNotificationViewStates.remove(notification)
             }
 

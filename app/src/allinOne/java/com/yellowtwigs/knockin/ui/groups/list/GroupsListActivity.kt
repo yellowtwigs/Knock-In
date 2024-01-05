@@ -1,10 +1,14 @@
 package com.yellowtwigs.knockin.ui.groups.list
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
 import android.net.Uri
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -52,6 +56,21 @@ class GroupsListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGroupsListBinding
 
     private var fromOtherApp = false
+
+    private lateinit var importContactPreferences: SharedPreferences
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+        }
+    }
 
     companion object {
         var listOfSectionsSelected = arrayListOf<Int>()
@@ -149,7 +168,7 @@ class GroupsListActivity : AppCompatActivity() {
                         restartActivity()
                     }
                     R.id.nav_sync_contact -> {
-                        importContacts()
+                        requestPermissionLauncher.launch(arrayOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS))
                         restartActivity()
                     }
                     R.id.nav_invite_friend -> {

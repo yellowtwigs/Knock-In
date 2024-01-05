@@ -236,8 +236,6 @@ class AddNewContactActivity : AppCompatActivity() {
                             ""
                         )
 
-//                        addContact()
-
                         CoroutineScope(Dispatchers.Main).launch {
                             if (editContactViewModel.checkDuplicateContact(contact!!)) {
                                 Toast.makeText(
@@ -246,7 +244,8 @@ class AddNewContactActivity : AppCompatActivity() {
                                     Toast.LENGTH_LONG
                                 ).show()
                             } else {
-                                retrofitMaterialDialog()
+                                addContact()
+//                                retrofitMaterialDialog()
                             }
                         }
                     }
@@ -325,6 +324,14 @@ class AddNewContactActivity : AppCompatActivity() {
                     )
                     values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
                     contentResolver.insert(ContactsContract.Data.CONTENT_URI, values)
+
+                    imageUri?.let {
+                        values.clear()
+                        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+                        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
+                        values.put(ContactsContract.Contacts.Photo.PHOTO_URI, it.toString())
+                        contentResolver.insert(ContactsContract.Data.CONTENT_URI, values)
+                    }
 
                     when (binding.prioritySpinner.selectedItemPosition) {
                         2 -> {
@@ -578,7 +585,7 @@ class AddNewContactActivity : AppCompatActivity() {
 
     fun addContactIcon(bitmap: Bitmap) {
         binding.contactImage.setImageBitmap(bitmap)
-        contactImageString = Converter.bitmapToBase64(bitmap)
+        contactImageString = bitmapToBase64(bitmap)
         contactImageStringIsChanged = true
     }
 
@@ -634,7 +641,7 @@ class AddNewContactActivity : AppCompatActivity() {
                             binding.contactImage.setImageURI(uri)
                         }
 
-                        contactImageString = Converter.bitmapToBase64(bitmap)
+                        contactImageString = bitmapToBase64(bitmap)
                         contactImageStringIsChanged = true
                     }
                 }

@@ -10,9 +10,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -88,8 +90,21 @@ class ContactsListActivity : AppCompatActivity() {
     private lateinit var firstTime: SharedPreferences
     private lateinit var rateThisAppSharedPreferences: SharedPreferences
     private lateinit var oneWeekSharedPreferences: SharedPreferences
+    private lateinit var importContactPreferences: SharedPreferences
 
-    private var exit = false
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +127,22 @@ class ContactsListActivity : AppCompatActivity() {
         setupDrawerLayout(binding)
         floatingButtonsClick(binding)
         multiSelectToolbarClick(binding)
+
+        val deletedContactId = intent.getIntExtra("DeletedContactId", 0)
+
+        if (deletedContactId != 0) {
+            CoroutineScope(Dispatchers.IO).launch {
+                listOfItemSelected.add(deletedContactId)
+                contactsListViewModel.deleteContactsSelected(listOfItemSelected)
+                listOfItemSelected.clear()
+                modeMultiSelect = false
+
+                withContext(Dispatchers.Main) {
+                    refreshActivity(binding)
+                    setupRecyclerView(binding)
+                }
+            }
+        }
 
         //region ======================================== Mobile Ads ========================================
 
@@ -582,7 +613,7 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_help -> startActivity(Intent(this@ContactsListActivity, HelpActivity::class.java))
                     R.id.nav_dashboard -> startActivity(Intent(this@ContactsListActivity, DashboardActivity::class.java))
                     R.id.nav_sync_contact -> {
-                        importContacts()
+                        requestPermissionLauncher.launch(arrayOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS))
                     }
 
                     R.id.nav_invite_friend -> {
@@ -610,12 +641,6 @@ class ContactsListActivity : AppCompatActivity() {
     }
 
     //endregion
-
-    private fun importContacts() {
-        CoroutineScope(Dispatchers.Main).launch {
-            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
-        }
-    }
 
     //region ========================================= MULTI SELECT =========================================
 
@@ -841,9 +866,9 @@ class ContactsListActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val nbGrid = sharedPreferences.getInt("gridview", 1)
 
-        val contactsListAdapter = ContactsListAdapter(this, { id ->
+        val contactsListAdapter = ContactsListAdapter(this, {
             hideKeyboard(this)
-            startActivity(Intent(this, EditContactActivity::class.java).putExtra("ContactId", id))
+            startActivity(Intent(this, EditContactActivity::class.java))
         }, { id, civ, contact ->
             hideKeyboard(this)
 

@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
 import com.yellowtwigs.knockin.domain.group.SetGroupIdFlowUseCase
+import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListViewState
 import com.yellowtwigs.knockin.ui.groups.list.section.SectionViewState
-import com.yellowtwigs.knockin.utils.ContactGesture.transformContactDbToContactsListViewState
+import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.Converter.unAccent
 import com.yellowtwigs.knockin.utils.EquatableCallback
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -124,6 +125,34 @@ class GroupsListViewModel @Inject constructor(
                 it.firstName.uppercase().unAccent()
             }
         }
+    }
+
+    private fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
+        val fullName = if (contact.firstName.isEmpty() || contact.firstName.isBlank() || contact.firstName == " ") {
+            contact.lastName
+        } else if (contact.lastName.isEmpty() || contact.lastName.isBlank() || contact.lastName == " ") {
+            contact.firstName
+        } else {
+            "${contact.firstName} ${contact.firstName}"
+        }
+
+        return ContactsListViewState(
+            id = contact.id,
+            fullName = fullName,
+            contact.firstName,
+            contact.lastName,
+            contact.profilePicture,
+            contact.profilePicture64,
+            firstPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true),
+            secondPhoneNumber = ContactGesture.transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false),
+            contact.listOfMails,
+            contact.priority,
+            contact.isFavorite == 1,
+            contact.messengerId,
+            contact.listOfMessagingApps.contains("com.whatsapp"),
+            contact.listOfMessagingApps.contains("org.telegram.messenger"),
+            contact.listOfMessagingApps.contains("org.thoughtcrime.securesms"),
+        )
     }
 
     fun getAllGroups(): LiveData<List<SectionViewState>> {
