@@ -6,8 +6,10 @@ import android.service.notification.StatusBarNotification
 import android.text.TextUtils
 import android.util.Log
 import com.yellowtwigs.knockin.model.database.data.ContactDB
+import java.text.SimpleDateFormat
 
 import java.util.ArrayList
+import java.util.Date
 import java.util.HashMap
 
 /**
@@ -19,6 +21,7 @@ class StatusBarParcelable : Parcelable {
     var id: Int = 0
     var appNotifier: String? = ""
     var tickerText: String? = ""
+    var dateTime: String = ""
     var tailleList: Int = 0
     var contactId: Int = 0
     var key = ArrayList<String>()
@@ -30,6 +33,7 @@ class StatusBarParcelable : Parcelable {
         this.contactId = contactId
         tailleList = sbn.notification.extras.keySet().size
         appNotifier = sbn.packageName
+        dateTime = SimpleDateFormat("HH:mm").format(Date(sbn.postTime))
 
         if (sbn.notification.tickerText != null) {
             tickerText = sbn.notification.tickerText.toString()
@@ -47,15 +51,6 @@ class StatusBarParcelable : Parcelable {
         }
     }
 
-    constructor(NotifId: Int, listSize: Int, appliNotifier: String, sbnKey: ArrayList<String>, sbnInfo: HashMap<String, Any?>, contactId: Int) {
-        id = NotifId
-        this.contactId = contactId
-        tailleList = listSize
-        appNotifier = appliNotifier
-        key = sbnKey
-        statusBarNotificationInfo = sbnInfo
-    }
-
     override fun describeContents(): Int {
         return 0
     }
@@ -68,8 +63,9 @@ class StatusBarParcelable : Parcelable {
         dest.writeInt(id)
         dest.writeInt(contactId)
         dest.writeString(appNotifier)
+        dest.writeString(appNotifier)
         dest.writeInt(tailleList)
-        dest.writeString(tickerText)
+        dest.writeString(dateTime)
         val entree = statusBarNotificationInfo.entries
 
         for ((key1, value) in entree) {
@@ -78,7 +74,6 @@ class StatusBarParcelable : Parcelable {
             dest.writeString(" $value")
 
         }
-        dest.writeString(appNotifier)
     }
 
     /**
@@ -90,6 +85,7 @@ class StatusBarParcelable : Parcelable {
         appNotifier = `in`.readString()
         tailleList = `in`.readInt()
         tickerText = `in`.readString()
+        dateTime = `in`.readString().toString()
         for (i in 0 until tailleList) {
             val keysbn = `in`.readString()
             val value = `in`.readString()
@@ -120,17 +116,10 @@ class StatusBarParcelable : Parcelable {
         statusBarNotificationInfo["android.title"] = contact.firstName + " " + contact.lastName
     }
 
-    /**
-     * Enlève qui nous empecherais de reconnaitre un contact
-     */
     fun castName() {
         statusBarNotificationInfo.put("android.title", getContactNameFromString())
     }
 
-    /**
-     * Nous permet de récupérer l'objet statusBarParcelable depuis un intent
-     * Méthode non appellé par nous directement
-     */
     companion object CREATOR : Parcelable.Creator<StatusBarParcelable> {
         override fun createFromParcel(source: Parcel): StatusBarParcelable {
             return StatusBarParcelable(source)
@@ -139,8 +128,5 @@ class StatusBarParcelable : Parcelable {
         override fun newArray(size: Int): Array<StatusBarParcelable?> {
             return arrayOfNulls(size)
         }
-
     }
-
-    var TAG = StatusBarParcelable::class.java.simpleName
 }

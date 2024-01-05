@@ -15,11 +15,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
+import com.yellowtwigs.knockin.background.service.NotificationsListenerService
 import com.yellowtwigs.knockin.databinding.ActivityNotificationAlarmBinding
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
+import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.openSms
 import com.yellowtwigs.knockin.utils.ContactGesture.openWhatsapp
@@ -50,12 +52,9 @@ class NotificationAlarmActivity : AppCompatActivity() {
         val binding = ActivityNotificationAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val extras = intent.extras
-        val notificationsList = extras?.getParcelableArrayList<StatusBarParcelable>("ListOfNotifications")
+        val sbp = intent.extras?.get("notification") as StatusBarParcelable
 
-//        val sbp = intent.extras?.get("notification") as StatusBarParcelable
-
-        notificationsList?.let {
+        NotificationsListenerService.notificationsList.let {
             val adapter = NotificationsAlarmListAdapter(this@NotificationAlarmActivity) { isSMS, sender, appNotifier ->
                 currentContact?.firstPhoneNumber ?: listOf(PhoneNumberWithSpinner(null, ""))
 
@@ -173,7 +172,12 @@ class NotificationAlarmActivity : AppCompatActivity() {
                             alarmSound?.stop()
                         }
 
-                        finish()
+                        if (NotificationsListenerService.notificationsList.size == 1) {
+                            finish()
+                        } else {
+                            startActivity(Intent(this@NotificationAlarmActivity, NotificationsHistoryActivity::class.java))
+                            finish()
+                        }
                     }
 
                 }

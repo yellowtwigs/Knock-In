@@ -101,6 +101,10 @@ class NotificationsListenerService : NotificationListenerService() {
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
 
+            Log.i("AlarmMessages", "name : $name")
+            Log.i("AlarmMessages", "message : $message")
+            Log.i("AlarmMessages", "sbp.dateTime : ${sbp.dateTime}")
+
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
 
@@ -346,21 +350,18 @@ class NotificationsListenerService : NotificationListenerService() {
     private fun vipNotificationsDeployment(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB, time: Long) {
         val screenListener = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         notificationsList.add(sbp)
-        Log.i("AlarmMessages", "notificationsList : $notificationsList")
         if (screenListener.isKeyguardLocked) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                 val i = Intent(this, NotificationAlarmActivity::class.java)
                 i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                i.putParcelableArrayListExtra("ListOfNotifications", notificationsList)
-//                i.putExtra("notification", sbp)
+                i.putExtra("notification", sbp)
 
                 cancelNotification(sbn.key)
                 cancelWhatsappNotification(sbn, this)
                 startActivity(i)
             } else {
                 val i = Intent(this, NotificationAlarmActivity::class.java)
-                i.putParcelableArrayListExtra("ListOfNotifications", notificationsList)
-//                i.putExtra("notification", sbp)
+                i.putExtra("notification", sbp)
                 cancelNotification(sbn.key)
                 cancelWhatsappNotification(sbn, this)
                 startActivity(i)

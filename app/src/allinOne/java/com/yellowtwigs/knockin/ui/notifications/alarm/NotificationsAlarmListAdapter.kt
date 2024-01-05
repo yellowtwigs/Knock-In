@@ -31,6 +31,7 @@ class NotificationsAlarmListAdapter(private val context: Context, private val on
         fun onBind(sbp: StatusBarParcelable, context: Context, onClickedCallback: (Boolean, String, String) -> Unit) {
             val sender = sbp.statusBarNotificationInfo["android.title"] as String
             binding.messageContent.text = context.getString(R.string.message_from, sender)
+            binding.messageHour.text = sbp.dateTime
 
             when (sbp.appNotifier) {
                 "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
