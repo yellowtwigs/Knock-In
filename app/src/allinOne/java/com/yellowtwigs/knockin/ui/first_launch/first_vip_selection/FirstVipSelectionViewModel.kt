@@ -1,22 +1,15 @@
 package com.yellowtwigs.knockin.ui.first_launch.first_vip_selection
 
 import android.content.ContentResolver
-import android.content.ContentValues
-import android.provider.ContactsContract
-import android.util.Log
 import androidx.lifecycle.*
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
-import com.yellowtwigs.knockin.domain.contact.GetNumbersContactsVipUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsSortByFullNameUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetNumbersContactsVipUseCase
 import com.yellowtwigs.knockin.domain.contact.UpdateContactPriorityByIdUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
-import com.yellowtwigs.knockin.utils.Converter.unAccent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -1,15 +1,19 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.liveData
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.domain.contact.DeleteContactUseCase
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsUseCase
+import com.yellowtwigs.knockin.domain.contact.id.get.GetCurrentContactIdChannelUseCase
+import com.yellowtwigs.knockin.domain.contact.id.set.SetCurrentContactIdUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.CoroutineDispatcherProvider
 import com.yellowtwigs.knockin.utils.EquatableCallback
+import com.yellowtwigs.knockin.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -20,6 +24,8 @@ import javax.inject.Inject
 class ContactsListViewModel @Inject constructor(
     private val getAllContactsUseCase: GetAllContactsUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
+    private val getCurrentContactIdChannelUseCase: GetCurrentContactIdChannelUseCase,
+    private val setCurrentContactIdUseCase: SetCurrentContactIdUseCase,
     coroutineDispatcherProvider: CoroutineDispatcherProvider,
 ) : ViewModel() {
 
@@ -27,12 +33,23 @@ class ContactsListViewModel @Inject constructor(
     private val sortingMutableStateFlow = MutableStateFlow(R.id.sort_by_priority)
     private val searchBarTextFlow = MutableStateFlow("")
 
+    sealed class MainViewAction {
+        sealed class Navigate : MainViewAction() {
+            data class ContactDetails(val currentId: Int) : Navigate()
+        }
+    }
+
+    val mainViewAction: LiveData<Event<MainViewAction>> = liveData {
+        getCurrentContactIdChannelUseCase.invoke().collect { id ->
+            id?.let { idNotNull ->
+                emit(Event(MainViewAction.Navigate.ContactDetails(idNotNull)))
+            }
+        }
+    }
+
     val contactsListViewStateLiveData = liveData(coroutineDispatcherProvider.io) {
         combine(
-            getAllContactsUseCase.contactsListViewStateLiveData.asFlow(),
-            sortingMutableStateFlow,
-            filteringMutableStateFlow,
-            searchBarTextFlow
+            getAllContactsUseCase.contactsListViewStateLiveData.asFlow(), sortingMutableStateFlow, filteringMutableStateFlow, searchBarTextFlow
         ) { contacts: List<ContactDB>, sort: Int, filterId: Int, input: String ->
             emit(filterWithInput(input, sortContactsList(sort, filterId, contacts.map { transformContactDbToContactsListViewState(it) })))
         }.collect()
@@ -47,8 +64,7 @@ class ContactsListViewModel @Inject constructor(
             "${contact.firstName.uppercase()} ${contact.firstName.uppercase()}"
         }
 
-        return ContactsListViewState(
-            id = contact.id,
+        return ContactsListViewState(id = contact.id,
             fullName = fullName,
             firstName = contact.firstName,
             lastName = contact.lastName,
@@ -63,7 +79,9 @@ class ContactsListViewModel @Inject constructor(
             hasWhatsapp = contact.listOfMessagingApps.contains("com.whatsapp"),
             hasTelegram = contact.listOfMessagingApps.contains("org.telegram.messenger"),
             hasSignal = contact.listOfMessagingApps.contains("org.thoughtcrime.securesms"),
-        )
+            onClickedCallback = EquatableCallback {
+                setCurrentContactIdUseCase.invoke(contact.id)
+            })
     }
 
 

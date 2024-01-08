@@ -51,8 +51,6 @@ class EditContactRepositoryImpl @Inject constructor(private val dao: ContactsDao
 
                     val where = ContactsContract.Contacts._ID + " = ?"
                     val whereArgs = arrayOf(contact.androidId?.toString())
-                    Log.i("PhoneCallContacts", "contact.fullName : ${contact.fullName}")
-                    Log.i("PhoneCallContacts", "whereArgs : $whereArgs")
 
                     if (whereArgs != null) {
                         resolver.update(ContactsContract.Contacts.CONTENT_URI, contentValues, where, whereArgs)
@@ -65,7 +63,7 @@ class EditContactRepositoryImpl @Inject constructor(private val dao: ContactsDao
         }
     }
 
-    override fun getContact(id: Int) = dao.getContact(id).asLiveData()
+    override fun getContact(id: Int) = dao.getContact(id)
 
     override suspend fun addNewContact(contact: ContactDB) = dao.insertContact(contact)
 

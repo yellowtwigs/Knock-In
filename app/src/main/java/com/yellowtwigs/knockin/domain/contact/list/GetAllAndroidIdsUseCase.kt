@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.domain.contact
+package com.yellowtwigs.knockin.domain.contact.list
 
 import android.util.Log
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository

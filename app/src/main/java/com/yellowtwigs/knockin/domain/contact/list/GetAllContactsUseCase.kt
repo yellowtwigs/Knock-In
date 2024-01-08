@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.domain.contact
+package com.yellowtwigs.knockin.domain.contact.list
 
 import androidx.lifecycle.liveData
 import com.yellowtwigs.knockin.R

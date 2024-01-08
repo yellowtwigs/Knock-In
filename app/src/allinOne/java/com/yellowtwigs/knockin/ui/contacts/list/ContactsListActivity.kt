@@ -46,6 +46,7 @@ import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.Event.Companion.observeEvent
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
@@ -84,6 +85,7 @@ class ContactsListActivity : AppCompatActivity() {
 
     private var listOfHasWhatsapp = arrayListOf<Boolean>()
     var modeMultiSelect = false
+    var contactSelectedApp = false
 
     private var phoneNumber = ""
 
@@ -127,6 +129,19 @@ class ContactsListActivity : AppCompatActivity() {
         setupDrawerLayout(binding)
         floatingButtonsClick(binding)
         multiSelectToolbarClick(binding)
+
+        contactsListViewModel.mainViewAction.observeEvent(this) { action ->
+            when (action) {
+                is ContactsListViewModel.MainViewAction.Navigate.ContactDetails -> {
+                    hideKeyboard(this)
+                    if (contactSelectedApp) {
+                        startActivity(Intent(this, ContactSelectedWithAppsActivity::class.java))
+                    } else {
+                        startActivity(Intent(this, EditContactActivity::class.java))
+                    }
+                }
+            }
+        }
 
         val deletedContactId = intent.getIntExtra("DeletedContactId", 0)
 
@@ -866,17 +881,14 @@ class ContactsListActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val nbGrid = sharedPreferences.getInt("gridview", 1)
 
-        val contactsListAdapter = ContactsListAdapter(this, {
-            hideKeyboard(this)
-            startActivity(Intent(this, EditContactActivity::class.java))
-        }, { id, civ, contact ->
+        val contactsListAdapter = ContactsListAdapter(this) { id, civ, contact ->
             hideKeyboard(this)
 
             itemSelected(civ, contact)
             modeMultiSelect = listOfItemSelected.isNotEmpty()
 
             setupMultiSelectToolbar(binding, modeMultiSelect)
-        })
+        }
 
         if (nbGrid == 1) {
             binding.recyclerView.apply {
@@ -891,24 +903,14 @@ class ContactsListActivity : AppCompatActivity() {
         } else {
             if (nbGrid == 4) {
                 binding.recyclerView.apply {
-                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactsListActivity, { id ->
-                        hideKeyboard(this@ContactsListActivity)
-
-                        startActivity(
-                            Intent(
-                                this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
-                            ).putExtra(
-                                "ContactId", id
-                            )
-                        )
-                    }, { id, civ, contact ->
+                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactsListActivity) { id, civ, contact ->
                         hideKeyboard(this@ContactsListActivity)
 
                         itemSelected(civ, contact)
                         modeMultiSelect = listOfItemSelected.isNotEmpty()
 
                         setupMultiSelectToolbar(binding, modeMultiSelect)
-                    })
+                    }
                     contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactsListActivity) { contacts ->
                         contactsGridAdapter.submitList(null)
                         contactsGridAdapter.submitList(contacts)
@@ -919,24 +921,14 @@ class ContactsListActivity : AppCompatActivity() {
                 }
             } else if (nbGrid == 5) {
                 binding.recyclerView.apply {
-                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactsListActivity, { id ->
-                        hideKeyboard(this@ContactsListActivity)
-
-                        startActivity(
-                            Intent(
-                                this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
-                            ).putExtra(
-                                "ContactId", id
-                            )
-                        )
-                    }, { _, civ, contact ->
+                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactsListActivity) { _, civ, contact ->
                         hideKeyboard(this@ContactsListActivity)
 
                         itemSelected(civ, contact)
                         modeMultiSelect = listOfItemSelected.isNotEmpty()
 
                         setupMultiSelectToolbar(binding, modeMultiSelect)
-                    })
+                    }
                     contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactsListActivity) { contacts ->
                         contactsGridAdapter.submitList(null)
                         contactsGridAdapter.submitList(contacts)

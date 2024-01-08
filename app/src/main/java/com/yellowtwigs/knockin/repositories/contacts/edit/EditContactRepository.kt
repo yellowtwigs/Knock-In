@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import com.yellowtwigs.knockin.model.database.data.ContactDB
+import kotlinx.coroutines.flow.Flow
 
 interface EditContactRepository {
 
@@ -14,7 +15,7 @@ interface EditContactRepository {
     suspend fun disabledAllPhoneCallContacts(resolver: ContentResolver)
     suspend fun enabledAllPhoneCallContacts(resolver: ContentResolver)
 
-    fun getContact(id: Int): LiveData<ContactDB>
+    fun getContact(id: Int): Flow<ContactDB>
 
     suspend fun updateContact(contact: ContactDB)
 

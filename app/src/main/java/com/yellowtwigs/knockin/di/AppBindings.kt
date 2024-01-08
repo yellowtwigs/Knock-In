@@ -4,6 +4,8 @@ import com.yellowtwigs.knockin.repositories.contacts.create.CreateContactReposit
 import com.yellowtwigs.knockin.repositories.contacts.create.CreateContactRepositoryImpl
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepository
 import com.yellowtwigs.knockin.repositories.contacts.edit.EditContactRepositoryImpl
+import com.yellowtwigs.knockin.repositories.contacts.id.CurrentContactIdRepository
+import com.yellowtwigs.knockin.repositories.contacts.id.CurrentContactIdRepositoryImpl
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepository
 import com.yellowtwigs.knockin.repositories.contacts.list.ContactsListRepositoryImpl
 import com.yellowtwigs.knockin.repositories.firebase.FirebaseFirestoreRepository
@@ -27,6 +29,10 @@ abstract class AppBindings {
     @Binds
     @Singleton
     abstract fun bindContactsRepository(impl: ContactsListRepositoryImpl): ContactsListRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCurrentContactIdRepository(impl: CurrentContactIdRepositoryImpl): CurrentContactIdRepository
 
     @Binds
     @Singleton

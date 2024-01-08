@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.ui.contacts.multi_channel
 
 import androidx.lifecycle.ViewModel
-import com.yellowtwigs.knockin.domain.contact.GetContactsByIds
+import com.yellowtwigs.knockin.domain.contact.list.GetContactsByIds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

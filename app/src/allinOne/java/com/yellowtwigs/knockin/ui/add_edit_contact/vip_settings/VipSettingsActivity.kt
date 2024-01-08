@@ -21,14 +21,12 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityVipSettingsBinding
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
-import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -95,8 +93,7 @@ class VipSettingsActivity : AppCompatActivity() {
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
 
-        val contactId = intent.getIntExtra("ContactId", 0)
-        editContactViewModel.getEditContactViewStateById(contactId).observe(this) { viewState ->
+        editContactViewModel.editContactViewStateLiveData.observe(this) { viewState ->
             currentViewState = viewState
             binding.contactName.text = "${viewState.firstName} ${viewState.lastName}"
 

@@ -20,7 +20,7 @@ import com.yellowtwigs.knockin.databinding.ActivityNotificationAlarmBinding
 import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.EditContactViewModel
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
-import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
+import com.yellowtwigs.knockin.ui.add_edit_contact.edit.SingleContactViewState
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.openSms
@@ -135,7 +135,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
             it.forEach { sbp ->
                 binding.apply {
-                    editContactViewModel.getSingleContactViewStateById(sbp.contactId).observe(this@NotificationAlarmActivity) { contact ->
+                    editContactViewModel.singleContactViewStateLiveData.observe(this@NotificationAlarmActivity) { contact ->
                         currentContact = contact
                         contact?.apply {
                             currentNotificationSound = notificationSound

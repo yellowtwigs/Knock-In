@@ -54,15 +54,11 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
 
         val appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
 
-        editContactViewModel.getEditContactViewStateById(intent.getIntExtra("ContactId", 0)).observe(this) { contact ->
+        editContactViewModel.editContactViewStateLiveData.observe(this) { contact ->
             contact?.let {
                 binding.apply {
                     if (it.profilePicture64 == "") {
-                        contactImage.setImageResource(
-                            randomDefaultImage(
-                                contact.profilePicture, this@ContactSelectedWithAppsActivity, "Get"
-                            )
-                        )
+                        contactImage.setImageResource(randomDefaultImage(contact.profilePicture, this@ContactSelectedWithAppsActivity, "Get"))
                     } else {
                         contactImage.setImageBitmap(Converter.base64ToBitmap(contact.profilePicture64))
                     }
@@ -138,6 +134,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                         whatsappIcon.id -> {
                             openWhatsapp(converter06To33(contact.firstPhoneNumber.phoneNumber), this@ContactSelectedWithAppsActivity)
                         }
+
                         editIcon.id -> {
                             val intent = Intent(
                                 this@ContactSelectedWithAppsActivity, EditContactActivity::class.java
@@ -145,12 +142,15 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                             intent.putExtra("ContactId", id)
                             startActivity(intent)
                         }
+
                         callIcon1.id -> {
                             callPhone(contact.firstPhoneNumber.phoneNumber, this@ContactSelectedWithAppsActivity)
                         }
+
                         smsIcon.id -> {
                             openSms(contact.firstPhoneNumber.phoneNumber, this@ContactSelectedWithAppsActivity)
                         }
+
                         mailIcon.id -> {
                             val mail = listOfMails.random()
                             val intent = Intent(Intent.ACTION_SENDTO)
@@ -160,6 +160,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                             intent.putExtra(Intent.EXTRA_TEXT, "")
                             startActivity(intent)
                         }
+
                         messengerIcon.id -> {
                             if (!appsSupportPref.getBoolean("Apps_Support_Bought", false)) {
                             } else {
@@ -170,12 +171,14 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                                 startActivity(intent)
                             }
                         }
+
                         signalIcon.id -> {
                             if (!appsSupportPref.getBoolean("Apps_Support_Bought", false)) {
                             } else {
                                 goToSignal(this@ContactSelectedWithAppsActivity)
                             }
                         }
+
                         telegramIcon.id -> {
                             goToTelegram(this@ContactSelectedWithAppsActivity, contact.firstPhoneNumber.phoneNumber)
                         }
@@ -206,10 +209,7 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val nbGrid = sharedPreferences.getInt("gridview", 1)
 
-        val contactsListAdapter = ContactsListAdapter(this, { id ->
-            EveryActivityUtils.hideKeyboard(this)
-        }, { id, civ, contact ->
-        })
+        val contactsListAdapter = ContactsListAdapter(this, { id, civ, contact -> })
 
         if (nbGrid == 1) {
             binding.recyclerView.apply {
@@ -223,9 +223,8 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
         } else {
             if (nbGrid == 4) {
                 binding.recyclerView.apply {
-                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactSelectedWithAppsActivity, { id ->
-                    }, { id, civ, contact ->
-                    })
+                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactSelectedWithAppsActivity) { id, civ, contact ->
+                    }
                     contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactSelectedWithAppsActivity) { contacts ->
                         contactsGridAdapter.submitList(null)
                         contactsGridAdapter.submitList(contacts)
@@ -235,9 +234,8 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
                 }
             } else if (nbGrid == 5) {
                 binding.recyclerView.apply {
-                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactSelectedWithAppsActivity, { id ->
-                    }, { id, civ, contact ->
-                    })
+                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactSelectedWithAppsActivity) { id, civ, contact ->
+                    }
                     contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactSelectedWithAppsActivity) { contacts ->
                         contactsGridAdapter.submitList(null)
                         contactsGridAdapter.submitList(contacts)

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsSortByFullNameUseCase
 import com.yellowtwigs.knockin.domain.group.SetGroupIdFlowUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
@@ -152,6 +152,7 @@ class GroupsListViewModel @Inject constructor(
             contact.listOfMessagingApps.contains("com.whatsapp"),
             contact.listOfMessagingApps.contains("org.telegram.messenger"),
             contact.listOfMessagingApps.contains("org.thoughtcrime.securesms"),
+            EquatableCallback {  }
         )
     }
 

@@ -29,60 +29,69 @@ import java.util.*
 
 object ContactGesture {
 
-    fun updateContact(context: Context, rawContactId: Int?, firstName: String, lastName: String, lastPhoneNumber: String, phoneNumber: String?, email:
-    String?) {
+    fun updateContact(
+        context: Context, rawContactId: Int?, firstName: String, lastName: String, lastPhoneNumber: String, phoneNumber: String?, email:
+        String?
+    ) {
 
         phoneNumber?.let { phoneNumberNotNull ->
             email?.let { mailNotNull ->
                 updateNameAndNumber(
-                        context,
-                        lastPhoneNumber,
-                        firstName,
-                        lastName,
-                        phoneNumberNotNull,
-                        mailNotNull,
+                    context,
+                    lastPhoneNumber,
+                    firstName,
+                    lastName,
+                    phoneNumberNotNull,
+                    mailNotNull,
                 )
             }
         }
     }
 
     private val DATA_COLS = arrayOf(
-            ContactsContract.Data.MIMETYPE,
-            ContactsContract.Data.DATA1,
-            ContactsContract.Data.CONTACT_ID
+        ContactsContract.Data.MIMETYPE,
+        ContactsContract.Data.DATA1,
+        ContactsContract.Data.CONTACT_ID
     )
 
-    private fun updateNameAndNumber(context: Context, number: String, newFirstname: String, newLastname: String, newNumber: String, newEmail: String): Boolean {
+    private fun updateNameAndNumber(
+        context: Context,
+        number: String,
+        newFirstname: String,
+        newLastname: String,
+        newNumber: String,
+        newEmail: String
+    ): Boolean {
 
         getContactId(context, number)?.let { contactId ->
             val nameWhere = "${DATA_COLS[0]} = '${ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE}' AND ${DATA_COLS[2]} = ?"
             val nameArgs = arrayOf(contactId)
 
             val firstnameOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(nameWhere, nameArgs)
-                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, newFirstname)
-                    .build()
+                .withSelection(nameWhere, nameArgs)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, newFirstname)
+                .build()
 
             val lastnameOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(nameWhere, nameArgs)
-                    .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, newLastname)
-                    .build()
+                .withSelection(nameWhere, nameArgs)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, newLastname)
+                .build()
 
             val numberWhere = "${DATA_COLS[0]} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}' AND ${DATA_COLS[1]} = ?"
             val numberArgs = arrayOf(number)
 
             val numberOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(numberWhere, numberArgs)
-                    .withValue(DATA_COLS[1], newNumber)
-                    .build()
+                .withSelection(numberWhere, numberArgs)
+                .withValue(DATA_COLS[1], newNumber)
+                .build()
 
             val emailWhere = "${DATA_COLS[0]} = '${ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE}' AND ${DATA_COLS[2]} = ?"
             val emailArgs = arrayOf(contactId)
 
             val emailOperation = ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(emailWhere, emailArgs)
-                    .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, newEmail)
-                    .build()
+                .withSelection(emailWhere, emailArgs)
+                .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, newEmail)
+                .build()
 
             val operations = arrayListOf(firstnameOperation, lastnameOperation, numberOperation, emailOperation)
 
@@ -104,11 +113,11 @@ object ContactGesture {
 
     fun getContactId(context: Context, number: String): String? {
         val cursor = context.contentResolver.query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                arrayOf(ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER),
-                "${ContactsContract.CommonDataKinds.Phone.NUMBER}=?",
-                arrayOf(number),
-                null
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            arrayOf(ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER),
+            "${ContactsContract.CommonDataKinds.Phone.NUMBER}=?",
+            arrayOf(number),
+            null
         )
 
         if (cursor == null || cursor.count == 0) return null
@@ -121,19 +130,14 @@ object ContactGesture {
         return id
     }
 
-    fun transformContactDbToContactsListViewState(contact: ContactDB): ContactsListViewState {
-        val fullName = if (contact.firstName.isEmpty() || contact.firstName.isBlank() || contact.firstName == " ") {
-            contact.lastName.uppercase()
-        } else if (contact.lastName.isEmpty() || contact.lastName.isBlank() || contact.lastName == " ") {
-            contact.firstName.uppercase()
-        } else {
-            "${contact.firstName.uppercase()} ${contact.firstName.uppercase()}"
-        }
-
-        return ContactsListViewState(id = contact.id, fullName = fullName, firstName = contact.firstName, lastName = contact.lastName, profilePicture = contact.profilePicture, profilePicture64 = contact.profilePicture64, firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true), secondPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, false), listOfMails = contact.listOfMails, priority = contact.priority, isFavorite = contact.isFavorite == 1, messengerId = contact.messengerId, hasWhatsapp = contact.listOfMessagingApps.contains("com.whatsapp"), hasTelegram = contact.listOfMessagingApps.contains("org.telegram.messenger"), hasSignal = contact.listOfMessagingApps.contains("org.thoughtcrime.securesms"))
-    }
-
-    fun handleContactWithMultiplePhoneNumbers(cxt: Context, phoneNumbers: List<PhoneNumberWithSpinner>, action: String, onClickedMultipleNumbers: (String, PhoneNumberWithSpinner, PhoneNumberWithSpinner) -> Unit, onNotMobileFlagClicked: (String, PhoneNumberWithSpinner, String) -> Unit, message: String) {
+    fun handleContactWithMultiplePhoneNumbers(
+        cxt: Context,
+        phoneNumbers: List<PhoneNumberWithSpinner>,
+        action: String,
+        onClickedMultipleNumbers: (String, PhoneNumberWithSpinner, PhoneNumberWithSpinner) -> Unit,
+        onNotMobileFlagClicked: (String, PhoneNumberWithSpinner, String) -> Unit,
+        message: String
+    ) {
 
         if (phoneNumbers.size > 1) {
             onClickedMultipleNumbers(action, phoneNumbers[0], phoneNumbers[1])
@@ -246,13 +250,19 @@ object ContactGesture {
     fun transformPhoneNumberToSinglePhoneNumberWithFlag(phoneNumbers: List<String>, firstPhoneNumber: Boolean): PhoneNumberWithFlag {
         return if (firstPhoneNumber && phoneNumbers.isNotEmpty()) {
             if (phoneNumbers[0].contains(":")) {
-                PhoneNumberWithFlag(flag = transformPhoneNumberFlagNumberToFlagString(phoneNumbers[0].split(":")[0].toInt()), phoneNumber = phoneNumbers[0].split(":")[1])
+                PhoneNumberWithFlag(
+                    flag = transformPhoneNumberFlagNumberToFlagString(phoneNumbers[0].split(":")[0].toInt()),
+                    phoneNumber = phoneNumbers[0].split(":")[1]
+                )
             } else {
                 PhoneNumberWithFlag(flag = "Mobile", phoneNumber = phoneNumbers[0])
             }
         } else if (phoneNumbers.size > 1) {
             if (phoneNumbers[1].contains(":")) {
-                PhoneNumberWithFlag(flag = transformPhoneNumberFlagNumberToFlagString(phoneNumbers[1].split(":")[0].toInt()), phoneNumber = phoneNumbers[1].split(":")[1])
+                PhoneNumberWithFlag(
+                    flag = transformPhoneNumberFlagNumberToFlagString(phoneNumbers[1].split(":")[0].toInt()),
+                    phoneNumber = phoneNumbers[1].split(":")[1]
+                )
             } else {
                 PhoneNumberWithFlag(flag = "Mobile", phoneNumber = phoneNumbers[1])
             }
@@ -265,11 +275,15 @@ object ContactGesture {
         return if (firstPhoneNumber && phoneNumbers.isNotEmpty()) {
             if (phoneNumbers[0].contains(":")) {
                 if (phoneNumbers[0].split(":")[0] != "") {
-                    PhoneNumberWithSpinner(flag = phoneNumbers[0].split(":")[0].toInt(), // 1 ==> 0
-                            phoneNumber = phoneNumbers[0].split(":")[1])
+                    PhoneNumberWithSpinner(
+                        flag = phoneNumbers[0].split(":")[0].toInt(), // 1 ==> 0
+                        phoneNumber = phoneNumbers[0].split(":")[1]
+                    )
                 } else {
-                    PhoneNumberWithSpinner(flag = 2, // 1 ==> 0
-                            phoneNumber = phoneNumbers[0].split(":")[1])
+                    PhoneNumberWithSpinner(
+                        flag = 2, // 1 ==> 0
+                        phoneNumber = phoneNumbers[0].split(":")[1]
+                    )
                 }
             } else {
                 PhoneNumberWithSpinner(flag = 2, phoneNumber = phoneNumbers[0])
@@ -277,11 +291,15 @@ object ContactGesture {
         } else if (phoneNumbers.size > 1) {
             if (phoneNumbers[1].contains(":")) {
                 if (phoneNumbers[1].split(":")[0] != "") {
-                    PhoneNumberWithSpinner(flag = phoneNumbers[1].split(":")[0].toInt(), // 1 ==> 0
-                            phoneNumber = phoneNumbers[1].split(":")[1])
+                    PhoneNumberWithSpinner(
+                        flag = phoneNumbers[1].split(":")[0].toInt(), // 1 ==> 0
+                        phoneNumber = phoneNumbers[1].split(":")[1]
+                    )
                 } else {
-                    PhoneNumberWithSpinner(flag = 2, // 1 ==> 0
-                            phoneNumber = phoneNumbers[1].split(":")[1])
+                    PhoneNumberWithSpinner(
+                        flag = 2, // 1 ==> 0
+                        phoneNumber = phoneNumbers[1].split(":")[1]
+                    )
                 }
             } else {
                 PhoneNumberWithSpinner(flag = 2, phoneNumber = phoneNumbers[1])
@@ -294,8 +312,10 @@ object ContactGesture {
     fun transformPhoneNumberToPhoneNumbersWithSpinner(phoneNumbers: List<String>): List<PhoneNumberWithSpinner> {
         return phoneNumbers.map { phoneNumber ->
             if (phoneNumber.contains(":")) {
-                PhoneNumberWithSpinner(flag = phoneNumber.split(":")[0].toInt(), // 1 ==> 0
-                        phoneNumber = phoneNumber.split(":")[1])
+                PhoneNumberWithSpinner(
+                    flag = phoneNumber.split(":")[0].toInt(), // 1 ==> 0
+                    phoneNumber = phoneNumber.split(":")[1]
+                )
             } else {
                 PhoneNumberWithSpinner(flag = 2, phoneNumber = phoneNumber)
             }
@@ -401,9 +421,13 @@ object ContactGesture {
         val appIntent = if (phoneNumber == "") {
             Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve"))
         } else {
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/${
-                converter06To33(phoneNumber).replace("\\s".toRegex(), "")
-            }"))
+            Intent(
+                Intent.ACTION_VIEW, Uri.parse(
+                    "https://t.me/${
+                        converter06To33(phoneNumber).replace("\\s".toRegex(), "")
+                    }"
+                )
+            )
         }
         try {
             appIntent.flags = FLAG_ACTIVITY_NEW_TASK
@@ -477,7 +501,8 @@ object ContactGesture {
     }
 
     fun isPhoneNumber(phoneNumber: String): Boolean {
-        val regex = "((?:\\+|00)[17][ \\-]?|(?:\\+|00)[1-9]\\d{0,2}[ \\-]?|(?:\\+|00)1-\\d{3}[ \\-]?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:([ \\-][0-9]{2}){4}|((?:[0-9]{2}){4})|([ \\-][0-9]{3}[ \\-][0-9]{4})|([0-9]{7}))"
+        val regex =
+            "((?:\\+|00)[17][ \\-]?|(?:\\+|00)[1-9]\\d{0,2}[ \\-]?|(?:\\+|00)1-\\d{3}[ \\-]?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:([ \\-][0-9]{2}){4}|((?:[0-9]{2}){4})|([ \\-][0-9]{3}[ \\-][0-9]{4})|([0-9]{7}))"
         return phoneNumber.matches(regex.toRegex())
     }
 

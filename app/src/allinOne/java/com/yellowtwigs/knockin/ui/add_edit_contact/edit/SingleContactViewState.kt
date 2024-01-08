@@ -1,6 +1,8 @@
-package com.yellowtwigs.knockin.ui.contacts
+package com.yellowtwigs.knockin.ui.add_edit_contact.edit
+
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
+import com.yellowtwigs.knockin.utils.EquatableCallback
 
 data class SingleContactViewState(
     val id: Int,
@@ -18,7 +20,6 @@ data class SingleContactViewState(
     val isFavorite: Int,
     val messengerId: String,
     val listOfMessagingApps: List<String>,
-
     var notificationTone: String,
     var notificationSound: Int = R.raw.sms_ring,
     var isCustomSound: Int,

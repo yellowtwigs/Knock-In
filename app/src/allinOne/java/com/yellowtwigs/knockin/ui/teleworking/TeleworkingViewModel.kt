@@ -1,7 +1,7 @@
 package com.yellowtwigs.knockin.ui.teleworking
 
 import androidx.lifecycle.ViewModel
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsVipUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsVipUseCase
 import com.yellowtwigs.knockin.domain.contact.UpdateContactPriorityByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

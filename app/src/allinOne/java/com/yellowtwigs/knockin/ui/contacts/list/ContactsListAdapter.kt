@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemContactListBinding
+import com.yellowtwigs.knockin.repositories.contacts.id.NavigateDestination
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.utils.ContactGesture
 import com.yellowtwigs.knockin.utils.ContactGesture.goToSignal
@@ -32,7 +33,6 @@ import kotlin.collections.ArrayList
 
 class ContactsListAdapter(
     private val cxt: Context,
-    private val onClickedCallback: (Int) -> Unit,
     private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactsListViewState) -> Unit
 ) : ListAdapter<ContactsListViewState, ContactsListAdapter.ViewHolder>(
     ContactsListViewStateComparator()
@@ -175,7 +175,8 @@ class ContactsListAdapter(
                             goToSignal(cxt)
                         }
                         editLayout.id -> {
-                            onClickedCallback(contact.id)
+                            contact.onClickedCallback()
+//                            onClickedCallback(contact.id)
                         }
                     }
                 }
@@ -255,7 +256,10 @@ class ContactsListAdapter(
         override fun areContentsTheSame(
             oldItem: ContactsListViewState, newItem: ContactsListViewState
         ): Boolean {
-            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem.profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 && oldItem.firstPhoneNumber == newItem.firstPhoneNumber && oldItem.secondPhoneNumber == newItem.secondPhoneNumber && oldItem.listOfMails == newItem.listOfMails && oldItem.priority == newItem.priority && oldItem.isFavorite == newItem.isFavorite && oldItem.messengerId == newItem.messengerId && oldItem.hasWhatsapp == newItem.hasWhatsapp && oldItem.hasTelegram == newItem.hasTelegram && oldItem.hasSignal == newItem.hasSignal
+            return oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName && oldItem.profilePicture == newItem
+                .profilePicture && oldItem.profilePicture64 == newItem.profilePicture64 && oldItem.firstPhoneNumber == newItem.firstPhoneNumber &&
+                    oldItem.secondPhoneNumber == newItem.secondPhoneNumber && oldItem.priority ==
+                    newItem.priority && oldItem.isFavorite == newItem.isFavorite && oldItem.messengerId == newItem.messengerId && oldItem.hasWhatsapp == newItem.hasWhatsapp && oldItem.hasTelegram == newItem.hasTelegram && oldItem.hasSignal == newItem.hasSignal
         }
     }
 

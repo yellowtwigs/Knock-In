@@ -2,7 +2,7 @@ package com.yellowtwigs.knockin.ui.groups.manage_group
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.yellowtwigs.knockin.domain.contact.GetAllContactsSortByFullNameUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsSortByFullNameUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.groups.list.GroupsListRepository
@@ -23,7 +23,6 @@ import javax.inject.Inject
 class ManageGroupViewModel @Inject constructor(
     private val manageGroupRepository: ManageGroupRepository,
     private val getAllContactsSortByFullNameUseCase: GetAllContactsSortByFullNameUseCase,
-//    private val getGroupIdFlowUseCase: GetGroupIdFlowUseCase,
     private val groupsListRepository: GroupsListRepository
 ) : ViewModel() {
 
@@ -127,6 +126,7 @@ class ManageGroupViewModel @Inject constructor(
             contact.listOfMessagingApps.contains("com.whatsapp"),
             contact.listOfMessagingApps.contains("org.telegram.messenger"),
             contact.listOfMessagingApps.contains("org.thoughtcrime.securesms"),
+            EquatableCallback { }
         )
     }
 
@@ -136,11 +136,6 @@ class ManageGroupViewModel @Inject constructor(
 
             val manageGroupViewState = id.let { groupsListRepository.getGroupById(it).firstOrNull() }
             val contacts = getAllContactsSortByFullNameUseCase.invoke().firstOrNull()
-
-            Log.i("GetContactsFromGroup", "manageGroupViewState : $manageGroupViewState")
-
-            Log.i("GetContactsFromGroup", "contacts : $contacts")
-            Log.i("GetContactsFromGroup", "groupId : $id")
 
             if (manageGroupViewState == null) {
                 if (contacts != null) {
@@ -170,13 +165,15 @@ class ManageGroupViewModel @Inject constructor(
                         )
                     )
                 } else {
-                    _groupViewState.tryEmit(ManageGroupViewState(
-                        id = 0,
-                        groupName = "",
-                        section_color = 0,
-                        listOfContacts = listOf(),
-                        listOfIds = listOf(),
-                    ))
+                    _groupViewState.tryEmit(
+                        ManageGroupViewState(
+                            id = 0,
+                            groupName = "",
+                            section_color = 0,
+                            listOfContacts = listOf(),
+                            listOfIds = listOf(),
+                        )
+                    )
                     groupStateMutableSharedFlow.emit(
                         ManageGroupViewState(
                             id = 0,
@@ -192,15 +189,17 @@ class ManageGroupViewModel @Inject constructor(
                     val allContacts = contacts.map {
                         transformContactDbToContactsListViewState(it)
                     }
-                    _groupViewState.tryEmit(ManageGroupViewState(
-                        id = manageGroupViewState.id,
-                        groupName = manageGroupViewState.name,
-                        section_color = manageGroupViewState.section_color,
-                        listOfContacts = sortedContactsList(
-                            contactsToContactsManageGroupViewState(allContacts)
-                        ),
-                        listOfIds = manageGroupViewState.listOfContactsData,
-                    ))
+                    _groupViewState.tryEmit(
+                        ManageGroupViewState(
+                            id = manageGroupViewState.id,
+                            groupName = manageGroupViewState.name,
+                            section_color = manageGroupViewState.section_color,
+                            listOfContacts = sortedContactsList(
+                                contactsToContactsManageGroupViewState(allContacts)
+                            ),
+                            listOfIds = manageGroupViewState.listOfContactsData,
+                        )
+                    )
                     groupStateMutableSharedFlow.emit(
                         ManageGroupViewState(
                             id = manageGroupViewState.id,
@@ -213,13 +212,15 @@ class ManageGroupViewModel @Inject constructor(
                         )
                     )
                 } else {
-                    _groupViewState.tryEmit(ManageGroupViewState(
-                        id = manageGroupViewState.id,
-                        groupName = manageGroupViewState.name,
-                        section_color = manageGroupViewState.section_color,
-                        listOfContacts = listOf(),
-                        listOfIds = manageGroupViewState.listOfContactsData,
-                    ))
+                    _groupViewState.tryEmit(
+                        ManageGroupViewState(
+                            id = manageGroupViewState.id,
+                            groupName = manageGroupViewState.name,
+                            section_color = manageGroupViewState.section_color,
+                            listOfContacts = listOf(),
+                            listOfIds = manageGroupViewState.listOfContactsData,
+                        )
+                    )
                     groupStateMutableSharedFlow.emit(
                         ManageGroupViewState(
                             id = manageGroupViewState.id,

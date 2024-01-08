@@ -923,6 +923,7 @@ class ContactsListActivity : AppCompatActivity() {
         val nbGrid = sharedPreferences.getInt("gridview", 1)
 
         val contactsListAdapter = ContactsListAdapter(this, { id ->
+            Log.i("GetContact", "id : $id")
             hideKeyboard(this)
             startActivity(Intent(this, EditContactActivity::class.java).putExtra("ContactId", id))
         }, { id, civ, contact ->

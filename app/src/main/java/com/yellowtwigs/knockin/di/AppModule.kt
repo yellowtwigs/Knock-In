@@ -7,6 +7,10 @@ import com.yellowtwigs.knockin.background.DemoWorkerDependencies
 import com.yellowtwigs.knockin.background.alarm.AlarmManagerHelper
 import com.yellowtwigs.knockin.background.service.CheckDuplicateNotificationUseCase
 import com.yellowtwigs.knockin.domain.contact.*
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsSortByFavoriteUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsSortByFullNameUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllContactsVipUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetNumbersContactsVipUseCase
 import com.yellowtwigs.knockin.domain.group.UpdateFavoriteGroupUseCase
 import com.yellowtwigs.knockin.domain.notifications.*
 import com.yellowtwigs.knockin.model.database.ContactsDatabase

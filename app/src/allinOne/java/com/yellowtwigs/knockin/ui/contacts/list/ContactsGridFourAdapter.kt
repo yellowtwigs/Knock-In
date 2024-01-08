@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.databinding.ItemContactGrid4Binding
+import com.yellowtwigs.knockin.repositories.contacts.id.NavigateDestination
 import com.yellowtwigs.knockin.ui.CircularImageView
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactProfilePicture
 
 class ContactsGridFourAdapter(
     private val cxt: Context,
-    private val onClickedCallback: (Int) -> Unit,
     private val onClickedCallbackMultiSelect: (Int, CircularImageView, ContactsListViewState) -> Unit
 ) : ListAdapter<ContactsListViewState, ContactsGridFourAdapter.ViewHolder>(
     ContactsListViewStateComparator()
@@ -48,7 +48,8 @@ class ContactsGridFourAdapter(
                         if (cxt.modeMultiSelect) {
                             onClickedCallbackMultiSelect(contact.id, civ, contact)
                         } else {
-                            onClickedCallback(contact.id)
+                            cxt.contactSelectedApp = true
+                            contact.onClickedCallback()
                         }
                     }
                 }

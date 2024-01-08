@@ -1,6 +1,8 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
+import com.yellowtwigs.knockin.repositories.contacts.id.NavigateDestination
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
+import com.yellowtwigs.knockin.utils.EquatableCallback
 
 data class ContactsListViewState(
     val id: Int,
@@ -18,4 +20,5 @@ data class ContactsListViewState(
     val hasWhatsapp: Boolean,
     val hasTelegram: Boolean,
     val hasSignal: Boolean,
-    )
+    val onClickedCallback: EquatableCallback,
+)

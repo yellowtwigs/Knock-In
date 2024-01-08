@@ -44,8 +44,8 @@ import com.yellowtwigs.knockin.utils.Converter
 import com.yellowtwigs.knockin.utils.Converter.base64ToBitmap
 import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
-import com.yellowtwigs.knockin.ui.contacts.SingleContactViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.updateContact
+import com.yellowtwigs.knockin.utils.Event.Companion.observeEvent
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.InitContactsForListAdapter.InitContactAdapter.contactPriorityBorder
 import com.yellowtwigs.knockin.utils.RandomDefaultImage.randomDefaultImage
@@ -156,20 +156,47 @@ class EditContactActivity : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-        val id = intent.getIntExtra("ContactId", 1)
-
         fromVipSettings = intent.getBooleanExtra("fromVipSettings", false)
 
         fromGroups = intent.getBooleanExtra("FromGroups", false)
-        Log.i("EditContactCrash", "Passe par là : bindingAllDataFromUserId(id)")
-        bindingAllDataFromUserId(id)
+        bindingAllDataFromUserId()
         actionOnClickListener()
+
+        editContactViewModel.mainViewAction.observeEvent(this) {
+            binding.apply {
+                // Settings
+                if (checkIfADataWasChanged()) {
+                    val intentToVipSettings = Intent(this@EditContactActivity, VipSettingsActivity::class.java)
+                    intentToVipSettings.apply {
+                        putExtra("ContactId", currentContact.id)
+                        putExtra("hasChanged", true)
+                        putExtra("FirstName", firstNameInput.editText?.text.toString())
+                        putExtra("Lastname", lastNameInput.editText?.text.toString())
+                        putExtra("FirstPhoneNumber", "${firstPhoneNumberContent.text?.toString()}")
+                        putExtra("SecondPhoneNumber", "${firstPhoneNumberContent.text?.toString()}")
+                        putExtra("Mail", mailInput.editText?.text.toString())
+                        putExtra("MailId", mailIdInput.editText?.text.toString())
+                        putExtra("MessengerId", messengerIdInput.editText?.text.toString())
+                        putExtra("Priority", prioritySpinner.selectedItemPosition)
+                        putExtra("isFavorite", isFavorite)
+                    }
+                    startActivity(intentToVipSettings)
+                } else {
+                    val intentToVipSettings = Intent(this@EditContactActivity, VipSettingsActivity::class.java)
+                    intentToVipSettings.putExtra("ContactId", currentContact.id)
+                    intentToVipSettings.putExtra("hasChanged", false)
+                    startActivity(intentToVipSettings)
+                }
+            }
+        }
     }
 
     //region ==================================================================== SETUP UI ====================================================================
 
-    private fun bindingAllDataFromUserId(id: Int) {
-        editContactViewModel.getSingleContactViewStateById(id).observe(this) { contact ->
+    private fun bindingAllDataFromUserId() {
+        editContactViewModel.singleContactViewStateLiveData.observe(this) { contact ->
+            Log.i("GetId", "contact edit activity : ${contact}")
+
             contact?.let {
                 currentContact = it
                 binding.apply {
@@ -325,24 +352,19 @@ class EditContactActivity : AppCompatActivity() {
                     this@EditContactActivity, R.style.AlertDialog
                 ).setTitle(getString(R.string.edit_contact_delete_contact)).setMessage(getString(R.string.edit_contact_delete_contact_message))
                     .setPositiveButton(getString(R.string.edit_contact_validate)) { _, _ ->
-                        Log.i("EditContactCrash", "Passe par là :  deleteContact.setOnClickListener")
+                        editContactViewModel.deleteContactById(currentContact.id)
                         if (fromGroups) {
-                            startActivity(
-                                Intent(this@EditContactActivity, GroupsListActivity::class.java).putExtra(
-                                    "DeletedContactId", currentContact.id
-                                )
-                            )
+                            startActivity(Intent(this@EditContactActivity, GroupsListActivity::class.java))
                             finish()
                         } else {
-                            startActivity(
-                                Intent(this@EditContactActivity, ContactsListActivity::class.java).putExtra(
-                                    "DeletedContactId", currentContact.id
-                                )
-                            )
+                            startActivity(Intent(this@EditContactActivity, ContactsListActivity::class.java))
                             finish()
                         }
                     }.setNegativeButton(getString(R.string.edit_contact_cancel)) { _, _ ->
                     }.show()
+            }
+            vipSettingsIcon.setOnClickListener {
+                editContactViewModel.onVipSettingsClicked(currentContact.id)
             }
             favoriteContact.setOnClickListener {
                 if (isFavorite == 1) {
@@ -425,31 +447,6 @@ class EditContactActivity : AppCompatActivity() {
                 binding.priorityExplain.isVisible = false
                 binding.messengerIdLayout.isVisible = false
                 binding.mailIdLayout.isVisible = false
-            }
-            // Settings
-            vipSettingsIcon.setOnClickListener {
-                if (checkIfADataWasChanged()) {
-                    val intentToVipSettings = Intent(this@EditContactActivity, VipSettingsActivity::class.java)
-                    intentToVipSettings.apply {
-                        putExtra("ContactId", currentContact.id)
-                        putExtra("hasChanged", true)
-                        putExtra("FirstName", firstNameInput.editText?.text.toString())
-                        putExtra("Lastname", lastNameInput.editText?.text.toString())
-                        putExtra("FirstPhoneNumber", "${firstPhoneNumberContent.text?.toString()}")
-                        putExtra("SecondPhoneNumber", "${firstPhoneNumberContent.text?.toString()}")
-                        putExtra("Mail", mailInput.editText?.text.toString())
-                        putExtra("MailId", mailIdInput.editText?.text.toString())
-                        putExtra("MessengerId", messengerIdInput.editText?.text.toString())
-                        putExtra("Priority", prioritySpinner.selectedItemPosition)
-                        putExtra("isFavorite", isFavorite)
-                    }
-                    startActivity(intentToVipSettings)
-                } else {
-                    val intentToVipSettings = Intent(this@EditContactActivity, VipSettingsActivity::class.java)
-                    intentToVipSettings.putExtra("ContactId", currentContact.id)
-                    intentToVipSettings.putExtra("hasChanged", false)
-                    startActivity(intentToVipSettings)
-                }
             }
         }
     }
@@ -545,32 +542,6 @@ class EditContactActivity : AppCompatActivity() {
 
     private suspend fun updateFavorite() {
         editContactViewModel.updateFavorite(currentContact.id.toString())
-    }
-
-    private fun addNewUserToAndroidContacts() {
-        val intentInsertEdit = Intent(Intent.ACTION_INSERT_OR_EDIT).apply {
-            type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
-
-            putExtra(
-                ContactsContract.Intents.Insert.NAME,
-                binding.firstNameInput.editText?.text.toString() + " " + binding.lastNameInput.editText?.text.toString(),
-            )
-            putExtra(
-                ContactsContract.Intents.Insert.EMAIL, binding.mailInput.editText?.text.toString()
-            )
-            putExtra(
-                ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK
-            )
-            putExtra(
-                ContactsContract.Contacts.Photo.PHOTO, contactImageString
-            )
-
-            putExtra(ContactsContract.Intents.Insert.PHONE, binding.firstPhoneNumberContent.text?.toString())
-            putExtra(
-                ContactsContract.Intents.Insert.EXTRA_DATA_SET, binding.messengerIdInput.editText?.text.toString()
-            )
-        }
-        startActivity(intentInsertEdit)
     }
 
     private fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
@@ -794,6 +765,11 @@ class EditContactActivity : AppCompatActivity() {
             ExifInterface.ORIENTATION_ROTATE_270 -> 270
             else -> 0
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        editContactViewModel.onVipSettingsClicked(0)
     }
 
     //endregion

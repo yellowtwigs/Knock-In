@@ -2,7 +2,6 @@ package com.yellowtwigs.knockin.ui.first_launch.start
 
 import android.content.ContentResolver
 import android.content.ContentUris
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.graphics.BitmapFactory
@@ -11,7 +10,7 @@ import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.yellowtwigs.knockin.domain.contact.CreateContactUseCase
-import com.yellowtwigs.knockin.domain.contact.GetAllAndroidIdsUseCase
+import com.yellowtwigs.knockin.domain.contact.list.GetAllAndroidIdsUseCase
 import com.yellowtwigs.knockin.model.database.data.ContactDB
 import com.yellowtwigs.knockin.model.database.data.GroupDB
 import com.yellowtwigs.knockin.repositories.groups.manage.ManageGroupRepository
