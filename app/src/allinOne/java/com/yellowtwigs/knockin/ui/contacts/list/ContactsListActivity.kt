@@ -143,22 +143,6 @@ class ContactsListActivity : AppCompatActivity() {
             }
         }
 
-        val deletedContactId = intent.getIntExtra("DeletedContactId", 0)
-
-        if (deletedContactId != 0) {
-            CoroutineScope(Dispatchers.IO).launch {
-                listOfItemSelected.add(deletedContactId)
-                contactsListViewModel.deleteContactsSelected(listOfItemSelected)
-                listOfItemSelected.clear()
-                modeMultiSelect = false
-
-                withContext(Dispatchers.Main) {
-                    refreshActivity(binding)
-                    setupRecyclerView(binding)
-                }
-            }
-        }
-
         //region ======================================== Mobile Ads ========================================
 
         rateThisAppSharedPreferences = getSharedPreferences("RateThisApp", Context.MODE_PRIVATE)

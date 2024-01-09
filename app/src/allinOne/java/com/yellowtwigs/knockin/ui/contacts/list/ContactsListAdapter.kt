@@ -176,7 +176,6 @@ class ContactsListAdapter(
                         }
                         editLayout.id -> {
                             contact.onClickedCallback()
-//                            onClickedCallback(contact.id)
                         }
                     }
                 }

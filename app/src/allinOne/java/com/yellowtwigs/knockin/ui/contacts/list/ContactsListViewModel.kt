@@ -1,5 +1,6 @@
 package com.yellowtwigs.knockin.ui.contacts.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -80,6 +81,7 @@ class ContactsListViewModel @Inject constructor(
             hasTelegram = contact.listOfMessagingApps.contains("org.telegram.messenger"),
             hasSignal = contact.listOfMessagingApps.contains("org.thoughtcrime.securesms"),
             onClickedCallback = EquatableCallback {
+                Log.i("GetId", "contact.id : ${contact.id}")
                 setCurrentContactIdUseCase.invoke(contact.id)
             })
     }

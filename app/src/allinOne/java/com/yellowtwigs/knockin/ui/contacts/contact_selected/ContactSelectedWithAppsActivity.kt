@@ -246,4 +246,6 @@ class ContactSelectedWithAppsActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }
