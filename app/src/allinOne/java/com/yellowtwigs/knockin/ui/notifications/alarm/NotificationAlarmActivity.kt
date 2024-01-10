@@ -57,6 +57,7 @@ class NotificationAlarmActivity : AppCompatActivity() {
         NotificationsListenerService.notificationsList.let {
             val adapter = NotificationsAlarmListAdapter(this@NotificationAlarmActivity) { isSMS, sender, appNotifier ->
                 currentContact?.firstPhoneNumber ?: listOf(PhoneNumberWithSpinner(null, ""))
+                NotificationsListenerService.notificationsList.clear()
 
                 if (isSMS) {
                     if (currentContact != null) {
@@ -173,8 +174,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
                         }
 
                         if (NotificationsListenerService.notificationsList.size == 1) {
+                            NotificationsListenerService.notificationsList.clear()
                             finish()
                         } else {
+                            NotificationsListenerService.notificationsList.clear()
                             startActivity(Intent(this@NotificationAlarmActivity, NotificationsHistoryActivity::class.java))
                             finish()
                         }

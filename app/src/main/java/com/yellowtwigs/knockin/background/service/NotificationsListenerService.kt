@@ -50,6 +50,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.DateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -107,10 +110,8 @@ class NotificationsListenerService : NotificationListenerService() {
 
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
-
-                    if (message.contains("call") || message.contains("Incoming") || message.contains(
-                            "Incoming Call"
-                        ) || message.contains("Appel entrant") || message.contains("Dialing") || message.contains("appel entrant")
+                    if (message.contains("call") || message.contains("Incoming") || message.contains("Incoming Call")
+                        || message.contains("Appel entrant") || message.contains("Dialing") || message.contains("appel entrant")
                         || message.contains("dialing")
                     ) {
                     } else {
@@ -129,6 +130,10 @@ class NotificationsListenerService : NotificationListenerService() {
                                 }
                             }
 
+                            val currentTimeMillis = System.currentTimeMillis()
+                            val currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(currentTimeMillis), java.time.ZoneId.systemDefault())
+                            val formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
+                            val formattedTime = currentDateTime.format(formatter)
                             val time = System.currentTimeMillis()
                             val isSystem = if (sbp.appNotifier?.let { isMessagingApp(it, applicationContext) } == true) {
                                 0
@@ -181,7 +186,7 @@ class NotificationsListenerService : NotificationListenerService() {
                                 }
                                 cancelWhatsappNotification(sbn, this@NotificationsListenerService)
                                 contact?.let {
-                                    displayNotification(sbp, sbn, it, time)
+                                    displayNotification(sbp, sbn, it, formattedTime)
                                 }
                             }
                         }
@@ -211,7 +216,7 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    private fun displayNotification(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB, time: Long) {
+    private fun displayNotification(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB, formattedTime: String) {
         contact.apply {
             when (priority) {
                 2 -> {
@@ -234,7 +239,7 @@ class NotificationsListenerService : NotificationListenerService() {
                     val minutesEnd = convertTimeToMinutes(endTime)
 
                     when (vipSchedule) {
-                        1 -> vipNotificationsDeployment(sbp, sbn, contact, time)
+                        1 -> vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                         2 -> {
                             if (today in 1..4 || today == 7) {
                                 if (hourStart.toInt() <= hours && hourEnd.toInt() >= hours) {
@@ -243,24 +248,24 @@ class NotificationsListenerService : NotificationListenerService() {
                                             if (hourEnd.toInt() == hours) {
                                                 if (minutes <= minutesEnd.toInt()) {
                                                     vipNotificationsDeployment(
-                                                        sbp, sbn, contact, time
+                                                        sbp, sbn, contact, formattedTime
                                                     )
                                                 }
                                             } else {
                                                 vipNotificationsDeployment(
-                                                    sbp, sbn, contact, time
+                                                    sbp, sbn, contact, formattedTime
                                                 )
                                             }
                                         }
                                     } else if (hourEnd.toInt() == hours) {
                                         if (minutes <= minutesEnd.toInt()) {
                                             vipNotificationsDeployment(
-                                                sbp, sbn, contact, time
+                                                sbp, sbn, contact, formattedTime
                                             )
                                         }
                                     } else {
                                         vipNotificationsDeployment(
-                                            sbp, sbn, contact, time
+                                            sbp, sbn, contact, formattedTime
                                         )
                                     }
                                 }
@@ -269,7 +274,7 @@ class NotificationsListenerService : NotificationListenerService() {
 
                         3 -> {
                             if (today == 5 || today == 6) {
-                                vipNotificationsDeployment(sbp, sbn, contact, time)
+                                vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                             }
                         }
 
@@ -279,18 +284,18 @@ class NotificationsListenerService : NotificationListenerService() {
                                     if (minutes >= minutesStart.toInt()) {
                                         if (hourEnd.toInt() == hours) {
                                             if (minutes <= minutesEnd.toInt()) {
-                                                vipNotificationsDeployment(sbp, sbn, contact, time)
+                                                vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                                             }
                                         } else {
-                                            vipNotificationsDeployment(sbp, sbn, contact, time)
+                                            vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                                         }
                                     }
                                 } else if (hourEnd.toInt() == hours) {
                                     if (minutes <= minutesEnd.toInt()) {
-                                        vipNotificationsDeployment(sbp, sbn, contact, time)
+                                        vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                                     }
                                 } else {
-                                    vipNotificationsDeployment(sbp, sbn, contact, time)
+                                    vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                                 }
                             }
                         }
@@ -313,24 +318,24 @@ class NotificationsListenerService : NotificationListenerService() {
                                                 if (hourEnd.toInt() == hours) {
                                                     if (minutes <= minutesEnd.toInt()) {
                                                         vipNotificationsDeployment(
-                                                            sbp, sbn, contact, time
+                                                            sbp, sbn, contact, formattedTime
                                                         )
                                                     }
                                                 } else {
-                                                    vipNotificationsDeployment(sbp, sbn, contact, time)
+                                                    vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                                                 }
                                             }
                                         } else if (hourEnd.toInt() == hours) {
                                             if (minutes <= minutesEnd.toInt()) {
-                                                vipNotificationsDeployment(sbp, sbn, contact, time)
+                                                vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                                             }
                                         } else {
-                                            vipNotificationsDeployment(sbp, sbn, contact, time)
+                                            vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                                         }
                                     }
                                 }
                             } else {
-                                vipNotificationsDeployment(sbp, sbn, contact, time)
+                                vipNotificationsDeployment(sbp, sbn, contact, formattedTime)
                             }
                         }
                     }
@@ -347,7 +352,7 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    private fun vipNotificationsDeployment(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB, time: Long) {
+    private fun vipNotificationsDeployment(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB, formattedTime: String) {
         val screenListener = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         notificationsList.add(sbp)
         if (screenListener.isKeyguardLocked) {
@@ -369,11 +374,11 @@ class NotificationsListenerService : NotificationListenerService() {
         } else {
             cancelNotification(sbn.key)
             cancelWhatsappNotification(sbn, this)
-            displayLayoutWithSharedPreferences(sbp, contact, time)
+            displayLayoutWithSharedPreferences(sbp, contact, formattedTime)
         }
     }
 
-    private fun displayLayoutWithSharedPreferences(sbp: StatusBarParcelable, contactDB: ContactDB, time: Long) {
+    private fun displayLayoutWithSharedPreferences(sbp: StatusBarParcelable, contactDB: ContactDB, formattedTime: String) {
         if (contactDB.isCustomSound == 1) {
             alertCustomNotificationTone(contactDB.notificationTone)
         } else {
@@ -392,20 +397,20 @@ class NotificationsListenerService : NotificationListenerService() {
                 val edit = sharedPreferences.edit()
                 edit.putBoolean("view", true)
                 edit.apply()
-                displayLayout(sbp, contactDB, time)
+                displayLayout(sbp, contactDB, formattedTime)
             } else {
-                popupNotificationViewStates.add(
+                sbp.appNotifier?.let {
                     PopupNotificationViewState(
                         sbp.statusBarNotificationInfo["android.title"].toString(),
                         sbp.statusBarNotificationInfo["android.text"].toString(),
-                        convertPackageToString(sbp.appNotifier!!, this),
+                        convertPackageToString(it, this),
                         contactName = "${contactDB.firstName} ${contactDB.lastName}",
-                        date = time,
+                        date = formattedTime,
                         transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                         contactDB.messengerId,
                         contactDB.listOfMails[0]
                     )
-                )
+                }
 
                 adapterNotifications?.submitList(popupNotificationViewStates.sortedByDescending {
                     it.date
@@ -430,7 +435,7 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    private fun displayLayout(sbp: StatusBarParcelable, contactDB: ContactDB, time: Long) {
+    private fun displayLayout(sbp: StatusBarParcelable, contactDB: ContactDB, formattedTime: String) {
         val flag = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
@@ -460,7 +465,7 @@ class NotificationsListenerService : NotificationListenerService() {
             )
         }
 
-        notificationsRecyclerViewDisplay(sbp, contactDB, time)
+        notificationsRecyclerViewDisplay(sbp, contactDB, formattedTime)
 
         try {
             windowManager?.addView(popupView, parameters)
@@ -517,7 +522,7 @@ class NotificationsListenerService : NotificationListenerService() {
                         description = sbp.statusBarNotificationInfo["android.text"].toString(),
                         platform = convertPackageToString(sbp.appNotifier!!, this),
                         contactName = "${it.firstName} ${it.lastName}",
-                        date = time,
+                        date = formattedTime,
                         listOfPhoneNumbersWithSpinner = transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                         messengerId = it.messengerId,
                         email = it.listOfMails[0]
@@ -548,8 +553,8 @@ class NotificationsListenerService : NotificationListenerService() {
         }
     }
 
-    private fun notificationsRecyclerViewDisplay(sbp: StatusBarParcelable, contactDB: ContactDB, time: Long) {
-        addNotificationViewStateToList(popupNotificationViewStates, contactDB, sbp, applicationContext, time)
+    private fun notificationsRecyclerViewDisplay(sbp: StatusBarParcelable, contactDB: ContactDB, formattedTime: String) {
+        addNotificationViewStateToList(popupNotificationViewStates, contactDB, sbp, applicationContext, formattedTime)
 
         adapterNotifications?.let { it ->
             it.submitList(null)

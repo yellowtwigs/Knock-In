@@ -85,7 +85,7 @@ object NotificationsListenerGesture {
     }
 
     fun addNotificationViewStateToList(
-        list: MutableSet<PopupNotificationViewState>, contactDB: ContactDB, sbp: StatusBarParcelable, context: Context, time: Long
+        list: MutableSet<PopupNotificationViewState>, contactDB: ContactDB, sbp: StatusBarParcelable, context: Context, time: String
     ) {
 
         if (contactDB.isCustomSound == 1) {

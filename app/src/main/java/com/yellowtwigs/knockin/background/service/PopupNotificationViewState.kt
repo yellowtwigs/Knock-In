@@ -7,7 +7,7 @@ data class PopupNotificationViewState(
     val description: String,
     val platform: String,
     val contactName: String,
-    val date: Long,
+    val date: String,
     val listOfPhoneNumbersWithSpinner: List<PhoneNumberWithSpinner>,
     val messengerId: String,
     val email: String

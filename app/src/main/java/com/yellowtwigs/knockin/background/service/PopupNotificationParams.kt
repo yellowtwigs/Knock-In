@@ -6,7 +6,7 @@ data class PopupNotificationParams(
     val contactName: String,
     val description: String,
     val platform: String,
-    val date: Long,
+    val date: String,
     val listOfPhoneNumbersWithSpinner: List<PhoneNumberWithSpinner>,
     val mail: String,
 )
