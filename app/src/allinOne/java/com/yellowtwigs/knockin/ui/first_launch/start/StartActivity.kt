@@ -23,6 +23,9 @@ import com.android.billingclient.api.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityStartActivityBinding
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
+import com.yellowtwigs.knockin.ui.first_launch.start.SliderAdapter
+import com.yellowtwigs.knockin.ui.first_launch.start.SliderItem
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition

@@ -79,17 +79,9 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private val requestPermissionLauncher2 = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        Log.i("PhoneCall", "Permission granted $permissions")
         if (permissions[Manifest.permission.READ_PHONE_STATE] == true && permissions[Manifest.permission.CALL_PHONE] == true && permissions[Manifest.permission.READ_CALL_LOG] == true) {
-            Log.i("PhoneCall", "Permission granted")
         }
     }
-
-//            val name = "switchAllContactsEnabledChecked"
-//            val voiceCallAllEnabledSwitchChecked = getSharedPreferences(name, Context.MODE_PRIVATE)
-//            val edit = voiceCallAllEnabledSwitchChecked.edit()
-//            edit.putBoolean(name, true)
-//            edit.apply()
 
     //endregion
 
@@ -477,7 +469,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
         skuList.add("notifications_vip_jazz_theme")
         skuList.add("notifications_vip_relaxation_theme")
         skuList.add("additional_applications_support")
-        skuList.add("produit_fake_test_promo")
 
         val params = SkuDetailsParams.newBuilder().setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
 
@@ -487,6 +478,7 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
             billingClient.queryPurchasesAsync(
                 BillingClient.SkuType.INAPP
             ) { _, listOfPurchases ->
+                Log.i("UnlimitedContacts", "listOfPurchases : $listOfPurchases")
                 if (listOfPurchases.isNotEmpty()) {
                     fillSharedPreferencesWithListPurchases(listOfPurchases)
                 }
@@ -516,10 +508,6 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                     contains("additional_applications_support") -> {
                         sharedPreferencesConfiguration("Apps_Support_Bought")
-                    }
-
-                    contains("produit_fake_test_promo") -> {
-                        sharedPreferencesConfiguration("Produits_Fake_Bought")
                     }
                 }
             }
@@ -565,16 +553,15 @@ class StartActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     private fun readPhoneStateDialog() {
-        MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
+        val alertDialog = MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(getDrawable(R.color.backgroundColor))
             .setTitle(getString(R.string.incoming_voice_calls_title)).setMessage(getString(R.string.incoming_voice_calls_message))
             .setPositiveButton(R.string.start_activity_go_edition_positive_button) { _, _ ->
-                requestPermissionLauncher2.launch(arrayOf(
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_CALL_LOG
-                ))
+                requestPermissionLauncher2.launch(arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE))
             }.setNegativeButton(R.string.alert_dialog_no) { _, _ ->
-            }.show()
+            }
+
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 
     private fun activateNotificationsClick() {

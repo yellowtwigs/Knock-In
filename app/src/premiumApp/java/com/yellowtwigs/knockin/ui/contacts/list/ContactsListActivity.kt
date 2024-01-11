@@ -5,7 +5,6 @@ import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -19,6 +18,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -41,17 +41,17 @@ import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
 import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.contact_selected.ContactSelectedWithAppsActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
-import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.list.GroupsListActivity
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
-import com.yellowtwigs.knockin.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
-import com.yellowtwigs.knockin.ui.statistics.reward.RewardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.Converter
+import com.yellowtwigs.knockin.utils.Event.Companion.observeEvent
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
@@ -90,6 +90,7 @@ class ContactsListActivity : AppCompatActivity() {
 
     private var listOfHasWhatsapp = arrayListOf<Boolean>()
     var modeMultiSelect = false
+    var contactSelectedApp = false
 
     private var phoneNumber = ""
 
@@ -99,45 +100,27 @@ class ContactsListActivity : AppCompatActivity() {
 
     private var exit = false
 
+    private lateinit var importContactPreferences: SharedPreferences
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
 
         startListening()
-
-        val sharedPreferences: SharedPreferences = getSharedPreferences("USER_POINT_TIME", Context.MODE_PRIVATE)
-        val time = sharedPreferences.getLong("USER_POINT_TIME", 0L)
-
-        if (!compareIfDateIsToday(time) && !checkIfGoEdition(this@ContactsListActivity)) {
-            contactsListViewModel.recurrentWork()
-            val editDate = sharedPreferences.edit()
-            editDate.putLong("USER_POINT_TIME", localDateTimeToTimestamp(LocalDateTime.now()))
-            editDate.apply()
-        }
-
-        contactsListViewModel.mutableLiveDataPass50.observe(this) {
-            if (it) {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.pts_title, 50))
-                    .setMessage(getString(R.string.pts_message, "50%"))
-                    .setPositiveButton(getString(R.string.go_the_redeem_page)) { alertDialog, _ ->
-                        startActivity(Intent(this@ContactsListActivity, RewardActivity::class.java))
-                        alertDialog.dismiss()
-                        alertDialog.cancel()
-                    }.show()
-            }
-        }
-        contactsListViewModel.mutableLiveDataPass200.observe(this) {
-            if (it) {
-                MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.pts_title, 200))
-                    .setMessage(getString(R.string.pts_message, "50%"))
-                    .setPositiveButton(getString(R.string.go_the_redeem_page)) { alertDialog, _ ->
-                        startActivity(Intent(this@ContactsListActivity, RewardActivity::class.java))
-                        alertDialog.dismiss()
-                        alertDialog.cancel()
-                    }.show()
-            }
-        }
 
         binding = ActivityContactsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -155,6 +138,23 @@ class ContactsListActivity : AppCompatActivity() {
         setupDrawerLayout(binding)
         floatingButtonsClick(binding)
         multiSelectToolbarClick(binding)
+
+        contactsListViewModel.mainViewAction.observeEvent(this) { action ->
+            when (action) {
+                is ContactsListViewModel.MainViewAction.Navigate.ContactDetails -> {
+                    hideKeyboard(this)
+                    if (contactSelectedApp) {
+                        startActivity(Intent(this, ContactSelectedWithAppsActivity::class.java))
+                    } else {
+                        if (action.currentId == 0) {
+                            startActivity(Intent(this, AddNewContactActivity::class.java))
+                        } else {
+                            startActivity(Intent(this, EditContactActivity::class.java))
+                        }
+                    }
+                }
+            }
+        }
 
         //region ======================================== Mobile Ads ========================================
 
@@ -663,7 +663,7 @@ class ContactsListActivity : AppCompatActivity() {
                     R.id.nav_help -> startActivity(Intent(this@ContactsListActivity, HelpActivity::class.java))
                     R.id.nav_dashboard -> startActivity(Intent(this@ContactsListActivity, DashboardActivity::class.java))
                     R.id.nav_sync_contact -> {
-                        importContacts()
+                        requestPermissionLauncher.launch(arrayOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS))
                     }
 
                     R.id.nav_invite_friend -> {
@@ -922,18 +922,14 @@ class ContactsListActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("Gridview_column", Context.MODE_PRIVATE)
         val nbGrid = sharedPreferences.getInt("gridview", 1)
 
-        val contactsListAdapter = ContactsListAdapter(this, { id ->
-            Log.i("GetContact", "id : $id")
-            hideKeyboard(this)
-            startActivity(Intent(this, EditContactActivity::class.java).putExtra("ContactId", id))
-        }, { id, civ, contact ->
+        val contactsListAdapter = ContactsListAdapter(this) { id, civ, contact ->
             hideKeyboard(this)
 
             itemSelected(civ, contact)
             modeMultiSelect = listOfItemSelected.isNotEmpty()
 
             setupMultiSelectToolbar(binding, modeMultiSelect)
-        })
+        }
 
         if (nbGrid == 1) {
             binding.recyclerView.apply {
@@ -948,24 +944,14 @@ class ContactsListActivity : AppCompatActivity() {
         } else {
             if (nbGrid == 4) {
                 binding.recyclerView.apply {
-                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactsListActivity, { id ->
-                        hideKeyboard(this@ContactsListActivity)
-
-                        startActivity(
-                            Intent(
-                                this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
-                            ).putExtra(
-                                "ContactId", id
-                            )
-                        )
-                    }, { id, civ, contact ->
+                    val contactsGridAdapter = ContactsGridFourAdapter(this@ContactsListActivity) { id, civ, contact ->
                         hideKeyboard(this@ContactsListActivity)
 
                         itemSelected(civ, contact)
                         modeMultiSelect = listOfItemSelected.isNotEmpty()
 
                         setupMultiSelectToolbar(binding, modeMultiSelect)
-                    })
+                    }
                     contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactsListActivity) { contacts ->
                         contactsGridAdapter.submitList(null)
                         contactsGridAdapter.submitList(contacts)
@@ -976,24 +962,14 @@ class ContactsListActivity : AppCompatActivity() {
                 }
             } else if (nbGrid == 5) {
                 binding.recyclerView.apply {
-                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactsListActivity, { id ->
-                        hideKeyboard(this@ContactsListActivity)
-
-                        startActivity(
-                            Intent(
-                                this@ContactsListActivity, ContactSelectedWithAppsActivity::class.java
-                            ).putExtra(
-                                "ContactId", id
-                            )
-                        )
-                    }, { _, civ, contact ->
+                    val contactsGridAdapter = ContactsGridFiveAdapter(this@ContactsListActivity) { _, civ, contact ->
                         hideKeyboard(this@ContactsListActivity)
 
                         itemSelected(civ, contact)
                         modeMultiSelect = listOfItemSelected.isNotEmpty()
 
                         setupMultiSelectToolbar(binding, modeMultiSelect)
-                    })
+                    }
                     contactsListViewModel.contactsListViewStateLiveData.observe(this@ContactsListActivity) { contacts ->
                         contactsGridAdapter.submitList(null)
                         contactsGridAdapter.submitList(contacts)

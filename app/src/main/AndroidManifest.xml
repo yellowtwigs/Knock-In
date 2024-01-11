@@ -152,6 +152,7 @@
             tools:targetApi="o_mr1" />
         <activity android:name=".ui.groups.list.GroupsListActivity" />
         <activity android:name=".ui.first_launch.ImportContactsActivity" />
+        <activity android:name=".ui.premium.PremiumActivity" />
         <activity
             android:name=".ui.contacts.list.ContactsListActivity"
             android:exported="true"
@@ -171,9 +172,6 @@
         <activity
             android:name=".ui.add_edit_contact.add.AddNewContactActivity"
             android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".ui.EditContactDetailsActivity"
-            android:configChanges="orientation|screenSize" />
 
         <receiver android:name=".ui.notifications.sender.NotificationSender" />
 
@@ -186,16 +184,6 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
-        <receiver
-            android:name=".call.UninstallIntentReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter android:priority="0">
-                <action android:name="android.intent.action.QUERY_PACKAGE_RESTART" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

@@ -130,6 +130,8 @@ class NotificationsListenerService : NotificationListenerService() {
                                 }
                             }
 
+                            Log.i("AlarmMessages", "contact.priority : ${contact?.priority}")
+
                             val currentTimeMillis = System.currentTimeMillis()
                             val currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(currentTimeMillis), java.time.ZoneId.systemDefault())
                             val formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())

@@ -5,8 +5,10 @@ import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.provider.ContactsContract
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.inputmethod.InputMethodManager
@@ -34,6 +36,22 @@ object EveryActivityUtils {
     fun checkIfGoEdition(cxt: Activity): Boolean {
         val am = cxt.getSystemService(AppCompatActivity.ACTIVITY_SERVICE) as ActivityManager
         return am.isLowRamDevice
+    }
+
+
+    fun markContactAsFavorite(contentResolver: ContentResolver, contactId: Int?, isFavorite: Int) {
+        val contentValues = ContentValues()
+        contentValues.put(ContactsContract.Contacts.STARRED, isFavorite)
+
+        val whereClause = "${ContactsContract.Contacts._ID} = ?"
+
+        contactId?.let {
+            val whereArgs = arrayOf(it.toString())
+
+            contentResolver.update(
+                ContactsContract.Contacts.CONTENT_URI, contentValues, whereClause, whereArgs
+            )
+        }
     }
 
     fun checkTheme(cxt: Activity) {

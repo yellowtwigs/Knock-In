@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -19,7 +18,7 @@ import com.yellowtwigs.knockin.databinding.ActivityDailyStatisticsUnder1500Bindi
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
-import com.yellowtwigs.knockin.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.statistics.reward.RewardActivity
@@ -49,7 +48,7 @@ class DailyStatisticsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
         hideKeyboard(this)
         deviceHeight = getDeviceHeight(this)
 
@@ -159,18 +158,23 @@ class DailyStatisticsActivity : AppCompatActivity() {
                     R.id.nav_home -> startActivity(
                         Intent(this@DailyStatisticsActivity, ContactsListActivity::class.java)
                     )
+
                     R.id.nav_notifications -> startActivity(
                         Intent(this@DailyStatisticsActivity, NotificationsSettingsActivity::class.java)
                     )
+
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@DailyStatisticsActivity, TeleworkingActivity::class.java)
                     )
+
                     R.id.nav_in_app -> startActivity(
                         Intent(this@DailyStatisticsActivity, PremiumActivity::class.java)
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(this@DailyStatisticsActivity, ManageMyScreenActivity::class.java)
                     )
+
                     R.id.nav_help -> startActivity(Intent(this@DailyStatisticsActivity, HelpActivity::class.java))
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
@@ -251,18 +255,23 @@ class DailyStatisticsActivity : AppCompatActivity() {
                     R.id.nav_home -> startActivity(
                         Intent(this@DailyStatisticsActivity, ContactsListActivity::class.java)
                     )
+
                     R.id.nav_notifications -> startActivity(
                         Intent(this@DailyStatisticsActivity, NotificationsSettingsActivity::class.java)
                     )
+
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@DailyStatisticsActivity, TeleworkingActivity::class.java)
                     )
+
                     R.id.nav_in_app -> startActivity(
                         Intent(this@DailyStatisticsActivity, PremiumActivity::class.java)
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(this@DailyStatisticsActivity, ManageMyScreenActivity::class.java)
                     )
+
                     R.id.nav_help -> startActivity(Intent(this@DailyStatisticsActivity, HelpActivity::class.java))
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
@@ -343,18 +352,23 @@ class DailyStatisticsActivity : AppCompatActivity() {
                     R.id.nav_home -> startActivity(
                         Intent(this@DailyStatisticsActivity, ContactsListActivity::class.java)
                     )
+
                     R.id.nav_notifications -> startActivity(
                         Intent(this@DailyStatisticsActivity, NotificationsSettingsActivity::class.java)
                     )
+
                     R.id.nav_teleworking -> startActivity(
                         Intent(this@DailyStatisticsActivity, TeleworkingActivity::class.java)
                     )
+
                     R.id.nav_in_app -> startActivity(
                         Intent(this@DailyStatisticsActivity, PremiumActivity::class.java)
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(this@DailyStatisticsActivity, ManageMyScreenActivity::class.java)
                     )
+
                     R.id.nav_help -> startActivity(Intent(this@DailyStatisticsActivity, HelpActivity::class.java))
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)

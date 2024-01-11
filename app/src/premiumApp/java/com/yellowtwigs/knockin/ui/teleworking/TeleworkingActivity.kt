@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -26,8 +25,7 @@ import com.yellowtwigs.knockin.ui.notifications.sender.NotificationSender
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
-import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
-import com.yellowtwigs.knockin.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -41,7 +39,7 @@ class TeleworkingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         try {
-            checkTheme(this, packageName, contentResolver)
+            checkTheme(this)
 
             val viewModel: TeleworkingViewModel by viewModels()
             binding = ActivityTeleworkingBinding.inflate(layoutInflater)

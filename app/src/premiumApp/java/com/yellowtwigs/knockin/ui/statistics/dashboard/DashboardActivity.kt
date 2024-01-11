@@ -20,15 +20,13 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ActivityDashboardBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
-import com.yellowtwigs.knockin.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
-import com.yellowtwigs.knockin.ui.statistics.daily_statistics.DailyStatisticsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,8 +70,6 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
         setupDrawerLayout()
 
         dataPieChart.setOnChartValueSelectedListener(this)
-
-        setupBottomNavigationView()
 
         binding.notificationsUnprocessedContent.setOnClickListener {
             if (isVIP) {
@@ -220,19 +216,6 @@ class DashboardActivity : AppCompatActivity(), OnChartValueSelectedListener {
     }
 
     //endregion
-
-    private fun setupBottomNavigationView() {
-        binding.bottomNavigation.menu.getItem(0).isChecked = true
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_daily_stats -> {
-                    startActivity(Intent(this@DashboardActivity, DailyStatisticsActivity::class.java))
-                    return@OnNavigationItemSelectedListener true
-                }
-            }
-            false
-        })
-    }
 
     private fun setupDataToView() {
         dashboardViewModel.dashboardViewStateLiveData.observe(this) {

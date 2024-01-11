@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.databinding.ActivityFirstVipSelectionBinding
-import com.yellowtwigs.knockin.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
@@ -49,7 +50,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
 
         val binding = ActivityFirstVipSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -58,9 +59,10 @@ class FirstVipSelectionActivity : AppCompatActivity() {
 
         numberOfContactsVIPref = getSharedPreferences("nb_Contacts_VIP", Context.MODE_PRIVATE)
 
-        contactsUnlimitedBought = getSharedPreferences(
-            "Contacts_Unlimited_Bought", Context.MODE_PRIVATE
-        ).getBoolean("Contacts_Unlimited_Bought", false)
+        contactsUnlimitedBought =
+            getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE).getBoolean("Contacts_Unlimited_Bought", false)
+
+        Log.i("UnlimitedContacts", "contactsUnlimitedBought : $contactsUnlimitedBought")
 
         fromSettings = intent.getBooleanExtra("fromSettings", false)
 
@@ -124,6 +126,7 @@ class FirstVipSelectionActivity : AppCompatActivity() {
                     finish()
                 }
             }
+
             R.id.nav_validate -> {
                 overlayAlertDialog()
             }

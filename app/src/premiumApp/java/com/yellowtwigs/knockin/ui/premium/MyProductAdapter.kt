@@ -14,6 +14,8 @@ import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.SkuDetails
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.LayoutProductItemBinding
+import com.yellowtwigs.knockin.ui.premium.IProductClickListener
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
 
 class MyProductAdapter(
     private val cxt: PremiumActivity,

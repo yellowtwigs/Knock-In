@@ -1,5 +1,6 @@
-package com.yellowtwigs.knockin.premium
+package com.yellowtwigs.knockin.ui.premium
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -18,11 +20,11 @@ import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.first_launch.first_vip_selection.FirstVipSelectionActivity
 import com.yellowtwigs.knockin.databinding.ActivityPremiumBinding
+import com.yellowtwigs.knockin.premium.MyProductAdapter
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.repositories.firebase.FirebaseViewModel
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -43,7 +45,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private var sharedContactsUnlimitedPreferences: SharedPreferences? = null
     private var sharedCustomSoundPreferences: SharedPreferences? = null
     private var appsSupportPref: SharedPreferences? = null
-    private var produitFakePref: SharedPreferences? = null
 
     private var fromManageNotification = false
 
@@ -55,6 +56,20 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var params: SkuDetailsParams.Builder
 
     private val importContactsViewModel: ImportContactsViewModel by viewModels()
+    private lateinit var importContactPreferences: SharedPreferences
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if (permissions[Manifest.permission.WRITE_CONTACTS] == true && permissions[Manifest.permission.READ_CONTACTS] == true) {
+            CoroutineScope(Dispatchers.Main).launch {
+                importContactsViewModel.syncAllContactsInDatabase(contentResolver)
+            }
+
+            importContactPreferences = getSharedPreferences("Import_Contact", Context.MODE_PRIVATE)
+            val edit = importContactPreferences.edit()
+            edit.putBoolean("Import_Contact", true)
+            edit.apply()
+        }
+    }
 
     //endregion
 
@@ -84,15 +99,14 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         sharedContactsUnlimitedPreferences = getSharedPreferences("Contacts_Unlimited_Bought", Context.MODE_PRIVATE)
         sharedCustomSoundPreferences = getSharedPreferences("Custom_Sound_Bought", Context.MODE_PRIVATE)
         appsSupportPref = getSharedPreferences("Apps_Support_Bought", Context.MODE_PRIVATE)
-        produitFakePref = getSharedPreferences("Produits_Fake_Bought", Context.MODE_PRIVATE)
 
-        setupLeftDrawerLayout(sharedThemePreferences)
+        setupLeftDrawerLayout()
         toolbarClick()
     }
 
     //region ========================================== Functions ===========================================
 
-    private fun setupLeftDrawerLayout(sharedThemePreferences: SharedPreferences) {
+    private fun setupLeftDrawerLayout() {
         binding.apply {
             if (intent.getBooleanExtra("fromMultiSelectActivity", false)) {
                 premiumActivityToolbarLayout.visibility = View.GONE
@@ -142,7 +156,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         startActivity(Intent(this@PremiumActivity, HelpActivity::class.java))
                     }
                     R.id.nav_sync_contact -> {
-                        importContacts()
+                        requestPermissionLauncher.launch(arrayOf(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS))
                     }
                     R.id.nav_invite_friend -> {
                         val intent = Intent(Intent.ACTION_SEND)
@@ -158,12 +172,6 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
                 true
             }
-        }
-    }
-
-    private fun importContacts() {
-        CoroutineScope(Dispatchers.Main).launch {
-            importContactsViewModel.syncAllContactsInDatabase(contentResolver)
         }
     }
 
@@ -366,7 +374,7 @@ class PremiumActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
-    fun backToManageNotifAfterBuying() {
+    private fun backToManageNotifAfterBuying() {
         if (fromManageNotification) {
             MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.in_app_purchase_made_message))
                 .setMessage(getString(R.string.in_app_shop_return_to_notif)).setPositiveButton(R.string.alert_dialog_yes) { _, _ ->

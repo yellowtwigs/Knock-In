@@ -1,4 +1,4 @@
-package com.yellowtwigs.knockin.premium;
+package com.yellowtwigs.knockin.ui.premium;
 
 import android.view.View;
 

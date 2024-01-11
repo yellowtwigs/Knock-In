@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:213912907565:android:7814e02c9e6894024feda4",
         "android_client_info": {
-          "package_name": "com.yellowtwigs.Knockin.allinOne"
+          "package_name": "com.yellowtwigs.Knockin.notification"
         }
       },
       "oauth_client": [

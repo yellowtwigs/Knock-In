@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.net.Uri
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -12,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yellowtwigs.knockin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yellowtwigs.knockin.databinding.ActivityGroupsListBinding
 import com.yellowtwigs.knockin.ui.HelpActivity
 import com.yellowtwigs.knockin.ui.add_edit_contact.edit.PhoneNumberWithSpinner
@@ -20,23 +18,23 @@ import com.yellowtwigs.knockin.ui.cockpit.CockpitActivity
 import com.yellowtwigs.knockin.ui.contacts.list.ContactsListActivity
 import com.yellowtwigs.knockin.ui.settings.ManageMyScreenActivity
 import com.yellowtwigs.knockin.ui.contacts.multi_channel.MultiChannelActivity
-import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
 import com.yellowtwigs.knockin.ui.groups.manage_group.ManageGroupActivity
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.isSectionClicked
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfEmails
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasEmail
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasSms
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfHasWhatsapp
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfIds
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfItemSelected
-import com.yellowtwigs.knockin.ui.groups.list.section.SectionGroupsListAdapter.Companion.listOfPhoneNumbers
-import com.yellowtwigs.knockin.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.premium.PremiumActivity
+import com.yellowtwigs.knockin.ui.first_launch.start.ImportContactsViewModel
+import com.yellowtwigs.knockin.ui.groups.GroupsListViewModel
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.isSectionClicked
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.listOfEmails
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.listOfHasEmail
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.listOfHasSms
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.listOfHasWhatsapp
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.listOfIds
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.listOfItemSelected
+import com.yellowtwigs.knockin.ui.groups.section.SectionGroupsListAdapter.Companion.listOfPhoneNumbers
 import com.yellowtwigs.knockin.ui.notifications.history.NotificationsHistoryActivity
 import com.yellowtwigs.knockin.ui.notifications.settings.NotificationsSettingsActivity
 import com.yellowtwigs.knockin.ui.statistics.dashboard.DashboardActivity
 import com.yellowtwigs.knockin.ui.teleworking.TeleworkingActivity
-import com.yellowtwigs.knockin.utils.EveryActivityUtils
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkIfGoEdition
 import com.yellowtwigs.knockin.utils.EveryActivityUtils.checkTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,7 +60,7 @@ class GroupsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkTheme(this, packageName, contentResolver)
+        checkTheme(this)
         binding = ActivityGroupsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

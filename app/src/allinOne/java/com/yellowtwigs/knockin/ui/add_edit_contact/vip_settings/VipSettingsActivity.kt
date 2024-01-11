@@ -93,7 +93,8 @@ class VipSettingsActivity : AppCompatActivity() {
         val funkySoundPreferences = getSharedPreferences("Funky_Sound_Bought", Context.MODE_PRIVATE)
         funkySoundBought = funkySoundPreferences.getBoolean("Funky_Sound_Bought", false)
 
-        editContactViewModel.editContactViewStateLiveData.observe(this) { viewState ->
+        val contactId = intent.getIntExtra("ContactId", 0)
+        editContactViewModel.getContactByIdLiveData(contactId).observe(this) { viewState ->
             currentViewState = viewState
             binding.contactName.text = "${viewState.firstName} ${viewState.lastName}"
 
@@ -201,14 +202,10 @@ class VipSettingsActivity : AppCompatActivity() {
                 //region =================================== Relax Checkboxes ===================================
 
                 xyloRelaxCheckbox.setOnClickListener {
-                    onClickFirstCheckbox(
-                        xyloRelaxCheckbox, R.raw.xylophone_tone, relaxSoundBought
-                    )
+                    onClickFirstCheckbox(xyloRelaxCheckbox, R.raw.xylophone_tone, relaxSoundBought)
                 }
                 guitarRelaxCheckbox.setOnClickListener {
-                    onClickCheckbox(
-                        guitarRelaxCheckbox, R.raw.beautiful_chords_progression, relaxSoundBought
-                    )
+                    onClickCheckbox(guitarRelaxCheckbox, R.raw.beautiful_chords_progression, relaxSoundBought)
                 }
                 gravityCheckbox.setOnClickListener {
                     onClickCheckbox(gravityCheckbox, R.raw.gravity, relaxSoundBought)
@@ -306,15 +303,19 @@ class VipSettingsActivity : AppCompatActivity() {
                     1 -> {
                         permanentRadioButton.isChecked = true
                     }
+
                     2 -> {
                         daytimeRadioButton.isChecked = true
                     }
+
                     3 -> {
                         workweekRadioButton.isChecked = true
                     }
+
                     4 -> {
                         scheduleCustomRadioButton.isChecked = true
                     }
+
                     else -> {
                         permanentRadioButton.isChecked = true
                     }
@@ -418,8 +419,12 @@ class VipSettingsActivity : AppCompatActivity() {
     private fun onClickFirstCheckbox(checkBox: AppCompatCheckBox, sound: Int, isBought: Boolean) {
         uncheckBoxAll()
         checkBox.isChecked = true
+        Log.i("VipSound", "notificationSound : $notificationSound")
+        Log.i("VipSound", "sound : $sound")
+        Log.i("VipSound", "R.raw.xylophone_tone : ${R.raw.xylophone_tone}")
+
         notificationSound = sound
-        playAlarmSound()
+        playAlarmSound(sound)
 
         if (!isBought) {
             notificationSound = currentNotificationSound
@@ -434,7 +439,7 @@ class VipSettingsActivity : AppCompatActivity() {
 
         if (isBought) {
             notificationSound = sound
-            playAlarmSound()
+            playAlarmSound(sound)
             isCustomSound = false
         } else {
             notificationSound = currentNotificationSound
@@ -508,13 +513,17 @@ class VipSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun playAlarmSound() {
+    private fun playAlarmSound(sound: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             alarmSound?.stop()
             alarmSound = if (isCustomSound) {
                 MediaPlayer.create(this@VipSettingsActivity, Uri.parse(notificationTone))
             } else {
-                MediaPlayer.create(this@VipSettingsActivity, notificationSound)
+                if (sound != -1) {
+                    MediaPlayer.create(this@VipSettingsActivity, sound)
+                } else {
+                    MediaPlayer.create(this@VipSettingsActivity, R.raw.sms_ring)
+                }
             }
             alarmSound?.start()
             delay(7000)
@@ -575,57 +584,75 @@ class VipSettingsActivity : AppCompatActivity() {
                     R.raw.moanin_jazz -> {
                         moaninCheckbox.isChecked = true
                     }
+
                     R.raw.blue_bossa -> {
                         blueBossaCheckbox.isChecked = true
                     }
+
                     R.raw.caravan -> {
                         caravanCheckbox.isChecked = true
                     }
+
                     R.raw.dolphin_dance -> {
                         dolphinDanceCheckbox.isChecked = true
                     }
+
                     R.raw.autumn_leaves -> {
                         autumnLeavesCheckbox.isChecked = true
                     }
+
                     R.raw.freddie_freeloader -> {
                         freddieFreeloaderCheckbox.isChecked = true
                     }
+
                     R.raw.bass_slap -> {
                         slapCheckbox.isChecked = true
                     }
+
                     R.raw.funk_yall -> {
                         funkYallCheckbox.isChecked = true
                     }
+
                     R.raw.off_the_curve_groove -> {
                         offTheCurveCheckbox.isChecked = true
                     }
+
                     R.raw.keyboard_funky_tone -> {
                         keyboardFunkyToneCheckbox.isChecked = true
                     }
+
                     R.raw.u_cant_hold_no_groove -> {
                         uCantHoldNoGrooveCheckbox.isChecked = true
                     }
+
                     R.raw.cold_sweat -> {
                         coldSweatCheckbox.isChecked = true
                     }
+
                     R.raw.beautiful_chords_progression -> {
                         guitarRelaxCheckbox.isChecked = true
                     }
+
                     R.raw.gravity -> {
                         gravityCheckbox.isChecked = true
                     }
+
                     R.raw.fade_to_black -> {
                         scorpionThemeCheckbox.isChecked = true
                     }
+
                     R.raw.slow_dancing -> {
                         slowDancingCheckbox.isChecked = true
                     }
+
                     R.raw.relax_sms -> {
                         xyloRelaxCheckbox.isChecked = true
                     }
+
                     R.raw.interstellar_main_theme -> {
                         interstellarThemeCheckbox.isChecked = true
                     }
+
                     else -> {
                     }
                 }
