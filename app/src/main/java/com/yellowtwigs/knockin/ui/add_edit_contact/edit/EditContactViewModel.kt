@@ -50,6 +50,38 @@ class EditContactViewModel @Inject constructor(
         }.collect()
     }
 
+    fun getSingleContactByIdLiveData(id: Int): LiveData<SingleContactViewState> {
+        return getContactByIdFlowUseCase.invoke(id).asLiveData().map { contact ->
+            SingleContactViewState(
+                id = contact.id,
+                androidId = contact.androidId,
+                fullName = contact.fullName,
+                firstName = contact.firstName,
+                lastName = contact.lastName,
+                profilePicture = contact.profilePicture,
+                profilePicture64 = contact.profilePicture64,
+                firstPhoneNumber = transformPhoneNumberToSinglePhoneNumberWithSpinner(contact.listOfPhoneNumbers, true).phoneNumber,
+                firstPhoneNumberFlag = transformPhoneNumberWithSpinnerToFlag(
+                    transformPhoneNumberToSinglePhoneNumberWithSpinner(
+                        contact.listOfPhoneNumbers, true
+                    )
+                ),
+                listOfMails = contact.listOfMails,
+                mail_name = contact.mail_name,
+                priority = contact.priority,
+                isFavorite = contact.isFavorite,
+                messengerId = contact.messengerId,
+                listOfMessagingApps = contact.listOfMessagingApps,
+                notificationTone = contact.notificationTone,
+                notificationSound = contact.notificationSound,
+                isCustomSound = contact.isCustomSound,
+                vipSchedule = contact.vipSchedule,
+                hourLimitForNotification = contact.hourLimitForNotification,
+                audioFileName = contact.audioFileName,
+            )
+        }
+    }
+
     fun getContactByIdLiveData(id: Int): LiveData<EditContactViewState> {
         return getContactByIdFlowUseCase.invoke(id).asLiveData().map { contact ->
             if (contact != null) {

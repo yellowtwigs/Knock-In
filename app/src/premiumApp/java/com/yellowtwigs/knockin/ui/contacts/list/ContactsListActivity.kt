@@ -120,7 +120,38 @@ class ContactsListActivity : AppCompatActivity() {
 
         checkTheme(this)
 
-        startListening()
+        val sharedPreferences: SharedPreferences = getSharedPreferences("USER_POINT_TIME", Context.MODE_PRIVATE)
+        val time = sharedPreferences.getLong("USER_POINT_TIME", 0L)
+
+        if (!compareIfDateIsToday(time) && !checkIfGoEdition(this@ContactsListActivity)) {
+            contactsListViewModel.recurrentWork()
+            val editDate = sharedPreferences.edit()
+            editDate.putLong("USER_POINT_TIME", localDateTimeToTimestamp(LocalDateTime.now()))
+            editDate.apply()
+        }
+
+        contactsListViewModel.mutableLiveDataPass50.observe(this) {
+            if (it) {
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.pts_title, 50))
+                    .setMessage(getString(R.string.pts_message, "50%"))
+                    .setPositiveButton(getString(R.string.go_the_redeem_page)) { alertDialog, _ ->
+                        startActivity(Intent(this@ContactsListActivity, RewardActivity::class.java))
+                        alertDialog.dismiss()
+                        alertDialog.cancel()
+                    }.show()
+            }
+        }
+        contactsListViewModel.mutableLiveDataPass200.observe(this) {
+            if (it) {
+                MaterialAlertDialogBuilder(this, R.style.AlertDialog).setTitle(getString(R.string.pts_title, 200))
+                    .setMessage(getString(R.string.pts_message, "50%"))
+                    .setPositiveButton(getString(R.string.go_the_redeem_page)) { alertDialog, _ ->
+                        startActivity(Intent(this@ContactsListActivity, RewardActivity::class.java))
+                        alertDialog.dismiss()
+                        alertDialog.cancel()
+                    }.show()
+            }
+        }
 
         binding = ActivityContactsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -405,37 +436,6 @@ class ContactsListActivity : AppCompatActivity() {
         }
 
         //endregion
-    }
-
-    fun startListening() {
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.Default) {
-                while (!exit) {
-                    val taskInfo = (getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager)?.getRunningTasks(MAX_PRIORITY)
-
-                    val activityName = taskInfo?.get(0)?.topActivity?.className
-
-                    Log.i("TestUninstall", "activityName : $activityName")
-
-                    if (activityName == "com.android.packageinstaller.UninstallerActivity") {
-                        exit = true
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                this@ContactsListActivity,
-                                "Terminé avec les tâches de pré-désinstallation... Sortie maintenant",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } else if (activityName == "com.android.settings.ManageApplications") {
-                        exit = true
-                    }
-                }
-            }
-        }
-    }
-
-    fun stopListening() {
-        exit = true
     }
 
     override fun onStop() {
@@ -796,6 +796,9 @@ class ContactsListActivity : AppCompatActivity() {
 
             listOfHasWhatsapp.add(contact.hasWhatsapp)
         }
+
+
+        Log.i("CreateGroup", "listOfItemSelected : $listOfItemSelected")
     }
 
     private fun multiSelectToolbarClick(binding: ActivityContactsListBinding) {
@@ -840,11 +843,12 @@ class ContactsListActivity : AppCompatActivity() {
             }
 
             groupButton.setOnClickListener {
+                Log.i("CreateGroup", "listOfItemSelected ; $listOfItemSelected")
+
                 startActivity(
-                    Intent(
-                        this@ContactsListActivity, ManageGroupActivity::class.java
-                    ).putIntegerArrayListExtra(
-                        "contacts", listOfItemSelected
+                    Intent(this@ContactsListActivity, ManageGroupActivity::class.java).putIntegerArrayListExtra(
+                        "contacts",
+                        listOfItemSelected
                     )
                 )
             }

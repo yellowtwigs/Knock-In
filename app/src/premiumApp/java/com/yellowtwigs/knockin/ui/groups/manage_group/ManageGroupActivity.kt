@@ -48,6 +48,18 @@ class ManageGroupActivity : AppCompatActivity() {
 
         groupId = intent.getIntExtra("SectionId", -1)
         viewModel.setGroupById(groupId)
+
+        intent.getIntegerArrayListExtra("contacts")?.forEach { id ->
+            id?.let {
+                listOfItemSelected.add(it.toString())
+            }
+        }
+
+        if (groupId != -1) {
+            viewModel.setGroupById(groupId)
+        }
+
+        setupToolbar()
         setupRecyclerView()
     }
 

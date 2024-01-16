@@ -109,6 +109,23 @@
             app:layout_constraintStart_toStartOf="@+id/pie_chart_messaging"
             app:layout_constraintTop_toTopOf="@+id/pie_chart_messaging" />
 
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            style="@style/BottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:alpha="0.70"
+            android:background="?attr/backgroundColor"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="20dp"
+            app:itemIconTint="@color/bottom_navigation_color"
+            app:itemTextColor="@color/bottom_navigation_color"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/stats_tab_layout_menu" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

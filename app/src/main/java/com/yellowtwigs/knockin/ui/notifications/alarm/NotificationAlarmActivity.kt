@@ -43,7 +43,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
     private var alarmSound: MediaPlayer? = null
 
     private val editContactViewModel: EditContactViewModel by viewModels()
-    private var currentContact: SingleContactViewState? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,137 +53,127 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
         val sbp = intent.extras?.get("notification") as StatusBarParcelable
 
-        NotificationsListenerService.notificationsList.let {
-            val adapter = NotificationsAlarmListAdapter(this@NotificationAlarmActivity) { isSMS, sender, appNotifier ->
-                currentContact?.firstPhoneNumber ?: listOf(PhoneNumberWithSpinner(null, ""))
-                NotificationsListenerService.notificationsList.clear()
+        editContactViewModel.getSingleContactByIdLiveData(sbp.contactId).observe(this@NotificationAlarmActivity) { contact ->
+            Log.i("AlarmVIP", "contact : $contact")
+            Log.i("AlarmVIP", "NotificationsListenerService.notificationsList : ${NotificationsListenerService.notificationsList}")
 
-                if (isSMS) {
-                    if (currentContact != null) {
-                        currentContact?.let { contact ->
-                            openSms(contact.firstPhoneNumber, this@NotificationAlarmActivity)
-                        }
-                    } else {
-                        openSms(sender, this@NotificationAlarmActivity)
-                    }
-                } else {
-                    when (appNotifier) {
-                        "com.whatsapp" -> {
-                            if (currentContact != null) {
-                                currentContact?.let { contact ->
-                                    openWhatsapp(
-                                        converter06To33(contact.firstPhoneNumber),
-                                        this@NotificationAlarmActivity
-                                    )
-                                }
-                            } else {
-                                openWhatsapp(sender, this@NotificationAlarmActivity)
-                            }
-                        }
-
-                        "com.google.android.gm" -> {
-                            val appIntent = Intent(Intent.ACTION_VIEW)
-                            appIntent.setClassName(
-                                "com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail"
-                            )
-                            try {
-                                startActivity(appIntent)
-                            } catch (e: ActivityNotFoundException) {
-                                startActivity(
-                                    Intent(
-                                        Intent.ACTION_VIEW, Uri.parse("https://gmail.com/")
-                                    )
-                                )
-                            }
-                        }
-
-                        "com.microsoft.office.outlook" -> {
-                            ContactGesture.goToOutlook(this@NotificationAlarmActivity)
-                        }
-
-                        "org.thoughtcrime.securesms" -> {
-                            ContactGesture.goToSignal(this@NotificationAlarmActivity)
-                        }
-
-                        "org.telegram.messenger" -> {
-                            if (currentContact != null) {
-                                currentContact?.let { contact ->
-                                    ContactGesture.goToTelegram(this@NotificationAlarmActivity, contact.firstPhoneNumber)
-                                }
-                            } else {
-                                ContactGesture.goToTelegram(this@NotificationAlarmActivity, "")
-                            }
-                        }
-
-                        "com.facebook.katana" -> {
-                            ContactGesture.openMessenger(
-                                currentContact?.messengerId ?: "", this@NotificationAlarmActivity
-                            )
-                        }
-                    }
-                }
-
-                if (alarmSound != null) {
-                    alarmSound?.stop()
-                }
-
-                finish()
-            }
-            adapter.submitList(it)
-            binding.recyclerView.adapter = adapter
-            binding.recyclerView.layoutManager = LinearLayoutManager(this@NotificationAlarmActivity)
-
-            it.forEach { sbp ->
-                binding.apply {
-                    editContactViewModel.singleContactViewStateLiveData.observe(this@NotificationAlarmActivity) { contact ->
-                        currentContact = contact
-                        contact?.apply {
-                            currentNotificationSound = notificationSound
-                            currentNotificationTone = notificationTone
-                            currentIsCustomSound = isCustomSound == 1
-
-                            soundRingtone()
-                        }
-                    }
-
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(6000)
-
-                        alarmSound?.stop()
-                    }
-
-                    window.setFlags(
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN
-                    )
-
-                    if (Build.VERSION.SDK_INT >= 27) {
-                        setTurnScreenOn(true)
-                        setShowWhenLocked(true)
-                        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                        keyguardManager.requestDismissKeyguard(this@NotificationAlarmActivity, null)
-                    } else {
-                        window.addFlags(
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
-                        )
-                    }
-
-                    shutDown.setOnClickListener {
-                        if (alarmSound != null) {
-                            alarmSound?.stop()
-                        }
-
-                        if (NotificationsListenerService.notificationsList.size == 1) {
-                            NotificationsListenerService.notificationsList.clear()
-                            finish()
-                        } else {
-                            NotificationsListenerService.notificationsList.clear()
-                            startActivity(Intent(this@NotificationAlarmActivity, NotificationsHistoryActivity::class.java))
-                            finish()
-                        }
-                    }
-
-                }
-            }
+//            NotificationsListenerService.notificationsList.let {
+//                val adapter = NotificationsAlarmListAdapter(this@NotificationAlarmActivity) { isSMS, sender, appNotifier ->
+//                    contact?.firstPhoneNumber ?: listOf(PhoneNumberWithSpinner(null, ""))
+//                    NotificationsListenerService.notificationsList.clear()
+//
+//                    if (isSMS) {
+//                        if (contact != null) {
+//                            openSms(contact.firstPhoneNumber, this@NotificationAlarmActivity)
+//                        } else {
+//                            openSms(sender, this@NotificationAlarmActivity)
+//                        }
+//                    } else {
+//                        when (appNotifier) {
+//                            "com.whatsapp" -> {
+//                                if (contact != null) {
+//                                    openWhatsapp(
+//                                        converter06To33(contact.firstPhoneNumber),
+//                                        this@NotificationAlarmActivity
+//                                    )
+//                                } else {
+//                                    openWhatsapp(sender, this@NotificationAlarmActivity)
+//                                }
+//                            }
+//
+//                            "com.google.android.gm" -> {
+//                                val appIntent = Intent(Intent.ACTION_VIEW)
+//                                appIntent.setClassName(
+//                                    "com.google.android.gm", "com.google.android.gm.ConversationListActivityGmail"
+//                                )
+//                                try {
+//                                    startActivity(appIntent)
+//                                } catch (e: ActivityNotFoundException) {
+//                                    startActivity(
+//                                        Intent(
+//                                            Intent.ACTION_VIEW, Uri.parse("https://gmail.com/")
+//                                        )
+//                                    )
+//                                }
+//                            }
+//
+//                            "com.microsoft.office.outlook" -> {
+//                                ContactGesture.goToOutlook(this@NotificationAlarmActivity)
+//                            }
+//
+//                            "org.thoughtcrime.securesms" -> {
+//                                ContactGesture.goToSignal(this@NotificationAlarmActivity)
+//                            }
+//
+//                            "org.telegram.messenger" -> {
+//                                if (contact != null) {
+//                                    ContactGesture.goToTelegram(this@NotificationAlarmActivity, contact.firstPhoneNumber)
+//                                } else {
+//                                    ContactGesture.goToTelegram(this@NotificationAlarmActivity, "")
+//                                }
+//                            }
+//
+//                            "com.facebook.katana" -> {
+//                                ContactGesture.openMessenger(
+//                                    contact?.messengerId ?: "", this@NotificationAlarmActivity
+//                                )
+//                            }
+//                        }
+//                    }
+//
+//                    if (alarmSound != null) {
+//                        alarmSound?.stop()
+//                    }
+//                }
+//                adapter.submitList(it)
+//                binding.recyclerView.adapter = adapter
+//                binding.recyclerView.layoutManager = LinearLayoutManager(this@NotificationAlarmActivity)
+//
+//                binding.apply {
+//                    contact?.apply {
+//                        currentNotificationSound = notificationSound
+//                        currentNotificationTone = notificationTone
+//                        currentIsCustomSound = isCustomSound == 1
+//
+//                        soundRingtone()
+//                    }
+//
+//                    CoroutineScope(Dispatchers.Main).launch {
+//                        delay(6000)
+//
+//                        alarmSound?.stop()
+//                    }
+//
+//                    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+//
+//                    if (Build.VERSION.SDK_INT >= 27) {
+//                        setTurnScreenOn(true)
+//                        setShowWhenLocked(true)
+//                        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+//                        keyguardManager.requestDismissKeyguard(this@NotificationAlarmActivity, null)
+//                    } else {
+//                        window.addFlags(
+//                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+//                        )
+//                    }
+//
+//                    shutDown.setOnClickListener {
+//                        if (alarmSound != null) {
+//                            alarmSound?.stop()
+//                        }
+//
+//                        if (NotificationsListenerService.notificationsList.size == 1) {
+//                            NotificationsListenerService.notificationsList.clear()
+//                            finish()
+//                        } else {
+//                            NotificationsListenerService.notificationsList.clear()
+//                            startActivity(Intent(this@NotificationAlarmActivity, NotificationsHistoryActivity::class.java))
+//                            finish()
+//                        }
+//                    }
+//
+//                }
+//            }
         }
     }
 
