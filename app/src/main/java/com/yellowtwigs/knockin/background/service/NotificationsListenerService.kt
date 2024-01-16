@@ -397,18 +397,18 @@ class NotificationsListenerService : NotificationListenerService() {
                 edit.apply()
                 displayLayout(sbp, contactDB, formattedTime)
             } else {
-                sbp.appNotifier?.let {
+                popupNotificationViewStates.add(
                     PopupNotificationViewState(
                         title = sbp.statusBarNotificationInfo["android.title"].toString(),
                         description = sbp.statusBarNotificationInfo["android.text"].toString(),
-                        platform = convertPackageToString(it, this),
+                        platform = convertPackageToString(sbp.appNotifier!!, this),
                         contactName = "${contactDB.firstName} ${contactDB.lastName}",
                         date = formattedTime,
                         transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
                         contactDB.messengerId,
                         contactDB.listOfMails[0]
                     )
-                }
+                )
 
                 adapterNotifications?.submitList(popupNotificationViewStates.sortedByDescending {
                     it.date
@@ -524,7 +524,7 @@ class NotificationsListenerService : NotificationListenerService() {
                             email = it.listOfMails[0]
                         )
                     )
-                )
+                ) {
                     popupNotificationViewStates.add(
                         PopupNotificationViewState(
                             title = sbp.statusBarNotificationInfo["android.title"].toString(),
@@ -537,6 +537,7 @@ class NotificationsListenerService : NotificationListenerService() {
                             email = it.listOfMails[0]
                         )
                     )
+                }
             }
 
             val list = popupNotificationViewStates.sortedByDescending {
@@ -633,7 +634,7 @@ class NotificationsListenerService : NotificationListenerService() {
         var alarmSound: MediaPlayer? = null
         var numberOfMessages: TextView? = null
         val popupNotificationViewStates = mutableSetOf<PopupNotificationViewState>()
-        val notificationsList = ArrayList<StatusBarParcelable>()
+        val notificationsList = mutableSetOf<StatusBarParcelable>()
         var adapterNotifications: PopupNotificationsListAdapter? = null
         private var recyclerView: RecyclerView? = null
         var context: Context? = null
