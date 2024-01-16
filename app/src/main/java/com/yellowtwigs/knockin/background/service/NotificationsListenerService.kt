@@ -130,8 +130,6 @@ class NotificationsListenerService : NotificationListenerService() {
                                 }
                             }
 
-                            Log.i("AlarmMessages", "contact.priority : ${contact?.priority}")
-
                             val currentTimeMillis = System.currentTimeMillis()
                             val currentDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(currentTimeMillis), java.time.ZoneId.systemDefault())
                             val formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
@@ -229,9 +227,7 @@ class NotificationsListenerService : NotificationListenerService() {
                     val minutes = cal.get(Calendar.MINUTE)
                     val today = cal.get(Calendar.DAY_OF_WEEK)
 
-                    val vipScheduleValueSharedPreferences = getSharedPreferences(
-                        "VipScheduleValue", Context.MODE_PRIVATE
-                    )
+                    val vipScheduleValueSharedPreferences = getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
 
                     val startTime = convertTimeToStartTime(hourLimitForNotification)
                     val hourStart = convertTimeToHour(startTime)
@@ -403,9 +399,9 @@ class NotificationsListenerService : NotificationListenerService() {
             } else {
                 sbp.appNotifier?.let {
                     PopupNotificationViewState(
-                        sbp.statusBarNotificationInfo["android.title"].toString(),
-                        sbp.statusBarNotificationInfo["android.text"].toString(),
-                        convertPackageToString(it, this),
+                        title = sbp.statusBarNotificationInfo["android.title"].toString(),
+                        description = sbp.statusBarNotificationInfo["android.text"].toString(),
+                        platform = convertPackageToString(it, this),
                         contactName = "${contactDB.firstName} ${contactDB.lastName}",
                         date = formattedTime,
                         transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
@@ -422,8 +418,6 @@ class NotificationsListenerService : NotificationListenerService() {
                         description = it.description,
                         platform = it.platform,
                         date = it.date,
-                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                        mail = it.email
                     )
                 })
                 recyclerView?.adapter = adapterNotifications
@@ -518,18 +512,31 @@ class NotificationsListenerService : NotificationListenerService() {
 
         if (sharedPreferences.getBoolean("first_notif", true)) {
             contactDB.let {
-                popupNotificationViewStates.add(
-                    PopupNotificationViewState(
-                        title = sbp.statusBarNotificationInfo["android.title"].toString(),
-                        description = sbp.statusBarNotificationInfo["android.text"].toString(),
-                        platform = convertPackageToString(sbp.appNotifier!!, this),
-                        contactName = "${it.firstName} ${it.lastName}",
-                        date = formattedTime,
-                        listOfPhoneNumbersWithSpinner = transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
-                        messengerId = it.messengerId,
-                        email = it.listOfMails[0]
+                if (!popupNotificationViewStates.contains(
+                        PopupNotificationViewState(
+                            title = sbp.statusBarNotificationInfo["android.title"].toString(),
+                            description = sbp.statusBarNotificationInfo["android.text"].toString(),
+                            platform = convertPackageToString(sbp.appNotifier!!, this),
+                            contactName = "${it.firstName} ${it.lastName}",
+                            date = formattedTime,
+                            listOfPhoneNumbersWithSpinner = transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
+                            messengerId = it.messengerId,
+                            email = it.listOfMails[0]
+                        )
                     )
                 )
+                    popupNotificationViewStates.add(
+                        PopupNotificationViewState(
+                            title = sbp.statusBarNotificationInfo["android.title"].toString(),
+                            description = sbp.statusBarNotificationInfo["android.text"].toString(),
+                            platform = convertPackageToString(sbp.appNotifier!!, this),
+                            contactName = "${it.firstName} ${it.lastName}",
+                            date = formattedTime,
+                            listOfPhoneNumbersWithSpinner = transformPhoneNumberToPhoneNumbersWithSpinner(contactDB.listOfPhoneNumbers),
+                            messengerId = it.messengerId,
+                            email = it.listOfMails[0]
+                        )
+                    )
             }
 
             val list = popupNotificationViewStates.sortedByDescending {
@@ -540,8 +547,6 @@ class NotificationsListenerService : NotificationListenerService() {
                     description = it.description,
                     platform = it.platform,
                     date = it.date,
-                    listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                    mail = it.email
                 )
             }
 
@@ -568,8 +573,6 @@ class NotificationsListenerService : NotificationListenerService() {
                     description = it.description,
                     platform = it.platform,
                     date = it.date,
-                    listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                    mail = it.email
                 )
             })
             recyclerView?.adapter = it
@@ -642,8 +645,6 @@ class NotificationsListenerService : NotificationListenerService() {
                         description = it.description,
                         platform = it.platform,
                         date = it.date,
-                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                        mail = it.email
                     )
                 }.isNotEmpty()) {
                 popupNotificationViewStates.remove(notification)
@@ -668,8 +669,6 @@ class NotificationsListenerService : NotificationListenerService() {
                         description = it.description,
                         platform = it.platform,
                         date = it.date,
-                        listOfPhoneNumbersWithSpinner = it.listOfPhoneNumbersWithSpinner,
-                        mail = it.email
                     )
                 }.size == 1) {
                 numberOfMessages?.text = context?.getString(R.string.popup_1_message)

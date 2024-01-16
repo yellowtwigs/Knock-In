@@ -11,7 +11,7 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 34
-        versionCode 275
+        versionCode 276
         versionName "1.0.1"
 //        versionName "3.4.0.32"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
