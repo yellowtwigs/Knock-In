@@ -8,17 +8,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yellowtwigs.knockin.R
 import com.yellowtwigs.knockin.databinding.ItemNotificationAlarmBinding
-import com.yellowtwigs.knockin.model.database.StatusBarParcelable
 
-class NotificationsAlarmListAdapter(private val context: Context, private val onClickedCallback: (Boolean, String, String) -> Unit) :
-    ListAdapter<StatusBarParcelable,
-            NotificationsAlarmListAdapter.ViewHolder>
-        (NotificationsAlarmComparator) {
+class NotificationsAlarmListAdapter(
+    private val context: Context,
+    private val onClickedCallback: (Boolean, String, String, NotificationAlarmViewState) -> Unit
+) :
+    ListAdapter<NotificationAlarmViewState, NotificationsAlarmListAdapter.ViewHolder>(NotificationsAlarmComparator) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ItemNotificationAlarmBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        return ViewHolder(ItemNotificationAlarmBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -28,12 +26,15 @@ class NotificationsAlarmListAdapter(private val context: Context, private val on
     class ViewHolder(private val binding: ItemNotificationAlarmBinding) : RecyclerView.ViewHolder(binding.root) {
         private var isSMS = false
 
-        fun onBind(sbp: StatusBarParcelable, context: Context, onClickedCallback: (Boolean, String, String) -> Unit) {
-            val sender = sbp.statusBarNotificationInfo["android.title"] as String
-            binding.messageContent.text = context.getString(R.string.message_from, sender)
-            binding.messageHour.text = sbp.dateTime
+        fun onBind(
+            notification: NotificationAlarmViewState,
+            context: Context,
+            onClickedCallback: (Boolean, String, String, NotificationAlarmViewState) -> Unit
+        ) {
+            binding.messageContent.text = context.getString(R.string.message_from, notification.title)
+            binding.messageHour.text = notification.dateTime
 
-            when (sbp.appNotifier) {
+            when (notification.platform) {
                 "com.google.android.apps.messaging", "com.android.mms", "com.samsung.android.messaging" -> {
                     isSMS = true
                     binding.messageImage.setImageResource(R.drawable.ic_micon)
@@ -70,25 +71,20 @@ class NotificationsAlarmListAdapter(private val context: Context, private val on
                 }
             }
 
-            sbp.apply {
-                binding.root.setOnClickListener {
-                    sbp.appNotifier?.let { appNotifier ->
-                        onClickedCallback(isSMS, sender, appNotifier)
-                    }
-                }
+            binding.root.setOnClickListener {
+                onClickedCallback(isSMS, notification.title!!, notification.platform!!, notification)
             }
         }
     }
 
-    object NotificationsAlarmComparator : DiffUtil.ItemCallback<StatusBarParcelable>() {
-        override fun areItemsTheSame(oldItem: StatusBarParcelable, newItem: StatusBarParcelable): Boolean {
+    object NotificationsAlarmComparator : DiffUtil.ItemCallback<NotificationAlarmViewState>() {
+        override fun areItemsTheSame(oldItem: NotificationAlarmViewState, newItem: NotificationAlarmViewState): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: StatusBarParcelable, newItem: StatusBarParcelable): Boolean {
-            return oldItem.id == newItem.id &&
-                    oldItem.contactId == newItem.contactId &&
-                    oldItem.appNotifier == newItem.appNotifier
+        override fun areContentsTheSame(oldItem: NotificationAlarmViewState, newItem: NotificationAlarmViewState): Boolean {
+            return oldItem.contactId == newItem.contactId &&
+                    oldItem.platform == newItem.platform
         }
     }
 }

@@ -181,15 +181,20 @@ class ContactsListViewModel @Inject constructor(
         )
 
         val intent: Intent = DailyStatisticsActivity.navigate(application)
-        val pendingIntent: PendingIntent? =
-            TaskStackBuilder.create(application).addNextIntentWithParentStack(intent).getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
-        notificationManager.notify(
-            1,
-            NotificationCompat.Builder(application, CHANNEL_ID).setSmallIcon(R.drawable.ic_knockin_logo).setContentTitle(adviceMessage)
-                .setContentText(application.getString(R.string.today_points_calculation, points, statisticsPoints))
-                .setStyle(NotificationCompat.BigTextStyle()).setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent).setAutoCancel(true).build()
-        )
+
+        try {
+            val pendingIntent: PendingIntent? =
+                TaskStackBuilder.create(application).addNextIntentWithParentStack(intent).getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
+            notificationManager.notify(
+                1,
+                NotificationCompat.Builder(application, CHANNEL_ID).setSmallIcon(R.drawable.ic_knockin_logo).setContentTitle(adviceMessage)
+                    .setContentText(application.getString(R.string.today_points_calculation, points, statisticsPoints))
+                    .setStyle(NotificationCompat.BigTextStyle()).setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent).setAutoCancel(true).build()
+            )
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun addNotificationInListDaily(notifications: ArrayList<NotificationsListViewState>, notification: NotificationDB) {

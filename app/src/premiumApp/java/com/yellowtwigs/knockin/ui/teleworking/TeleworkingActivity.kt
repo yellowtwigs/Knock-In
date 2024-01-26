@@ -7,8 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TimePicker
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SwitchCompat
@@ -38,18 +40,19 @@ class TeleworkingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        checkTheme(this)
+
+        val viewModel: TeleworkingViewModel by viewModels()
+        binding = ActivityTeleworkingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupContactList(viewModel)
+        setupReminder()
+        setupDrawerLayout()
+        setupToolbar()
+        editTextTimePicker()
+
         try {
-            checkTheme(this)
-
-            val viewModel: TeleworkingViewModel by viewModels()
-            binding = ActivityTeleworkingBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-
-            setupContactList(viewModel)
-            setupReminder()
-            setupToolbar()
-            editTextTimePicker()
-
             val vipScheduleValueSharedPreferences = getSharedPreferences("VipScheduleValue", Context.MODE_PRIVATE)
 
             binding.vipContactsButton.setOnClickListener {
@@ -77,9 +80,6 @@ class TeleworkingActivity : AppCompatActivity() {
                     edit.apply()
                 }
             }
-
-            setupDrawerLayout()
-
             val notificationsHour = getSharedPreferences(
                 "TeleworkingReminder", Context.MODE_PRIVATE
             ).getString("TeleworkingReminder", "")
@@ -130,10 +130,9 @@ class TeleworkingActivity : AppCompatActivity() {
     //region ==================================== TOOLBAR / DRAWER LAYOUT ===================================
 
     private fun setupToolbar() {
-        binding.apply {
-            openDrawer.setOnClickListener {
-                drawerLayout.openDrawer(GravityCompat.START)
-            }
+        binding.openDrawer.setOnClickListener {
+            Log.i("TeleworkingDrawer", "Passe par là")
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
     }
 
@@ -154,26 +153,31 @@ class TeleworkingActivity : AppCompatActivity() {
                             this@TeleworkingActivity, ContactsListActivity::class.java
                         )
                     )
+
                     R.id.nav_notifications -> startActivity(
                         Intent(
                             this@TeleworkingActivity, NotificationsSettingsActivity::class.java
                         )
                     )
+
                     R.id.nav_dashboard -> startActivity(
                         Intent(
                             this@TeleworkingActivity, DashboardActivity::class.java
                         )
                     )
+
                     R.id.nav_in_app -> startActivity(
                         Intent(
                             this@TeleworkingActivity, PremiumActivity::class.java
                         )
                     )
+
                     R.id.nav_manage_screen -> startActivity(
                         Intent(
                             this@TeleworkingActivity, ManageMyScreenActivity::class.java
                         )
                     )
+
                     R.id.nav_help -> startActivity(
                         Intent(
                             this@TeleworkingActivity, HelpActivity::class.java
@@ -243,7 +247,7 @@ class TeleworkingActivity : AppCompatActivity() {
 
         binding.apply {
             reminderHourEditText.setText(hourGetString(hour, minute))
-            setReminderAlarm(hour, minute)
+//            setReminderAlarm(hour, minute)
             reminderHourEditText.setOnClickListener {
                 val timePickerDialog = TimePickerDialog(this@TeleworkingActivity, { _, h, m ->
                     val editor = sharedPreferences.edit()
@@ -282,14 +286,32 @@ class TeleworkingActivity : AppCompatActivity() {
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
+
         val intent = Intent(applicationContext, NotificationSender::class.java)
         intent.action = "NOTIFICATION_TIME"
-        val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
+
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                100,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                100,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        }
+
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
         )
     }
 

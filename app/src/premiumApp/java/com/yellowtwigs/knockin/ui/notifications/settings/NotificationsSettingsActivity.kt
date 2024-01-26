@@ -10,6 +10,7 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -474,14 +475,32 @@ class NotificationsSettingsActivity : AppCompatActivity() {
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
+
         val intent = Intent(applicationContext, NotificationSender::class.java)
         intent.action = "NOTIFICATION_TIME"
-        val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val alarmManager = getSystemService(ALARM_SERVICE) as (AlarmManager)
+
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                100,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getBroadcast(
+                applicationContext,
+                100,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        }
+
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
         )
     }
 

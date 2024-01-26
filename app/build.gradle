@@ -11,9 +11,9 @@ android {
         applicationId "com.yellowtwigs.Knockin"
         minSdk 26
         targetSdk 34
-        versionCode 277
+        versionCode 284
 //        versionName "1.0.0"
-        versionName "3.4.0.33"
+        versionName "3.4.0.40"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -107,7 +107,7 @@ dependencies {
     implementation 'com.google.dagger:hilt-android:2.38.1'
     kapt 'com.google.dagger:hilt-compiler:2.38.1'
     implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt  "androidx.hilt:hilt-compiler:1.0.0"
+    kapt "androidx.hilt:hilt-compiler:1.0.0"
 
     // WorkManager with Dagger Hilt
     implementation("androidx.work:work-runtime-ktx:2.6.0")

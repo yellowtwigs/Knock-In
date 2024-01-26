@@ -12,6 +12,8 @@ import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.text.Spannable
+import android.text.SpannableString
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
@@ -34,6 +36,7 @@ import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.m
 import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.positionXIntoScreen
 import com.yellowtwigs.knockin.background.service.NotificationsListenerGesture.positionYIntoScreen
 import com.yellowtwigs.knockin.ui.notifications.alarm.NotificationAlarmActivity
+import com.yellowtwigs.knockin.ui.notifications.alarm.NotificationAlarmViewState
 import com.yellowtwigs.knockin.utils.ContactGesture.isPhoneNumber
 import com.yellowtwigs.knockin.utils.ContactGesture.isValidEmail
 import com.yellowtwigs.knockin.utils.ContactGesture.transformPhoneNumberToPhoneNumbersWithSpinner
@@ -352,7 +355,35 @@ class NotificationsListenerService : NotificationListenerService() {
 
     private fun vipNotificationsDeployment(sbp: StatusBarParcelable, sbn: StatusBarNotification, contact: ContactDB, formattedTime: String) {
         val screenListener = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-        notificationsList.add(sbp)
+        val targetKey1 = "android.title"
+        val targetKey2 = "android.text"
+
+        val entryWithTitle = sbp.statusBarNotificationInfo.entries.find { it.key == targetKey1 }
+        val entryWithText = sbp.statusBarNotificationInfo.entries.find { it.key == targetKey2 }
+        val title = entryWithTitle?.value as String
+        val text = when (entryWithText?.value) {
+            is String -> {
+                entryWithText.value as String
+            }
+
+            is SpannableString -> {
+                entryWithText.value as SpannableString
+            }
+
+            else -> {
+                ""
+            }
+        }
+
+        val notification = NotificationAlarmViewState(
+            title = title,
+            content = text.toString(),
+            platform = sbp.appNotifier,
+            contactId = sbp.contactId,
+            dateTime = sbp.dateTime
+        )
+        notificationsList.add(notification)
+
         if (screenListener.isKeyguardLocked) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                 val i = Intent(this, NotificationAlarmActivity::class.java)
@@ -598,6 +629,7 @@ class NotificationsListenerService : NotificationListenerService() {
             popupView = null
             alarmSound?.stop()
             popupNotificationViewStates.clear()
+            notificationsList.clear()
 
             val edit = sharedPreferences.edit()
             edit.putBoolean("view", false)
@@ -634,7 +666,7 @@ class NotificationsListenerService : NotificationListenerService() {
         var alarmSound: MediaPlayer? = null
         var numberOfMessages: TextView? = null
         val popupNotificationViewStates = mutableSetOf<PopupNotificationViewState>()
-        val notificationsList = mutableSetOf<StatusBarParcelable>()
+        val notificationsList = mutableSetOf<NotificationAlarmViewState>()
         var adapterNotifications: PopupNotificationsListAdapter? = null
         private var recyclerView: RecyclerView? = null
         var context: Context? = null

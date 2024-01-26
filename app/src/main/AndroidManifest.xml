@@ -127,6 +127,9 @@
             android:name=".ui.teleworking.TeleworkingActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.statistics.reward.RewardActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.contacts.contact_selected.ContactSelectedWithAppsActivity"
             android:exported="false" />
         <activity

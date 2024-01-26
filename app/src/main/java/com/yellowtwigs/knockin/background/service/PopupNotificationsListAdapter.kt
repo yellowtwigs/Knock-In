@@ -100,6 +100,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
+
                     MESSENGER_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
@@ -111,6 +112,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
+
                     TELEGRAM_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
@@ -122,6 +124,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
+
                     SIGNAL_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
@@ -133,6 +136,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
+
                     FACEBOOK_APP_NAME -> {
                         callButton.visibility = View.INVISIBLE
                         buttonSend.visibility = View.INVISIBLE
@@ -144,6 +148,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
+
                     MESSAGE_APP_NAME -> {
                         callButton.visibility = View.VISIBLE
                         buttonSend.visibility = View.VISIBLE
@@ -155,6 +160,7 @@ class PopupNotificationsListAdapter(
                             )
                         }
                     }
+
                     WHATSAPP_APP_NAME -> {
                         callButton.visibility = View.VISIBLE
                         buttonSend.visibility = View.VISIBLE
@@ -209,6 +215,7 @@ class PopupNotificationsListAdapter(
                             }
                             closeNotificationPopup()
                         }
+
                         MESSENGER_APP_NAME -> {
                             if (popup.messengerId != "") {
                                 openMessenger(popup.messengerId, cxt)
@@ -221,6 +228,7 @@ class PopupNotificationsListAdapter(
                             }
                             closeNotificationPopup()
                         }
+
                         WHATSAPP_APP_NAME -> {
                             if (firstPhoneNumber != null) {
                                 openWhatsapp(converter06To33(firstPhoneNumber.phoneNumber), cxt)
@@ -229,6 +237,7 @@ class PopupNotificationsListAdapter(
                             }
                             closeNotificationPopup()
                         }
+
                         GMAIL_APP_NAME -> {
                             val appIntent = Intent(Intent.ACTION_VIEW)
                             appIntent.flags = FLAG_ACTIVITY_NEW_TASK
@@ -246,6 +255,7 @@ class PopupNotificationsListAdapter(
                             }
                             closeNotificationPopup()
                         }
+
                         MESSAGE_APP_NAME -> {
                             if (firstPhoneNumber != null) {
                                 ContactGesture.openSms(firstPhoneNumber.phoneNumber, cxt)
@@ -254,10 +264,12 @@ class PopupNotificationsListAdapter(
                             }
                             closeNotificationPopup()
                         }
+
                         SIGNAL_APP_NAME -> {
                             goToSignal(cxt)
                             closeNotificationPopup()
                         }
+
                         TELEGRAM_APP_NAME -> {
                             if (firstPhoneNumber != null) {
                                 goToTelegram(cxt, firstPhoneNumber.phoneNumber)
@@ -294,10 +306,12 @@ class PopupNotificationsListAdapter(
                                 }
                                 closeNotificationPopup()
                             }
+
                             GMAIL_APP_NAME -> {
                                 sendMail(popup.email, "", message, cxt)
                                 closeNotificationPopup()
                             }
+
                             MESSAGE_APP_NAME -> {
                                 if (firstPhoneNumber != null) {
                                     sendMessageWithAndroidMessage(firstPhoneNumber.phoneNumber, message, cxt)
@@ -350,6 +364,7 @@ class PopupNotificationsListAdapter(
 
     private fun closeNotificationPopup() {
         NotificationsListenerService.alarmSound?.stop()
+        NotificationsListenerService.notificationsList.clear()
         windowManager.removeView(popupView)
         val sharedPreferences = cxt.getSharedPreferences("Knockin_preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()

@@ -69,10 +69,8 @@ class StatusBarParcelable : Parcelable {
         val entree = statusBarNotificationInfo.entries
 
         for ((key1, value) in entree) {
-
             dest.writeString(key1)
             dest.writeString(" $value")
-
         }
     }
 
@@ -118,6 +116,38 @@ class StatusBarParcelable : Parcelable {
 
     fun castName() {
         statusBarNotificationInfo.put("android.title", getContactNameFromString())
+    }
+
+    override fun toString(): String {
+        return "StatusBarParcelable(id=$id, appNotifier=$appNotifier, tickerText=$tickerText, dateTime='$dateTime', tailleList=$tailleList, contactId=$contactId, key=$key, statusBarNotificationInfo=$statusBarNotificationInfo)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as StatusBarParcelable
+
+        if (id != other.id) return false
+        if (appNotifier != other.appNotifier) return false
+        if (tickerText != other.tickerText) return false
+        if (dateTime != other.dateTime) return false
+        if (tailleList != other.tailleList) return false
+        if (contactId != other.contactId) return false
+        if (key != other.key) return false
+        return statusBarNotificationInfo == other.statusBarNotificationInfo
+    }
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + (appNotifier?.hashCode() ?: 0)
+        result = 31 * result + (tickerText?.hashCode() ?: 0)
+        result = 31 * result + dateTime.hashCode()
+        result = 31 * result + tailleList
+        result = 31 * result + contactId
+        result = 31 * result + key.hashCode()
+        result = 31 * result + statusBarNotificationInfo.hashCode()
+        return result
     }
 
     companion object CREATOR : Parcelable.Creator<StatusBarParcelable> {
