@@ -56,10 +56,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
+//            FlashlightController(this).toggleFlashlight()
+
             val editContactViewModel: EditContactViewModel by viewModels()
             val sbp = intent.extras?.get("notification") as StatusBarParcelable
-
-            Log.i("OpenGmail", "NotificationsListenerService.notificationsList : ${NotificationsListenerService.notificationsList}")
 
             editContactViewModel.getSingleContactByIdLiveData(sbp.contactId).observe(this@NotificationAlarmActivity) { contact ->
                 NotificationsListenerService.notificationsList.distinctBy { notificationAlarmViewState ->
@@ -71,6 +71,8 @@ class NotificationAlarmActivity : AppCompatActivity() {
                     )
                 }.let {
                     adapter = NotificationsAlarmListAdapter(this@NotificationAlarmActivity) { isSMS, sender, appNotifier, newSbp ->
+                        ringTheSound = false
+
                         contact?.firstPhoneNumber ?: listOf(PhoneNumberWithSpinner(null, ""))
 
                         Log.i("OpenGmail", "NotificationsListenerService.notificationsList : ${NotificationsListenerService.notificationsList}")
@@ -207,7 +209,6 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
                         CoroutineScope(Dispatchers.Main).launch {
                             delay(6000)
-
                             alarmSound?.stop()
                         }
 
@@ -258,12 +259,17 @@ class NotificationAlarmActivity : AppCompatActivity() {
         Log.i("OpenGmail", "NotificationsListenerService.notificationsList.size : ${NotificationsListenerService.notificationsList.size}")
 
         if (NotificationsListenerService.notificationsList.size == 0 && !googleMail) {
-            Log.i("OpenGmail", "Passe par là 2")
+            if (alarmSound != null) {
+                alarmSound?.stop()
+            }
             startActivity(Intent(this, ContactsListActivity::class.java))
             finish()
         }
 
         if (comeback) {
+            if (alarmSound != null) {
+                alarmSound?.stop()
+            }
             startActivity(Intent(this, ContactsListActivity::class.java))
             finish()
         }
@@ -275,7 +281,10 @@ class NotificationAlarmActivity : AppCompatActivity() {
 
     private fun soundRingtone() {
         Log.i("SoundRingtone", "ringTheSound : $ringTheSound")
-        if (ringTheSound) {
+        Log.i("SoundRingtone", "Passe par là 1")
+        Log.i("OpenGmail", "NotificationsListenerService.notificationsList.size : ${NotificationsListenerService.notificationsList.size}")
+        if (ringTheSound && NotificationsListenerService.notificationsList.size != 0) {
+            Log.i("SoundRingtone", "Passe par là 2")
             alarmSound?.stop()
             alarmSound = if (currentIsCustomSound) {
                 MediaPlayer.create(this, Uri.parse(currentNotificationTone))
@@ -288,8 +297,13 @@ class NotificationAlarmActivity : AppCompatActivity() {
                 }
             }
             alarmSound?.start()
-            ringTheSound = false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+//        FlashlightController(this).turnOffFlashlight()
     }
 
     companion object {

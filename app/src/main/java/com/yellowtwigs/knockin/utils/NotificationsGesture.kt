@@ -44,6 +44,7 @@ object NotificationsGesture {
 
     const val CALLS_APP_NAME = "Call"
     const val HUAWEI_SYSTEM_MANAGER_PACKAGE = "com.huawei.systemmanager"
+    const val SAMSUNG_CALL_APP = "com.samsung.android.incallui"
     const val ANDROID_CONTACTS_PACKAGE = "com.android.contacts"
     const val ANDROID_DIALER_PACKAGE = "com.android.dialer"
     const val GOOGLE_ANDROID_DIALER_PACKAGE = "com.google.android.dialer"
@@ -124,6 +125,24 @@ object NotificationsGesture {
             KNOCKIN_PACKAGE -> return KNOCKIN_NAME
             TWITTER_PACKAGE -> return TWITTER_APP_NAME
             else -> return ""
+        }
+    }
+
+    fun isFromAPhoneCallApp(packageName: String, context: Context): Boolean {
+        return when (packageName) {
+            HUAWEI_SYSTEM_MANAGER_PACKAGE -> false
+            ANDROID_CONTACTS_PACKAGE -> false
+            ANDROID_DIALER_PACKAGE -> false
+            GOOGLE_ANDROID_DIALER_PACKAGE -> false
+            ANDROID_PHONE_PACKAGE -> false
+            SAMSUNG_CONTACTS_PACKAGE -> false
+            SAMSUNG_ANDROID_DIALER_PACKAGE -> false
+            EASY_CONTACT_TV_DIALER_PACKAGE -> false
+            GOOGLE_CONTACTS_PACKAGE -> false
+            HUAWEI_CONTACTS_PACKAGE -> false
+            TRUECALLER_PACKAGE -> false
+            SAMSUNG_CALL_APP -> false
+            else -> true
         }
     }
 

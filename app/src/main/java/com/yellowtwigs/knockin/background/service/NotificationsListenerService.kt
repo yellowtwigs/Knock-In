@@ -45,6 +45,7 @@ import com.yellowtwigs.knockin.utils.Converter.convertTimeToHour
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToMinutes
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToStartTime
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
+import com.yellowtwigs.knockin.utils.NotificationsGesture.isFromAPhoneCallApp
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isPhoneCall
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isSocialMedia
@@ -114,7 +115,9 @@ class NotificationsListenerService : NotificationListenerService() {
             if (name != "" && message != "" && name != "null" && message != "null") {
                 if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
                     if (message.contains("call") || message.contains("Incoming") || message.contains("Incoming Call")
-                        || message.contains("Appel entrant") || message.contains("Dialing") || message.contains("appel entrant")
+                        || message.contains("Appel entrant") || message.contains("Appel en cours") || message.contains("Appel...") || message
+                            .contains("Dialing") || message.contains
+                            ("appel entrant")
                         || message.contains("dialing")
                     ) {
                     } else {
@@ -188,8 +191,10 @@ class NotificationsListenerService : NotificationListenerService() {
                                     saveNotification.invoke(notification)
                                 }
                                 cancelWhatsappNotification(sbn, this@NotificationsListenerService)
-                                contact?.let {
-                                    displayNotification(sbp, sbn, it, formattedTime)
+                                contact?.let { contactDb ->
+                                    if(sbp.appNotifier?.let { isFromAPhoneCallApp(it, this@NotificationsListenerService) } == true){
+                                        displayNotification(sbp, sbn, contactDb, formattedTime)
+                                    }
                                 }
                             }
                         }

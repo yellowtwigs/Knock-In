@@ -170,6 +170,10 @@ class EditContactActivity : AppCompatActivity() {
         editContactViewModel.singleContactViewStateLiveData.observe(this) { contact ->
             contact?.let {
                 currentContact = it
+
+                notificationTone = currentContact.notificationTone
+                notificationSound = currentContact.notificationSound
+
                 binding.apply {
                     if (it.profilePicture64 == "") {
                         contactImage.setImageResource(
