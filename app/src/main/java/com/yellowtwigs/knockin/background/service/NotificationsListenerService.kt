@@ -45,6 +45,7 @@ import com.yellowtwigs.knockin.utils.Converter.convertTimeToHour
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToMinutes
 import com.yellowtwigs.knockin.utils.Converter.convertTimeToStartTime
 import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToString
+import com.yellowtwigs.knockin.utils.NotificationsGesture.convertPackageToStringForNotificationVIP
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isFromAPhoneCallApp
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isMessagingApp
 import com.yellowtwigs.knockin.utils.NotificationsGesture.isPhoneCall
@@ -108,12 +109,8 @@ class NotificationsListenerService : NotificationListenerService() {
             val name = sbp.statusBarNotificationInfo["android.title"].toString()
             val message = sbp.statusBarNotificationInfo["android.text"].toString()
 
-            Log.i("AlarmMessages", "name : $name")
-            Log.i("AlarmMessages", "message : $message")
-            Log.i("AlarmMessages", "sbp.dateTime : ${sbp.dateTime}")
-
             if (name != "" && message != "" && name != "null" && message != "null") {
-                if (sbp.appNotifier?.let { convertPackageToString(it, this) } != "") {
+                if (sbp.appNotifier?.let { convertPackageToStringForNotificationVIP(it, this) } != "") {
                     if (message.contains("call") || message.contains("Incoming") || message.contains("Incoming Call")
                         || message.contains("Appel entrant") || message.contains("Appel en cours") || message.contains("Appel...") || message
                             .contains("Dialing") || message.contains
@@ -192,7 +189,7 @@ class NotificationsListenerService : NotificationListenerService() {
                                 }
                                 cancelWhatsappNotification(sbn, this@NotificationsListenerService)
                                 contact?.let { contactDb ->
-                                    if(sbp.appNotifier?.let { isFromAPhoneCallApp(it, this@NotificationsListenerService) } == true){
+                                    if (sbp.appNotifier?.let { isFromAPhoneCallApp(it, this@NotificationsListenerService) } == true) {
                                         displayNotification(sbp, sbn, contactDb, formattedTime)
                                     }
                                 }

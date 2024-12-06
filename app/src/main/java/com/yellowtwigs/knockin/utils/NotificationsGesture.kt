@@ -83,6 +83,39 @@ object NotificationsGesture {
     const val TWITTER_PACKAGE = "com.twitter.android"
     const val TWITTER_APP_NAME = "Twitter"
 
+    fun convertPackageToStringForNotificationVIP(packageName: String, context: Context): String {
+        when (packageName) {
+            FACEBOOK_PACKAGE -> return FACEBOOK_APP_NAME
+            MESSENGER_PACKAGE -> return MESSENGER_APP_NAME
+            WHATSAPP_PACKAGE -> return WHATSAPP_APP_NAME
+            GMAIL_PACKAGE -> return GMAIL_APP_NAME
+            OUTLOOK_PACKAGE -> return OUTLOOK_APP_NAME
+
+            MESSAGE_PACKAGE -> return MESSAGE_APP_NAME
+            XIAOMI_MESSAGE_PACKAGE -> return MESSAGE_APP_NAME
+            MESSAGE_SAMSUNG_PACKAGE -> return MESSAGE_APP_NAME
+            MESSAGES_PACKAGE -> return MESSAGE_APP_NAME
+            MESSAGES_GO_PACKAGE -> return MESSAGE_APP_NAME
+            Telephony.Sms.getDefaultSmsPackage(context) -> return MESSAGE_APP_NAME
+
+            SIGNAL_PACKAGE -> return SIGNAL_APP_NAME
+            TELEGRAM_PACKAGE -> return TELEGRAM_APP_NAME
+            INSTAGRAM_PACKAGE -> return "Instagram"
+            DISCORD_PACKAGE -> return "Discord"
+            TIKTOK_PACKAGE -> return "Tiktok"
+            SNAPCHAT_PACKAGE -> return "Snapchat"
+            VIBER_PACKAGE -> return "Viber"
+            YOUTUBE_PACKAGE -> return "YouTube"
+            LINKEDIN_PACKAGE -> return LINKEDIN_NAME
+            SKYPE_PACKAGE -> return "Skype"
+            REDDIT_PACKAGE -> return "Reddit"
+
+            KNOCKIN_PACKAGE -> return KNOCKIN_NAME
+            TWITTER_PACKAGE -> return TWITTER_APP_NAME
+            else -> return ""
+        }
+    }
+
     fun convertPackageToString(packageName: String, context: Context): String {
         when (packageName) {
             FACEBOOK_PACKAGE -> return FACEBOOK_APP_NAME
